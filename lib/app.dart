@@ -1,4 +1,4 @@
-import 'package:cozy_for_mom_frontend/screen/s_main.dart';
+import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
