@@ -17,7 +17,7 @@ class HomeFragment extends StatelessWidget {
           const Positioned(
             top: 0,
             child: Image(
-              width: 400,
+              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
               fit: BoxFit.cover,
               image: AssetImage(
                 "assets/images/dark_sky.png",
@@ -79,8 +79,8 @@ class HomeFragment extends StatelessWidget {
           Positioned(
             top: 379,
             child: Container(
-              width: 400,
-              height: 600,
+              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+              height: 600, // TODO 화면 높이에 맞춘 height로 수정해야함
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(40),

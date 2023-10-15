@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecordIcon extends StatelessWidget {
+  // TODO onTap 속성 추가
   final String recordTypeName;
   final String recordTypeKorName;
   final double imageWidth;
