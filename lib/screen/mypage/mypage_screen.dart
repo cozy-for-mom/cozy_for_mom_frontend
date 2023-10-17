@@ -1,0 +1,431 @@
+import 'package:flutter/material.dart';
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+
+void main() {
+  runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
+}
+
+class Profile {
+  final String name;
+  final String image;
+  bool isProfileSelected = false; // 프로필 선택 상태를 저장
+
+  Profile(
+      {required this.name,
+      required this.image,
+      this.isProfileSelected = false});
+}
+
+ValueNotifier<Profile?> selectedProfile = ValueNotifier<Profile?>(null);
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyPage(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(), // 필요한 테마 설정
+        fontFamily: 'Pretendard',
+      ),
+    );
+  }
+}
+
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  List<Profile> profiles = [
+    Profile(name: "미룽이", image: 'assets/icons/babyProfileOn.png'),
+    Profile(name: "행운이", image: 'assets/icons/babyProfileOn.png')
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime dueDate = DateTime(2024, 2, 14); // 출산 예정일 DB에서 받기
+    DateTime now = DateTime.now(); // 현재 날짜 가져오기
+    Duration difference = dueDate.difference(now);
+
+    // 디데이 그래프를 계산
+    double totalDays = 280.0; // 임신일 ~ 출산일
+    double daysPassed = totalDays - difference.inDays.toDouble(); //
+    double percentage = daysPassed / totalDays;
+
+    return Scaffold(
+      backgroundColor: const Color(0xffF7F7FA),
+      // Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        backgroundColor: const Color(0xffBCD1FF),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(); // 현재 화면을 닫음
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: Image.asset(
+              'assets/icons/momProfile.png',
+              fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
+              width: 100,
+              height: 100,
+              alignment: Alignment.center,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "쥬쥬 산모님",
+            style: TextStyle(
+                color: textColor, fontWeight: FontWeight.w700, fontSize: 20),
+          ),
+          const SizedBox(height: 4),
+          InkWell(
+            onTap: () {
+              // 클릭 시 수행할 작업
+              print('산모 프로필 수정 버튼 클릭');
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "프로필 수정",
+                  style: TextStyle(
+                      color: Color(0xff858998),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(width: 4),
+                Image.asset('assets/icons/pen.png', width: 12),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Card(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            margin: const EdgeInsets.all(10),
+            color: Colors.white,
+            child: SizedBox(
+              width: 349,
+              height: 114,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "미룽이와 만나는 날",
+                        style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      ),
+                      Text(' D-${difference.inDays}',
+                          style: const TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16)),
+                    ],
+                  ),
+                  Container(
+                    width: 313, // 가로 막대 그래프 너비
+                    height: 12, // 가로 막대 그래프 높이
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF0F0F5), // 전체 배경색
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: FractionallySizedBox(
+                      widthFactor: percentage,
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: primaryColor, // 디데이 막대 그래프 색상
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            margin: const EdgeInsets.all(10),
+            color: Colors.white,
+            child: SizedBox(
+              width: 350,
+              height: 102,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomTextButton(
+                      text: '코지로그',
+                      imagePath: 'assets/icons/diary.png', // 이미지 파일 경로
+                      onPressed: () {
+                        // 버튼 클릭 시 수행할 작업
+                        print('코지로그 버튼 클릭됨');
+                      }),
+                  Container(
+                    width: 1, // 수직선의 두께 조절
+                    height: 42, // 수직선의 높이 조절
+                    color: const Color(0xffE8E8ED), // 수직선의 색상
+                  ),
+                  CustomTextButton(
+                      text: '스크랩 내역',
+                      imagePath: 'assets/icons/scrap.png', // 이미지 파일 경로
+                      onPressed: () {
+                        // 버튼 클릭 시 수행할 작업
+                        print('스크랩 내역 버튼 클릭됨');
+                      }),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            margin: const EdgeInsets.all(10),
+            color: Colors.white,
+            child: SizedBox(
+                width: 350,
+                height: 220,
+                child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("우리 아이 관리",
+                                  style: TextStyle(
+                                      color: textColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18)),
+                              Container(
+                                width: 42,
+                                height: 21,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF7F7FA), // 배경색 설정
+                                  borderRadius:
+                                      BorderRadius.circular(10), // 모서리의 반지름 설정
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    print("편집 버튼 클릭");
+                                  },
+                                  style: ButtonStyle(
+                                    padding: MaterialStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                        EdgeInsets.zero), // 패딩을 없애는 부분
+                                  ),
+                                  child: const Text("편집",
+                                      style: TextStyle(
+                                          color: Color(0xff858998),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 20),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                    profiles.length + 1, // 프로필 개수 + 추가 버튼
+                                itemBuilder: (context, index) {
+                                  if (index == profiles.length) {
+                                    // 추가 버튼 항목
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          print("태아 프로필 추가 버튼 클릭");
+                                          // profile 추가 화면으로 넘어가기
+                                          profiles.add(Profile(
+                                            name: "아룽이",
+                                            image:
+                                                "assets/icons/babyProfileTest.jpeg",
+                                          ));
+                                        });
+                                      },
+                                      child: InkWell(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 0, 10, 10),
+                                              child: Image.asset(
+                                                'assets/icons/plusDotted.png',
+                                                width: 80, // 이미지 너비 조정
+                                                height: 80, // 이미지 높이 조정
+                                                alignment: Alignment.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    // 프로필 항목
+                                    return ValueListenableBuilder<Profile?>(
+                                      valueListenable: selectedProfile,
+                                      builder: (context, activeProfile, child) {
+                                        return CustomProfileButton(
+                                          text: profiles[index].name,
+                                          imagePath: profiles[index].image,
+                                          isSelected:
+                                              activeProfile == profiles[index],
+                                          onPressed: () {
+                                            selectedProfile.value =
+                                                profiles[index]; // 프로필 활성화
+                                            print(
+                                                '${profiles[index].name} 버튼이 클릭되었습니다.');
+                                          },
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                              )),
+                        ),
+                      ],
+                    ))),
+          ),
+        ],
+      ),
+      // 이 플로팅 버튼 -> 플로팅 버튼 사용하는 화면에 다 사용 가능할듯!
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // 추가 버튼 클릭 시 새 프로필을 추가
+      //     setState(() {
+      //       profiles.add(Profile(
+      //           name: "프로필 ${profiles.length + 1}",
+      //           image: 'assets/icons/babyProfileOff.png'));
+      //     });
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
+    );
+  }
+}
+
+// 아이콘 + 텍스트 버튼 (커스텀버튼 위젯)
+class CustomTextButton extends StatelessWidget {
+  final String text;
+  final String imagePath;
+  final void Function() onPressed;
+
+  CustomTextButton({
+    required this.text,
+    required this.imagePath,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 24, // 이미지 너비 조정
+              height: 24, // 이미지 높이 조정
+            ),
+            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
+            Text(
+              text,
+              style: const TextStyle(
+                  color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomProfileButton extends StatelessWidget {
+  final String text;
+  final String imagePath;
+  final bool isSelected;
+  final void Function() onPressed;
+
+  CustomProfileButton({
+    required this.text,
+    required this.imagePath,
+    required this.isSelected,
+    required this.onPressed,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: isSelected
+                      ? Border.all(width: 2, color: const Color(0xff5CA6F8))
+                      : null,
+                  color: isSelected
+                      ? const Color(0xffDCEDFF)
+                      : const Color(0xffF8F8FA)),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  imagePath,
+                  width: 40, // 이미지 너비 조정
+                  height: 40, // 이미지 높이 조정
+                  alignment: Alignment.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
+            Text(
+              text,
+              style: TextStyle(
+                  color: isSelected
+                      ? const Color(0xff5CA6F8)
+                      : const Color(0xff858998),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
