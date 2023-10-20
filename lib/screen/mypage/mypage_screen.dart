@@ -2,23 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
+import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 
 void main() {
   runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
 }
 
-class Profile {
-  final String name;
-  final String image;
-  bool isProfileSelected = false; // 프로필 선택 상태를 저장
-
-  Profile(
-      {required this.name,
-      required this.image,
-      this.isProfileSelected = false});
-}
-
-ValueNotifier<Profile?> selectedProfile = ValueNotifier<Profile?>(null);
+ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
 class MyApp extends StatelessWidget {
   @override
@@ -40,10 +30,14 @@ class MyPage extends StatefulWidget {
   State<MyPage> createState() => _MyPageState();
 }
 
+int babyId = 1;
+
 class _MyPageState extends State<MyPage> {
-  List<Profile> profiles = [
-    Profile(name: "미룽이", image: 'assets/icons/babyProfileOn.png'),
-    Profile(name: "행운이", image: 'assets/icons/babyProfileOn.png')
+  List<BabyProfile> profiles = [
+    BabyProfile(
+        babyId: babyId++, name: "미룽이", image: 'assets/icons/babyProfileOn.png'),
+    BabyProfile(
+        babyId: babyId++, name: "행운이", image: 'assets/icons/babyProfileOn.png')
   ];
 
   @override
@@ -267,7 +261,8 @@ class _MyPageState extends State<MyPage> {
                                         setState(() {
                                           print("태아 프로필 추가 버튼 클릭");
                                           // profile 추가 화면으로 넘어가기
-                                          profiles.add(Profile(
+                                          profiles.add(BabyProfile(
+                                            babyId: babyId++,
                                             name: "아룽이",
                                             image:
                                                 "assets/icons/babyProfileTest.jpeg",
@@ -294,7 +289,7 @@ class _MyPageState extends State<MyPage> {
                                     );
                                   } else {
                                     // 프로필 항목
-                                    return ValueListenableBuilder<Profile?>(
+                                    return ValueListenableBuilder<BabyProfile?>(
                                       valueListenable: selectedProfile,
                                       builder: (context, activeProfile, child) {
                                         return CustomProfileButton(
@@ -306,7 +301,7 @@ class _MyPageState extends State<MyPage> {
                                             selectedProfile.value =
                                                 profiles[index]; // 프로필 활성화
                                             print(
-                                                '${profiles[index].name} 버튼이 클릭되었습니다.');
+                                                'id:${profiles[index].babyId} name:${profiles[index].name} 버튼이 클릭되었습니다.');
                                           },
                                         );
                                       },
