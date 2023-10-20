@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 
 void main() {
   runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
@@ -56,7 +58,7 @@ class _MyPageState extends State<MyPage> {
     double percentage = daysPassed / totalDays;
 
     return Scaffold(
-      backgroundColor: const Color(0xffF7F7FA),
+      backgroundColor: backgroundColor,
       // Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: const Color(0xffBCD1FF),
@@ -317,114 +319,6 @@ class _MyPageState extends State<MyPage> {
                     ))),
           ),
         ],
-      ),
-      // 이 플로팅 버튼 -> 플로팅 버튼 사용하는 화면에 다 사용 가능할듯!
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // 추가 버튼 클릭 시 새 프로필을 추가
-      //     setState(() {
-      //       profiles.add(Profile(
-      //           name: "프로필 ${profiles.length + 1}",
-      //           image: 'assets/icons/babyProfileOff.png'));
-      //     });
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
-    );
-  }
-}
-
-// 아이콘 + 텍스트 버튼 (커스텀버튼 위젯)
-class CustomTextButton extends StatelessWidget {
-  final String text;
-  final String imagePath;
-  final void Function() onPressed;
-
-  CustomTextButton({
-    required this.text,
-    required this.imagePath,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              imagePath,
-              width: 24, // 이미지 너비 조정
-              height: 24, // 이미지 높이 조정
-            ),
-            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
-            Text(
-              text,
-              style: const TextStyle(
-                  color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomProfileButton extends StatelessWidget {
-  final String text;
-  final String imagePath;
-  final bool isSelected;
-  final void Function() onPressed;
-
-  CustomProfileButton({
-    required this.text,
-    required this.imagePath,
-    required this.isSelected,
-    required this.onPressed,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: isSelected
-                      ? Border.all(width: 2, color: const Color(0xff5CA6F8))
-                      : null,
-                  color: isSelected
-                      ? const Color(0xffDCEDFF)
-                      : const Color(0xffF8F8FA)),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Image.asset(
-                  imagePath,
-                  width: 40, // 이미지 너비 조정
-                  height: 40, // 이미지 높이 조정
-                  alignment: Alignment.center,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
-            Text(
-              text,
-              style: TextStyle(
-                  color: isSelected
-                      ? const Color(0xff5CA6F8)
-                      : const Color(0xff858998),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14),
-            ),
-          ],
-        ),
       ),
     );
   }
