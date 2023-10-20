@@ -24,10 +24,10 @@ class CustomTextButton extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              width: 24, // 이미지 너비 조정
-              height: 24, // 이미지 높이 조정
+              width: 24,
+              height: 24,
             ),
-            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
+            const SizedBox(height: 10),
             Text(
               text,
               style: const TextStyle(

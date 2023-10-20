@@ -34,13 +34,13 @@ class CustomProfileButton extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(
                   imagePath,
-                  width: 40, // 이미지 너비 조정
-                  height: 40, // 이미지 높이 조정
+                  width: 40,
+                  height: 40,
                   alignment: Alignment.center,
                 ),
               ),
             ),
-            const SizedBox(height: 10), // 이미지와 텍스트 사이 여백
+            const SizedBox(height: 10),
             Text(
               text,
               style: TextStyle(

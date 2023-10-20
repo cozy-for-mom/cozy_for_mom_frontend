@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-      // 이 플로팅 버튼 -> 플로팅 버튼 사용하는 화면에 다 사용 가능할듯!
+      // TODO 공통으로 사용할 플로팅버튼
+
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
       //     // 추가 버튼 클릭 시 새 프로필을 추가

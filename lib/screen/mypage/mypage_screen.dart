@@ -42,18 +42,17 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dueDate = DateTime(2024, 2, 14); // 출산 예정일 DB에서 받기
-    DateTime now = DateTime.now(); // 현재 날짜 가져오기
+    final DateTime dueDate = DateTime(2024, 2, 14); // TODO 출산 예정일 DB에서 받아와야 함
+    DateTime now = DateTime.now(); // 현재 날짜
     Duration difference = dueDate.difference(now);
 
-    // 디데이 그래프를 계산
+    // 디데이 그래프 계산
     double totalDays = 280.0; // 임신일 ~ 출산일
-    double daysPassed = totalDays - difference.inDays.toDouble(); //
+    double daysPassed = totalDays - difference.inDays.toDouble(); // 현재 날짜 ~ 출산일
     double percentage = daysPassed / totalDays;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      // Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: const Color(0xffBCD1FF),
         actions: [
@@ -88,7 +87,7 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(height: 4),
           InkWell(
             onTap: () {
-              // 클릭 시 수행할 작업
+              // TODO 산모 프로필 수정 페이지 이동 구현해야 함
               print('산모 프로필 수정 버튼 클릭');
             },
             child: Row(
@@ -115,8 +114,8 @@ class _MyPageState extends State<MyPage> {
             margin: const EdgeInsets.all(10),
             color: Colors.white,
             child: SizedBox(
-              width: 349,
-              height: 114,
+              width: 349, // TODO 화면 너비에 맞춘 width로 수정해야함
+              height: 114, // TODO 화면 높이에 맞춘 height로 수정해야함
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -138,8 +137,8 @@ class _MyPageState extends State<MyPage> {
                     ],
                   ),
                   Container(
-                    width: 313, // 가로 막대 그래프 너비
-                    height: 12, // 가로 막대 그래프 높이
+                    width: 313, // TODO 화면 너비에 맞춘 width로 수정해야함
+                    height: 12, // TODO 화면 높이에 맞춘 height로 수정해야함
                     decoration: BoxDecoration(
                       color: const Color(0xffF0F0F5), // 전체 배경색
                       borderRadius: BorderRadius.circular(5),
@@ -150,7 +149,7 @@ class _MyPageState extends State<MyPage> {
                       child: Container(
                         height: 20,
                         decoration: BoxDecoration(
-                          color: primaryColor, // 디데이 막대 그래프 색상
+                          color: primaryColor,
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
@@ -167,28 +166,28 @@ class _MyPageState extends State<MyPage> {
             margin: const EdgeInsets.all(10),
             color: Colors.white,
             child: SizedBox(
-              width: 350,
-              height: 102,
+              width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+              height: 102, // TODO 화면 높이에 맞춘 height로 수정해야함
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CustomTextButton(
                       text: '코지로그',
-                      imagePath: 'assets/icons/diary.png', // 이미지 파일 경로
+                      imagePath: 'assets/icons/diary.png',
                       onPressed: () {
-                        // 버튼 클릭 시 수행할 작업
+                        // TODO 코지로그 페이지 이동 구현해야 함
                         print('코지로그 버튼 클릭됨');
                       }),
                   Container(
                     width: 1, // 수직선의 두께 조절
                     height: 42, // 수직선의 높이 조절
-                    color: const Color(0xffE8E8ED), // 수직선의 색상
+                    color: const Color(0xffE8E8ED),
                   ),
                   CustomTextButton(
                       text: '스크랩 내역',
-                      imagePath: 'assets/icons/scrap.png', // 이미지 파일 경로
+                      imagePath: 'assets/icons/scrap.png',
                       onPressed: () {
-                        // 버튼 클릭 시 수행할 작업
+                        // TODO 스크랩 내역 페이지 이동 구현해야함
                         print('스크랩 내역 버튼 클릭됨');
                       }),
                 ],
@@ -202,8 +201,8 @@ class _MyPageState extends State<MyPage> {
             margin: const EdgeInsets.all(10),
             color: Colors.white,
             child: SizedBox(
-                width: 350,
-                height: 220,
+                width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+                height: 220, // TODO 화면 높이에 맞춘 height로 수정해야함
                 child: Padding(
                     padding: const EdgeInsets.only(top: 30),
                     child: Column(
@@ -222,9 +221,8 @@ class _MyPageState extends State<MyPage> {
                                 width: 42,
                                 height: 21,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xffF7F7FA), // 배경색 설정
-                                  borderRadius:
-                                      BorderRadius.circular(10), // 모서리의 반지름 설정
+                                  color: const Color(0xffF7F7FA),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: TextButton(
                                   onPressed: () {
@@ -260,7 +258,7 @@ class _MyPageState extends State<MyPage> {
                                       onTap: () {
                                         setState(() {
                                           print("태아 프로필 추가 버튼 클릭");
-                                          // profile 추가 화면으로 넘어가기
+                                          // TODO 태아 프로필 추가 페이지 이동 구현해야 함
                                           profiles.add(BabyProfile(
                                             babyId: babyId++,
                                             name: "아룽이",
@@ -278,8 +276,8 @@ class _MyPageState extends State<MyPage> {
                                                       10, 0, 10, 10),
                                               child: Image.asset(
                                                 'assets/icons/plusDotted.png',
-                                                width: 80, // 이미지 너비 조정
-                                                height: 80, // 이미지 높이 조정
+                                                width: 80,
+                                                height: 80,
                                                 alignment: Alignment.center,
                                               ),
                                             ),
@@ -288,7 +286,6 @@ class _MyPageState extends State<MyPage> {
                                       ),
                                     );
                                   } else {
-                                    // 프로필 항목
                                     return ValueListenableBuilder<BabyProfile?>(
                                       valueListenable: selectedProfile,
                                       builder: (context, activeProfile, child) {
