@@ -15,12 +15,12 @@ class supplementCard extends StatefulWidget {
       required this.takeTimes});
 
   @override
-  _supplementCardState createState() => _supplementCardState();
+  _SupplementCardState createState() => _SupplementCardState();
 }
 
-class _supplementCardState extends State<supplementCard> {
+class _SupplementCardState extends State<supplementCard> {
   void _handleButtonClick() {
-    // 클릭한 시간을 현재 시간으로 설정하는 함수
+    // 클릭한 시간을 현재 시간으로 설정
     DateTime currentTime = DateTime.now();
 
     // '먹었어요' 버튼 클릭 시 realCount 증가 및 클릭한 시간 저장 (상태관리)
@@ -30,6 +30,7 @@ class _supplementCardState extends State<supplementCard> {
     });
   }
 
+  // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
   double calculateCardHeight(int itemCount) {
     double buttonHeight = 36;
     double spacingHeight = 8;
@@ -43,13 +44,12 @@ class _supplementCardState extends State<supplementCard> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        width: 350,
+        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
         height: calculateCardHeight(widget.targetCount),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // 섭취 완료 여부에 따라 image _ on/off 조건문 (~? ~:~) 적용
               Row(children: [
                 Image(
                     image: AssetImage(

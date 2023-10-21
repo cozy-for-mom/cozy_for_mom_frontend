@@ -3,27 +3,6 @@ import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart'; // 한국어 로케일을 사용하기 위해 추가
-
-void main() {
-  initializeDateFormatting('ko_KR', null).then((_) {
-    // 'ko_KR'는 한국어 로케일
-    runApp(MyApp());
-  });
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SupplementRecord(),
-      theme: ThemeData(
-        colorScheme: ColorScheme.light(), // 필요한 테마 설정
-        fontFamily: 'Pretendard',
-      ),
-    );
-  }
-}
 
 class SupplementRecord extends StatefulWidget {
   const SupplementRecord({Key? key}) : super(key: key);
@@ -47,12 +26,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      // Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           Positioned(
             top: 47,
-            width: 400,
+            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -75,7 +53,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           alignment: AlignmentDirectional.centerStart,
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
-                            print('월간 캘린더 팝업창 뜨기');
+                            print('월간 캘린더 팝업창 뜨기'); // TODO 월간 캘린더 팝업창 띄워줘야 함
                           },
                         ),
                       ],
@@ -86,7 +64,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             height: 32,
                             width: 32),
                         onPressed: () {
-                          print('알림창 아이콘 클릭');
+                          print(
+                              '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
                         })
                   ]),
             ),
@@ -97,7 +76,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
               child: Container(
                 width: 350,
                 height: 63,
-                decoration: const BoxDecoration(color: Colors.white60),
+                decoration: const BoxDecoration(
+                    color: Colors.white60), // TODO 주간 캘린더 위젯 넣어야 함
                 child: const Center(
                     child: Text(
                   '주간 캘린더',
