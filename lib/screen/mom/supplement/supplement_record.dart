@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
+import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -102,6 +103,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
           ),
         ],
       ),
+      floatingActionButton: const CustomFloatingButton(),
     );
   }
 }

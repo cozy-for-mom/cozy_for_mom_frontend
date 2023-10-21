@@ -60,7 +60,8 @@ flutter:
     - assets/images/icons/babyProfileOff.png
     - assets/images/icons/scrap.png
     - assets/images/icons/pen.png
-    - assets/images/icons/plus.png
+    - assets/images/icons/plus_blue.png
+    - assets/images/icons/plus_white.png
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
