@@ -4,10 +4,6 @@ import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 
-// void main() {
-//   runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
-// }
-
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
 class MyApp extends StatelessWidget {
@@ -61,6 +57,8 @@ class _MyPageState extends State<MyPage> {
         children: [
           const Positioned(
             top: 0,
+            left: 0,
+            right: 0,
             child: Image(
               width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
               fit: BoxFit.cover,
@@ -70,8 +68,21 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           Positioned(
+            top: 47,
+            left: 348,
+            child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // 현재 화면을 닫음
+                }),
+          ),
+          Positioned(
             top: 119,
-            left: 145,
+            left: 0,
+            right: 0,
             child: Column(children: [
               Image.asset(
                 'assets/images/icons/momProfile.png',
@@ -320,7 +331,7 @@ class _MyPageState extends State<MyPage> {
                                               selectedProfile.value =
                                                   profiles[index]; // 프로필 활성화
                                               print(
-                                                  'id:${profiles[index].babyId} name:${profiles[index].name} 버튼이 클릭되었습니다.');
+                                                  'id:${profiles[index].babyId} ${profiles[index].name} 버튼이 클릭되었습니다.');
                                             },
                                           );
                                         },
