@@ -6,19 +6,6 @@ import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyPage(),
-      theme: ThemeData(
-        colorScheme: ColorScheme.light(), // 필요한 테마 설정
-        fontFamily: 'Pretendard',
-      ),
-    );
-  }
-}
-
 class MyPage extends StatefulWidget {
   const MyPage({Key? key}) : super(key: key);
 
