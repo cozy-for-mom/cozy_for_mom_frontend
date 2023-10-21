@@ -6,7 +6,7 @@ const Color defaultColor = Color(0xffBADBFF);
 const Color thickLineColor = Color(0xffCDCED5);
 const Color defaultLineColor = Color(0xffF0F0F5);
 
-class LineChart extends StatelessWidget {
+class LineChart extends StatefulWidget {
   const LineChart({
     super.key,
     required this.dataList,
@@ -19,12 +19,30 @@ class LineChart extends StatelessWidget {
   final String unit;
 
   @override
+  State<LineChart> createState() => _LineChartState();
+}
+
+class _LineChartState extends State<LineChart> {
+  late ZoomPanBehavior _zoomPanBehavior;
+
+  @override
+  void initState() {
+    _zoomPanBehavior = ZoomPanBehavior(
+      enablePinching: true,
+      enablePanning: true,
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      // enableAxisAnimation: true,
+      zoomPanBehavior: _zoomPanBehavior,
       backgroundColor: Colors.white,
       series: <ChartSeries>[
         LineSeries<LineChartData, String>(
-          dataSource: dataList,
+          dataSource: widget.dataList,
           xValueMapper: (LineChartData data, _) => data.xValue,
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
@@ -40,12 +58,15 @@ class LineChart extends StatelessWidget {
       ],
       tooltipBehavior: TooltipBehavior(
         color: const Color(0xff5CA6F8), // 툴팁 배경색 설정
-        // opacity: 1,
-        borderWidth: 2, // 툴팁 테두리 두께 설정
         duration: 5000,
         enable: true,
-        builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
-            int seriesIndex) {
+        builder: (
+          dynamic data,
+          dynamic point,
+          dynamic series,
+          int pointIndex,
+          int seriesIndex,
+        ) {
           return Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -60,7 +81,7 @@ class LineChart extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
                 Text(
-                  unit,
+                  widget.unit,
                   style: const TextStyle(
                     color: Color(0xffBADBFF),
                   ),
@@ -71,6 +92,8 @@ class LineChart extends StatelessWidget {
         },
       ),
       primaryXAxis: CategoryAxis(
+        autoScrollingDelta: 4,
+        autoScrollingMode: AutoScrollingMode.end,
         majorGridLines: const MajorGridLines(
           width: 0,
         ),
@@ -85,7 +108,9 @@ class LineChart extends StatelessWidget {
           color: thickLineColor,
           width: 1.7,
         ),
-        labelStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
+        labelStyle: TextStyle(
+          color: Colors.black.withOpacity(0.5),
+        ),
       ),
       primaryYAxis: NumericAxis(
         interval: 5,
@@ -95,11 +120,6 @@ class LineChart extends StatelessWidget {
         maximumLabels: 4,
         minorTicksPerInterval: 1,
         tickPosition: TickPosition.inside,
-        minorTickLines: const MinorTickLines(
-          size: 400,
-          width: 1.7,
-          color: defaultLineColor,
-        ),
         majorGridLines: const MajorGridLines(
           width: 1.7,
           color: thickLineColor,
@@ -107,23 +127,23 @@ class LineChart extends StatelessWidget {
         minorGridLines: const MinorGridLines(
           width: 1,
         ),
-        minimum: baseValue,
+        minimum: widget.baseValue,
         plotBands: <PlotBand>[
           PlotBand(
             borderColor: thickLineColor,
             color: thickLineColor,
             isVisible: true,
             borderWidth: 1.7,
-            start: baseValue,
-            end: baseValue,
+            start: widget.baseValue,
+            end: widget.baseValue,
           ),
           PlotBand(
             borderColor: thickLineColor,
             color: thickLineColor,
             isVisible: true,
             borderWidth: 2.5,
-            start: baseValue + 15, // TODO 어떻게 지정해야할지 고민 필요
-            end: baseValue + 15,
+            start: widget.baseValue + 15, // TODO 어떻게 지정해야할지 고민 필요
+            end: widget.baseValue + 15,
           ),
         ],
       ),
