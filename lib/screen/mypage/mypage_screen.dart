@@ -4,9 +4,9 @@ import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 
-void main() {
-  runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
-}
+// void main() {
+//   runApp(MyApp()); // 앱의 루트 위젯을 MyApp으로 변경
+// }
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
@@ -35,9 +35,13 @@ int babyId = 1;
 class _MyPageState extends State<MyPage> {
   List<BabyProfile> profiles = [
     BabyProfile(
-        babyId: babyId++, name: "미룽이", image: 'assets/icons/babyProfileOn.png'),
+        babyId: babyId++,
+        name: "미룽이",
+        image: 'assets/images/icons/babyProfileOn.png'),
     BabyProfile(
-        babyId: babyId++, name: "행운이", image: 'assets/icons/babyProfileOn.png')
+        babyId: babyId++,
+        name: "행운이",
+        image: 'assets/images/icons/babyProfileOn.png')
   ];
 
   @override
@@ -61,7 +65,7 @@ class _MyPageState extends State<MyPage> {
               width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
               fit: BoxFit.cover,
               image: AssetImage(
-                "assets/icons/subtract.png",
+                "assets/images/subtract.png",
               ),
             ),
           ),
@@ -70,7 +74,7 @@ class _MyPageState extends State<MyPage> {
             left: 145,
             child: Column(children: [
               Image.asset(
-                'assets/icons/momProfile.png',
+                'assets/images/icons/momProfile.png',
                 fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
                 width: 100,
                 height: 100,
@@ -102,7 +106,7 @@ class _MyPageState extends State<MyPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(width: 4),
-                    Image.asset('assets/icons/pen.png', width: 12),
+                    Image.asset('assets/images/icons/pen.png', width: 12),
                   ],
                 ),
               ),
@@ -184,7 +188,7 @@ class _MyPageState extends State<MyPage> {
                   children: [
                     CustomTextButton(
                         text: '코지로그',
-                        imagePath: 'assets/icons/diary.png',
+                        imagePath: 'assets/images/icons/diary.png',
                         onPressed: () {
                           // TODO 코지로그 페이지 이동 구현해야 함
                           print('코지로그 버튼 클릭됨');
@@ -196,7 +200,7 @@ class _MyPageState extends State<MyPage> {
                     ),
                     CustomTextButton(
                         text: '스크랩 내역',
-                        imagePath: 'assets/icons/scrap.png',
+                        imagePath: 'assets/images/icons/scrap.png',
                         onPressed: () {
                           // TODO 스크랩 내역 페이지 이동 구현해야함
                           print('스크랩 내역 버튼 클릭됨');
@@ -279,7 +283,7 @@ class _MyPageState extends State<MyPage> {
                                               babyId: babyId++,
                                               name: "아룽이",
                                               image:
-                                                  "assets/icons/babyProfileTest.jpeg",
+                                                  "assets/images/babyProfileTest.jpeg",
                                             ));
                                           });
                                         },
@@ -291,7 +295,7 @@ class _MyPageState extends State<MyPage> {
                                                     const EdgeInsets.fromLTRB(
                                                         10, 0, 10, 10),
                                                 child: Image.asset(
-                                                  'assets/icons/plusDotted.png',
+                                                  'assets/images/icons/plusDotted.png',
                                                   width: 80,
                                                   height: 80,
                                                   alignment: Alignment.center,

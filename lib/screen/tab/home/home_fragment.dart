@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -65,15 +66,21 @@ class HomeFragment extends StatelessWidget {
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 66,
             left: 340,
-            child: Image(
-              width: 30,
-              height: 30,
-              image: AssetImage(
-                "assets/images/icons/icon_baby.png",
+            child: IconButton(
+              icon: const Image(
+                width: 30,
+                height: 30,
+                image: AssetImage(
+                  "assets/images/icons/icon_baby.png",
+                ),
               ),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MyPage()));
+              },
             ),
           ),
           Positioned(
