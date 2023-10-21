@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -78,8 +79,8 @@ class HomeFragment extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyPage()));
               },
             ),
           ),
@@ -102,28 +103,36 @@ class HomeFragment extends StatelessWidget {
                   const SizedBox(
                     height: 61,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RecordIcon(
+                      const RecordIcon(
                         recordTypeName: "meal",
                         recordTypeKorName: "식단",
                         imageWidth: 24,
                         imageHeight: 33,
                       ),
-                      RecordIcon(
-                        recordTypeName: "supplement",
-                        recordTypeKorName: "영양제",
-                        imageWidth: 14.72,
-                        imageHeight: 33,
-                      ),
-                      RecordIcon(
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SupplementRecord()));
+                          },
+                          child: const RecordIcon(
+                            recordTypeName: "supplement",
+                            recordTypeKorName: "영양제",
+                            imageWidth: 14.72,
+                            imageHeight: 33,
+                          )),
+                      const RecordIcon(
                         recordTypeName: "bloodsugar",
                         recordTypeKorName: "혈당",
                         imageWidth: 23.14,
                         imageHeight: 33,
                       ),
-                      RecordIcon(
+                      const RecordIcon(
                         recordTypeName: "weight",
                         recordTypeKorName: "체중",
                         imageWidth: 24.99,
