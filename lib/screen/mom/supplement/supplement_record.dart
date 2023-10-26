@@ -66,8 +66,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       Container(
                                         alignment:
                                             AlignmentDirectional.centerEnd,
-                                        margin: const EdgeInsets.only(
-                                            bottom: 15, right: 10),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
                                         height: 20,
                                         child: IconButton(
                                           icon: const Icon(Icons.close),
