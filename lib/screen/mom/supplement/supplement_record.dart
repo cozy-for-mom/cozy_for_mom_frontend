@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 
 class SupplementRecord extends StatefulWidget {
   const SupplementRecord({Key? key}) : super(key: key);
@@ -55,6 +56,53 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
                             print('월간 캘린더 팝업창 뜨기'); // TODO 월간 캘린더 팝업창 띄워줘야 함
+                            showModalBottomSheet(
+                              backgroundColor: Colors.white
+                                  .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                              context: context,
+                              builder: (context) {
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        alignment:
+                                            AlignmentDirectional.centerEnd,
+                                        margin: const EdgeInsets.only(
+                                            bottom: 15, right: 10),
+                                        height: 20,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.close),
+                                          iconSize: 20,
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // 팝업 닫기
+                                          },
+                                        ),
+                                      ),
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
+                                        child: Container(
+                                          alignment: Alignment.topCenter,
+                                          color: const Color(0xffFAFAFA),
+                                          // color: Colors.black,
+                                          padding: const EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 40,
+                                              left: 20,
+                                              right: 20),
+                                          width: 400,
+                                          height: 500,
+                                          child: const MonthCalendar(),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                       ],

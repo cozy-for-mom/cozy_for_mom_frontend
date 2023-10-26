@@ -1,7 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 
-// TODO 공통으로 사용할 플로팅버튼
+// 공통으로 사용할 플로팅버튼
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
