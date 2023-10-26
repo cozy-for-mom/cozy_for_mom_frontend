@@ -26,7 +26,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          width: 390,
+          width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
           child: TableCalendar(
             focusedDay: _selectedDay,
             firstDay: DateTime(2000),
@@ -61,8 +61,8 @@ class _MonthCalendarState extends State<MonthCalendar> {
                 fontSize: 14,
               ),
               todayDecoration: BoxDecoration(
-                color: Color.fromRGBO(92, 166, 248, 128), // 오늘 날짜의 마크 색상
-                shape: BoxShape.circle, // 원 모양의 마크
+                color: Color.fromRGBO(92, 166, 248, 128), // 오늘 날짜 마크 색상
+                shape: BoxShape.circle, // 원 모양 마크
               ),
               selectedDecoration: BoxDecoration(
                 color: primaryColor,
@@ -73,17 +73,15 @@ class _MonthCalendarState extends State<MonthCalendar> {
               rightChevronIcon: const Icon(
                 Icons.chevron_right,
                 color: textColor,
-              ), // 월을 우측으로 넘기는 버튼 아이콘 지정
+              ),
               leftChevronIcon: const Icon(
                 Icons.chevron_left,
                 color: textColor,
-              ), // 월을 좌측으로 넘기는 버튼 아이콘 지정
-              titleCentered: true, // 타이틀을 센터로 설정할 것인지 여부 (true/false)
+              ),
+              titleCentered: true,
               formatButtonVisible: false, // 디폴트로 2weeks 버튼 나오는거
               titleTextStyle: const TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20), // 타이틀의 텍스트 스타일 지정 (Textstyle 객체)
+                  color: textColor, fontWeight: FontWeight.w600, fontSize: 20),
               headerPadding: const EdgeInsets.fromLTRB(70, 0, 70, 20),
               titleTextFormatter: (date, locale) {
                 final year = DateFormat('y', 'en_US').format(date);
@@ -91,7 +89,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
                 return '$year.$month';
               }, // 타이틀 텍스트를 무엇으로 할 것인지 지정
             ),
-            daysOfWeekHeight: 34,
+            daysOfWeekHeight: 34, // TODO 화면 높이에 맞춘 height로 수정해야함
             daysOfWeekStyle: const DaysOfWeekStyle(
               weekdayStyle: TextStyle(
                 color: Color(0xff858998),

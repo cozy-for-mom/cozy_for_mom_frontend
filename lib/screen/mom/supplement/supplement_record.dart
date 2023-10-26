@@ -41,7 +41,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () {
-                        Navigator.of(context).pop(); // 현재 화면을 닫음
+                        Navigator.of(context).pop();
                       },
                     ),
                     Row(
@@ -55,7 +55,6 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           alignment: AlignmentDirectional.centerStart,
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
-                            print('월간 캘린더 팝업창 뜨기'); // TODO 월간 캘린더 팝업창 띄워줘야 함
                             showModalBottomSheet(
                               backgroundColor: Colors.white
                                   .withOpacity(0.0), // 팝업창 자체 색 : 투명
@@ -87,14 +86,15 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         child: Container(
                                           alignment: Alignment.topCenter,
                                           color: const Color(0xffFAFAFA),
-                                          // color: Colors.black,
                                           padding: const EdgeInsets.only(
                                               top: 20,
                                               bottom: 40,
                                               left: 20,
                                               right: 20),
-                                          width: 400,
-                                          height: 500,
+                                          width:
+                                              400, // TODO 화면 너비에 맞춘 width로 수정해야함
+                                          height:
+                                              500, // TODO 화면 높이에 맞춘 height로 수정해야함
                                           child: const MonthCalendar(),
                                         ),
                                       )
