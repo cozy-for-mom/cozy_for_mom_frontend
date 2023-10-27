@@ -17,20 +17,7 @@ class _WeightRecordState extends State<WeightRecord> {
   final FocusNode _weightFocus = FocusNode();
   Color unitTextColor = const Color(0xffE0E0E0);
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // 포커스가 있으면 텍스트 입력 필드를 활성화하고 힌트 텍스트를 지웁니다.
-  //   // 포커스가 없으면 힌트 텍스트를 다시 표시합니다.
-  //   _weightFocus.addListener(() {
-  //     setState(() {
-  //       if (_weightFocus.hasFocus) {
-  //         _weightController.clear();
-  //       }
-  //     });
-  //   });
-  // }
-
+  // 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
   @override
   void dispose() {
     _weightController.dispose();
@@ -103,7 +90,7 @@ class _WeightRecordState extends State<WeightRecord> {
                 width: 350,
                 height: 63,
                 decoration: const BoxDecoration(
-                    color: Colors.white60), // TODO 주간 캘린더 위젯 넣어야 함
+                    color: Colors.white60), // TODO 주간 캘린더 위젯으로 바꿔줘야 함
                 child: const Center(
                     child: Text(
                   '주간 캘린더',
@@ -114,7 +101,7 @@ class _WeightRecordState extends State<WeightRecord> {
             top: 205,
             left: 20,
             child: Container(
-              width: 350,
+              width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
               height: 86,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
@@ -145,7 +132,7 @@ class _WeightRecordState extends State<WeightRecord> {
                           SizedBox(
                             width: 85,
                             child: TextFormField(
-                              // textAlign: TextAlign.center,
+                              textAlign: TextAlign.end,
                               // showCursor: false,
                               cursorColor: const Color(0xffE0E0E0),
                               cursorHeight: 28,
@@ -198,6 +185,7 @@ class _WeightRecordState extends State<WeightRecord> {
               top: 331,
               left: 20,
               child: Container(
+                // TODO 그래프로 바꿔줘야 함
                 width: 350,
                 height: 400,
                 decoration: BoxDecoration(
