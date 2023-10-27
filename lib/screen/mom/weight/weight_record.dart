@@ -52,7 +52,7 @@ class _WeightRecordState extends State<WeightRecord> {
                       children: [
                         Text(formattedDate,
                             style: const TextStyle(
-                                color: Color(0xff2B2D35),
+                                color: mainTextColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18)),
                         IconButton(
@@ -60,7 +60,7 @@ class _WeightRecordState extends State<WeightRecord> {
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
                             showModalBottomSheet(
-                              backgroundColor: Colors.white
+                              backgroundColor: contentBoxTwoColor
                                   .withOpacity(0.0), // 팝업창 자체 색 : 투명
                               context: context,
                               builder: (context) {
@@ -104,7 +104,8 @@ class _WeightRecordState extends State<WeightRecord> {
               width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
               height: 86,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                  color: contentBoxTwoColor,
+                  borderRadius: BorderRadius.circular(20)),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
@@ -117,7 +118,7 @@ class _WeightRecordState extends State<WeightRecord> {
                         children: [
                           Text('나의 체중',
                               style: TextStyle(
-                                  color: textColor,
+                                  color: mainTextColor,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 18)),
                           Text('마지막 측정 3일전',
@@ -134,7 +135,8 @@ class _WeightRecordState extends State<WeightRecord> {
                             child: TextFormField(
                               textAlign: TextAlign.end,
                               // showCursor: false,
-                              cursorColor: const Color(0xffE0E0E0),
+                              // cursorColor: const Color(0xffE0E0E0),
+                              cursorColor: beforeInputColor,
                               cursorHeight: 28,
                               controller: _weightController,
                               focusNode: _weightFocus,
@@ -144,7 +146,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                   border: InputBorder.none,
                                   hintText: '00.00',
                                   hintStyle: TextStyle(
-                                    color: Color(0xffE0E0E0),
+                                    // color: Color(0xffE0E0E0),
+                                    color: beforeInputColor,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 28,
                                   )),
@@ -159,10 +162,10 @@ class _WeightRecordState extends State<WeightRecord> {
                                   if (text.isNotEmpty) {
                                     // 텍스트가 비어있지 않으면 원하는 색상으로 변경
                                     unitTextColor =
-                                        Colors.black; // 사용자가 입력한 경우의 텍스트 색
+                                        afterInputColor; // 사용자가 입력한 경우의 텍스트 색
                                   } else {
                                     // 텍스트가 비어있으면 다시 기본 색상으로 변경
-                                    unitTextColor = const Color(0xffE0E0E0);
+                                    unitTextColor = beforeInputColor;
                                   }
                                 });
                               },

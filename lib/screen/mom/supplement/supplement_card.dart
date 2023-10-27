@@ -62,7 +62,7 @@ class _SupplementCardState extends State<supplementCard> {
                 const SizedBox(width: 10),
                 Text(widget.name,
                     style: const TextStyle(
-                        color: Colors.black,
+                        color: afterInputColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 18)),
                 const SizedBox(width: 5),
@@ -100,7 +100,7 @@ class _SupplementCardState extends State<supplementCard> {
                           decoration: BoxDecoration(
                               color: widget.realCount > index
                                   ? primaryColor
-                                  : const Color(0xffF0F0F5),
+                                  : offButtonColor,
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
                               widget.realCount > index
@@ -109,7 +109,7 @@ class _SupplementCardState extends State<supplementCard> {
                               style: TextStyle(
                                   color: widget.realCount > index
                                       ? Colors.white
-                                      : const Color(0xff858998),
+                                      : offButtonTextColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16)),
                         ),

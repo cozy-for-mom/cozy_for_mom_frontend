@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class HomeFragment extends StatelessWidget {
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
-                color: Colors.white,
+                color: contentBoxTwoColor,
               ),
               child: Column(
                 children: [

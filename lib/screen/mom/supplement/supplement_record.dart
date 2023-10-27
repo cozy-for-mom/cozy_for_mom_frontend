@@ -48,7 +48,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                       children: [
                         Text(formattedDate,
                             style: const TextStyle(
-                                color: Color(0xff2B2D35),
+                                color: mainTextColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18)),
                         IconButton(
@@ -56,7 +56,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
                             showModalBottomSheet(
-                              backgroundColor: Colors.white
+                              backgroundColor: contentBoxTwoColor
                                   .withOpacity(0.0), // 팝업창 자체 색 : 투명
                               context: context,
                               builder: (context) {
