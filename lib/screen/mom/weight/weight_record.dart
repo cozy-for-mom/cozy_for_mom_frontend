@@ -16,6 +16,7 @@ class _WeightRecordState extends State<WeightRecord> {
   // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
   final FocusNode _weightFocus = FocusNode();
   Color unitTextColor = const Color(0xffE0E0E0);
+  Color cusorColor = const Color(0xffE0E0E0);
 
   // 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
   @override
@@ -135,8 +136,7 @@ class _WeightRecordState extends State<WeightRecord> {
                             child: TextFormField(
                               textAlign: TextAlign.end,
                               // showCursor: false,
-                              // cursorColor: const Color(0xffE0E0E0),
-                              cursorColor: beforeInputColor,
+                              cursorColor: cusorColor,
                               cursorHeight: 28,
                               controller: _weightController,
                               focusNode: _weightFocus,
@@ -163,9 +163,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                     // 텍스트가 비어있지 않으면 원하는 색상으로 변경
                                     unitTextColor =
                                         afterInputColor; // 사용자가 입력한 경우의 텍스트 색
+                                    cusorColor = afterInputColor;
                                   } else {
                                     // 텍스트가 비어있으면 다시 기본 색상으로 변경
                                     unitTextColor = beforeInputColor;
+                                    cusorColor = beforeInputColor;
                                   }
                                 });
                               },
