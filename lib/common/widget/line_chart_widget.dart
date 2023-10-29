@@ -37,7 +37,6 @@ class _LineChartState extends State<LineChart> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      // enableAxisAnimation: true,
       zoomPanBehavior: _zoomPanBehavior,
       backgroundColor: Colors.white,
       series: <ChartSeries>[
