@@ -103,7 +103,87 @@ class _SupplementRecordState extends State<SupplementRecord> {
           ),
         ],
       ),
-      floatingActionButton: const CustomFloatingButton(),
+      floatingActionButton: CustomFloatingButton(
+        onTap: () {
+          showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Center(
+                      child: Text(
+                    "영양제 등록",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )),
+                  content: SizedBox(
+                    height: 150,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xffF7F7FA),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: TextField(
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                              cursorColor: primaryColor,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                floatingLabelStyle: TextStyle(
+                                  color: Color(0xff858998),
+                                ),
+                                labelText: "이름",
+                                hintText: "영양제 이름 입력",
+                                hintStyle: TextStyle(
+                                  color: Color(0xffE1E1E7),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xffF7F7FA),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: TextField(
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                              cursorColor: primaryColor,
+                              decoration: InputDecoration(
+                                floatingLabelStyle: TextStyle(
+                                  color: Color(0xff858998),
+                                ),
+                                border: InputBorder.none,
+                                labelText: "목표 섭취량",
+                                hintText: "횟수 입력",
+                                hintStyle: TextStyle(
+                                  color: Color(0xffE1E1E7),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+      ),
     );
   }
 }
