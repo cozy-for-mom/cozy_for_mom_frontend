@@ -6,9 +6,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Cozy For Mom',
       home: MainScreen(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(), // 필요한 테마 설정
+        fontFamily: 'Pretendard',
+      ),
     );
   }
 }
