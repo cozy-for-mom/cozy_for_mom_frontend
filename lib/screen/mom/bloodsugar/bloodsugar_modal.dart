@@ -14,7 +14,7 @@ class BloodsugarModal extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        width: 350,
+        width: 350, // TODO 팝업창 너비 조정되도록 수정해야 함
         height: 207,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(

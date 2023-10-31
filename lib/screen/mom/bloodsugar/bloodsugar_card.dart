@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 
 class BloodsugarCard extends StatefulWidget {
   final String time;
-  // final int before;
-  // final int after;
 
   BloodsugarCard({required this.time});
   @override

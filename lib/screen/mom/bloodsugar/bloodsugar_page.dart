@@ -31,7 +31,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
         children: <Widget>[
           Positioned(
             top: 47,
-            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야 함
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -136,9 +136,10 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 ),
               )),
           if (isRecordActive)
-            const BloodsugarRecord(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줍니다.
+            const BloodsugarRecord(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줌
           if (!isRecordActive)
-            const BloodsugarView(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줍니다.
+            const BloodsugarView(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줌
+          // TODO 혈당 기간별 조회 페이지 구현해야 함
         ],
       ),
     );
