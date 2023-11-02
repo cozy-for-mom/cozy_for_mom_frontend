@@ -10,7 +10,9 @@ class BloodsugarModal extends StatelessWidget {
   BloodsugarModal({required this.time, required this.period});
   @override
   Widget build(BuildContext context) {
+    TextEditingController textController = TextEditingController();
     final globalState = Provider.of<MyDataModel>(context, listen: false);
+    textController.text = (globalState.getBloodSugarData(time + period) ?? '');
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -52,8 +54,13 @@ class BloodsugarModal extends StatelessWidget {
                     SizedBox(
                       height: 32,
                       child: TextFormField(
+                        controller: textController,
                         onChanged: (text) {
-                          globalState.setBloodSugarData(time + period, text);
+                          if (text.isEmpty) {
+                            globalState.setBloodSugarData(time + period, '-');
+                          } else {
+                            globalState.setBloodSugarData(time + period, text);
+                          }
                         },
                         textAlign: TextAlign.start,
                         decoration: InputDecoration(
