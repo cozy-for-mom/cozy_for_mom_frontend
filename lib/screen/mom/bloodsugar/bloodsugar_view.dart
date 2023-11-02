@@ -4,7 +4,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 class BloodsugarView extends StatelessWidget {
   const BloodsugarView({super.key});
 
-  final double avg = 109.0;
+  final double avg = 109.0; // TODO 그래프 범위 맞춰 평균치 계산해줘야 함
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -39,7 +39,7 @@ class BloodsugarView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('평균 ${avg}의 혈당 수치예요',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18)),
@@ -53,7 +53,8 @@ class BloodsugarView extends StatelessWidget {
                                 fontSize: 12),
                             children: [
                               TextSpan(
-                                  text: '평균 77mg/dL',
+                                  text:
+                                      '평균 77mg/dL', // TODO 고정되어있는 값인지 다시 확인해봐야 함
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.w500,
@@ -69,8 +70,10 @@ class BloodsugarView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Image.asset('assets/images/icons/icon_bloodsugar.png',
-                        width: 47, height: 61),
+                    Image.asset(
+                        'assets/images/icons/icon_bloodsugar.png', // TODO 아이콘 디자인이 바껴서 잘리는 문제 해결되면 원래 있던 이미지 파일 지우고 동일한 이름으로 다시 다운받아야 함
+                        width: 47,
+                        height: 61),
                   ]),
             ))
       ],

@@ -10,7 +10,6 @@ class MyDataModel with ChangeNotifier {
   }
 
   String? getBloodSugarData(String time) {
-    // 전역 상태에서 데이터를 가져옴
     return bloodSugarData[time];
   }
 }
