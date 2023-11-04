@@ -19,8 +19,8 @@ class BloodsugarView extends StatelessWidget {
             dataList: [
               LineChartData("05.11", 93),
               LineChartData("05.12", 101),
-              LineChartData("05.13", 110),
-              LineChartData("05.15", 99),
+              LineChartData("05.13", 98),
+              LineChartData("05.15", 105),
             ],
           ),
         ),
