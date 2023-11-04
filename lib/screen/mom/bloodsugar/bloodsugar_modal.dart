@@ -92,7 +92,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16)),
-                            cursorColor: mainLineColor,
+                            cursorColor: beforeInputColor,
                             style: const TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,

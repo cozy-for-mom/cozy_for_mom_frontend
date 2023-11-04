@@ -17,10 +17,10 @@ class BloodsugarView extends StatelessWidget {
           child: TimeLineChart(
             recordType: RecordType.bloodsugar,
             dataList: [
-              LineChartData("05.11", 45),
-              LineChartData("05.12", 47),
-              LineChartData("05.13", 47),
-              LineChartData("05.15", 50),
+              LineChartData("05.11", 93),
+              LineChartData("05.12", 101),
+              LineChartData("05.13", 110),
+              LineChartData("05.15", 99),
             ],
           ),
         ),
