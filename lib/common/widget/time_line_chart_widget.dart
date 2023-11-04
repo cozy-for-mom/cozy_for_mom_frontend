@@ -31,30 +31,24 @@ class TimeLineChart extends StatefulWidget {
 class _TimeLineChartState extends State<TimeLineChart> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 100,
+    return Container(
+      width: 350,
+      height: 400,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: Colors.white,
+      ),
+      child: DefaultTabController(
+        length: 3,
+        child: Column(
+          children: [
+            _tabBar(),
+            Expanded(
+              child: _tabBarView(widget),
+            )
+          ],
         ),
-        Container(
-          height: 500,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: Colors.white,
-          ),
-          child: DefaultTabController(
-            length: 3,
-            child: Column(
-              children: [
-                _tabBar(),
-                Expanded(
-                  child: _tabBarView(widget),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

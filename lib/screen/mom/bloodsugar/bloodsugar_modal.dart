@@ -82,9 +82,6 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             textAlign: TextAlign.start,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                // suffix: Text('mg / dL'),
-                                // contentPadding:
-                                //     EdgeInsets.only(bottom: 15, right: 150),
                                 suffixText: 'mg / dL',
                                 suffixStyle: TextStyle(
                                     color: mainTextColor,

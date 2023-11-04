@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
+import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 
 class BloodsugarView extends StatelessWidget {
   const BloodsugarView({super.key});
@@ -10,17 +12,27 @@ class BloodsugarView extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-            top: 204,
-            left: 20,
-            child: Container(
-              width: 350,
-              height: 399,
-              decoration: const BoxDecoration(
-                  color: Colors.white60,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-            )),
+          top: 204,
+          left: 20,
+          child: TimeLineChart(
+            recordType: RecordType.bloodsugar,
+            dataList: [
+              LineChartData("05.11", 45),
+              LineChartData("05.12", 47),
+              LineChartData("05.13", 47),
+              LineChartData("05.15", 50),
+            ],
+          ),
+        ),
+        // child: Container(
+        //   width: 350,
+        //   height: 399,
+        //   decoration: const BoxDecoration(
+        //       color: Colors.white60,
+        //       borderRadius: BorderRadius.only(
+        //           topLeft: Radius.circular(20),
+        //           topRight: Radius.circular(20))),
+        // )),
         Positioned(
             top: 635,
             left: 20,
