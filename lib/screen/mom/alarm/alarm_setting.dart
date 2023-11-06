@@ -1,21 +1,17 @@
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_record.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_view.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/supplement_alarm.dart';
 
-class BloodsugarPage extends StatefulWidget {
-  const BloodsugarPage({super.key});
+class AlarmSettingPage extends StatefulWidget {
+  const AlarmSettingPage({super.key});
 
   @override
-  State<BloodsugarPage> createState() => _BloodsugarPageState();
+  State<AlarmSettingPage> createState() => _AlarmSettingPageState();
 }
 
-class _BloodsugarPageState extends State<BloodsugarPage> {
-  bool isRecordActive = true; // 기록하기 버튼이 기본적으로 활성화
+class _AlarmSettingPageState extends State<AlarmSettingPage> {
+  bool isRecordActive = true; // 혈당 버튼이 기본적으로 활성화
   void toggleView() {
     setState(() {
       isRecordActive = !isRecordActive; // 버튼를 토글
@@ -24,11 +20,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now(); // 현재 날짜
-    String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
-
     return Scaffold(
-      backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Positioned(
@@ -38,6 +30,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
               padding: const EdgeInsets.all(10),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios),
@@ -45,41 +38,13 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                         Navigator.of(context).pop();
                       },
                     ),
-                    Row(
-                      children: <Widget>[
-                        Text(formattedDate,
-                            style: const TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18)),
-                        IconButton(
-                          alignment: AlignmentDirectional.centerStart,
-                          icon: const Icon(Icons.expand_more),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              backgroundColor: contentBoxTwoColor
-                                  .withOpacity(0.0), // 팝업창 자체 색 : 투명
-                              context: context,
-                              builder: (context) {
-                                return const MonthCalendarModal();
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                        icon: const Image(
-                            image: AssetImage('assets/images/icons/alert.png'),
-                            height: 32,
-                            width: 32),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AlarmSettingPage())); // TODO 알림창 아이콘 onPressed{} 구현해야 함
-                        })
+                    const Spacer(),
+                    const Text('알림 설정',
+                        style: TextStyle(
+                            color: mainTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18)),
+                    const Spacer(),
                   ]),
             ),
           ),
@@ -106,7 +71,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                               color: isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기록하기',
+                          child: Text('혈당',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: isRecordActive
@@ -127,7 +92,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                               color: !isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기간별 조회',
+                          child: Text('영양제',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: !isRecordActive
@@ -141,9 +106,9 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 ),
               )),
           if (isRecordActive)
-            const BloodsugarRecord(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줌
+            const BloodsugarAlarm(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줌
           if (!isRecordActive)
-            const BloodsugarView(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줌
+            const SupplementAlarm(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줌
           // TODO 혈당 기간별 조회 페이지 구현해야 함
         ],
       ),

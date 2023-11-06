@@ -24,15 +24,6 @@ class BloodsugarView extends StatelessWidget {
             ],
           ),
         ),
-        // child: Container(
-        //   width: 350,
-        //   height: 399,
-        //   decoration: const BoxDecoration(
-        //       color: Colors.white60,
-        //       borderRadius: BorderRadius.only(
-        //           topLeft: Radius.circular(20),
-        //           topRight: Radius.circular(20))),
-        // )),
         Positioned(
             top: 635,
             left: 20,

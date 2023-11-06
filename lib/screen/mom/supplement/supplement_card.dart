@@ -9,7 +9,8 @@ class supplementCard extends StatefulWidget {
   List<DateTime> takeTimes;
 
   supplementCard(
-      {required this.name,
+      {super.key,
+      required this.name,
       required this.targetCount,
       required this.realCount,
       required this.takeTimes});

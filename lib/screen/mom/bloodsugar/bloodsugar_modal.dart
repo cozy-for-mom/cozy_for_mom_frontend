@@ -7,7 +7,7 @@ class BloodsugarModal extends StatefulWidget {
   final String time;
   final String period;
 
-  BloodsugarModal({required this.time, required this.period});
+  BloodsugarModal({super.key, required this.time, required this.period});
 
   @override
   State<BloodsugarModal> createState() => _BloodsugarModalState();
