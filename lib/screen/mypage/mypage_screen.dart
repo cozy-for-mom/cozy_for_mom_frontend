@@ -29,7 +29,7 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dueDate = DateTime(2024, 2, 14); // TODO 출산 예정일 DB에서 받아와야 함
+    final DateTime dueDate = DateTime(2024, 2, 11); // TODO 출산 예정일 DB에서 받아와야 함
     DateTime now = DateTime.now(); // 현재 날짜
     Duration difference = dueDate.difference(now);
 
@@ -82,7 +82,7 @@ class _MyPageState extends State<MyPage> {
               const Text(
                 "쥬쥬 산모님",
                 style: TextStyle(
-                    color: textColor,
+                    color: mainTextColor,
                     fontWeight: FontWeight.w700,
                     fontSize: 20),
               ),
@@ -98,7 +98,7 @@ class _MyPageState extends State<MyPage> {
                     const Text(
                       "프로필 수정",
                       style: TextStyle(
-                          color: Color(0xff858998),
+                          color: offButtonTextColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 12),
                       textAlign: TextAlign.center,
@@ -120,7 +120,7 @@ class _MyPageState extends State<MyPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                 width: 349, // TODO 화면 너비에 맞춘 width로 수정해야함
                 height: 114, // TODO 화면 높이에 맞춘 height로 수정해야함
@@ -133,7 +133,7 @@ class _MyPageState extends State<MyPage> {
                         const Text(
                           "미룽이와 만나는 날",
                           style: TextStyle(
-                              color: textColor,
+                              color: mainTextColor,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
                         ),
@@ -148,7 +148,7 @@ class _MyPageState extends State<MyPage> {
                       width: 313, // TODO 화면 너비에 맞춘 width로 수정해야함
                       height: 12, // TODO 화면 높이에 맞춘 height로 수정해야함
                       decoration: BoxDecoration(
-                        color: const Color(0xffF0F0F5), // 전체 배경색
+                        color: lineTwoColor, // 전체 배경색
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: FractionallySizedBox(
@@ -177,7 +177,7 @@ class _MyPageState extends State<MyPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                 width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
                 height: 102, // TODO 화면 높이에 맞춘 height로 수정해야함
@@ -217,7 +217,7 @@ class _MyPageState extends State<MyPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                   width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
                   height: 220, // TODO 화면 높이에 맞춘 height로 수정해야함
@@ -232,14 +232,14 @@ class _MyPageState extends State<MyPage> {
                               children: [
                                 const Text("우리 아이 관리",
                                     style: TextStyle(
-                                        color: textColor,
+                                        color: mainTextColor,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 18)),
                                 Container(
                                   width: 42,
                                   height: 21,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xffF7F7FA),
+                                    color: contentBoxColor,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: TextButton(
@@ -253,7 +253,7 @@ class _MyPageState extends State<MyPage> {
                                     ),
                                     child: const Text("편집",
                                         style: TextStyle(
-                                            color: Color(0xff858998),
+                                            color: offButtonTextColor,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12)),
                                   ),

@@ -48,7 +48,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                       children: [
                         Text(formattedDate,
                             style: const TextStyle(
-                                color: Color(0xff2B2D35),
+                                color: mainTextColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18)),
                         IconButton(
@@ -56,51 +56,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
                             showModalBottomSheet(
-                              backgroundColor: Colors.white
+                              backgroundColor: contentBoxTwoColor
                                   .withOpacity(0.0), // 팝업창 자체 색 : 투명
                               context: context,
                               builder: (context) {
-                                return SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        alignment:
-                                            AlignmentDirectional.centerEnd,
-                                        margin:
-                                            const EdgeInsets.only(bottom: 15),
-                                        height: 20,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.close),
-                                          iconSize: 20,
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pop(); // 팝업 닫기
-                                          },
-                                        ),
-                                      ),
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
-                                        child: Container(
-                                          alignment: Alignment.topCenter,
-                                          color: const Color(0xffFAFAFA),
-                                          padding: const EdgeInsets.only(
-                                              top: 20,
-                                              bottom: 40,
-                                              left: 20,
-                                              right: 20),
-                                          width:
-                                              400, // TODO 화면 너비에 맞춘 width로 수정해야함
-                                          height:
-                                              500, // TODO 화면 높이에 맞춘 height로 수정해야함
-                                          child: const MonthCalendar(),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
+                                return const MonthCalendarModal();
                               },
                             );
                           },

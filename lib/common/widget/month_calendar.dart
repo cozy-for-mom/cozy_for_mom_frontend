@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: MonthCalendar(),
-//   ));
-// }
-
 class MonthCalendar extends StatefulWidget {
   const MonthCalendar({super.key});
 
@@ -46,12 +40,12 @@ class _MonthCalendarState extends State<MonthCalendar> {
             availableGestures: AvailableGestures.horizontalSwipe,
             calendarStyle: const CalendarStyle(
               weekendTextStyle: TextStyle(
-                color: Color(0xff858998),
+                color: offButtonTextColor,
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
               defaultTextStyle: TextStyle(
-                color: Color(0xff858998),
+                color: offButtonTextColor,
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
@@ -72,16 +66,18 @@ class _MonthCalendarState extends State<MonthCalendar> {
             headerStyle: HeaderStyle(
               rightChevronIcon: const Icon(
                 Icons.chevron_right,
-                color: textColor,
+                color: mainTextColor,
               ),
               leftChevronIcon: const Icon(
                 Icons.chevron_left,
-                color: textColor,
+                color: mainTextColor,
               ),
               titleCentered: true,
               formatButtonVisible: false, // 디폴트로 2weeks 버튼 나오는거
               titleTextStyle: const TextStyle(
-                  color: textColor, fontWeight: FontWeight.w600, fontSize: 20),
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
               headerPadding: const EdgeInsets.fromLTRB(70, 0, 70, 20),
               titleTextFormatter: (date, locale) {
                 final year = DateFormat('y', 'en_US').format(date);
@@ -92,15 +88,56 @@ class _MonthCalendarState extends State<MonthCalendar> {
             daysOfWeekHeight: 34, // TODO 화면 높이에 맞춘 height로 수정해야함
             daysOfWeekStyle: const DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: Color(0xff858998),
+                color: offButtonTextColor,
                 fontSize: 16.0,
               ),
               weekendStyle: TextStyle(
-                color: Color(0xff858998),
+                color: offButtonTextColor,
                 fontSize: 16.0,
               ),
             ),
           )),
+    );
+  }
+}
+
+class MonthCalendarModal extends StatelessWidget {
+  const MonthCalendarModal({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            alignment: AlignmentDirectional.centerEnd,
+            margin: const EdgeInsets.only(bottom: 15),
+            height: 20,
+            child: IconButton(
+              icon: const Icon(Icons.close),
+              iconSize: 20,
+              onPressed: () {
+                Navigator.of(context).pop(); // 팝업 닫기
+              },
+            ),
+          ),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: Container(
+              alignment: Alignment.topCenter,
+              color: const Color(0xffFAFAFA),
+              padding: const EdgeInsets.only(
+                  top: 20, bottom: 40, left: 20, right: 20),
+              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+              height: 500, // TODO 화면 높이에 맞춘 height로 수정해야함
+              child: const MonthCalendar(),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

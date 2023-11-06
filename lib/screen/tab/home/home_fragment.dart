@@ -1,8 +1,10 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -96,7 +98,7 @@ class HomeFragment extends StatelessWidget {
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
-                color: Colors.white,
+                color: contentBoxTwoColor,
               ),
               child: Column(
                 children: [
@@ -132,11 +134,19 @@ class HomeFragment extends StatelessWidget {
                         imageWidth: 23.14,
                         imageHeight: 33,
                       ),
-                      const RecordIcon(
-                        recordTypeName: "weight",
-                        recordTypeKorName: "체중",
-                        imageWidth: 24.99,
-                        imageHeight: 33,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const WeightRecord()));
+                        },
+                        child: const RecordIcon(
+                          recordTypeName: "weight",
+                          recordTypeKorName: "체중",
+                          imageWidth: 24.99,
+                          imageHeight: 33,
+                        ),
                       ),
                     ],
                   ),
