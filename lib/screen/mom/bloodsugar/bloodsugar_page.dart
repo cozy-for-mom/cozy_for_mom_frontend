@@ -77,8 +77,9 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AlarmSettingPage())); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                                  builder: (context) => const AlarmSettingPage(
+                                        type: CardType.bloodsugar,
+                                      ))); // TODO 알림창 아이콘 onPressed{} 구현해야 함
                         })
                   ]),
             ),

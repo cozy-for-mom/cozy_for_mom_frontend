@@ -34,6 +34,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                 color: mainTextColor,
                 fontWeight: FontWeight.w700,
                 fontSize: 18));
+        break;
       case CardType.supplement:
         childWiget = Row(children: [
           Text(widget.text,
@@ -58,6 +59,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             ),
           )
         ]);
+        break;
     }
     return Padding(
       padding: const EdgeInsets.only(bottom: 5),

@@ -5,6 +5,7 @@ import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 
 class SupplementRecord extends StatefulWidget {
   const SupplementRecord({Key? key}) : super(key: key);
@@ -73,8 +74,12 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             height: 32,
                             width: 32),
                         onPressed: () {
-                          print(
-                              '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AlarmSettingPage(
+                                        type: CardType.supplement,
+                                      ))); // TODO 알림창 아이콘 onPressed{} 구현해야 함
                         })
                   ]),
             ),

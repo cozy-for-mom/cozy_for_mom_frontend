@@ -4,19 +4,31 @@ import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/supplement_alarm.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 
+enum CardType { bloodsugar, supplement }
+
 class AlarmSettingPage extends StatefulWidget {
-  const AlarmSettingPage({super.key});
+  final CardType type;
+  const AlarmSettingPage({super.key, required this.type});
 
   @override
   State<AlarmSettingPage> createState() => _AlarmSettingPageState();
 }
 
 class _AlarmSettingPageState extends State<AlarmSettingPage> {
-  bool isRecordActive = true; // 혈당 버튼이 기본적으로 활성화
-  void toggleView() {
-    setState(() {
-      isRecordActive = !isRecordActive; // 버튼를 토글
-    });
+  bool isBloodSugarButtonEnabled = false;
+  bool isSupplementButtonEnabled = false;
+  @override
+  void initState() {
+    super.initState();
+    // 초기에 전달받은 타입에 따라 버튼 상태 초기화
+    switch (widget.type) {
+      case CardType.bloodsugar:
+        isBloodSugarButtonEnabled = true;
+        break;
+      case CardType.supplement:
+        isSupplementButtonEnabled = true;
+        break;
+    }
   }
 
   @override
@@ -62,20 +74,27 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     InkWell(
-                      onTap: !isRecordActive ? () => toggleView() : null,
+                      onTap: () {
+                        setState(() {
+                          isBloodSugarButtonEnabled = true;
+                          isSupplementButtonEnabled = false;
+                        });
+                      },
                       child: Container(
-                          width: isRecordActive ? 173 : 153, // 이렇게 해야 위젯끼리 안 겹침
+                          width: isBloodSugarButtonEnabled
+                              ? 173
+                              : 153, // 이렇게 해야 위젯끼리 안 겹침
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: isRecordActive
+                              color: isBloodSugarButtonEnabled
                                   ? primaryColor
                                   : offButtonColor),
                           child: Text('혈당',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isRecordActive
+                                color: isBloodSugarButtonEnabled
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
@@ -83,20 +102,25 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                               ))),
                     ),
                     InkWell(
-                      onTap: isRecordActive ? () => toggleView() : null,
+                      onTap: () {
+                        setState(() {
+                          isBloodSugarButtonEnabled = false;
+                          isSupplementButtonEnabled = true;
+                        });
+                      },
                       child: Container(
-                          width: !isRecordActive ? 173 : 153,
+                          width: isSupplementButtonEnabled ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: !isRecordActive
+                              color: isSupplementButtonEnabled
                                   ? primaryColor
                                   : offButtonColor),
                           child: Text('영양제',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: !isRecordActive
+                                color: isSupplementButtonEnabled
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
@@ -106,7 +130,9 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                   ],
                 ),
               )),
-          isRecordActive ? const BloodsugarAlarm() : const SupplementAlarm(),
+          isBloodSugarButtonEnabled
+              ? const BloodsugarAlarm()
+              : const SupplementAlarm(),
         ],
       ),
       floatingActionButton: const CustomFloatingButton(),
