@@ -101,7 +101,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                     ]),
               ),
               onTap: () {
-                print('"${widget.text}" 알람 삭제');
+                print('"${widget.text}" 알람 삭제'); // TODO 알람 삭제 기능 구현
               },
             ),
           ],
@@ -110,7 +110,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
                 borderRadius: BorderRadius.circular(20.0)),
-            width: 350,
+            width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
             height: 164,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

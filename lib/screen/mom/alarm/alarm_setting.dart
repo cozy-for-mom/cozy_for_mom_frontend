@@ -38,12 +38,11 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
         children: <Widget>[
           Positioned(
             top: 47,
-            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야 함
+            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios),
@@ -65,7 +64,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
               top: 104,
               left: 20,
               child: Container(
-                width: 351,
+                width: 351, // TODO 화면 너비에 맞춘 width로 수정해야함
                 height: 53,
                 decoration: BoxDecoration(
                     color: offButtonColor,

@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 
 // 공통으로 사용할 플로팅버튼
+// TODO 버튼 클릭 시 실행해야할 함수를 파라미터로 받아야할 듯!
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
@@ -17,7 +18,7 @@ class CustomFloatingButton extends StatelessWidget {
         backgroundColor: primaryColor,
         onPressed: () {
           // 추가 버튼 클릭
-          print('영양제 추가 등록 팝업 띄우기'); // TODO 영양제 등록 팝업 띄워야 함
+          print('플로팅 버튼 클릭'); // TODO 각각 필요한 페이지 이동 및 등록 팝업 등 구현
         },
         child: Image.asset(
           'assets/images/icons/plus_white.png', // 사용할 이미지 파일의 경로
