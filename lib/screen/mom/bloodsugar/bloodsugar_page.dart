@@ -87,18 +87,18 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
               top: 104,
               left: 20,
               child: Container(
-                width: 352,
+                width: 351,
                 height: 53,
                 decoration: BoxDecoration(
                     color: offButtonColor,
                     borderRadius: BorderRadius.circular(30)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     InkWell(
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: isRecordActive ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -119,7 +119,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: !isRecordActive ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(

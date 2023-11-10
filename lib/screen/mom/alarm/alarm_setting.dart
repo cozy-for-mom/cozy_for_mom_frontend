@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/supplement_alarm.dart';
+import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 
 class AlarmSettingPage extends StatefulWidget {
   const AlarmSettingPage({super.key});
@@ -52,18 +53,18 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
               top: 104,
               left: 20,
               child: Container(
-                width: 352,
+                width: 351,
                 height: 53,
                 decoration: BoxDecoration(
                     color: offButtonColor,
                     borderRadius: BorderRadius.circular(30)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     InkWell(
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: isRecordActive ? 173 : 153, // 이렇게 해야 위젯끼리 안 겹침
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -84,7 +85,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: !isRecordActive ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -105,13 +106,10 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                   ],
                 ),
               )),
-          if (isRecordActive)
-            const BloodsugarAlarm(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줌
-          if (!isRecordActive)
-            const SupplementAlarm(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줌
-          // TODO 혈당 기간별 조회 페이지 구현해야 함
+          isRecordActive ? const BloodsugarAlarm() : const SupplementAlarm(),
         ],
       ),
+      floatingActionButton: const CustomFloatingButton(),
     );
   }
 }

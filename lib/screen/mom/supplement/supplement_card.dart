@@ -66,7 +66,7 @@ class _SupplementCardState extends State<supplementCard> {
                         color: afterInputColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 18)),
-                const SizedBox(width: 5),
+                const SizedBox(width: 7),
                 Container(
                   width: 57,
                   height: 22,
