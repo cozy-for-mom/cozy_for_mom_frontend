@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
+import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 
 class WeightRecord extends StatefulWidget {
   const WeightRecord({super.key});
@@ -86,19 +87,13 @@ class _WeightRecordState extends State<WeightRecord> {
                   ]),
             ),
           ),
-          Positioned(
-              top: 102,
+          const Positioned(
+              top: 103,
               left: 20,
-              child: Container(
+              child: SizedBox(
+                height: 100,
                 width: 350,
-                height: 63,
-                decoration: const BoxDecoration(
-                    color: Colors.white60), // TODO 주간 캘린더 위젯으로 바꿔줘야 함
-                child: const Center(
-                    child: Text(
-                  '주간 캘린더',
-                  style: TextStyle(fontSize: 20),
-                )),
+                child: WeeklyCalendar(),
               )),
           Positioned(
             top: 205,
