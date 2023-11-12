@@ -21,6 +21,11 @@ const Color morningTextColor = Color(0xff00D0EE); // 아침텍스트
 const Color afternoonTextColor = Color(0xffFF9E57); // 오후텍스트
 const Color nightTextColor = Color(0xff5CA6F8); // 밤텍스트
 
+const Color babyNightText = Color(0xff9D8DFF); // 태아 밤 텍스트
+const Color babyNightBar = Color(0xffB9ADFF); // 태아 밤 막대그래프 및 디데이 및 배너박스
+const Color babyMorningText = Color(0xffFE8282); // 태아 아침 텍스트
+const Color babyMorningBar = Color(0xffFFB4BE); // 태아 아침 막대그래프 및 디데이
+
 const Color navOffTextColor = Color(0xffBCC0C7); // 네비게이션 비활 텍스트
 
 const Color beforeInputColor = Color(0xffE1E1E7); // 텍스트 입력 전

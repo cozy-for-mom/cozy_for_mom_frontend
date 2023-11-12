@@ -80,7 +80,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                               MaterialPageRoute(
                                   builder: (context) => const AlarmSettingPage(
                                         type: CardType.supplement,
-                                      ))); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                                      )));
                         })
                   ]),
             ),

@@ -78,7 +78,7 @@ class HomeFragment extends StatelessWidget {
                 width: 30,
                 height: 30,
                 image: AssetImage(
-                  "assets/images/icons/icon_baby.png",
+                  "assets/images/icons/mypage.png",
                 ),
               ),
               onPressed: () {
