@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
@@ -79,20 +80,15 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   ]),
             ),
           ),
-          Positioned(
-              top: 102,
-              left: 20,
-              child: Container(
-                width: 350,
-                height: 63,
-                decoration: const BoxDecoration(
-                    color: Colors.white60), // TODO 주간 캘린더 위젯 넣어야 함
-                child: const Center(
-                    child: Text(
-                  '주간 캘린더',
-                  style: TextStyle(fontSize: 20),
-                )),
-              )),
+          const Positioned(
+            top: 120,
+            left: 20,
+            child: SizedBox(
+              height: 100,
+              width: 350,
+              child: WeeklyCalendar(),
+            ),
+          ),
           Positioned(
             top: 203,
             left: 20,
