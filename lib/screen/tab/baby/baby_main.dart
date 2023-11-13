@@ -31,7 +31,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
     Duration difference = dueDate.difference(now);
 
     // 디데이 그래프 계산
-    double totalDays = 280.0; // 임신일 ~ 출산일
+    double totalDays = 280.0; // 임신일 ~ 출산일 // TODO 임신일 DB에서 받아와야 함
     double daysPassed = totalDays - difference.inDays.toDouble(); // 현재 날짜 ~ 출산일
     double percentage = daysPassed / totalDays;
 
@@ -41,9 +41,10 @@ class _BabyMainPageState extends State<BabyMainPage> {
           const Positioned(
             top: 0,
             child: Image(
-                width: 405,
+                width: 405, // TODO 화면 너비에 맞춘 width로 수정해야함
                 fit: BoxFit.cover,
-                image: AssetImage("assets/images/babyhome_dark.png")),
+                image: AssetImage(
+                    "assets/images/babyhome_dark.png")), // TODO 밤/낮 따라 이미지경로 바꿔줘야 함
           ),
           Positioned(
             top: 66,
@@ -63,7 +64,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
             ),
           ),
           Positioned(
-              top: 145, //171
+              top: 145,
               left: 0,
               right: 0,
               child: Column(
@@ -83,7 +84,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                 ],
               )),
           const Positioned(
-            top: 278, //311
+            top: 278,
             left: 106,
             child: Image(
                 width: 187,
@@ -91,7 +92,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                 image: AssetImage("assets/images/baby2_1.png")),
           ),
           const Positioned(
-            top: 291, //324
+            top: 291,
             left: 120,
             child: Image(
                 width: 167,
@@ -123,7 +124,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     ),
-                    Text(' D-${difference.inDays}',
+                    Text(' D-${difference.inDays}', // TODO 밤/낮 따라 색상 바꿔줘야 함
                         style: const TextStyle(
                             color: babyNightBar,
                             fontWeight: FontWeight.w700,
@@ -144,7 +145,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                     child: Container(
                       height: 20,
                       decoration: BoxDecoration(
-                        color: babyNightBar,
+                        color: babyNightBar, // TODO 밤/낮 따라 색상 바꿔줘야 함
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
@@ -163,7 +164,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                   children: [
                     InkWell(
                       onTap: () {
-                        print('성장보고서 페이지 이동');
+                        print('성장보고서 페이지 이동'); // TODO 성장보고서 페이지 연동
                       },
                       child: const CustomButton(
                           text: '성장 보고서',
@@ -171,7 +172,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        print('코지로그 페이지 이동');
+                        print('코지로그 페이지 이동'); // TODO 코지로그 페이지 연동
                       },
                       child: const CustomButton(
                           text: '코지로그',
