@@ -89,9 +89,11 @@ class HomeFragment extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 379,
+            top: 380,
+            left: 0,
+            right: 0,
             child: Container(
-              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+              width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
               height: 600, // TODO 화면 높이에 맞춘 height로 수정해야함
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -113,8 +115,8 @@ class HomeFragment extends StatelessWidget {
                       const RecordIcon(
                         recordTypeName: "meal",
                         recordTypeKorName: "식단",
-                        imageWidth: 24,
-                        imageHeight: 33,
+                        imageWidth: 26,
+                        imageHeight: 37,
                       ),
                       InkWell(
                           onTap: () {
@@ -127,8 +129,8 @@ class HomeFragment extends StatelessWidget {
                           child: const RecordIcon(
                             recordTypeName: "supplement",
                             recordTypeKorName: "영양제",
-                            imageWidth: 14.72,
-                            imageHeight: 33,
+                            imageWidth: 28,
+                            imageHeight: 67,
                           )),
                       InkWell(
                           onTap: () {
@@ -141,8 +143,8 @@ class HomeFragment extends StatelessWidget {
                           child: const RecordIcon(
                             recordTypeName: "bloodsugar",
                             recordTypeKorName: "혈당",
-                            imageWidth: 23.14,
-                            imageHeight: 33,
+                            imageWidth: 28,
+                            imageHeight: 37,
                           )),
                       InkWell(
                           onTap: () {
@@ -155,8 +157,8 @@ class HomeFragment extends StatelessWidget {
                           child: const RecordIcon(
                             recordTypeName: "weight",
                             recordTypeKorName: "체중",
-                            imageWidth: 24.99,
-                            imageHeight: 33,
+                            imageWidth: 28,
+                            imageHeight: 37,
                           )),
                     ],
                   ),

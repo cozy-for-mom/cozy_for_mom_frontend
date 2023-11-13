@@ -8,4 +8,8 @@ class MyDataModel with ChangeNotifier {
     bloodSugarData[time] = value;
     notifyListeners();
   }
+
+  String? getBloodSugarData(String time) {
+    return bloodSugarData[time];
+  }
 }

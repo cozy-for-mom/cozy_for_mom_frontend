@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
+import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 
 class WeightRecord extends StatefulWidget {
   const WeightRecord({super.key});
@@ -16,7 +18,7 @@ class _WeightRecordState extends State<WeightRecord> {
   // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
   final FocusNode _weightFocus = FocusNode();
   Color unitTextColor = const Color(0xffE0E0E0);
-  Color cusorColor = const Color(0xffE0E0E0);
+  Color cusorColor = beforeInputColor;
 
   // 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
   @override
@@ -187,16 +189,18 @@ class _WeightRecordState extends State<WeightRecord> {
             ),
           ),
           Positioned(
-              top: 331,
-              left: 20,
-              child: Container(
-                // TODO 그래프로 바꿔줘야 함
-                width: 350,
-                height: 400,
-                decoration: BoxDecoration(
-                    color: Colors.white60,
-                    borderRadius: BorderRadius.circular(20)),
-              ))
+            top: 331,
+            left: 20,
+            child: TimeLineChart(
+              recordType: RecordType.weight,
+              dataList: [
+                LineChartData("05.11", 55),
+                LineChartData("05.15", 52),
+                LineChartData("05.17", 55),
+                LineChartData("05.22", 60),
+              ],
+            ),
+          )
         ],
       ),
     );
