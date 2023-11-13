@@ -1,10 +1,12 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/tap_widget.dart';
+import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 
 class SupplementRecord extends StatefulWidget {
   const SupplementRecord({Key? key}) : super(key: key);
@@ -44,21 +46,28 @@ class _SupplementRecordState extends State<SupplementRecord> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () {
-                        Navigator.of(context).pop(); // 현재 화면을 닫음
+                        Navigator.of(context).pop();
                       },
                     ),
                     Row(
                       children: [
                         Text(formattedDate,
                             style: const TextStyle(
-                                color: Color(0xff2B2D35),
+                                color: mainTextColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18)),
                         IconButton(
                           alignment: AlignmentDirectional.centerStart,
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
-                            print('월간 캘린더 팝업창 뜨기'); // TODO 월간 캘린더 팝업창 띄워줘야 함
+                            showModalBottomSheet(
+                              backgroundColor: contentBoxTwoColor
+                                  .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                              context: context,
+                              builder: (context) {
+                                return const MonthCalendarModal();
+                              },
+                            );
                           },
                         ),
                       ],
@@ -75,20 +84,15 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   ]),
             ),
           ),
-          Positioned(
-              top: 102,
-              left: 20,
-              child: Container(
-                width: 350,
-                height: 63,
-                decoration: const BoxDecoration(
-                    color: Colors.white60), // TODO 주간 캘린더 위젯 넣어야 함
-                child: const Center(
-                    child: Text(
-                  '주간 캘린더',
-                  style: TextStyle(fontSize: 20),
-                )),
-              )),
+          const Positioned(
+            top: 120,
+            left: 20,
+            child: SizedBox(
+              height: 100,
+              width: 350,
+              child: WeeklyCalendar(),
+            ),
+          ),
           Positioned(
             top: 203,
             left: 20,
