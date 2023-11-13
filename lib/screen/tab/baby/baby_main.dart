@@ -38,6 +38,13 @@ class _BabyMainPageState extends State<BabyMainPage> {
     return Scaffold(
       body: Stack(
         children: [
+          const Positioned(
+            top: 0,
+            child: Image(
+                width: 405,
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/babyhome_dark.png")),
+          ),
           Positioned(
             top: 66,
             left: 340,
@@ -76,34 +83,24 @@ class _BabyMainPageState extends State<BabyMainPage> {
                 ],
               )),
           const Positioned(
-            top: 224, //252
-            left: 0,
-            right: 0,
-            child: Image(
-                width: 191,
-                height: 191,
-                image: AssetImage("assets/images/dark_background.png")),
-          ),
-          const Positioned(
-            top: 283, //311
-            left: 99,
+            top: 278, //311
+            left: 106,
             child: Image(
                 width: 187,
                 height: 145,
                 image: AssetImage("assets/images/baby2_1.png")),
           ),
           const Positioned(
-            top: 296, //324
-            left: 0,
-            right: 0,
+            top: 291, //324
+            left: 120,
             child: Image(
                 width: 167,
                 height: 125,
                 image: AssetImage("assets/images/baby2_2.png")),
           ),
           const Positioned(
-            top: 360.52,
-            left: 111,
+            top: 355.52,
+            left: 114,
             child: Image(
                 width: 66,
                 height: 34.67,
@@ -156,7 +153,7 @@ class _BabyMainPageState extends State<BabyMainPage> {
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 501.52,
             left: 20,
             child: SizedBox(
@@ -164,12 +161,22 @@ class _BabyMainPageState extends State<BabyMainPage> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomButton(
-                        text: '성장 보고서',
-                        imagePath: "assets/images/icons/diary.png"),
-                    CustomButton(
-                        text: '코지로그',
-                        imagePath: "assets/images/icons/cozylog.png"),
+                    InkWell(
+                      onTap: () {
+                        print('성장보고서 페이지 이동');
+                      },
+                      child: const CustomButton(
+                          text: '성장 보고서',
+                          imagePath: "assets/images/icons/diary.png"),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print('코지로그 페이지 이동');
+                      },
+                      child: const CustomButton(
+                          text: '코지로그',
+                          imagePath: "assets/images/icons/cozylog.png"),
+                    ),
                   ]),
             ),
           ),

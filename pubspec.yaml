@@ -87,10 +87,11 @@ flutter:
     - assets/images/baby2_1.png
     - assets/images/baby2_2.png
     - assets/images/umbilical_cord.png
-    - assets/images/cloud_left.png
-    - assets/images/cloud_right.png
     - assets/images/icons/cozylog.png
     - assets/images/icons/diary_cozylog.png
+    - assets/images/babyhome_dark.png
+    - assets/images/babyhome_dark_n.png
+    - assets/images/babyhome_morning.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
