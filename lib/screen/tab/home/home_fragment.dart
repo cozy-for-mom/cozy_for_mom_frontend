@@ -14,7 +14,7 @@ class HomeFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = User(1, "쥬쥬", "안소현");
+    final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
 
     return Scaffold(
       body: Stack(

@@ -3,10 +3,7 @@ class User {
   final int userId;
   final String nickname;
   final String name;
-
-  User(
-    this.userId,
-    this.nickname,
-    this.name,
-  );
+  final String email;
+  final DateTime birth;
+  User(this.userId, this.nickname, this.name, this.email, this.birth);
 }
