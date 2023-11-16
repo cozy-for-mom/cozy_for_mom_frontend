@@ -8,7 +8,7 @@ class InfoInputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 350,
       height: 83,
       child: Column(

@@ -16,11 +16,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
+        child: SizedBox(
+          height: screenHeight,
           child: Stack(
             children: [
               Positioned(
@@ -35,7 +36,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             Navigator.of(context).pop();
                           },
                         ),
-                        const SizedBox(width: 110),
+                        const SizedBox(
+                            width: 110), // TODO 화면 너비에 맞춘 width로 수정해야함
                         const Text('프로필 수정',
                             style: TextStyle(
                                 color: mainTextColor,
@@ -67,7 +69,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 top: 244.77,
                 left: 21,
                 child: SizedBox(
-                  width: 340,
+                  width: 340, // TODO 화면 너비에 맞춘 width로 수정해야함
                   height: 24,
                   child: TextFormField(
                     textAlign: TextAlign.start,
@@ -85,12 +87,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             fontSize: 16)),
                     onChanged: (text) {
                       setState(() {
-                        // 텍스트가 변경될 때마다 호출됨
                         if (text.isNotEmpty) {
-                          // 텍스트가 비어있지 않으면 원하는 색상으로 변경
                           cusorColor = afterInputColor;
                         } else {
-                          // 텍스트가 비어있으면 다시 기본 색상으로 변경
                           cusorColor = beforeInputColor;
                         }
                       });
@@ -103,8 +102,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 left: 20,
                 child: Container(
                   width: 350,
-                  height: 1, // 선의 굵기
-                  color: mainLineColor, // 선의 색상
+                  height: 1,
+                  color: mainLineColor,
                 ),
               ),
               Positioned(
@@ -114,7 +113,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     children: momInfoType.map((type) {
                       return Column(
                         children: [
-                          InfoInputForm(title: type, hint: '-'),
+                          InfoInputForm(
+                              title: type,
+                              hint: '-'), // 각 입력 정보에 맞는 hintText 설정해야 함
                           const Padding(padding: EdgeInsets.only(bottom: 20)),
                         ],
                       );
@@ -130,7 +131,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         children: [
                           InkWell(
                             onTap: () {
-                              print('로그아웃 버튼 클릭');
+                              print('로그아웃 버튼 클릭'); // 로그아웃 기능 구현
                             },
                             child: const Text('로그아웃',
                                 style: TextStyle(
@@ -139,13 +140,13 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                     fontSize: 14)),
                           ),
                           Container(
-                            width: 1, // 수직선의 두께 조절
-                            height: 11, // 수직선의 높이 조절
+                            width: 1,
+                            height: 11,
                             color: primaryColor,
                           ),
                           InkWell(
                             onTap: () {
-                              print('회원탈퇴 버튼 클릭');
+                              print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
                             },
                             child: const Text('회원탈퇴',
                                 style: TextStyle(
