@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 
 enum CardType { bloodsugar, supplement }
 
