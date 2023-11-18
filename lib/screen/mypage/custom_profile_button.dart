@@ -18,7 +18,7 @@ class CustomProfileButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: [
             Container(
@@ -33,8 +33,8 @@ class CustomProfileButton extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(
                   imagePath,
-                  width: 40,
-                  height: 40,
+                  width: 45,
+                  height: 45,
                   alignment: Alignment.center,
                 ),
               ),

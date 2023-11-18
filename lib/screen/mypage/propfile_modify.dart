@@ -19,6 +19,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: SizedBox(
           height: screenHeight,
