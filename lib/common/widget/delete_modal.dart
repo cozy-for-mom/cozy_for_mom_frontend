@@ -17,7 +17,7 @@ class _DeleteModalState extends State<DeleteModal> {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Container(
-        width: 350,
+        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
         height: 173,
         decoration: BoxDecoration(
             color: contentBoxTwoColor, borderRadius: BorderRadius.circular(20)),
@@ -34,7 +34,10 @@ class _DeleteModalState extends State<DeleteModal> {
                       fontWeight: FontWeight.w600,
                       fontSize: 16)),
             ),
-            Container(width: 350, height: 1, color: const Color(0xffD9D9D9)),
+            Container(
+                width: 350,
+                height: 1,
+                color: const Color(0xffD9D9D9)), // TODO 화면 너비에 맞춘 width로 수정해야함
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -55,7 +58,7 @@ class _DeleteModalState extends State<DeleteModal> {
                 Container(width: 1, height: 65, color: const Color(0xffD9D9D9)),
                 InkWell(
                   onTap: () {
-                    print('삭제하기 버튼 클릭');
+                    print('삭제하기 버튼 클릭'); // TODO 삭제하기 버튼 기능 구현
                   },
                   child: Container(
                     width: 56,
