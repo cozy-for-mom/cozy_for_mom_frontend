@@ -39,7 +39,7 @@ dependencies:
   syncfusion_flutter_charts: ^23.1.41
   table_calendar: ^3.0.8
   provider: ^6.0.5
-  syncfusion_flutter_charts: ^23.1.41
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
