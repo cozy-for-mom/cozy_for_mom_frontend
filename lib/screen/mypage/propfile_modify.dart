@@ -114,9 +114,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     children: momInfoType.map((type) {
                       return Column(
                         children: [
-                          InfoInputForm(
-                              title: type,
-                              hint: '-'), // 각 입력 정보에 맞는 hintText 설정해야 함
+                          InfoInputForm(title: type),
                           const Padding(padding: EdgeInsets.only(bottom: 20)),
                         ],
                       );

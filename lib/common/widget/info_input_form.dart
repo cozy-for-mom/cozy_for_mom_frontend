@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
-class InfoInputForm extends StatelessWidget {
+class InfoInputForm extends StatefulWidget {
   final String title;
   final String hint;
-  const InfoInputForm({super.key, required this.title, required this.hint});
+  final String suffix;
+  const InfoInputForm(
+      {super.key, required this.title, this.hint = '', this.suffix = ''});
+
+  @override
+  State<InfoInputForm> createState() => _InfoInputFormState();
+}
+
+class _InfoInputFormState extends State<InfoInputForm> {
+  bool _isHintVisible = true;
+  Color cusorColor = beforeInputColor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,7 @@ class InfoInputForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(title,
+          Text(widget.title,
               style: const TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
@@ -28,19 +38,36 @@ class InfoInputForm extends StatelessWidget {
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
                 textAlign: TextAlign.start,
-                cursorColor: beforeInputColor,
+                cursorColor: cusorColor,
                 style: const TextStyle(
                     color: afterInputColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 16),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: hint,
+                  suffixText: widget.suffix,
+                  suffixStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16),
+                  hintText: _isHintVisible ? widget.hint : null,
                   hintStyle: const TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 16),
                 ),
+                onTap: () {
+                  setState(() {
+                    _isHintVisible = false;
+                  });
+                },
+                onChanged: (text) {
+                  setState(() {
+                    if (text.isNotEmpty) {
+                      cusorColor = Colors.transparent;
+                    }
+                  });
+                },
               )),
         ],
       ),
