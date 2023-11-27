@@ -15,11 +15,14 @@ class GrowReportRegister extends StatefulWidget {
 }
 
 class _GrowReportRegisterState extends State<GrowReportRegister> {
-  Color cusorColor = beforeInputColor;
+  Color cusorColor = beforeInputColor; // TODO 커서
   Color bottomLineColor = mainLineColor;
   List<BabyProfile> profiles = [
     BabyProfile(
-        babyId: 1, name: "미룽이", image: 'assets/images/icons/babyProfileOn.png'),
+        babyId: 1,
+        name: "미룽이",
+        image:
+            'assets/images/icons/babyProfileOn.png'), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
     BabyProfile(
         babyId: 2, name: "행운이", image: 'assets/images/icons/babyProfileOff.png')
   ];
@@ -69,7 +72,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                         onPressed: () {
                           selectedProfile.value = profile;
                           print(
-                              'id:${profile.babyId} ${profile.name} 버튼이 클릭되었습니다.');
+                              'id:${profile.babyId} ${profile.name} 버튼이 클릭되었습니다.'); // TODO 다둥이일 경우 성장보고서 컴포넌트 전환
                         },
                       );
                     },
@@ -85,13 +88,14 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: 52,
                 child: TextFormField(
+                  // TODO 제목 글자 수 제한
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
                   ),
-                  cursorColor: cusorColor,
+                  cursorColor: cusorColor, // TODO 커서 나타낼지 말지 논의 후 수정
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "제목을 입력해주세요",
@@ -104,7 +108,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   onChanged: (text) {
                     setState(() {
                       if (text.isNotEmpty) {
-                        cusorColor = Colors.transparent;
+                        cusorColor = Colors.transparent; // TODO 커서
                         bottomLineColor = primaryColor;
                       } else {
                         cusorColor = beforeInputColor;
@@ -144,7 +148,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   imageWidth: 45.6,
                   imageHeight: 36.9,
                   onPressed: () {
-                    print('사진등록 버튼 클릭됨');
+                    print('사진등록 버튼 클릭됨'); // TODO 사진 등록 및 불러오기 구현
                   },
                 ),
               ),
@@ -157,6 +161,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: 56,
                 child: TextFormField(
+                  // TODO 내용 글자 수 제한
                   textAlignVertical: TextAlignVertical.top,
                   textAlign: TextAlign.start,
                   maxLines: 2,
@@ -165,7 +170,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),
-                  cursorColor: cusorColor,
+                  cursorColor: cusorColor, // TODO 커서 나타낼지 말지 논의 후 수정
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
@@ -179,7 +184,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   onChanged: (text) {
                     setState(() {
                       if (text.isNotEmpty) {
-                        cusorColor = Colors.transparent;
+                        cusorColor = Colors.transparent; // TODO 커서
                       } else {
                         cusorColor = beforeInputColor;
                       }
@@ -226,7 +231,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
               child: InkWell(
                 onTap: () {
-                  print("등록 버튼 클릭");
+                  print("등록 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
                 },
                 child: Container(
                   width: screenWidth,
