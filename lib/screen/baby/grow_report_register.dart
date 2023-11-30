@@ -15,8 +15,13 @@ class GrowReportRegister extends StatefulWidget {
 }
 
 class _GrowReportRegisterState extends State<GrowReportRegister> {
-  Color cusorColor = beforeInputColor; // TODO 커서
   Color bottomLineColor = mainLineColor;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
+  List<TextEditingController> infoControllers =
+      List.generate(5, (index) => TextEditingController());
+
+  double _textFieldHeight = 50.0; // 초기 높이
   List<BabyProfile> profiles = [
     BabyProfile(
         babyId: 1,
@@ -28,6 +33,15 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   ];
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
+  double calculateHeight(String text) {
+    return 50.0 + text.length.toDouble() / 1.2;
+  }
+
+  bool isRegisterButtonEnabled() {
+    return titleController.text.isNotEmpty ||
+        contentController.text.isNotEmpty ||
+        infoControllers.any((controller) => controller.text.isNotEmpty);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +102,16 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: 52,
                 child: TextFormField(
-                  // TODO 제목 글자 수 제한
+                  controller: titleController,
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
                   ),
-                  cursorColor: cusorColor, // TODO 커서 나타낼지 말지 논의 후 수정
+                  cursorColor: primaryColor,
+                  cursorHeight: 21,
+                  cursorWidth: 1.5,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "제목을 입력해주세요",
@@ -108,10 +124,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   onChanged: (text) {
                     setState(() {
                       if (text.isNotEmpty) {
-                        cusorColor = Colors.transparent; // TODO 커서
                         bottomLineColor = primaryColor;
                       } else {
-                        cusorColor = beforeInputColor;
                         bottomLineColor = mainLineColor;
                       }
                     });
@@ -159,18 +173,20 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               padding: const EdgeInsets.symmetric(horizontal: 21),
               child: SizedBox(
                 width: screenWidth,
-                height: 56,
+                height: _textFieldHeight,
                 child: TextFormField(
-                  // TODO 내용 글자 수 제한
+                  controller: contentController,
                   textAlignVertical: TextAlignVertical.top,
                   textAlign: TextAlign.start,
-                  maxLines: 2,
+                  maxLines: null,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),
-                  cursorColor: cusorColor, // TODO 커서 나타낼지 말지 논의 후 수정
+                  cursorColor: primaryColor,
+                  cursorHeight: 17,
+                  cursorWidth: 1.5,
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
@@ -183,11 +199,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   ),
                   onChanged: (text) {
                     setState(() {
-                      if (text.isNotEmpty) {
-                        cusorColor = Colors.transparent; // TODO 커서
-                      } else {
-                        cusorColor = beforeInputColor;
-                      }
+                      // 텍스트의 길이에 따라 높이를 조절
+                      _textFieldHeight = calculateHeight(text);
                     });
                   },
                 ),
@@ -209,6 +222,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               (BuildContext context, int index) {
                 final type = babyInfoType[index];
                 final unit = babyInfoUnit[index];
+                final control = infoControllers[index];
                 return ValueListenableBuilder<BabyProfile?>(
                   valueListenable: selectedProfile,
                   builder: (context, activeProfile, child) {
@@ -218,6 +232,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                         title: type,
                         hint: "0 $unit",
                         suffix: unit,
+                        controller: control,
+                        onChanged: () {
+                          setState(() {});
+                        },
                       ),
                     ]);
                   },
@@ -238,7 +256,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   height: 56,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: const Color(0xffC9DFF9),
+                      color: isRegisterButtonEnabled()
+                          ? primaryColor
+                          : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: const Text("등록하기",
                       style: TextStyle(

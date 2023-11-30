@@ -5,8 +5,16 @@ class InfoInputForm extends StatefulWidget {
   final String title;
   final String hint;
   final String suffix;
+  final TextEditingController? controller;
+  final VoidCallback? onChanged;
+
   const InfoInputForm(
-      {super.key, required this.title, this.hint = '', this.suffix = ''});
+      {super.key,
+      required this.title,
+      this.hint = '',
+      this.suffix = '',
+      this.controller,
+      this.onChanged});
 
   @override
   State<InfoInputForm> createState() => _InfoInputFormState();
@@ -14,11 +22,11 @@ class InfoInputForm extends StatefulWidget {
 
 class _InfoInputFormState extends State<InfoInputForm> {
   bool _isHintVisible = true;
-  Color cusorColor = beforeInputColor;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    // print('Controller for ${widget.controller}');
+    return SizedBox(
       width: 350,
       height: 83,
       child: Column(
@@ -37,8 +45,11 @@ class _InfoInputFormState extends State<InfoInputForm> {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
+                controller: widget.controller,
                 textAlign: TextAlign.start,
-                cursorColor: cusorColor,
+                cursorColor: primaryColor,
+                cursorHeight: 17,
+                cursorWidth: 1.5,
                 style: const TextStyle(
                     color: afterInputColor,
                     fontWeight: FontWeight.w500,
@@ -63,9 +74,7 @@ class _InfoInputFormState extends State<InfoInputForm> {
                 },
                 onChanged: (text) {
                   setState(() {
-                    if (text.isNotEmpty) {
-                      cusorColor = Colors.transparent;
-                    }
+                    widget.onChanged?.call();
                   });
                 },
               )),
