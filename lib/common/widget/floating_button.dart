@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 // TODO 버튼 클릭 시 실행해야할 함수를 파라미터로 받아야할 듯!
 
 class CustomFloatingButton extends StatelessWidget {
+  final VoidCallback? onTap;
+
   const CustomFloatingButton({
     super.key,
+    this.onTap,
   });
 
   @override
