@@ -128,7 +128,8 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
               : const SupplementAlarm(),
         ],
       ),
-      floatingActionButton: const CustomFloatingButton(),
+      floatingActionButton:
+          const CustomFloatingButton(), // TODO 버튼 클릭 시 알림 등록 페이지로 이동
     );
   }
 }

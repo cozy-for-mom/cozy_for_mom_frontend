@@ -58,6 +58,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/images/icons/navigation_baby.png
+    - assets/images/icons/navigation_home.png
+    - assets/images/icons/navigation_community.png
     - assets/images/icons/diary.png
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
@@ -82,6 +85,16 @@ flutter:
     - assets/images/icons/take_off.png
     - assets/images/icons/plus.png
     - assets/images/icons/delete.png
+    - assets/images/dark_background.png
+    - assets/images/icons/mypage.png
+    - assets/images/baby2_1.png
+    - assets/images/baby2_2.png
+    - assets/images/umbilical_cord.png
+    - assets/images/icons/cozylog.png
+    - assets/images/icons/diary_cozylog.png
+    - assets/images/babyhome_dark.png
+    - assets/images/babyhome_dark_n.png
+    - assets/images/babyhome_morning.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
