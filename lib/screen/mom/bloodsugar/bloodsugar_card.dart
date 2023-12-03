@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class BloodsugarCard extends StatefulWidget {
   final String time;
 
-  BloodsugarCard({required this.time});
+  BloodsugarCard({super.key, required this.time});
   @override
   State<BloodsugarCard> createState() => _BloodsugarCardState();
 }

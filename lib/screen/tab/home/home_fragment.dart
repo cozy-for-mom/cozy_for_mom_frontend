@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_record.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -79,7 +78,7 @@ class HomeFragment extends StatelessWidget {
                 width: 30,
                 height: 30,
                 image: AssetImage(
-                  "assets/images/icons/icon_baby.png",
+                  "assets/images/icons/mypage.png",
                 ),
               ),
               onPressed: () {

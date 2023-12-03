@@ -19,20 +19,11 @@ class BloodsugarView extends StatelessWidget {
             dataList: [
               LineChartData("05.11", 93),
               LineChartData("05.12", 101),
-              LineChartData("05.13", 110),
-              LineChartData("05.15", 99),
+              LineChartData("05.13", 98),
+              LineChartData("05.15", 105),
             ],
           ),
         ),
-        // child: Container(
-        //   width: 350,
-        //   height: 399,
-        //   decoration: const BoxDecoration(
-        //       color: Colors.white60,
-        //       borderRadius: BorderRadius.only(
-        //           topLeft: Radius.circular(20),
-        //           topRight: Radius.circular(20))),
-        // )),
         Positioned(
             top: 635,
             left: 20,

@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 
 class BloodsugarRecord extends StatelessWidget {
   const BloodsugarRecord({super.key});
@@ -12,18 +13,18 @@ class BloodsugarRecord extends StatelessWidget {
 
     return Stack(
       children: <Widget>[
-        Positioned(
+        const Positioned(
             top: 177,
             left: 20,
-            child: Container(
+            child: SizedBox(
+              height: 100,
               width: 350,
-              height: 63,
-              decoration: const BoxDecoration(
-                  color: Colors.white), // TODO 주간 캘린더 위젯으로 바꿔줘야 함
+              child: WeeklyCalendar(),
             )),
         Positioned(
           top: 288,
-          left: 19,
+          left: 0,
+          right: 0,
           child: Column(
             children: times.map((time) {
               return Column(
