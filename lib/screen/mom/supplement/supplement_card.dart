@@ -9,7 +9,8 @@ class supplementCard extends StatefulWidget {
   List<DateTime> takeTimes;
 
   supplementCard(
-      {required this.name,
+      {super.key,
+      required this.name,
       required this.targetCount,
       required this.realCount,
       required this.takeTimes});
@@ -65,7 +66,7 @@ class _SupplementCardState extends State<supplementCard> {
                         color: afterInputColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 18)),
-                const SizedBox(width: 5),
+                const SizedBox(width: 7),
                 Container(
                   width: 57,
                   height: 22,

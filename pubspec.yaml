@@ -39,7 +39,7 @@ dependencies:
   syncfusion_flutter_charts: ^23.1.41
   table_calendar: ^3.0.8
   provider: ^6.0.5
-  syncfusion_flutter_charts: ^23.1.41
+  flutter_slidable: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +80,8 @@ flutter:
     - assets/images/icons/alert.png
     - assets/images/icons/take_on.png
     - assets/images/icons/take_off.png
+    - assets/images/icons/plus.png
+    - assets/images/icons/delete.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

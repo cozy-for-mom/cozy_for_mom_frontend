@@ -1,9 +1,11 @@
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_view.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 
 class BloodsugarPage extends StatefulWidget {
   const BloodsugarPage({super.key});
@@ -72,8 +74,12 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                             height: 32,
                             width: 32),
                         onPressed: () {
-                          print(
-                              '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AlarmSettingPage(
+                                        type: CardType.bloodsugar,
+                                      ))); // TODO 알림창 아이콘 onPressed{} 구현해야 함
                         })
                   ]),
             ),
@@ -82,18 +88,18 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
               top: 104,
               left: 20,
               child: Container(
-                width: 352,
+                width: 351,
                 height: 53,
                 decoration: BoxDecoration(
                     color: offButtonColor,
                     borderRadius: BorderRadius.circular(30)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     InkWell(
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: isRecordActive ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -114,7 +120,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: 173,
+                          width: !isRecordActive ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
