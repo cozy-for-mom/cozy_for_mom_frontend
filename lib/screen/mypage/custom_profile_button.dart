@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class CustomProfileButton extends StatelessWidget {
@@ -17,7 +18,7 @@ class CustomProfileButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: [
             Container(
@@ -25,17 +26,15 @@ class CustomProfileButton extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   border: isSelected
-                      ? Border.all(width: 2, color: const Color(0xff5CA6F8))
+                      ? Border.all(width: 2, color: primaryColor)
                       : null,
-                  color: isSelected
-                      ? const Color(0xffDCEDFF)
-                      : const Color(0xffF8F8FA)),
+                  color: isSelected ? profileColor : const Color(0xffF8F8FA)),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(
                   imagePath,
-                  width: 40,
-                  height: 40,
+                  width: 45,
+                  height: 45,
                   alignment: Alignment.center,
                 ),
               ),
@@ -44,9 +43,7 @@ class CustomProfileButton extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  color: isSelected
-                      ? const Color(0xff5CA6F8)
-                      : const Color(0xff858998),
+                  color: isSelected ? primaryColor : offButtonTextColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
             ),

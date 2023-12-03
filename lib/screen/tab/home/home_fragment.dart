@@ -1,8 +1,11 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -11,7 +14,7 @@ class HomeFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = User(1, "쥬쥬", "안소현");
+    final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
 
     return Scaffold(
       body: Stack(
@@ -75,7 +78,7 @@ class HomeFragment extends StatelessWidget {
                 width: 30,
                 height: 30,
                 image: AssetImage(
-                  "assets/images/icons/icon_baby.png",
+                  "assets/images/icons/mypage.png",
                 ),
               ),
               onPressed: () {
@@ -85,9 +88,11 @@ class HomeFragment extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 379,
+            top: 380,
+            left: 0,
+            right: 0,
             child: Container(
-              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+              width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
               height: 600, // TODO 화면 높이에 맞춘 height로 수정해야함
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -96,7 +101,7 @@ class HomeFragment extends StatelessWidget {
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
-                color: Colors.white,
+                color: contentBoxTwoColor,
               ),
               child: Column(
                 children: [
@@ -109,8 +114,8 @@ class HomeFragment extends StatelessWidget {
                       const RecordIcon(
                         recordTypeName: "meal",
                         recordTypeKorName: "식단",
-                        imageWidth: 24,
-                        imageHeight: 33,
+                        imageWidth: 26,
+                        imageHeight: 37,
                       ),
                       InkWell(
                           onTap: () {
@@ -123,21 +128,37 @@ class HomeFragment extends StatelessWidget {
                           child: const RecordIcon(
                             recordTypeName: "supplement",
                             recordTypeKorName: "영양제",
-                            imageWidth: 14.72,
-                            imageHeight: 33,
+                            imageWidth: 28,
+                            imageHeight: 67,
                           )),
-                      const RecordIcon(
-                        recordTypeName: "bloodsugar",
-                        recordTypeKorName: "혈당",
-                        imageWidth: 23.14,
-                        imageHeight: 33,
-                      ),
-                      const RecordIcon(
-                        recordTypeName: "weight",
-                        recordTypeKorName: "체중",
-                        imageWidth: 24.99,
-                        imageHeight: 33,
-                      ),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BloodsugarPage()));
+                          },
+                          child: const RecordIcon(
+                            recordTypeName: "bloodsugar",
+                            recordTypeKorName: "혈당",
+                            imageWidth: 28,
+                            imageHeight: 37,
+                          )),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WeightRecord()));
+                          },
+                          child: const RecordIcon(
+                            recordTypeName: "weight",
+                            recordTypeKorName: "체중",
+                            imageWidth: 28,
+                            imageHeight: 37,
+                          )),
                     ],
                   ),
                   const SizedBox(

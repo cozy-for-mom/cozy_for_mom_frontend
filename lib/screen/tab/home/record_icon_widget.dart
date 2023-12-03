@@ -21,7 +21,7 @@ class RecordIcon extends StatelessWidget {
       children: [
         Container(
           height: 76,
-          width: 70,
+          width: 76,
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: const BorderRadius.all(

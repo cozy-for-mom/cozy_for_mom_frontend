@@ -1,10 +1,13 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/tap_widget.dart';
+import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 
 class SupplementRecord extends StatefulWidget {
   const SupplementRecord({Key? key}) : super(key: key);
@@ -25,6 +28,9 @@ class _SupplementRecordState extends State<SupplementRecord> {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now(); // 현재 날짜
     String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
+
+    final supplementNameController = TextEditingController();
+    final supplementTargetCountController = TextEditingController();
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -48,7 +54,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                       children: [
                         Text(formattedDate,
                             style: const TextStyle(
-                                color: Color(0xff2B2D35),
+                                color: mainTextColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18)),
                         IconButton(
@@ -56,51 +62,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           icon: const Icon(Icons.expand_more),
                           onPressed: () {
                             showModalBottomSheet(
-                              backgroundColor: Colors.white
+                              backgroundColor: contentBoxTwoColor
                                   .withOpacity(0.0), // 팝업창 자체 색 : 투명
                               context: context,
                               builder: (context) {
-                                return SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        alignment:
-                                            AlignmentDirectional.centerEnd,
-                                        margin:
-                                            const EdgeInsets.only(bottom: 15),
-                                        height: 20,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.close),
-                                          iconSize: 20,
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pop(); // 팝업 닫기
-                                          },
-                                        ),
-                                      ),
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
-                                        child: Container(
-                                          alignment: Alignment.topCenter,
-                                          color: const Color(0xffFAFAFA),
-                                          padding: const EdgeInsets.only(
-                                              top: 20,
-                                              bottom: 40,
-                                              left: 20,
-                                              right: 20),
-                                          width:
-                                              400, // TODO 화면 너비에 맞춘 width로 수정해야함
-                                          height:
-                                              500, // TODO 화면 높이에 맞춘 height로 수정해야함
-                                          child: const MonthCalendar(),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
+                                return const MonthCalendarModal();
                               },
                             );
                           },
@@ -113,26 +79,25 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             height: 32,
                             width: 32),
                         onPressed: () {
-                          print(
-                              '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AlarmSettingPage(
+                                        type: CardType.supplement,
+                                      )));
                         })
                   ]),
             ),
           ),
-          Positioned(
-              top: 102,
-              left: 20,
-              child: Container(
-                width: 350,
-                height: 63,
-                decoration: const BoxDecoration(
-                    color: Colors.white60), // TODO 주간 캘린더 위젯 넣어야 함
-                child: const Center(
-                    child: Text(
-                  '주간 캘린더',
-                  style: TextStyle(fontSize: 20),
-                )),
-              )),
+          const Positioned(
+            top: 120,
+            left: 20,
+            child: SizedBox(
+              height: 100,
+              width: 350,
+              child: WeeklyCalendar(),
+            ),
+          ),
           Positioned(
             top: 203,
             left: 20,
@@ -151,7 +116,124 @@ class _SupplementRecordState extends State<SupplementRecord> {
           ),
         ],
       ),
-      floatingActionButton: const CustomFloatingButton(),
+      floatingActionButton: CustomFloatingButton(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AlertDialog(
+                    title: const Center(
+                        child: Text(
+                      "영양제 등록",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+                    content: SizedBox(
+                      height: 150,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF7F7FA),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextField(
+                                controller: supplementNameController,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                cursorColor: primaryColor,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  floatingLabelStyle: TextStyle(
+                                    color: Color(0xff858998),
+                                  ),
+                                  labelText: "이름",
+                                  hintText: "영양제 이름 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xffE1E1E7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF7F7FA),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextField(
+                                controller: supplementTargetCountController,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                cursorColor: primaryColor,
+                                decoration: const InputDecoration(
+                                  floatingLabelStyle: TextStyle(
+                                    color: Color(0xff858998),
+                                  ),
+                                  border: InputBorder.none,
+                                  labelText: "목표 섭취량",
+                                  hintText: "횟수 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xffE1E1E7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Tap(
+                    onTap: () {
+                      final supplementName = supplementNameController.text;
+                      final supplementTargetCount =
+                          supplementTargetCountController.text;
+                      // TODO 영양제 등록하기 api
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: 280, // TODO AlertDialog와 길이 어떻게 맞추기
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "등록하기",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

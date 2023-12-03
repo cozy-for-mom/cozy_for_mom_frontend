@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
@@ -29,7 +30,7 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dueDate = DateTime(2024, 2, 14); // TODO 출산 예정일 DB에서 받아와야 함
+    final DateTime dueDate = DateTime(2024, 2, 11); // TODO 출산 예정일 DB에서 받아와야 함
     DateTime now = DateTime.now(); // 현재 날짜
     Duration difference = dueDate.difference(now);
 
@@ -82,15 +83,17 @@ class _MyPageState extends State<MyPage> {
               const Text(
                 "쥬쥬 산모님",
                 style: TextStyle(
-                    color: textColor,
+                    color: mainTextColor,
                     fontWeight: FontWeight.w700,
                     fontSize: 20),
               ),
               const SizedBox(height: 4),
               InkWell(
                 onTap: () {
-                  // TODO 산모 프로필 수정 페이지 이동 구현해야 함
-                  print('산모 프로필 수정 버튼 클릭');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MomProfileModify()));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +101,7 @@ class _MyPageState extends State<MyPage> {
                     const Text(
                       "프로필 수정",
                       style: TextStyle(
-                          color: Color(0xff858998),
+                          color: offButtonTextColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 12),
                       textAlign: TextAlign.center,
@@ -113,14 +116,13 @@ class _MyPageState extends State<MyPage> {
           // const SizedBox(height: 20),
           Positioned(
             top: 303,
-            left: 0,
-            right: 0,
+            left: 11,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                 width: 349, // TODO 화면 너비에 맞춘 width로 수정해야함
                 height: 114, // TODO 화면 높이에 맞춘 height로 수정해야함
@@ -133,7 +135,7 @@ class _MyPageState extends State<MyPage> {
                         const Text(
                           "미룽이와 만나는 날",
                           style: TextStyle(
-                              color: textColor,
+                              color: mainTextColor,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
                         ),
@@ -148,7 +150,7 @@ class _MyPageState extends State<MyPage> {
                       width: 313, // TODO 화면 너비에 맞춘 width로 수정해야함
                       height: 12, // TODO 화면 높이에 맞춘 height로 수정해야함
                       decoration: BoxDecoration(
-                        color: const Color(0xffF0F0F5), // 전체 배경색
+                        color: lineTwoColor, // 전체 배경색
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: FractionallySizedBox(
@@ -170,14 +172,13 @@ class _MyPageState extends State<MyPage> {
           ),
           Positioned(
             top: 434,
-            left: 0,
-            right: 0,
+            left: 10,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                 width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
                 height: 102, // TODO 화면 높이에 맞춘 height로 수정해야함
@@ -186,7 +187,9 @@ class _MyPageState extends State<MyPage> {
                   children: [
                     CustomTextButton(
                         text: '코지로그',
-                        imagePath: 'assets/images/icons/diary.png',
+                        imagePath: 'assets/images/icons/cozylog.png',
+                        imageWidth: 27.3,
+                        imageHeight: 24.34,
                         onPressed: () {
                           // TODO 코지로그 페이지 이동 구현해야 함
                           print('코지로그 버튼 클릭됨');
@@ -199,6 +202,8 @@ class _MyPageState extends State<MyPage> {
                     CustomTextButton(
                         text: '스크랩 내역',
                         imagePath: 'assets/images/icons/scrap.png',
+                        imageWidth: 18.4,
+                        imageHeight: 24,
                         onPressed: () {
                           // TODO 스크랩 내역 페이지 이동 구현해야함
                           print('스크랩 내역 버튼 클릭됨');
@@ -210,36 +215,37 @@ class _MyPageState extends State<MyPage> {
           ),
           Positioned(
             top: 552,
-            left: 0,
-            right: 0,
+            left: 10,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               margin: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: contentBoxTwoColor,
               child: SizedBox(
                   width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
-                  height: 220, // TODO 화면 높이에 맞춘 height로 수정해야함
+                  height: 222, // TODO 화면 높이에 맞춘 height로 수정해야함
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 20),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                          SizedBox(
+                            width: 312,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("우리 아이 관리",
                                     style: TextStyle(
-                                        color: textColor,
+                                        color: mainTextColor,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 18)),
                                 Container(
                                   width: 42,
                                   height: 21,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xffF7F7FA),
+                                    color: contentBoxColor,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: TextButton(
@@ -253,7 +259,7 @@ class _MyPageState extends State<MyPage> {
                                     ),
                                     child: const Text("편집",
                                         style: TextStyle(
-                                            color: Color(0xff858998),
+                                            color: offButtonTextColor,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12)),
                                   ),
@@ -263,8 +269,7 @@ class _MyPageState extends State<MyPage> {
                           ),
                           Expanded(
                             child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 30, horizontal: 20),
+                                padding: const EdgeInsets.only(top: 30),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount:
