@@ -1,12 +1,15 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class BabyGrowthReportListScreen extends StatelessWidget {
   const BabyGrowthReportListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    DateTime? nextCheckUpDate = DateTime.now();
     List<BabyGrowthReportModel> reportList = [
       BabyGrowthReportModel(
         id: 1,
@@ -80,31 +83,73 @@ class BabyGrowthReportListScreen extends StatelessWidget {
                 color: const Color(0xffF0F0F5),
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "다음 검진일",
                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
                         color: primaryColor,
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "2023년 10월 27일",
+                    if (nextCheckUpDate != null)
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: contentBoxTwoColor
+                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            context: context,
+                            builder: (context) {
+                              return const MonthCalendarModal();
+                            },
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              "2023년 10월 27일", // TODO 수정해야함
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 13,
+                              color: Color(0xff858998),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 8,
+                      ),
+                    if (nextCheckUpDate == null)
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: contentBoxTwoColor
+                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            context: context,
+                            builder: (context) {
+                              return const MonthCalendarModal();
+                            },
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              "검진일 등록하기",
+                              style: TextStyle(color: Color(0xff858998)),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 13,
+                              color: Color(0xff858998),
+                            ),
+                          ],
                         ),
-                        Text(
-                          ">",
-                          style: TextStyle(color: Color(0xff858998)),
-                        ),
-                      ],
-                    ),
+                      ),
                   ],
                 ),
               ),
@@ -144,7 +189,7 @@ class BabyGrowthReportListScreen extends StatelessWidget {
                                       Text(
                                         report.title,
                                         style: const TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 17,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0xff2B2D35),
                                         ),
@@ -213,4 +258,5 @@ class BabyGrowthReportListScreen extends StatelessWidget {
 
 void main(List<String> args) {
   runApp(const MaterialApp(home: BabyGrowthReportListScreen()));
+  initializeDateFormatting("ko_kr");
 }
