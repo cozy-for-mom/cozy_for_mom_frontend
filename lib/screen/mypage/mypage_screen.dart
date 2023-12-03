@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
@@ -89,8 +90,10 @@ class _MyPageState extends State<MyPage> {
               const SizedBox(height: 4),
               InkWell(
                 onTap: () {
-                  // TODO 산모 프로필 수정 페이지 이동 구현해야 함
-                  print('산모 프로필 수정 버튼 클릭');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MomProfileModify()));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
