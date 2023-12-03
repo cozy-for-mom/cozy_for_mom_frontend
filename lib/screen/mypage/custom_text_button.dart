@@ -5,11 +5,15 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 class CustomTextButton extends StatelessWidget {
   final String text;
   final String imagePath;
+  final double imageWidth;
+  final double imageHeight;
   final void Function() onPressed;
 
   CustomTextButton({
     required this.text,
     required this.imagePath,
+    required this.imageWidth,
+    required this.imageHeight,
     required this.onPressed,
   });
 
@@ -24,8 +28,8 @@ class CustomTextButton extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              width: 24,
-              height: 24,
+              width: imageWidth,
+              height: imageHeight,
             ),
             const SizedBox(height: 10),
             Text(

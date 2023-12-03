@@ -116,8 +116,7 @@ class _MyPageState extends State<MyPage> {
           // const SizedBox(height: 20),
           Positioned(
             top: 303,
-            left: 0,
-            right: 0,
+            left: 11,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
@@ -173,8 +172,7 @@ class _MyPageState extends State<MyPage> {
           ),
           Positioned(
             top: 434,
-            left: 0,
-            right: 0,
+            left: 10,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
@@ -189,7 +187,9 @@ class _MyPageState extends State<MyPage> {
                   children: [
                     CustomTextButton(
                         text: '코지로그',
-                        imagePath: 'assets/images/icons/diary.png',
+                        imagePath: 'assets/images/icons/cozylog.png',
+                        imageWidth: 27.3,
+                        imageHeight: 24.34,
                         onPressed: () {
                           // TODO 코지로그 페이지 이동 구현해야 함
                           print('코지로그 버튼 클릭됨');
@@ -202,6 +202,8 @@ class _MyPageState extends State<MyPage> {
                     CustomTextButton(
                         text: '스크랩 내역',
                         imagePath: 'assets/images/icons/scrap.png',
+                        imageWidth: 18.4,
+                        imageHeight: 24,
                         onPressed: () {
                           // TODO 스크랩 내역 페이지 이동 구현해야함
                           print('스크랩 내역 버튼 클릭됨');
@@ -213,8 +215,7 @@ class _MyPageState extends State<MyPage> {
           ),
           Positioned(
             top: 552,
-            left: 0,
-            right: 0,
+            left: 10,
             child: Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
@@ -223,13 +224,15 @@ class _MyPageState extends State<MyPage> {
               color: contentBoxTwoColor,
               child: SizedBox(
                   width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
-                  height: 220, // TODO 화면 높이에 맞춘 height로 수정해야함
+                  height: 222, // TODO 화면 높이에 맞춘 height로 수정해야함
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 20),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                          SizedBox(
+                            width: 312,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -266,8 +269,7 @@ class _MyPageState extends State<MyPage> {
                           ),
                           Expanded(
                             child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 30, horizontal: 20),
+                                padding: const EdgeInsets.only(top: 30),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount:
