@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
 
 void main() {
+  // TODO 네비게이션바 구현 및 연동 후, 삭제
   runApp(const MaterialApp(
     home: CozylogMain(),
   ));
@@ -94,7 +95,7 @@ class CozylogMain extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              print('검색 페이지 이동');
+                              print('검색 페이지 이동'); // TODO 검색창 이동 구현
                             },
                             child: const Image(
                                 width: 20,
@@ -149,7 +150,7 @@ class CozylogMain extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8, bottom: 4),
                           child: InkWell(
                               onTap: () {
-                                print('닉네임 수정');
+                                print('닉네임 수정'); // TODO 닉네임 수정 기능 구현
                               },
                               child: const Image(
                                   image:
@@ -192,12 +193,12 @@ class CozylogMain extends StatelessWidget {
                           imageWidth: 27.3,
                           imageHeight: 24.34,
                           onPressed: () {
-                            // TODO 코지로그 페이지 이동 구현해야 함
+                            // TODO 내 코지로그 페이지 이동 구현
                             print('내 코지로그 버튼 클릭됨');
                           }),
                       Container(
-                        width: 1, // 수직선의 두께 조절
-                        height: 42, // 수직선의 높이 조절
+                        width: 1,
+                        height: 42,
                         color: const Color(0xffE8E8ED),
                       ),
                       CustomTextButton(
@@ -255,7 +256,7 @@ class CozylogMain extends StatelessWidget {
         ),
       ),
       floatingActionButton:
-          const CustomFloatingButton(), // TODO 버튼 클릭 시 알림 등록 페이지로 이동
+          const CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
     );
   }
 }

@@ -11,7 +11,6 @@ class CozylogViewWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: screenWidth - 40,
-      // height: 122,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,7 +19,7 @@ class CozylogViewWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 200,
+                width: 200, // TODO 화면 너비에 맞춘 width로 수정해야함
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
