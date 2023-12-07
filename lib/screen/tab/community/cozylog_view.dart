@@ -25,6 +25,8 @@ class CozylogViewWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(cozylog.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w600,

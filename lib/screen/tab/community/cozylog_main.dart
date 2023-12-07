@@ -38,7 +38,7 @@ class CozylogMain extends StatelessWidget {
         commentCount: 4,
         scrapCount: 10,
         imageCount: 2,
-        title: "오늘 병원에 다녀왔어요",
+        title: "오늘 병원에 다녀왔는데 새로운 정보를 알게 되어서 공유합니다~",
         summary: "의외로 임신중 날계란을 피해야한다고 하더라고요 몰랐던 사실이라 공유합니다.",
         date: "2023-10-29",
         imageUrl: "assets/images/test_image2.png",
