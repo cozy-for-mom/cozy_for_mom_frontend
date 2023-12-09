@@ -6,6 +6,7 @@ import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
 
 void main() {
   // TODO 네비게이션바 구현 및 연동 후, 삭제
@@ -150,7 +151,11 @@ class CozylogMain extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8, bottom: 4),
                           child: InkWell(
                               onTap: () {
-                                print('닉네임 수정'); // TODO 닉네임 수정 기능 구현
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MomProfileModify()));
                               },
                               child: const Image(
                                   image:
