@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class MealScreen extends StatefulWidget {
@@ -35,6 +36,22 @@ class _MealScreenState extends State<MealScreen> {
         meals.any((meal) => meal.mealType == MealType.breakfast);
     bool containsLunch = meals.any((meal) => meal.mealType == MealType.lunch);
     bool containsDinner = meals.any((meal) => meal.mealType == MealType.dinner);
+
+    var dinnerImageUrl = containsDinner
+        ? meals
+            .firstWhere((element) => element.mealType == MealType.dinner)
+            .imageUrl
+        : null;
+    var lunchImageUrl = containsDinner
+        ? meals
+            .firstWhere((element) => element.mealType == MealType.lunch)
+            .imageUrl
+        : null;
+    var breakfastImageUrl = containsDinner
+        ? meals
+            .firstWhere((element) => element.mealType == MealType.breakfast)
+            .imageUrl
+        : null;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -155,59 +172,68 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ],
                       )
-                    : Stack(
-                        children: [
-                          SizedBox(
-                            width: 350,
-                            height: 216,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/default_meal.png",
+                    : InkWell(
+                        onTap: () async {
+                          final selectedImage = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          setState(() {
+                            breakfastImageUrl = selectedImage?.path;
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 216,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                        image: AssetImage(
+                                          "assets/images/icons/default_meal.png",
+                                        ),
+                                        height: 43,
+                                        width: 19,
                                       ),
-                                      height: 43,
-                                      width: 19,
-                                    ),
-                                    Text(
-                                      "클릭하여 식사를 기록해 보세요",
-                                      style: TextStyle(
-                                        color: Color(0xff9397A4),
-                                        fontSize: 14,
+                                      Text(
+                                        "클릭하여 식사를 기록해 보세요",
+                                        style: TextStyle(
+                                          color: Color(0xff9397A4),
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            Positioned(
+                              top: 20,
+                              left: 20,
+                              child: Container(
+                                width: 70,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: const Color(0xffF7F7FA),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Center(
+                                    child: Text(
+                                      MealType.dinner.korName,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: Color(0xff858998),
                                       ),
-                                    )
-                                  ],
-                                )),
-                          ),
-                          Positioned(
-                            top: 20,
-                            left: 20,
-                            child: Container(
-                              width: 70,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xffF7F7FA),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(7.0),
-                                child: Center(
-                                  child: Text(
-                                    MealType.dinner.korName,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: Color(0xff858998),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                 const SizedBox(
                   height: 20,
@@ -256,59 +282,69 @@ class _MealScreenState extends State<MealScreen> {
                               )),
                         ],
                       )
-                    : Stack(
-                        children: [
-                          SizedBox(
-                            width: 350,
-                            height: 216,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/default_meal.png",
+                    : InkWell(
+                        // TODO 서버에 요청하여 imageUrl get 해야함
+                        onTap: () async {
+                          final selectedImage = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          setState(() {
+                            lunchImageUrl = selectedImage?.path;
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 216,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                        image: AssetImage(
+                                          "assets/images/icons/default_meal.png",
+                                        ),
+                                        height: 43,
+                                        width: 19,
                                       ),
-                                      height: 43,
-                                      width: 19,
-                                    ),
-                                    Text(
-                                      "클릭하여 식사를 기록해 보세요",
-                                      style: TextStyle(
-                                        color: Color(0xff9397A4),
-                                        fontSize: 14,
+                                      Text(
+                                        "클릭하여 식사를 기록해 보세요",
+                                        style: TextStyle(
+                                          color: Color(0xff9397A4),
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            Positioned(
+                              top: 20,
+                              left: 20,
+                              child: Container(
+                                width: 70,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: const Color(0xffF7F7FA),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Center(
+                                    child: Text(
+                                      MealType.dinner.korName,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: Color(0xff858998),
                                       ),
-                                    )
-                                  ],
-                                )),
-                          ),
-                          Positioned(
-                            top: 20,
-                            left: 20,
-                            child: Container(
-                              width: 70,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xffF7F7FA),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(7.0),
-                                child: Center(
-                                  child: Text(
-                                    MealType.dinner.korName,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: Color(0xff858998),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                 const SizedBox(
                   height: 20,
@@ -359,59 +395,69 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ],
                       )
-                    : Stack(
-                        children: [
-                          SizedBox(
-                            width: 350,
-                            height: 216,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/default_meal.png",
+                    : InkWell(
+                        // TODO 서버에 요청하여 imageUrl get 해야함
+                        onTap: () async {
+                          final selectedImage = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          setState(() {
+                            dinnerImageUrl = selectedImage?.path;
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 216,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                        image: AssetImage(
+                                          "assets/images/icons/default_meal.png",
+                                        ),
+                                        height: 43,
+                                        width: 19,
                                       ),
-                                      height: 43,
-                                      width: 19,
-                                    ),
-                                    Text(
-                                      "클릭하여 식사를 기록해 보세요",
-                                      style: TextStyle(
-                                        color: Color(0xff9397A4),
-                                        fontSize: 14,
+                                      Text(
+                                        "클릭하여 식사를 기록해 보세요",
+                                        style: TextStyle(
+                                          color: Color(0xff9397A4),
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            Positioned(
+                              top: 20,
+                              left: 20,
+                              child: Container(
+                                width: 70,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: const Color(0xffF7F7FA),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Center(
+                                    child: Text(
+                                      MealType.dinner.korName,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: Color(0xff858998),
                                       ),
-                                    )
-                                  ],
-                                )),
-                          ),
-                          Positioned(
-                            top: 20,
-                            left: 20,
-                            child: Container(
-                              width: 70,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xffF7F7FA),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(7.0),
-                                child: Center(
-                                  child: Text(
-                                    MealType.dinner.korName,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: Color(0xff858998),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
               ],
             ),
