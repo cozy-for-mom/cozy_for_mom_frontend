@@ -43,7 +43,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
       viewCount: 40,
       isScrapped: false,
     );
-    isMyCozyLog = cozyLog.writer.id == 1;
+    isMyCozyLog = cozyLog.writer.id == 2;
   }
 
   @override
@@ -150,9 +150,86 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                 isMyCozyLog
                     ? IconButton(
                         onPressed: () {
-                          // TODO Bottom Sheet 추가
+                          showModalBottomSheet<void>(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                height: 220,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 350,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                      ),
+                                      child: Center(
+                                        child: Column(children: <Widget>[
+                                          ListTile(
+                                            title: const Center(
+                                                child: Text(
+                                              '수정하기',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )),
+                                            onTap: () {
+                                              // TODO 수정하기 페이지로 이동
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: const Center(
+                                                child: Text(
+                                              '삭제하기',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )),
+                                            onTap: () {
+                                              // TODO 삭제하기 API 호출
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ]),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        width: 350,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: const Color(0xffC9DFF9),
+                                        ),
+                                        child: const Center(
+                                            child: Text(
+                                          "취소",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        )),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
-                        icon: const Icon(Icons.more_vert_outlined),
+                        icon: const Icon(
+                          Icons.more_vert_outlined,
+                          color: Color(0xff858998),
+                        ),
                       )
                     : IconButton(
                         onPressed: () {
