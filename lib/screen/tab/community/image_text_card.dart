@@ -11,11 +11,11 @@ class ImageTextCard extends StatefulWidget {
 }
 
 class _ImageTextCardState extends State<ImageTextCard> {
-  bool ImageDelete = false;
+  bool imageDelete = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return ImageDelete
+    return imageDelete
         ? Container()
         : Container(
             width: screenWidth - 80,
@@ -44,7 +44,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  print('up 버튼 클릭');
+                                  print('up 버튼 클릭'); // TODO 위로가기 버튼 실핸문 구현
                                 },
                                 child: const Image(
                                     width: 10,
@@ -54,7 +54,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  print('down 버튼 클릭');
+                                  print('down 버튼 클릭'); // TODO 아래로가기 버튼 실핸문 구현
                                 },
                                 child: const Image(
                                     width: 10,
@@ -64,9 +64,9 @@ class _ImageTextCardState extends State<ImageTextCard> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  print('삭제 버튼 클릭');
+                                  print('삭제 버튼 클릭'); // TODO 삭제 버튼 실핸문 구현
                                   setState(() {
-                                    ImageDelete = true;
+                                    imageDelete = true;
                                   });
                                 },
                                 child: const Image(

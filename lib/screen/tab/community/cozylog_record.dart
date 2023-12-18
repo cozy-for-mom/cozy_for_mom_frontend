@@ -150,7 +150,8 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                           Container(
                             padding: const EdgeInsets.only(bottom: 10),
                             width: screenWidth - 80,
-                            height: (screenHeight - 360 - 40 - 36 - 70) / 2,
+                            height: (screenHeight - 360 - 40 - 36 - 70) /
+                                2, // TODO 텍스트필드와 이미지 카드 개수 및 배치 논의 후, 수정
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: TextFormField(
@@ -185,7 +186,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(bottom: 15),
+                            padding: const EdgeInsets.only(bottom: 15),
                             child: selectedImage != null
                                 ? ImageTextCard(image: selectedImage)
                                 : null,
@@ -205,7 +206,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                             selec1: '직접 찍기',
                                             selec2: '앨범에서 선택',
                                             tap1: () {
-                                              print('카메라 구현');
+                                              print('카메라 구현'); // TODO 카메라 연동 구현
                                             },
                                             tap2: _pickImage);
                                       },
@@ -226,8 +227,8 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                         return SelectBottomModal(
                                           selec1: '공개',
                                           selec2: '비공개',
-                                          tap1: () {},
-                                          tap2: () {},
+                                          tap1: () {}, // TODO 공개 설정 함수 실행문 구현
+                                          tap2: () {}, // TODO 비공개 설정 함수 실행문 구현
                                         );
                                       },
                                     );
