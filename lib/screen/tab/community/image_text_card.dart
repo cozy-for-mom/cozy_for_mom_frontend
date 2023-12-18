@@ -64,7 +64,6 @@ class _ImageTextCardState extends State<ImageTextCard> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  print('삭제 버튼 클릭'); // TODO 삭제 버튼 실핸문 구현
                                   setState(() {
                                     imageDelete = true;
                                   });
