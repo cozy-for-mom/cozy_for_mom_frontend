@@ -139,7 +139,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 width: screenWidth,
-                height: 1,
+                height: 1.5,
                 color: bottomLineColor,
               ),
             ),
@@ -188,6 +188,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   cursorHeight: 17,
                   cursorWidth: 1.5,
                   decoration: const InputDecoration(
+                    isDense: true,
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
                     hintText: "내용을 입력하세요.",

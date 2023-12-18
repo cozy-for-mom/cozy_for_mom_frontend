@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 // TODO 버튼 클릭 시 실행해야할 함수를 파라미터로 받아야할 듯!
 
 class CustomFloatingButton extends StatelessWidget {
+  // void Function()? Pressed;
   const CustomFloatingButton({
+    // required this.Pressed,
     super.key,
   });
 
