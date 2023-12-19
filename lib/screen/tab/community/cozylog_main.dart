@@ -5,8 +5,9 @@ import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_view.dart';
 
 void main() {
   // TODO 네비게이션바 구현 및 연동 후, 삭제
@@ -198,8 +199,11 @@ class CozylogMain extends StatelessWidget {
                           imageWidth: 27.3,
                           imageHeight: 24.34,
                           onPressed: () {
-                            // TODO 내 코지로그 페이지 이동 구현
-                            print('내 코지로그 버튼 클릭됨');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CozylogListView()));
                           }),
                       Container(
                         width: 1,
