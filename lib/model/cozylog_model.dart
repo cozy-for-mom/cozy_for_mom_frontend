@@ -7,6 +7,7 @@ class CozyLog {
   final String summary;
   final String date;
   final String? imageUrl;
+  final bool range;
 
   CozyLog(
       {required this.id,
@@ -16,5 +17,6 @@ class CozyLog {
       required this.title,
       required this.summary,
       required this.date,
-      this.imageUrl});
+      this.imageUrl,
+      this.range = false});
 }

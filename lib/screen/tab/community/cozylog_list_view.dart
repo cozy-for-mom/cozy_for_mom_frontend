@@ -53,59 +53,91 @@ class _CozylogListViewState extends State<CozylogListView> {
       body: SizedBox(
         width: screenWidth,
         height: screenHeight,
-        child: Stack(
+        child: Column(
           children: [
-            Positioned(
-              top: 47,
-              child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      const SizedBox(width: 110), // TODO 화면 너비에 맞춘 width로 수정해야함
-                      const Text('커뮤니티',
-                          style: TextStyle(
-                              color: mainTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18)),
-                      const SizedBox(width: 90), // TODO 화면 너비에 맞춘 width로 수정해야함
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              print('검색 페이지 이동'); // TODO 검색창 이동 구현
-                            },
-                            child: const Image(
-                                width: 20,
-                                height: 20,
-                                image: AssetImage(
-                                    "assets/images/icons/search_black.png")),
-                          ),
-                          IconButton(
-                            icon: const Image(
-                              width: 24,
-                              height: 24,
+            const SizedBox(height: 47),
+            Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const SizedBox(width: 100), // TODO 화면 너비에 맞춘 width로 수정해야함
+                    const Text('내 코지로그',
+                        style: TextStyle(
+                            color: mainTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18)),
+                    const SizedBox(width: 80), // TODO 화면 너비에 맞춘 width로 수정해야함
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            print('검색 페이지 이동'); // TODO 검색창 이동 구현
+                          },
+                          child: const Image(
+                              width: 20,
+                              height: 20,
                               image: AssetImage(
-                                "assets/images/icons/mypage.png",
-                              ),
+                                  "assets/images/icons/search_black.png")),
+                        ),
+                        const SizedBox(width: 14),
+                        InkWell(
+                          child: const Image(
+                            width: 24,
+                            height: 24,
+                            image: AssetImage(
+                              "assets/images/icons/mypage.png",
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MyPage()));
-                            },
                           ),
-                        ],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MyPage()));
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              width: screenWidth - 40,
+              height: 53,
+              decoration: BoxDecoration(
+                  color: const Color(0xffF0F0F5),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      const Image(
+                          image: AssetImage('assets/images/icons/cozylog.png'),
+                          width: 25.02,
+                          height: 23.32),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${cozyLogs.length}개의 코지로그',
+                        style: const TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
                       ),
-                    ],
-                  )),
+                    ]),
+                    const Text(
+                      '편집',
+                      style: TextStyle(
+                          color: offButtonTextColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14),
+                    ),
+                  ]),
             ),
           ],
         ),
