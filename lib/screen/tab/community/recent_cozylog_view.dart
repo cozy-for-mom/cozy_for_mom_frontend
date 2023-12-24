@@ -19,7 +19,9 @@ class CozylogViewWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 200, // TODO 화면 너비에 맞춘 width로 수정해야함
+                width: cozylog.imageCount < 1
+                    ? 309
+                    : 200, // TODO 화면 너비에 맞춘 width로 수정해야함
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

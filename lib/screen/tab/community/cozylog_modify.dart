@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
-import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
+import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 
-class CozylogListView extends StatefulWidget {
-  const CozylogListView({super.key});
+class CozylogListModify extends StatefulWidget {
+  const CozylogListModify({super.key});
 
   @override
-  State<CozylogListView> createState() => _CozylogListViewState();
+  State<CozylogListModify> createState() => _CozylogListModifyState();
 }
 
-class _CozylogListViewState extends State<CozylogListView> {
+class _CozylogListModifyState extends State<CozylogListModify> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -136,21 +133,12 @@ class _CozylogListViewState extends State<CozylogListView> {
                               fontSize: 14),
                         ),
                       ]),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CozylogListModify()));
-                        },
-                        child: const Text(
-                          '편집',
-                          style: TextStyle(
-                              color: offButtonTextColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
-                        ),
+                      const Text(
+                        '편집',
+                        style: TextStyle(
+                            color: offButtonTextColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
                       ),
                     ]),
               ),
@@ -199,14 +187,6 @@ class _CozylogListViewState extends State<CozylogListView> {
                           ]),
                     )),
         ],
-      ),
-      floatingActionButton: CustomFloatingButton(
-        pressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CozylogRecordPage()));
-        },
       ),
     );
   }

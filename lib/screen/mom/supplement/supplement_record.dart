@@ -112,7 +112,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
           ),
         ],
       ),
-      floatingActionButton: const CustomFloatingButton(),
+      floatingActionButton: CustomFloatingButton(),
     );
   }
 }

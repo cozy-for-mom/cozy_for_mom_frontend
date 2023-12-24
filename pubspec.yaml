@@ -110,6 +110,7 @@ flutter:
     - assets/images/icons/navigation_baby.png
     - assets/images/icons/navigation_home.png
     - assets/images/icons/navigation_community.png
+    - assets/images/icons/cozylog_off.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

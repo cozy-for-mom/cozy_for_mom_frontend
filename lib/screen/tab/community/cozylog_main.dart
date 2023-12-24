@@ -265,7 +265,7 @@ class CozylogMain extends StatelessWidget {
         ),
       ),
       floatingActionButton:
-          const CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
+          CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
     );
   }
 }
