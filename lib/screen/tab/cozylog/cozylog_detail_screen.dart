@@ -137,11 +137,21 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          dateFormat.format(cozyLog.createdAt),
-                          style: const TextStyle(
-                            color: Color(0xffAAAAAA),
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              dateFormat.format(cozyLog.createdAt),
+                              style: const TextStyle(
+                                color: Color(0xffAAAAAA),
+                              ),
+                            ),
+                            Text(
+                              "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
+                              style: const TextStyle(
+                                color: Color(0xffAAAAAA),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     )
