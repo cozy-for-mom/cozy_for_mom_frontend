@@ -54,7 +54,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
             child: Stack(
               children: [
                 Positioned(
-                  top: 47,
+                  top: 62,
                   left: 0,
                   child: Container(
                     padding: const EdgeInsets.all(10),

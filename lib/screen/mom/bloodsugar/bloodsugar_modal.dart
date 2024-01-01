@@ -49,15 +49,14 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                 Container(
                   width: 312,
                   height: 80,
-                  padding: const EdgeInsets.only(
-                      left: 24, right: 24, top: 16, bottom: 12),
+                  padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(
                           child: Text(widget.time,
