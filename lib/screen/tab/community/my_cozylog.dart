@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/common/widget/bottom_button_modal.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 
 class MyCozylog extends StatefulWidget {
   final bool isEditMode;
@@ -138,6 +139,18 @@ class _MyCozylogState extends State<MyCozylog> {
                 return BottomButtonWidget(
                   isActivated: isAnySelected,
                   text: '코지로그 삭제',
+                  tapped: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const DeleteModal(
+                          title: '코지로그가',
+                          text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                        );
+                      },
+                      barrierDismissible: false,
+                    );
+                  },
                 );
               },
             )

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 
 class DeleteModal extends StatefulWidget {
-  const DeleteModal({super.key});
+  final String text;
+  final String title;
+  const DeleteModal({super.key, required this.text, required this.title});
 
   @override
   State<DeleteModal> createState() => _DeleteModalState();
@@ -13,11 +16,12 @@ class _DeleteModalState extends State<DeleteModal> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Container(
-        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+        width: screenWidth, // TODO 화면 너비에 맞춘 width로 수정해야함
         height: 173,
         decoration: BoxDecoration(
             color: contentBoxTwoColor, borderRadius: BorderRadius.circular(20)),
@@ -25,11 +29,11 @@ class _DeleteModalState extends State<DeleteModal> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: Text('등록된 데이터는 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              child: Text(widget.text,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
                       fontSize: 16)),
@@ -58,7 +62,9 @@ class _DeleteModalState extends State<DeleteModal> {
                 Container(width: 1, height: 65, color: const Color(0xffD9D9D9)),
                 InkWell(
                   onTap: () {
-                    print('삭제하기 버튼 클릭'); // TODO 삭제하기 버튼 기능 구현
+                    Navigator.of(context).pop();
+                    DeleteCompleteAlertModal.showDeleteCompleteDialog(
+                        context, widget.title);
                   },
                   child: Container(
                     width: 56,

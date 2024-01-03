@@ -4,8 +4,12 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 class BottomButtonWidget extends StatefulWidget {
   final bool isActivated;
   final String text;
+  final VoidCallback tapped;
   const BottomButtonWidget(
-      {super.key, required this.isActivated, required this.text});
+      {super.key,
+      required this.isActivated,
+      required this.text,
+      required this.tapped});
 
   @override
   State<BottomButtonWidget> createState() => _BottomButtonWidgetState();
@@ -16,7 +20,7 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
-      onTap: () {},
+      onTap: widget.tapped,
       child: SizedBox(
         width: screenWidth - 40,
         height: 90,
