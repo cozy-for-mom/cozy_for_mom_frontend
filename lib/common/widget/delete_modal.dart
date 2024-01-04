@@ -65,6 +65,7 @@ class _DeleteModalState extends State<DeleteModal> {
                     Navigator.of(context).pop();
                     DeleteCompleteAlertModal.showDeleteCompleteDialog(
                         context, widget.title);
+                    // TODO 삭제 기능 구현
                   },
                   child: Container(
                     width: 56,
