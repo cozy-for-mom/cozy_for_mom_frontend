@@ -74,7 +74,7 @@ class _CozylogListViewState extends State<CozylogListView> {
         const SizedBox(height: 22),
         widget.cozyLogs.isNotEmpty
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
                 child: Container(
                   width: screenWidth - 40,
                   height: boxHeight * widget.cozyLogs.length + 20,

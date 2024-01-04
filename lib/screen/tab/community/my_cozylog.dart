@@ -9,6 +9,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/common/widget/bottom_button_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 
 class MyCozylog extends StatefulWidget {
   final bool isEditMode;
@@ -76,7 +77,10 @@ class _MyCozylogState extends State<MyCozylog> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CozylogMain()));
               },
             ),
             title: const Text('내 코지로그',

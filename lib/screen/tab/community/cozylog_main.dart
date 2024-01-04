@@ -9,13 +9,6 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.d
 import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 
-void main() {
-  // TODO 네비게이션바 구현 및 연동 후, 삭제
-  runApp(const MaterialApp(
-    home: CozylogMain(),
-  ));
-}
-
 class CozylogMain extends StatelessWidget {
   const CozylogMain({super.key});
 

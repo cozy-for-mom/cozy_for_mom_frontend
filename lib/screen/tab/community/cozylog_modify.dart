@@ -15,21 +15,42 @@ class CozylogListModify extends StatefulWidget {
 
 class CozylogListModifyState extends ChangeNotifier {
   int _selectedCount = 0;
-
   int get selectedCount => _selectedCount;
 
-  void incrementSelectedCount() {
-    _selectedCount++;
+  List<int> _selectedIds = [];
+  List<int> get selectedIds => _selectedIds;
+
+  bool isSelected(int id) {
+    return _selectedIds.contains(id);
+  }
+
+  void toggleSelected(int id) {
+    if (_selectedIds.contains(id)) {
+      _selectedIds.remove(id);
+      _selectedCount--;
+    } else {
+      _selectedIds.add(id);
+      _selectedCount++;
+    }
+
     notifyListeners();
   }
 
-  void decrementSelectedCount() {
-    _selectedCount--;
+  void setAllSelected(List<CozyLog> cozyLogs) {
+    _selectedIds = cozyLogs.map((cozyLog) => cozyLog.id).toList();
+    _selectedCount = cozyLogs.length;
+    notifyListeners();
+  }
+
+  void clearSelection() {
+    _selectedIds.clear();
+    _selectedCount = 0;
     notifyListeners();
   }
 }
 
 class _CozylogListModifyState extends State<CozylogListModify> {
+  bool isAllSelected = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -71,9 +92,17 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () {},
-                        child: const Text('전체선택',
-                            style: TextStyle(
+                        onTap: () {
+                          isAllSelected
+                              ? cozylogListModifyState.clearSelection()
+                              : cozylogListModifyState
+                                  .setAllSelected(widget.cozyLogs);
+                          setState(() {
+                            isAllSelected = !isAllSelected;
+                          });
+                        },
+                        child: Text(isAllSelected ? '전체해제' : '전체선택',
+                            style: const TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14)),
@@ -99,7 +128,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
         ),
         const SizedBox(height: 22),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
           child: Container(
             width: screenWidth - 40,
             height: boxHeight * widget.cozyLogs.length + 20,
@@ -112,13 +141,9 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                   .map((cozylog) => CozylogViewWidget(
                       cozylog: cozylog,
                       isEditMode: true,
+                      cozylogListModifyState: cozylogListModifyState,
                       onSelectedChanged: (isSelected) {
-                        // isSelected가 변경되면 호출되는 콜백 함수
-                        if (isSelected) {
-                          cozylogListModifyState.incrementSelectedCount();
-                        } else {
-                          cozylogListModifyState.decrementSelectedCount();
-                        }
+                        cozylogListModifyState.toggleSelected(cozylog.id);
                         setState(() {}); // setState를 호출하여 UI 업데이트
                       }))
                   .toList(),
