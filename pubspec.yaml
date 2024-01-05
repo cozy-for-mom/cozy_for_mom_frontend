@@ -113,6 +113,7 @@ flutter:
     - assets/images/icons/cozylog_off.png
     - assets/images/icons/select_off.png
     - assets/images/icons/select_on.png
+    - assets/images/icons/scrap_off.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

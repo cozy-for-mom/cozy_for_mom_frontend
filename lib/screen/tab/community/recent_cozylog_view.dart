@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
 class CozylogViewWidget extends StatefulWidget {
   final bool isEditMode;
   final CozyLog cozylog;
-  final CozylogListModifyState? cozylogListModifyState;
+  final ListModifyState? listModifyState;
   final ValueChanged<bool>? onSelectedChanged;
   const CozylogViewWidget(
       {super.key,
       this.isEditMode = false,
       required this.cozylog,
-      this.cozylogListModifyState,
+      this.listModifyState,
       this.onSelectedChanged});
   @override
   State<CozylogViewWidget> createState() => _CozylogViewWidgetState();
@@ -38,13 +38,13 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                           setState(() {
                             isSelected = !isSelected;
                             widget.onSelectedChanged?.call(!(widget
-                                    .cozylogListModifyState
+                                    .listModifyState
                                     ?.isSelected(widget.cozylog.id) ??
                                 false));
                           });
                         },
                         child: Image(
-                          image: widget.cozylogListModifyState
+                          image: widget.listModifyState
                                       ?.isSelected(widget.cozylog.id) ??
                                   false
                               //isSelected
