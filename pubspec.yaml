@@ -74,6 +74,7 @@ flutter:
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
+    - assets/images/icons/default_meal.png
     - assets/images/icons/icon_baby.png
     - assets/images/icons/icon_bloodsugar.png
     - assets/images/icons/icon_clock.png
