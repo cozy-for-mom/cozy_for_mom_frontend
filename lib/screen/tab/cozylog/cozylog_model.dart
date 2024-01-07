@@ -49,3 +49,43 @@ class CozyLogWriter {
     required this.imageUrl,
   });
 }
+
+class CozyLogSearchResponse {
+  final List<CozyLogSearchResult> results;
+  final int totalElements;
+
+  CozyLogSearchResponse({
+    required this.results,
+    required this.totalElements,
+  });
+}
+
+class CozyLogSearchResult {
+  final int id;
+  final String title;
+  final String summary;
+  final String date;
+  final int commentCount;
+  final int scrapCount;
+  final String? imageUrl;
+  final int imageCount;
+
+  CozyLogSearchResult({
+    required this.id,
+    required this.title,
+    required this.summary,
+    required this.date,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageUrl,
+    required this.imageCount,
+  });
+}
+
+enum CozyLogSearchSortType {
+  comment("댓글순"),
+  time("최신순");
+
+  final String name;
+  const CozyLogSearchSortType(this.name);
+}
