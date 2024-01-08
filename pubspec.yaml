@@ -40,7 +40,8 @@ dependencies:
   table_calendar: ^3.0.8
   provider: ^6.0.5
   flutter_slidable: ^0.6.0
-
+  image_picker: ^1.0.4
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -101,6 +102,11 @@ flutter:
     - assets/images/test_image2.png
     - assets/images/icons/comment.png
     - assets/images/icons/scrap_gray.png
+    - assets/images/icons/gallery.png
+    - assets/images/icons/disclosure.png
+    - assets/images/icons/image_up.png
+    - assets/images/icons/image_down.png
+    - assets/images/icons/image_delete.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

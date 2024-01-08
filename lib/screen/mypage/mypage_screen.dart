@@ -58,14 +58,13 @@ class _MyPageState extends State<MyPage> {
           Positioned(
             top: 66,
             left: 356,
-            child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop(); // 현재 화면을 닫음
-                },
-                child: const Image(
-                    width: 16,
-                    height: 16,
-                    image: AssetImage('assets/images/icons/close.png'))),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 현재 화면을 닫음
+              },
+              icon: const Icon(Icons.close),
+              iconSize: 32,
+            ),
           ),
           Positioned(
             top: 119,
