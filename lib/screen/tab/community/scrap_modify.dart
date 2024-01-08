@@ -1,26 +1,26 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
-class CozylogListModify extends StatefulWidget {
+class ScrapListModify extends StatefulWidget {
   final List<CozyLog> cozyLogs;
-  const CozylogListModify({super.key, this.cozyLogs = const []});
+  const ScrapListModify({super.key, this.cozyLogs = const []});
 
   @override
-  State<CozylogListModify> createState() => _CozylogListModifyState();
+  State<ScrapListModify> createState() => _ScrapListModifyState();
 }
 
-class _CozylogListModifyState extends State<CozylogListModify> {
+class _ScrapListModifyState extends State<ScrapListModify> {
   bool isAllSelected = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
-    ListModifyState cozylogListModifyState = context.watch<ListModifyState>();
+    ListModifyState scrapListModifyState = context.watch<ListModifyState>();
     return Column(
       children: [
         Padding(
@@ -37,14 +37,14 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                 children: [
                   Row(children: [
                     const Image(
-                        image: AssetImage('assets/images/icons/cozylog.png'),
-                        width: 25.02,
-                        height: 23.32),
+                        image: AssetImage('assets/images/icons/scrap.png'),
+                        width: 18.4,
+                        height: 24),
                     const SizedBox(width: 8),
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
-                          '${cozylogListModifyState.selectedCount}/${widget.cozyLogs.length}',
+                          '${scrapListModifyState.selectedCount}/${widget.cozyLogs.length}',
                           style: const TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
@@ -58,8 +58,8 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                       InkWell(
                         onTap: () {
                           isAllSelected
-                              ? cozylogListModifyState.clearSelection()
-                              : cozylogListModifyState
+                              ? scrapListModifyState.clearSelection()
+                              : scrapListModifyState
                                   .setAllSelected(widget.cozyLogs);
                           setState(() {
                             isAllSelected = !isAllSelected;
@@ -74,11 +74,11 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                       const SizedBox(width: 24),
                       InkWell(
                         onTap: () {
-                          cozylogListModifyState.clearSelection();
+                          scrapListModifyState.clearSelection();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyCozylog()));
+                                  builder: (context) => const MyScrap()));
                         },
                         child: const Text('편집완료',
                             style: TextStyle(
@@ -106,9 +106,9 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                   .map((cozylog) => CozylogViewWidget(
                       cozylog: cozylog,
                       isEditMode: true,
-                      listModifyState: cozylogListModifyState,
+                      listModifyState: scrapListModifyState,
                       onSelectedChanged: (isSelected) {
-                        cozylogListModifyState.toggleSelected(cozylog.id);
+                        scrapListModifyState.toggleSelected(cozylog.id);
                         setState(() {});
                       }))
                   .toList(),

@@ -1,3 +1,5 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -12,15 +14,15 @@ import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
-class MyCozylog extends StatefulWidget {
+class MyScrap extends StatefulWidget {
   final bool isEditMode;
-  const MyCozylog({super.key, this.isEditMode = false});
+  const MyScrap({super.key, this.isEditMode = false});
 
   @override
-  State<MyCozylog> createState() => _MyCozylogState();
+  State<MyScrap> createState() => _MyScrapState();
 }
 
-class _MyCozylogState extends State<MyCozylog> {
+class _MyScrapState extends State<MyScrap> {
   @override
   Widget build(BuildContext context) {
     final cozyLogs = [
@@ -84,7 +86,7 @@ class _MyCozylogState extends State<MyCozylog> {
                         builder: (context) => const CozylogMain()));
               },
             ),
-            title: const Text('내 코지로그',
+            title: const Text('스크랩',
                 style: TextStyle(
                     color: mainTextColor,
                     fontWeight: FontWeight.w600,
@@ -116,8 +118,8 @@ class _MyCozylogState extends State<MyCozylog> {
           ),
           SliverToBoxAdapter(
             child: widget.isEditMode
-                ? CozylogListModify(cozyLogs: cozyLogs)
-                : CozylogListView(cozyLogs: cozyLogs),
+                ? ScrapListModify(cozyLogs: cozyLogs)
+                : ScrapListView(cozyLogs: cozyLogs),
           ),
         ],
       ),
@@ -135,22 +137,22 @@ class _MyCozylogState extends State<MyCozylog> {
           ? BottomSheet(
               onClosing: () {},
               builder: (BuildContext context) {
-                ListModifyState cozylogListModifyState =
+                ListModifyState scrapListModifyState =
                     context.watch<ListModifyState>();
-                int selectedCount = cozylogListModifyState.selectedCount;
+                int selectedCount = scrapListModifyState.selectedCount;
 
                 bool isAnySelected = selectedCount > 0;
 
                 return BottomButtonWidget(
                   isActivated: isAnySelected,
-                  text: '코지로그 삭제',
+                  text: '스크랩 삭제',
                   tapped: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return const DeleteModal(
-                          title: '코지로그가',
-                          text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                          title: '스크랩이',
+                          text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                         );
                       },
                       barrierDismissible: false,
