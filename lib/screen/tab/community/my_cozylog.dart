@@ -23,6 +23,7 @@ class MyCozylog extends StatefulWidget {
 class _MyCozylogState extends State<MyCozylog> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final cozyLogs = [
       CozyLog(
         id: 1,
@@ -132,32 +133,38 @@ class _MyCozylogState extends State<MyCozylog> {
               },
             ),
       bottomSheet: widget.isEditMode
-          ? BottomSheet(
-              onClosing: () {},
-              builder: (BuildContext context) {
-                ListModifyState cozylogListModifyState =
-                    context.watch<ListModifyState>();
-                int selectedCount = cozylogListModifyState.selectedCount;
+          ? SizedBox(
+              width: screenWidth - 40,
+              child: Container(
+                color: Colors.transparent,
+                child: BottomSheet(
+                  onClosing: () {},
+                  builder: (BuildContext context) {
+                    ListModifyState cozylogListModifyState =
+                        context.watch<ListModifyState>();
+                    int selectedCount = cozylogListModifyState.selectedCount;
 
-                bool isAnySelected = selectedCount > 0;
+                    bool isAnySelected = selectedCount > 0;
 
-                return BottomButtonWidget(
-                  isActivated: isAnySelected,
-                  text: '코지로그 삭제',
-                  tapped: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const DeleteModal(
-                          title: '코지로그가',
-                          text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                    return BottomButtonWidget(
+                      isActivated: isAnySelected,
+                      text: '코지로그 삭제',
+                      tapped: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const DeleteModal(
+                              title: '코지로그가',
+                              text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                            );
+                          },
+                          barrierDismissible: false,
                         );
                       },
-                      barrierDismissible: false,
                     );
                   },
-                );
-              },
+                ),
+              ),
             )
           : null,
     );
