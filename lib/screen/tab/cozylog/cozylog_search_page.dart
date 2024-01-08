@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class CozyLogSearchPage extends StatefulWidget {
@@ -45,11 +46,22 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                       SizedBox(
                         width: 10,
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "검색어를 입력해주세요",
-                          style: TextStyle(color: Color(0xff858998)),
+                      Expanded(
+                        child: TextField(
+                          cursorColor: primaryColor,
+                          cursorHeight: 15,
+                          decoration: InputDecoration(
+                            focusColor: primaryColor,
+                            fillColor: primaryColor,
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Color(0xff858998),
+                              fontSize: 14,
+                              height: 19 / 14,
+                            ),
+                            hintText: "검색어를 입력해주세요",
+                          ),
+                          // style: TextStyle(color: Color(0xff858998)),
                         ),
                       ),
                     ],
