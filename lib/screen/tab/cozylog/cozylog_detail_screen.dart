@@ -1,5 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_component.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +25,29 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   ));
 
   late TextEditingController textController;
+
+  List<CozyLogComment> commentList = [
+    CozyLogComment(
+      commentId: 2,
+      parentId: null,
+      content: "정보 감사합니다! 헤헤",
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      writerId: 2,
+      writerImageUrl: null,
+      writerNickname: "cozy",
+    ),
+    CozyLogComment(
+      commentId: 3,
+      parentId: null,
+      content: "정보 감사합니다! 헤헤2",
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      writerId: 3,
+      writerImageUrl: null,
+      writerNickname: "도톨이",
+    )
+  ];
 
   @override
   void initState() {
@@ -57,6 +82,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(400, 60),
@@ -107,6 +133,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
           ),
         ),
       ),
+      // TODO scrollable 수정해야함.
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         child: Column(
@@ -319,6 +346,25 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                 },
               ),
             ),
+            // 댓글 목록
+            // TODO parent - child 구조 표현해야 함
+            const Divider(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: commentList.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      CozyLogCommentComponent(
+                        comment: commentList[index],
+                      ),
+                      const Divider(),
+                    ],
+                  );
+                },
+              ),
+            ),
+            // 댓글 입력
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
