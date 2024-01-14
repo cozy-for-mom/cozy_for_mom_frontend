@@ -15,6 +15,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   late CozyLog cozyLog;
   late bool isMyCozyLog;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
+  String commentInput = '';
+
+  Image submitIcon = const Image(
+      image: AssetImage(
+    "assets/images/icons/submit_inactive.png",
+  ));
+
+  late TextEditingController textController;
 
   @override
   void initState() {
@@ -44,6 +52,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
       isScrapped: false,
     );
     isMyCozyLog = cozyLog.writer.id == 2;
+    textController = TextEditingController(text: commentInput);
   }
 
   @override
@@ -77,9 +86,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                   ),
                   IconButton(
                     icon: const Image(
-                        image: AssetImage('assets/images/icons/alert.png'),
-                        height: 32,
-                        width: 32),
+                      image: AssetImage('assets/images/icons/alert.png'),
+                      height: 32,
+                      width: 32,
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -255,7 +265,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             : const Icon(
                                 Icons.bookmark_outline_rounded,
                                 color: Color(0xff858998),
-                              )), // TODO 아이콘으로 수정 필요
+                              ),
+                      ), // TODO 아이콘으로 수정 필요
               ],
             ),
             const Divider(
@@ -301,13 +312,70 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         ),
                         const SizedBox(
                           height: 12,
-                        )
+                        ),
                       ],
                     ),
                   );
                 },
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: 36,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    20,
+                  ),
+                  color: const Color(0xffF7F7FA),
+                ),
+                child: TextField(
+                  controller: textController,
+                  onChanged: (text) {
+                    if (text != '') {
+                      setState(() {
+                        commentInput = text;
+                        submitIcon = const Image(
+                            image: AssetImage(
+                          "assets/images/icons/submit_active.png",
+                        ));
+                      });
+                    } else {
+                      setState(() {
+                        commentInput = '';
+                        submitIcon = const Image(
+                            image: AssetImage(
+                          "assets/images/icons/submit_inactive.png",
+                        ));
+                      });
+                    }
+                  },
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    hintText: "댓글을 남겨주세요.",
+                    hintStyle: const TextStyle(
+                      color: Color(0xffBCC0C7),
+                      fontSize: 14,
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        if (commentInput != '') {
+                          print("send"); // TODO API 호출
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: submitIcon,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
