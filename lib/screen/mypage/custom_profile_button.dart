@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class CustomProfileButton extends StatelessWidget {
   final String text;
   final String imagePath;
+  final Color offBackColor;
   final bool isSelected;
   final void Function() onPressed;
 
   CustomProfileButton({
     required this.text,
     required this.imagePath,
+    required this.offBackColor,
     required this.isSelected,
     required this.onPressed,
   });
@@ -28,7 +30,7 @@ class CustomProfileButton extends StatelessWidget {
                   border: isSelected
                       ? Border.all(width: 2, color: primaryColor)
                       : null,
-                  color: isSelected ? profileColor : const Color(0xffF8F8FA)),
+                  color: isSelected ? profileColor : offBackColor),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(

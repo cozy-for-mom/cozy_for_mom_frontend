@@ -104,6 +104,14 @@ flutter:
     - assets/images/babyhome_dark_n.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
+    - assets/images/icons/photo_register.png
+    - assets/images/subtract2.png
+    - assets/images/icons/search_black.png
+    - assets/images/icons/close.png
+    - assets/images/test_image.png
+    - assets/images/test_image2.png
+    - assets/images/icons/comment.png
+    - assets/images/icons/scrap_gray.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
