@@ -9,6 +9,7 @@ class CustomFloatingButton extends StatelessWidget {
   CustomFloatingButton({
     this.pressed,
     super.key,
+    this.onTap,
   });
 
   @override

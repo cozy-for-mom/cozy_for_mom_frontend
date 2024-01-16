@@ -58,13 +58,16 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 top: 181,
                 left: 229,
                 child: InkWell(
-                    onTap: () {
-                      print('이미지 수정 버튼 클릭');
-                    },
-                    child: const Image(
-                        image: AssetImage("assets/images/icons/circle_pen.png"),
-                        width: 24,
-                        height: 24)),
+                  onTap: () {
+                    // TODO 이미지 추가 로직
+                    print('이미지 수정 버튼 클릭');
+                  },
+                  child: const Image(
+                    image: AssetImage("assets/images/icons/circle_pen.png"),
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
               ),
               Positioned(
                 top: 244.77,

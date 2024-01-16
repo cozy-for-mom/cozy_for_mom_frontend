@@ -35,34 +35,28 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: const Color(0xffF7F7FA),
+        elevation: 0,
+        title: const Text(
+          "알림 설정",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: IconButton(
+          color: Colors.black,
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Positioned(
-            top: 47,
-            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    const Spacer(),
-                    const Text('알림 설정',
-                        style: TextStyle(
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18)),
-                    const Spacer(),
-                  ]),
-            ),
-          ),
-          Positioned(
-              top: 104,
+              top: 10,
               left: 20,
               child: Container(
                 width: 351, // TODO 화면 너비에 맞춘 width로 수정해야함
