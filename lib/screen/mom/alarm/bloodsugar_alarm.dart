@@ -8,7 +8,7 @@ class BloodsugarAlarm extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     return Positioned(
-      top: 204,
+      top: 90,
       left: 0,
       right: 0,
       child: SizedBox(

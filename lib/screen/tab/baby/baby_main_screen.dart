@@ -7,15 +7,15 @@ import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: BabyMainPage(),
+    home: BabyMainScreen(),
   ));
 }
 
-class BabyMainPage extends StatefulWidget {
-  const BabyMainPage({super.key});
+class BabyMainScreen extends StatefulWidget {
+  const BabyMainScreen({super.key});
 
   @override
-  State<BabyMainPage> createState() => _BabyMainPageState();
+  State<BabyMainScreen> createState() => _BabyMainScreenState();
 }
 
 class _BabyMainPageState extends State<BabyMainPage> {
