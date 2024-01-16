@@ -133,296 +133,305 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
           ),
         ),
       ),
-      // TODO scrollable 수정해야함.
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cozyLog.title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(
-              height: 17,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      child: cozyLog.writer.imageUrl == null
-                          ? Image.asset("assets/images/icons/momProfile.png")
-                          : Image.network(
-                              cozyLog.writer.imageUrl!,
-                            ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          cozyLog.writer.nickname,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              dateFormat.format(cozyLog.createdAt),
-                              style: const TextStyle(
-                                color: Color(0xffAAAAAA),
+      body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(), // new
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cozyLog.title,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 17,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        child: cozyLog.writer.imageUrl == null
+                            ? Image.asset("assets/images/icons/momProfile.png")
+                            : Image.network(
+                                cozyLog.writer.imageUrl!,
                               ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            cozyLog.writer.nickname,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
                             ),
-                            isMyCozyLog
-                                ? Text(
-                                    "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
-                                    style: const TextStyle(
-                                      color: Color(0xffAAAAAA),
-                                    ),
-                                  )
-                                : Container()
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                isMyCozyLog
-                    ? IconButton(
-                        onPressed: () {
-                          showModalBottomSheet<void>(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                height: 220,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 350,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.white,
-                                      ),
-                                      child: Center(
-                                        child: Column(children: <Widget>[
-                                          ListTile(
-                                            title: const Center(
-                                                child: Text(
-                                              '수정하기',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )),
-                                            onTap: () {
-                                              // TODO 수정하기 페이지로 이동
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: const Center(
-                                                child: Text(
-                                              '삭제하기',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )),
-                                            onTap: () {
-                                              // TODO 삭제하기 API 호출
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ]),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        width: 350,
-                                        height: 56,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: const Color(0xffC9DFF9),
-                                        ),
-                                        child: const Center(
-                                            child: Text(
-                                          "취소",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                dateFormat.format(cozyLog.createdAt),
+                                style: const TextStyle(
+                                  color: Color(0xffAAAAAA),
+                                ),
+                              ),
+                              isMyCozyLog
+                                  ? Text(
+                                      "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
+                                      style: const TextStyle(
+                                        color: Color(0xffAAAAAA),
                                       ),
                                     )
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.more_vert_outlined,
-                          color: Color(0xff858998),
-                        ),
+                                  : Container()
+                            ],
+                          ),
+                        ],
                       )
-                    : IconButton(
-                        onPressed: () {
-                          // 스크랩 버튼 누르기 API
-                        },
-                        icon: cozyLog.isScrapped
-                            ? const Icon(
-                                Icons.bookmark_rounded,
-                                color: Color(0xff858998),
-                              )
-                            : const Icon(
-                                Icons.bookmark_outline_rounded,
-                                color: Color(0xff858998),
-                              ),
-                      ), // TODO 아이콘으로 수정 필요
-              ],
-            ),
-            const Divider(
-              color: Color(0xffE1E1E7),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              cozyLog.content,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: cozyLog.imageList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    child: Column(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Image.network(
-                            cozyLog.imageList[index].imageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          cozyLog.imageList[index].description,
-                          style: const TextStyle(
-                            color: Color(0xffAAAAAA),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            // 댓글 목록
-            // TODO parent - child 구조 표현해야 함
-            const Divider(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: commentList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      CozyLogCommentComponent(
-                        comment: commentList[index],
-                      ),
-                      const Divider(),
                     ],
-                  );
-                },
-              ),
-            ),
-            // 댓글 입력
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 36,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    20,
                   ),
-                  color: const Color(0xffF7F7FA),
+                  isMyCozyLog
+                      ? IconButton(
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                  height: 220,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 350,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.white,
+                                        ),
+                                        child: Center(
+                                          child: Column(children: <Widget>[
+                                            ListTile(
+                                              title: const Center(
+                                                  child: Text(
+                                                '수정하기',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              )),
+                                              onTap: () {
+                                                // TODO 수정하기 페이지로 이동
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: const Center(
+                                                  child: Text(
+                                                '삭제하기',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              )),
+                                              onTap: () {
+                                                // TODO 삭제하기 API 호출
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ]),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          width: 350,
+                                          height: 56,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: const Color(0xffC9DFF9),
+                                          ),
+                                          child: const Center(
+                                              child: Text(
+                                            "취소",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.more_vert_outlined,
+                            color: Color(0xff858998),
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            // 스크랩 버튼 누르기 API
+                          },
+                          icon: cozyLog.isScrapped
+                              ? const Icon(
+                                  Icons.bookmark_rounded,
+                                  color: Color(0xff858998),
+                                )
+                              : const Icon(
+                                  Icons.bookmark_outline_rounded,
+                                  color: Color(0xff858998),
+                                ),
+                        ), // TODO 아이콘으로 수정 필요
+                ],
+              ),
+              const Divider(
+                color: Color(0xffE1E1E7),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                cozyLog.content,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
                 ),
-                child: TextField(
-                  controller: textController,
-                  onChanged: (text) {
-                    if (text != '') {
-                      setState(() {
-                        commentInput = text;
-                        submitIcon = const Image(
-                            image: AssetImage(
-                          "assets/images/icons/submit_active.png",
-                        ));
-                      });
-                    } else {
-                      setState(() {
-                        commentInput = '';
-                        submitIcon = const Image(
-                            image: AssetImage(
-                          "assets/images/icons/submit_inactive.png",
-                        ));
-                      });
-                    }
-                  },
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    hintText: "댓글을 남겨주세요.",
-                    hintStyle: const TextStyle(
-                      color: Color(0xffBCC0C7),
-                      fontSize: 14,
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        if (commentInput != '') {
-                          print("send"); // TODO API 호출
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: submitIcon,
+              ),
+              const SizedBox(
+                height: 22,
+              ),
+              SizedBox(
+                height: 550, // TODO 어떻게 동적으로 크기 조정할 수 있지?
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(), // new
+                  itemCount: cozyLog.imageList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      child: Column(
+                        children: [
+                          Container(
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Image.network(
+                              cozyLog.imageList[index].imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            cozyLog.imageList[index].description,
+                            style: const TextStyle(
+                              color: Color(0xffAAAAAA),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                        ],
                       ),
+                    );
+                  },
+                ),
+              ),
+              // 댓글 목록
+              // TODO parent - child 구조 표현해야 함
+              const Divider(),
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(), // new
+                  itemCount: commentList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        CozyLogCommentComponent(
+                          comment: commentList[index],
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              // 댓글 입력
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: 36,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      20,
                     ),
-                    border: InputBorder.none,
+                    color: const Color(0xffF7F7FA),
+                  ),
+                  child: TextField(
+                    controller: textController,
+                    onChanged: (text) {
+                      if (text != '') {
+                        setState(() {
+                          commentInput = text;
+                          submitIcon = const Image(
+                              image: AssetImage(
+                            "assets/images/icons/submit_active.png",
+                          ));
+                        });
+                      } else {
+                        setState(() {
+                          commentInput = '';
+                          submitIcon = const Image(
+                              image: AssetImage(
+                            "assets/images/icons/submit_inactive.png",
+                          ));
+                        });
+                      }
+                    },
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      hintText: "댓글을 남겨주세요.",
+                      hintStyle: const TextStyle(
+                        color: Color(0xffBCC0C7),
+                        fontSize: 14,
+                      ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          if (commentInput != '') {
+                            print("send"); // TODO API 호출
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: submitIcon,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
+
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
     );
