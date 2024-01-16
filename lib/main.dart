@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart'; // 한국어 로케일을 사
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
+import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 
 void main() {
   initializeDateFormatting('ko_KR', null).then((_) {
@@ -13,6 +14,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => MyDataModel()),
           ChangeNotifierProvider(create: (context) => ListModifyState()),
+          // ChangeNotifierProvider(create: (context) => JoinInputData()),
         ],
         child: const App(),
       ),
