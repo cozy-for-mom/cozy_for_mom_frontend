@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:flutter/material.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -20,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _widgetOptions = <Widget>[
     const BabyMainScreen(),
     const HomeFragment(),
-    Container(),
+    const CozylogMain(),
   ];
   @override
   Widget build(BuildContext context) {

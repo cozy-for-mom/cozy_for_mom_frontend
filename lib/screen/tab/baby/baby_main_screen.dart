@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
+import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -18,14 +19,14 @@ class BabyMainScreen extends StatefulWidget {
 }
 
 class _BabyMainScreenState extends State<BabyMainScreen> {
+  final baby = BabyProfile(
+      babyId: 1,
+      image: "assets/images/babyProfileTest.png",
+      name: "미룽이",
+      isProfileSelected: true);
+
   @override
   Widget build(BuildContext context) {
-    final baby = BabyProfile(
-        babyId: 1,
-        image: "assets/images/babyProfileTest.png",
-        name: "미룽이",
-        isProfileSelected: true);
-
     final DateTime dueDate = DateTime(2024, 2, 11); // TODO 출산 예정일 DB에서 받아와야 함
     DateTime now = DateTime.now(); // 현재 날짜
     Duration difference = dueDate.difference(now);
@@ -164,7 +165,11 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        print('성장보고서 페이지 이동'); // TODO 성장보고서 페이지 연동
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const GrowReportRegister()));
                       },
                       child: const CustomButton(
                           text: '성장 보고서',

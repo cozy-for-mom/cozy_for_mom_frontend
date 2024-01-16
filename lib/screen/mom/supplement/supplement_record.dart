@@ -117,7 +117,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
         ],
       ),
       floatingActionButton: CustomFloatingButton(
-        onTap: () {
+        pressed: () {
           showDialog(
             context: context,
             builder: (BuildContext context) {

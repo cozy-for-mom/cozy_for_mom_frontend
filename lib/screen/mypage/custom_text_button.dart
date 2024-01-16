@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
 // 아이콘 + 텍스트 버튼 (커스텀버튼 위젯)
 class CustomTextButton extends StatelessWidget {
   final String text;
+  final Color textColor;
+  final FontWeight textWeight;
   final String imagePath;
   final double imageWidth;
   final double imageHeight;
@@ -11,6 +12,8 @@ class CustomTextButton extends StatelessWidget {
 
   CustomTextButton({
     required this.text,
+    required this.textColor,
+    required this.textWeight,
     required this.imagePath,
     required this.imageWidth,
     required this.imageHeight,
@@ -34,10 +37,8 @@ class CustomTextButton extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               text,
-              style: const TextStyle(
-                  color: mainTextColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14),
+              style: TextStyle(
+                  color: textColor, fontWeight: textWeight, fontSize: 14),
             ),
           ],
         ),

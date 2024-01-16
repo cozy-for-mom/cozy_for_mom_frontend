@@ -42,7 +42,8 @@ dependencies:
   provider: ^6.0.5
   image_picker: ^1.0.4
   flutter_slidable: ^0.6.0
-
+  image_picker: ^1.0.4
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,6 +82,11 @@ flutter:
     - assets/images/icons/icon_meal.png
     - assets/images/icons/icon_supplement.png
     - assets/images/icons/icon_weight.png
+    - assets/images/icons/icon_search.png
+    - assets/images/icons/icon_close.png
+    - assets/images/icons/icon_switch.png
+    - assets/images/icons/icon_comment.png
+    - assets/images/icons/icon_scrap.png
     - assets/images/baby.png
     - assets/images/dark_sky.png
     - assets/images/icons/alert.png
@@ -99,6 +105,26 @@ flutter:
     - assets/images/babyhome_dark_n.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
+    - assets/images/icons/photo_register.png
+    - assets/images/subtract2.png
+    - assets/images/icons/search_black.png
+    - assets/images/icons/close.png
+    - assets/images/test_image.png
+    - assets/images/test_image2.png
+    - assets/images/icons/comment.png
+    - assets/images/icons/scrap_gray.png
+    - assets/images/icons/gallery.png
+    - assets/images/icons/disclosure.png
+    - assets/images/icons/image_up.png
+    - assets/images/icons/image_down.png
+    - assets/images/icons/image_delete.png
+    - assets/images/icons/navigation_baby.png
+    - assets/images/icons/navigation_home.png
+    - assets/images/icons/navigation_community.png
+    - assets/images/icons/cozylog_off.png
+    - assets/images/icons/select_off.png
+    - assets/images/icons/select_on.png
+    - assets/images/icons/scrap_off.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

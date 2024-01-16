@@ -145,12 +145,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                 color: Color(0xffAAAAAA),
                               ),
                             ),
-                            Text(
-                              "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
-                              style: const TextStyle(
-                                color: Color(0xffAAAAAA),
-                              ),
-                            ),
+                            isMyCozyLog
+                                ? Text(
+                                    "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
+                                    style: const TextStyle(
+                                      color: Color(0xffAAAAAA),
+                                    ),
+                                  )
+                                : Container()
                           ],
                         ),
                       ],

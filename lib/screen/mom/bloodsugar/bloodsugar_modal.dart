@@ -14,6 +14,8 @@ class BloodsugarModal extends StatefulWidget {
 }
 
 class _BloodsugarModalState extends State<BloodsugarModal> {
+  bool _isHintVisible = true;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
@@ -47,15 +49,14 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                 Container(
                   width: 312,
                   height: 80,
-                  padding: const EdgeInsets.only(
-                      left: 24, right: 24, top: 16, bottom: 12),
+                  padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(
                           child: Text(widget.time,
@@ -80,15 +81,15 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                               }
                             },
                             textAlign: TextAlign.start,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 border: InputBorder.none,
                                 suffixText: 'mg / dL',
-                                suffixStyle: TextStyle(
+                                suffixStyle: const TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14),
-                                hintText: 'mg / dL',
-                                hintStyle: TextStyle(
+                                hintText: _isHintVisible ? 'mg / dL' : null,
+                                hintStyle: const TextStyle(
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16)),
@@ -97,6 +98,11 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
+                            onTap: () {
+                              setState(() {
+                                _isHintVisible = false;
+                              });
+                            },
                           ),
                         ),
                       ]),
