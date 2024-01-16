@@ -9,6 +9,7 @@ class CozyLog {
   final String? imageUrl;
   final String mode;
 
+
   CozyLog(
       {required this.id,
       required this.commentCount,
@@ -19,4 +20,5 @@ class CozyLog {
       required this.date,
       this.imageUrl,
       this.mode = 'PRIVATE'});
+      this.imageUrl});
 }
