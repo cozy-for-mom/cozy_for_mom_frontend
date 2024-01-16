@@ -14,7 +14,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => MyDataModel()),
           ChangeNotifierProvider(create: (context) => ListModifyState()),
-          // ChangeNotifierProvider(create: (context) => JoinInputData()),
+          // ChangeNotifierProvider(create: (context) => JoinInputData()), // TODO 회원가입 (정보입력) 페이지 연동 후, 주석 해제
         ],
         child: const App(),
       ),

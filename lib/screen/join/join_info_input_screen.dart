@@ -16,12 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: const JoinInfoInputScreen(),
       theme: ThemeData(
-        colorScheme: ColorScheme.light(), // 필요한 테마 설정
+        colorScheme: ColorScheme.light(),
         fontFamily: 'Pretendard',
       ),
     );
   }
 }
+// TODO main.dart의 하위 페이지로 연동 후, 위의 코드 삭제
 
 class JoinInfoInputScreen extends StatefulWidget {
   const JoinInfoInputScreen({super.key});
@@ -39,7 +40,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
-      create: (context) => JoinInputData(),
+      create: (context) =>
+          JoinInputData(), // TODO main.dart의 하위 페이지로 연동 후, ChangeNotifierProvider 코드 삭제
       child: Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -66,7 +68,6 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
           actions: [
             InkWell(
               onTap: () {
-                print('다음 페이지 이동');
                 if (_currentPage < _totalPage - 1) {
                   _pageController.nextPage(
                     duration: const Duration(milliseconds: 200),
@@ -81,7 +82,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 padding: EdgeInsets.only(right: screenWidth / 19),
                 child: const Text('다음',
                     style: TextStyle(
-                        color: navOffTextColor,
+                        color: navOffTextColor, // TODO 텍스트 조건 체크 후, 활성화
                         fontWeight: FontWeight.w400,
                         fontSize: 18)),
               ),
@@ -96,7 +97,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
               child: SizedBox(
                 width: screenWidth - 40,
                 child: LinearProgressIndicator(
-                  value: (_currentPage + 1) / _totalPage, // 현재 페이지 / 총 페이지 수
+                  value: (_currentPage + 1) / _totalPage,
                   backgroundColor: mainLineColor,
                   color: primaryColor,
                   borderRadius: BorderRadius.circular(20),

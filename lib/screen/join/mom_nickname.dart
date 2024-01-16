@@ -123,7 +123,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 child: Text(
                   _isNicknameValid
                       ? '사용 가능한 닉네임입니다.'
-                      : '닉네임은 최대 8자까지 입력이 가능해요.',
+                      : '닉네임은 최대 8자까지 입력이 가능해요.', // TODO 닉네임 중복 체크
                   style: TextStyle(
                       color:
                           _isNicknameValid ? primaryColor : deleteButtonColor,
