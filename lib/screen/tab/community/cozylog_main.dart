@@ -5,14 +5,10 @@ import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
-
-void main() {
-  // TODO 네비게이션바 구현 및 연동 후, 삭제
-  runApp(const MaterialApp(
-    home: CozylogMain(),
-  ));
-}
+import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 
 class CozylogMain extends StatelessWidget {
   const CozylogMain({super.key});
@@ -150,7 +146,11 @@ class CozylogMain extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8, bottom: 4),
                           child: InkWell(
                               onTap: () {
-                                print('닉네임 수정'); // TODO 닉네임 수정 기능 구현
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MomProfileModify()));
                               },
                               child: const Image(
                                   image:
@@ -193,8 +193,10 @@ class CozylogMain extends StatelessWidget {
                           imageWidth: 27.3,
                           imageHeight: 24.34,
                           onPressed: () {
-                            // TODO 내 코지로그 페이지 이동 구현
-                            print('내 코지로그 버튼 클릭됨');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MyCozylog()));
                           }),
                       Container(
                         width: 1,
@@ -209,8 +211,10 @@ class CozylogMain extends StatelessWidget {
                           imageWidth: 18.4,
                           imageHeight: 24,
                           onPressed: () {
-                            // TODO 스크랩 내역 페이지 이동 구현해야함
-                            print('스크랩 내역 버튼 클릭됨');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MyScrap()));
                           }),
                     ],
                   ),
@@ -256,7 +260,7 @@ class CozylogMain extends StatelessWidget {
         ),
       ),
       floatingActionButton:
-          const CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
+          CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
     );
   }
 }

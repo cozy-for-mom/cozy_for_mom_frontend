@@ -18,7 +18,7 @@ class BabyMainScreen extends StatefulWidget {
   State<BabyMainScreen> createState() => _BabyMainScreenState();
 }
 
-class _BabyMainPageState extends State<BabyMainPage> {
+class _BabyMainScreenState extends State<BabyMainScreen> {
   final baby = BabyProfile(
       babyId: 1,
       image: "assets/images/babyProfileTest.png",

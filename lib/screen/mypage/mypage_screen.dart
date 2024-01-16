@@ -60,13 +60,14 @@ class _MyPageState extends State<MyPage> {
             top: 66,
             left: 356,
             child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop(); // 현재 화면을 닫음
-                },
-                child: const Image(
-                    width: 16,
-                    height: 16,
-                    image: AssetImage('assets/images/icons/close.png'))),
+              onTap: () {
+                Navigator.of(context).pop(); // 현재 화면을 닫음
+              },
+              child: const Image(
+                  image: AssetImage('assets/images/icons/close.png'),
+                  width: 16,
+                  height: 16),
+            ),
           ),
           Positioned(
             top: 119,

@@ -1,18 +1,19 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 
-class CozylogListView extends StatefulWidget {
+class ScrapListView extends StatefulWidget {
   final List<CozyLog> cozyLogs;
-  const CozylogListView({super.key, this.cozyLogs = const []});
+  const ScrapListView({super.key, this.cozyLogs = const []});
 
   @override
-  State<CozylogListView> createState() => _CozylogListViewState();
+  State<ScrapListView> createState() => _ScrapListViewState();
 }
 
-class _CozylogListViewState extends State<CozylogListView> {
+class _ScrapListViewState extends State<ScrapListView> {
   bool isEditMode = false;
   @override
   Widget build(BuildContext context) {
@@ -35,12 +36,12 @@ class _CozylogListViewState extends State<CozylogListView> {
                 children: [
                   Row(children: [
                     const Image(
-                        image: AssetImage('assets/images/icons/cozylog.png'),
-                        width: 25.02,
-                        height: 23.32),
+                        image: AssetImage('assets/images/icons/scrap.png'),
+                        width: 18.4,
+                        height: 24),
                     const SizedBox(width: 8),
                     Text(
-                      '${widget.cozyLogs.length}개의 코지로그',
+                      '${widget.cozyLogs.length}개의 스크랩',
                       style: const TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,
@@ -56,7 +57,7 @@ class _CozylogListViewState extends State<CozylogListView> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          MyCozylog(isEditMode: isEditMode)));
+                                          MyScrap(isEditMode: isEditMode)));
                             })
                           : setState(() {});
                     },
@@ -93,7 +94,7 @@ class _CozylogListViewState extends State<CozylogListView> {
                 ),
               )
             : SizedBox(
-                width: 150,
+                width: 160,
                 height: screenHeight * (0.6),
                 child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -101,11 +102,11 @@ class _CozylogListViewState extends State<CozylogListView> {
                     children: [
                       Image(
                           image:
-                              AssetImage('assets/images/icons/cozylog_off.png'),
-                          width: 45.31,
-                          height: 40.77),
+                              AssetImage('assets/images/icons/scrap_off.png'),
+                          width: 34.54,
+                          height: 45.05),
                       SizedBox(height: 12),
-                      Text('코지로그를 작성해 보세요!',
+                      Text('코지로그를 스크랩 해보세요!',
                           style: TextStyle(
                               color: Color(0xff9397A4),
                               fontWeight: FontWeight.w500,

@@ -64,7 +64,8 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                               );
                             },
                             child: Container(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 10),
                               width: 124,
                               height: 41,
                               decoration: BoxDecoration(
