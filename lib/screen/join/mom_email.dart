@@ -81,7 +81,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    textController.clear();
+                                    joinInputData.setEmail('');
                                     _isInputValid = !_isInputValid;
                                   });
                                 },

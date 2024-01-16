@@ -81,7 +81,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    textController.clear();
+                                    joinInputData.setNickname('');
                                     _isInputValid = !_isInputValid;
                                   });
                                 },
