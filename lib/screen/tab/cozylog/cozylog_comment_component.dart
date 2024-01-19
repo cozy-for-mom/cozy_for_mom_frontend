@@ -6,9 +6,11 @@ class CozyLogCommentComponent extends StatelessWidget {
   const CozyLogCommentComponent({
     super.key,
     required this.comment,
+    required this.subComments,
   });
 
   final CozyLogComment comment;
+  final List<CozyLogComment> subComments;
 
   @override
   Widget build(BuildContext context) {
@@ -19,61 +21,145 @@ class CozyLogCommentComponent extends StatelessWidget {
         horizontal: 8.0,
         vertical: 15.0,
       ),
-      child: Row(
+      child: Column(
         children: [
-          SizedBox(
-            height: 50,
-            child: comment.writerImageUrl == null
-                ? Image.asset("assets/images/icons/momProfile.png")
-                : Image.network(
-                    comment.writerImageUrl!,
-                  ),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Text(
-                comment.writerNickname,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+              SizedBox(
+                height: 50,
+                child: comment.writerImageUrl == null
+                    ? Image.asset("assets/images/icons/momProfile.png")
+                    : Image.network(
+                        comment.writerImageUrl!,
+                      ),
               ),
               const SizedBox(
-                height: 5,
+                width: 12,
               ),
-              Text(
-                comment.content,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
+              SizedBox(
+                height: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      comment.writerNickname,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      comment.content,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          dateFormat.format(comment.createdAt),
+                          style: const TextStyle(
+                            color: Color(0xffAAAAAA),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        const Text(
+                          "답글쓰기",
+                          style: TextStyle(
+                            color: Color(0xffAAAAAA),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  Text(
-                    dateFormat.format(comment.createdAt),
-                    style: const TextStyle(
-                      color: Color(0xffAAAAAA),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  const Text(
-                    "답글쓰기",
-                    style: TextStyle(
-                      color: Color(0xffAAAAAA),
-                    ),
-                  ),
-                ],
               ),
             ],
-          )
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          subComments.isNotEmpty
+              ? SizedBox(
+                  height: 70,
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: comment.writerImageUrl == null
+                            ? Image.asset("assets/images/icons/momProfile.png")
+                            : Image.network(
+                                comment.writerImageUrl!,
+                              ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: subComments.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  subComments[index].writerNickname,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  subComments[index].content,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      dateFormat
+                                          .format(subComments[index].createdAt),
+                                      style: const TextStyle(
+                                        color: Color(0xffAAAAAA),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    // const Text(
+                                    //   "답글쓰기",
+                                    //   style: TextStyle(
+                                    //     color: Color(0xffAAAAAA),
+                                    //   ),
+                                    // ),
+                                  ],
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : Container()
         ],
       ),
     );

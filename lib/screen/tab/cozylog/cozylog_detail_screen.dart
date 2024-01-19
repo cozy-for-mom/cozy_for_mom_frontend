@@ -36,6 +36,19 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
       writerId: 2,
       writerImageUrl: null,
       writerNickname: "cozy",
+      subComments: [
+        CozyLogComment(
+          commentId: 2,
+          parentId: null,
+          content: "답글 테스트",
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          writerId: 2,
+          writerImageUrl: null,
+          writerNickname: "제니",
+          subComments: null,
+        ),
+      ],
     ),
     CozyLogComment(
       commentId: 3,
@@ -46,6 +59,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
       writerId: 3,
       writerImageUrl: null,
       writerNickname: "도톨이",
+      subComments: [],
     )
   ];
 
@@ -352,10 +366,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                 ),
               ),
               // 댓글 목록
-              // TODO parent - child 구조 표현해야 함
-              const Divider(),
+              const Divider(
+                height: 5,
+              ),
               SizedBox(
-                height: 200,
+                height: 300,
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(), // new
                   itemCount: commentList.length,
@@ -364,8 +379,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                       children: [
                         CozyLogCommentComponent(
                           comment: commentList[index],
+                          subComments: commentList[index].subComments ?? [],
                         ),
-                        const Divider(),
+                        const Divider(
+                          height: 5,
+                        ),
                       ],
                     );
                   },

@@ -7,6 +7,7 @@ class CozyLogComment {
   final int writerId;
   final String writerNickname;
   final String? writerImageUrl;
+  final List<CozyLogComment>? subComments;
 
   CozyLogComment({
     required this.commentId,
@@ -17,5 +18,6 @@ class CozyLogComment {
     required this.writerId,
     required this.writerNickname,
     required this.writerImageUrl,
+    required this.subComments,
   });
 }
