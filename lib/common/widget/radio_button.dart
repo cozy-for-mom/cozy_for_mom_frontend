@@ -31,7 +31,8 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
         children: [
           Text(widget.title,
               style: TextStyle(
-                  color: widget.value == joinInputData.fetalInfo
+                  color: (widget.value == joinInputData.fetalInfo) ||
+                          (joinInputData.fetalInfo == null)
                       ? mainTextColor
                       : beforeInputColor,
                   fontWeight: FontWeight.w400,

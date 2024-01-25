@@ -1,9 +1,6 @@
-import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/radio_button.dart';
-import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 
 class BabyFetalInfoScreen extends StatefulWidget {
   const BabyFetalInfoScreen({super.key});
