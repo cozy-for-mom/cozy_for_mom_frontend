@@ -43,7 +43,11 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: info.map((title) {
-                return BuildRadioButton(title: title, value: title);
+                return BuildRadioButton(
+                  title: title,
+                  value: title,
+                  radioButtonType: RadioType.fetalInfo,
+                );
               }).toList(),
             ),
           ),

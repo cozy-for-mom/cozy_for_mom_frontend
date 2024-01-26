@@ -43,7 +43,11 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: info.map((title) {
-                return BuildRadioButton(title: title, value: title);
+                return BuildRadioButton(
+                  title: title,
+                  value: title,
+                  radioButtonType: RadioType.gender,
+                );
               }).toList(),
             ),
           ),
