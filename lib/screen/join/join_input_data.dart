@@ -9,6 +9,7 @@ class JoinInputData extends ChangeNotifier {
   String laseMensesDate = '';
   String? fetalInfo;
   String? gender;
+  String birthName = '';
 
   void setEmail(String value) {
     email = value;
@@ -49,6 +50,11 @@ class JoinInputData extends ChangeNotifier {
 
   void setGender(String value) {
     gender = value;
+    notifyListeners();
+  }
+
+  void setBirthname(String value) {
+    birthName = value;
     notifyListeners();
   }
 }

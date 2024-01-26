@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_duedate.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_fetal_info.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_gender.dart';
+import 'package:cozy_for_mom_frontend/screen/join/baby_birthname.dart';
 
 void main() {
   runApp(MyApp());
@@ -125,6 +126,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                   BabyDuedateInputScreen(),
                   BabyFetalInfoScreen(),
                   BabyGenderScreen(),
+                  BabyBirthnameScreen()
                 ],
               ),
             ),
