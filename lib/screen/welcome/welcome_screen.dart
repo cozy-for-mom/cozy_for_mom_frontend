@@ -49,14 +49,14 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 "아기도, 엄마도 건강한 ",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   color: Color(0xff5E6573),
                 ),
               ),
               Text(
                 "건강 기록 관리",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff5E6573),
                 ),
@@ -72,14 +72,14 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 "잊지않고 건강을 챙길 수 있는 ",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   color: Color(0xff5E6573),
                 ),
               ),
               Text(
                 "포맘 알림",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff5E6573),
                 ),
@@ -95,14 +95,14 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 "산모들의 소통창구 ",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   color: Color(0xff5E6573),
                 ),
               ),
               Text(
                 "코지로그 커뮤니티",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff5E6573),
                 ),
