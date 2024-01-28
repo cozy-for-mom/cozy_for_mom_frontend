@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_modal.dart';
 import 'package:flutter/material.dart';
 
 class UserDeleteScreen extends StatefulWidget {
@@ -143,7 +144,12 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
             ),
             InkWell(
               onTap: () {
-                print("등록 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
+                showDialog(
+                  context: context,
+                  builder: (BuildContext buildContext) {
+                    return const UserDeleteModal();
+                  },
+                );
               },
               child: Container(
                 width: 350, // TODO
