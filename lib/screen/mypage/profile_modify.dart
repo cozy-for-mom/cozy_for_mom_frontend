@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -133,7 +134,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         children: [
                           InkWell(
                             onTap: () {
-                              print('로그아웃 버튼 클릭'); // 로그아웃 기능 구현
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext buildContext) {
+                                  return const LogoutModal();
+                                },
+                              );
                             },
                             child: const Text('로그아웃',
                                 style: TextStyle(
