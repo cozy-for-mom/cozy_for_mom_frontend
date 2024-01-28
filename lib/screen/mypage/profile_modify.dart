@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -128,41 +129,55 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 top: 748.77,
                 left: 129,
                 child: SizedBox(
-                    width: 132,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext buildContext) {
-                                  return const LogoutModal();
-                                },
-                              );
+                  width: 132,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext buildContext) {
+                              return const LogoutModal();
                             },
-                            child: const Text('로그아웃',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
-                          ),
-                          Container(
-                            width: 1,
-                            height: 11,
+                          );
+                        },
+                        child: const Text(
+                          '로그아웃',
+                          style: TextStyle(
                             color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                           ),
-                          InkWell(
-                            onTap: () {
-                              print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
-                            },
-                            child: const Text('회원탈퇴',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                        ),
+                      ),
+                      Container(
+                        width: 1,
+                        height: 11,
+                        color: primaryColor,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserDeleteScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          '회원탈퇴',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                           ),
-                        ])),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
