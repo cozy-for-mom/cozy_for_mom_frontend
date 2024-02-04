@@ -87,6 +87,8 @@ flutter:
     - assets/images/icons/icon_switch.png
     - assets/images/icons/icon_comment.png
     - assets/images/icons/icon_scrap.png
+    - assets/images/icons/submit_inactive.png
+    - assets/images/icons/submit_active.png
     - assets/images/baby.png
     - assets/images/dark_sky.png
     - assets/images/icons/alert.png
