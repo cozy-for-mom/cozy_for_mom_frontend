@@ -60,9 +60,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/images/icons/navigation_baby.png
-    - assets/images/icons/navigation_home.png
-    - assets/images/icons/navigation_community.png
     - assets/images/icons/diary.png
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
@@ -74,18 +71,12 @@ flutter:
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
-    - assets/images/icons/default_meal.png
     - assets/images/icons/icon_baby.png
     - assets/images/icons/icon_bloodsugar.png
     - assets/images/icons/icon_clock.png
     - assets/images/icons/icon_meal.png
     - assets/images/icons/icon_supplement.png
     - assets/images/icons/icon_weight.png
-    - assets/images/icons/icon_search.png
-    - assets/images/icons/icon_close.png
-    - assets/images/icons/icon_switch.png
-    - assets/images/icons/icon_comment.png
-    - assets/images/icons/icon_scrap.png
     - assets/images/baby.png
     - assets/images/dark_sky.png
     - assets/images/icons/alert.png
@@ -124,6 +115,9 @@ flutter:
     - assets/images/icons/select_off.png
     - assets/images/icons/select_on.png
     - assets/images/icons/scrap_off.png
+    - assets/images/icons/unpass.png
+    - assets/images/icons/pass.png
+    - assets/images/icons/text_delete.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
