@@ -4,7 +4,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
-import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
