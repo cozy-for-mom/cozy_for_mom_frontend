@@ -117,6 +117,8 @@ flutter:
     - assets/images/icons/unpass.png
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
+    - assets/images/icons/radio_selected.png
+    - assets/images/icons/radio_unselected.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
