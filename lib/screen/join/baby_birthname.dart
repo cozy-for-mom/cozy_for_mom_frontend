@@ -14,7 +14,6 @@ class _BabyBirthnameScreenState extends State<BabyBirthnameScreen> {
   TextEditingController textController = TextEditingController();
   bool _isBirthnameValid = false;
   bool _isInputValid = false;
-  bool _isInitiate = true;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -105,11 +104,6 @@ class _BabyBirthnameScreenState extends State<BabyBirthnameScreen> {
                         )
                       : null,
                 ),
-                onTap: () {
-                  setState(() {
-                    _isInitiate = false;
-                  });
-                },
                 onChanged: (value) {
                   setState(() {
                     joinInputData.birthName = value;
@@ -122,20 +116,16 @@ class _BabyBirthnameScreenState extends State<BabyBirthnameScreen> {
                 },
               )),
         ),
-        _isInitiate
-            ? Container()
-            : Positioned(
-                top: 279,
-                left: 39,
-                child: Text(
-                  _isInputValid
-                      ? (_isBirthnameValid ? '' : '테명은 최대 8자까지 입력이 가능해요.')
-                      : '아기의 태명을 입력해주세요.',
-                  style: const TextStyle(
-                      color: deleteButtonColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14),
-                ))
+        Positioned(
+            top: 279,
+            left: 39,
+            child: Text(
+              _isBirthnameValid ? '' : '태명은 최대 8자까지 입력이 가능해요.',
+              style: const TextStyle(
+                  color: deleteButtonColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14),
+            )),
       ],
     );
   }
