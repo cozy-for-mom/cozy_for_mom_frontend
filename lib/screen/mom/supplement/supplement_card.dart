@@ -40,12 +40,13 @@ class _SupplementCardState extends State<supplementCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Card(
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+        width: screenWidth - 40,
         height: calculateCardHeight(widget.targetCount),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
