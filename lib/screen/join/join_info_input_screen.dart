@@ -39,6 +39,12 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final int _totalPage = 7;
+  // bool isButtonEnabled() {
+  //   switch (_currentPage) {
+  //     case 0:
+  //       return
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

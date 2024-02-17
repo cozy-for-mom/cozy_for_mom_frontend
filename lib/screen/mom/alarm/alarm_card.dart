@@ -1,8 +1,8 @@
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 
 enum CardType { bloodsugar, supplement }
 
@@ -82,24 +82,37 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                     bottomRight: Radius.circular(20.0),
                   ),
                 ),
-                child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage('assets/images/icons/delete.png'),
-                        width: 17.5,
-                        height: 18,
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "삭제",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.0,
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const DeleteModal(
+                          text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                          title: '알림이',
+                        );
+                      },
+                    );
+                  },
+                  child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/images/icons/delete.png'),
+                          width: 17.5,
+                          height: 18,
                         ),
-                      ),
-                    ]),
+                        SizedBox(height: 5),
+                        Text(
+                          "삭제",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ]),
+                ),
               ),
               onTap: () {
                 print('"${widget.text}" 알람 삭제'); // TODO 알람 삭제 기능 구현

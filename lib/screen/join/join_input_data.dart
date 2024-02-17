@@ -7,8 +7,8 @@ class JoinInputData extends ChangeNotifier {
   String nickname = '';
   String dueDate = '';
   String laseMensesDate = '';
-  String? fetalInfo;
-  String? gender;
+  String fetalInfo = '단태아';
+  String gender = '여아';
   String birthName = '';
 
   void setEmail(String value) {

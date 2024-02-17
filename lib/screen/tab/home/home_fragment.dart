@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -111,11 +112,19 @@ class HomeFragment extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const RecordIcon(
-                        recordTypeName: "meal",
-                        recordTypeKorName: "식단",
-                        imageWidth: 26,
-                        imageHeight: 37,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MealScreen()));
+                        },
+                        child: const RecordIcon(
+                          recordTypeName: "meal",
+                          recordTypeKorName: "식단",
+                          imageWidth: 26,
+                          imageHeight: 37,
+                        ),
                       ),
                       InkWell(
                           onTap: () {

@@ -7,8 +7,6 @@ import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/common/widget/bottom_button_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
@@ -25,6 +23,7 @@ class MyScrap extends StatefulWidget {
 class _MyScrapState extends State<MyScrap> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final cozyLogs = [
       CozyLog(
         id: 1,
@@ -134,32 +133,38 @@ class _MyScrapState extends State<MyScrap> {
               },
             ),
       bottomSheet: widget.isEditMode
-          ? BottomSheet(
-              onClosing: () {},
-              builder: (BuildContext context) {
-                ListModifyState scrapListModifyState =
-                    context.watch<ListModifyState>();
-                int selectedCount = scrapListModifyState.selectedCount;
+          ? SizedBox(
+              width: screenWidth - 40,
+              child: Container(
+                color: Colors.transparent,
+                child: BottomSheet(
+                  onClosing: () {},
+                  builder: (BuildContext context) {
+                    ListModifyState scrapListModifyState =
+                        context.watch<ListModifyState>();
+                    int selectedCount = scrapListModifyState.selectedCount;
 
-                bool isAnySelected = selectedCount > 0;
+                    bool isAnySelected = selectedCount > 0;
 
-                return BottomButtonWidget(
-                  isActivated: isAnySelected,
-                  text: '스크랩 삭제',
-                  tapped: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const DeleteModal(
-                          title: '스크랩이',
-                          text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                    return BottomButtonWidget(
+                      isActivated: isAnySelected,
+                      text: '스크랩 삭제',
+                      tapped: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const DeleteModal(
+                              title: '스크랩이',
+                              text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                            );
+                          },
+                          barrierDismissible: false,
                         );
                       },
-                      barrierDismissible: false,
                     );
                   },
-                );
-              },
+                ),
+              ),
             )
           : null,
     );
