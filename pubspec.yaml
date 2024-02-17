@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.0.5
   flutter_slidable: ^0.6.0
   image_picker: ^1.0.4
+  http:
   
 dev_dependencies:
   flutter_test:
@@ -117,6 +118,9 @@ flutter:
     - assets/images/icons/unpass.png
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
+    - assets/images/icons/supplement_off.png
+
+    - assets/test_json/supplement.json
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

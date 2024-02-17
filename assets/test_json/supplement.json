@@ -1,0 +1,28 @@
+{
+    "timestamp": "2024-01-28T20:38:47.524464",
+    "status": 200,
+    "data": {
+        "supplements": [
+            {
+                "supplementId": 1,
+                "supplementName": "철분",
+                "targetCount": 2,
+                "datetimes": [
+                    "2023-10-10 10:10:10",
+                    "2023-10-10 19:10:10"
+                ],
+                "realCount": 2
+            },
+            {
+                "supplementId": 2,
+                "supplementName": "비타민C",
+                "targetCount": 3,
+                "datetimes": [
+                    "2023-10-10 10:10:10",
+                    "2023-10-10 13:10:10"
+                ],
+                "realCount":2
+            }
+        ]
+    }
+}
