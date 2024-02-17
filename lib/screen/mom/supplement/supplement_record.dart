@@ -138,7 +138,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                         : pregnantSupplements.map((supplement) {
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
-                                child: supplementCard(
+                                child: SupplementCard(
                                   name: supplement.supplementName,
                                   targetCount: supplement.targetCount,
                                   realCount: supplement.realCount,

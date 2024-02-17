@@ -2,13 +2,13 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class supplementCard extends StatefulWidget {
+class SupplementCard extends StatefulWidget {
   final String name;
   final int targetCount;
   int realCount;
   List<DateTime> takeTimes;
 
-  supplementCard(
+  SupplementCard(
       {super.key,
       required this.name,
       required this.targetCount,
@@ -19,12 +19,13 @@ class supplementCard extends StatefulWidget {
   _SupplementCardState createState() => _SupplementCardState();
 }
 
-class _SupplementCardState extends State<supplementCard> {
+class _SupplementCardState extends State<SupplementCard> {
   void _handleButtonClick() {
     // 클릭한 시간을 현재 시간으로 설정
     DateTime currentTime = DateTime.now();
 
     // '먹었어요' 버튼 클릭 시 realCount 증가 및 클릭한 시간 저장 (상태관리)
+    // TODO 섭취한 영양제 기록 api 요청
     setState(() {
       widget.realCount++;
       widget.takeTimes.add(currentTime);
@@ -92,7 +93,6 @@ class _SupplementCardState extends State<supplementCard> {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: InkWell(
                         onTap: () {
-                          // 버튼이 클릭되었을 때 수행할 동작 (텍스트는 현재 시간으로 바뀌며 컨테이너 배경색 변경)
                           _handleButtonClick();
                         },
                         child: Container(

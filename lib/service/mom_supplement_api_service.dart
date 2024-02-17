@@ -12,10 +12,12 @@ class SupplementApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/supplement/intake?date=$formattedDate');
+      // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
       // Response res = await get(url);
       String jsonString =
           await rootBundle.loadString('assets/test_json/supplement.json');
 
+      // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(jsonString);
       List<dynamic> supplementsData = body['data']['supplements'];
@@ -30,6 +32,7 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
+  // TODO 영양제 등록 api 연동
   Future<PregnantSupplement> registerSupplement(
       PregnantSupplement supplement) async {
     final url = Uri.parse('$baseUrl/supplement');
@@ -46,6 +49,7 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
+  // TODO 섭취 영양제 기록 api 연동
   Future<PregnantSupplement> recordSupplementIntake(
       String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
@@ -60,6 +64,7 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
+  // TODO 영양제 섭취 기록 삭제 api 연동
   Future<void> deleteSupplement(String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
     Response res = await delete(url);
