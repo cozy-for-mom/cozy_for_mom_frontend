@@ -104,7 +104,7 @@ class CozylogMain extends StatelessWidget {
                                 width: 20,
                                 height: 20,
                                 image: AssetImage(
-                                    "assets/images/icons/search_black.png")),
+                                    "assets/images/icons/icon_search.png")),
                           ),
                           IconButton(
                             icon: const Image(

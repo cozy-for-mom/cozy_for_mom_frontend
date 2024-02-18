@@ -77,7 +77,10 @@ class _MyCozylogState extends State<MyCozylog> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -85,11 +88,13 @@ class _MyCozylogState extends State<MyCozylog> {
                         builder: (context) => const CozylogMain()));
               },
             ),
-            title: const Text('내 코지로그',
-                style: TextStyle(
-                    color: mainTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18)),
+            title: const Text(
+              '내 코지로그',
+              style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18),
+            ),
             actions: [
               InkWell(
                 onTap: () {
@@ -98,7 +103,7 @@ class _MyCozylogState extends State<MyCozylog> {
                 child: const Image(
                     width: 20,
                     height: 20,
-                    image: AssetImage("assets/images/icons/search_black.png")),
+                    image: AssetImage("assets/images/icons/icon_search.png")),
               ),
               IconButton(
                 icon: const Image(
