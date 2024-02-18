@@ -72,6 +72,8 @@ flutter:
     - assets/images/icons/pen.png
     - assets/images/icons/plus_blue.png
     - assets/images/icons/plus_white.png
+    - assets/images/icons/gallery.png
+    - assets/images/icons/disclosure.png
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
