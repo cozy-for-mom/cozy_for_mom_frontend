@@ -3,7 +3,6 @@ import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -20,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
       fontWeight: FontWeight.bold); // 텍스트 스타일 지정이므로 해당 부분은 제거해도 된다.
 
   final List<Widget> _widgetOptions = <Widget>[
-    const BabyMainPage(),
+    const BabyMainScreen(),
     const HomeFragment(),
     const CozylogMain(),
   ];
