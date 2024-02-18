@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -177,11 +178,17 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        print('코지로그 페이지 이동'); // TODO 코지로그 페이지 연동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyCozylog(),
+                          ),
+                        );
                       },
                       child: const CustomButton(
-                          text: '코지로그',
-                          imagePath: "assets/images/icons/cozylog.png"),
+                        text: '코지로그',
+                        imagePath: "assets/images/icons/cozylog.png",
+                      ),
                     ),
                   ]),
             ),
