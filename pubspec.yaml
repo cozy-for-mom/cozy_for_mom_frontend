@@ -82,6 +82,8 @@ flutter:
     - assets/images/icons/default_meal.png
     - assets/images/icons/icon_baby.png
     - assets/images/icons/icon_bloodsugar.png
+    - assets/images/icons/select_off.png
+    - assets/images/icons/select_on.png
     - assets/images/icons/icon_clock.png
     - assets/images/icons/icon_meal.png
     - assets/images/icons/icon_supplement.png
