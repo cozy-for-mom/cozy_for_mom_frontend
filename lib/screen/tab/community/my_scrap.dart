@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_view.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -96,7 +97,12 @@ class _MyScrapState extends State<MyScrap> {
             actions: [
               InkWell(
                 onTap: () {
-                  print('검색 페이지 이동'); // TODO 검색창 이동 구현
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CozyLogSearchPage(),
+                    ),
+                  );
                 },
                 child: const Image(
                     width: 20,
