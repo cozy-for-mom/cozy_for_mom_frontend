@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:intl/intl.dart';
@@ -81,8 +82,14 @@ class _WeightRecordState extends State<WeightRecord> {
                             height: 32,
                             width: 32),
                         onPressed: () {
-                          print(
-                              '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AlarmSettingPage(
+                                type: CardType.bloodsugar,
+                              ),
+                            ),
+                          );
                         })
                   ]),
             ),

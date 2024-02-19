@@ -72,19 +72,25 @@ flutter:
     - assets/images/icons/pen.png
     - assets/images/icons/plus_blue.png
     - assets/images/icons/plus_white.png
+    - assets/images/icons/gallery.png
+    - assets/images/icons/disclosure.png
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
+    - assets/images/subtract2.png
     - assets/images/welcome_image.png
     - assets/images/icons/default_meal.png
     - assets/images/icons/icon_baby.png
     - assets/images/icons/icon_bloodsugar.png
+    - assets/images/icons/select_off.png
+    - assets/images/icons/select_on.png
     - assets/images/icons/icon_clock.png
     - assets/images/icons/icon_meal.png
     - assets/images/icons/icon_supplement.png
     - assets/images/icons/icon_weight.png
     - assets/images/icons/icon_search.png
     - assets/images/icons/icon_close.png
+    - assets/images/icons/close.png
     - assets/images/icons/icon_switch.png
     - assets/images/icons/icon_comment.png
     - assets/images/icons/icon_scrap.png
@@ -108,6 +114,10 @@ flutter:
     - assets/images/babyhome_dark_n.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
+    - assets/images/icons/comment.png
+    - assets/images/icons/scrap_gray.png
+    - assets/images/test_image.png
+    - assets/images/test_image2.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
