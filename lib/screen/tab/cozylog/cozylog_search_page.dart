@@ -67,10 +67,13 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                     ],
                   ),
                 ),
-                const InkWell(
-                  child: Center(
+                InkWell(
+                  child: const Center(
                     child: Text("취소"),
                   ),
+                  onTap: () {
+                    Navigator.of(context).pop(); // 팝업 닫기
+                  },
                 )
               ],
             ),

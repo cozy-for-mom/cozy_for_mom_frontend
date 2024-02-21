@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
@@ -129,8 +130,16 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
               : const SupplementAlarm(),
         ],
       ),
-      floatingActionButton:
-          CustomFloatingButton(), // TODO 버튼 클릭 시 알림 등록 페이지로 이동
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NotificationSettingScreen(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

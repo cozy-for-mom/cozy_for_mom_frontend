@@ -173,63 +173,73 @@ class HomeFragment extends StatelessWidget {
                   const SizedBox(
                     height: 44,
                   ),
-                  Container(
-                    width: 350,
-                    height: 123,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffEDF0FA),
-                      borderRadius: BorderRadius.all(Radius.circular(9)),
-                    ),
-                    child: const Row(
-                      children: [
-                        SizedBox(
-                          width: 19,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SupplementRecord(),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "잊지 말고 기록하세요",
-                              style: TextStyle(
-                                fontSize: 16,
+                      );
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 123,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffEDF0FA),
+                        borderRadius: BorderRadius.all(Radius.circular(9)),
+                      ),
+                      child: const Row(
+                        children: [
+                          SizedBox(
+                            width: 19,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "잊지 말고 기록하세요",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 11.34,
-                            ),
-                            Text(
-                              "철분제는 챙겨드셨나요?",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                              SizedBox(
+                                height: 11.34,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 49,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                "assets/images/icons/icon_supplement.png",
+                              Text(
+                                "철분제는 챙겨드셨나요?",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              height: 43,
-                              width: 19,
-                            ),
-                            Image(
-                              image: AssetImage(
-                                "assets/images/icons/icon_clock.png",
+                            ],
+                          ),
+                          SizedBox(
+                            width: 49,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Image(
+                                image: AssetImage(
+                                  "assets/images/icons/icon_supplement.png",
+                                ),
+                                height: 43,
+                                width: 19,
                               ),
-                              height: 66,
-                              width: 66,
-                            ),
-                          ],
-                        ),
-                      ],
+                              Image(
+                                image: AssetImage(
+                                  "assets/images/icons/icon_clock.png",
+                                ),
+                                height: 66,
+                                width: 66,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
