@@ -1,7 +1,7 @@
 class PregnantSupplements {
-  List<PregnantSupplement> supplement;
+  List<PregnantSupplement> supplements;
 
-  PregnantSupplements(this.supplement);
+  PregnantSupplements(this.supplements);
 }
 
 class PregnantSupplement {
