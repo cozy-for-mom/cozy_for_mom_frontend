@@ -1,3 +1,5 @@
+import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -58,13 +60,16 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 top: 181,
                 left: 229,
                 child: InkWell(
-                    onTap: () {
-                      print('이미지 수정 버튼 클릭');
-                    },
-                    child: const Image(
-                        image: AssetImage("assets/images/icons/circle_pen.png"),
-                        width: 24,
-                        height: 24)),
+                  onTap: () {
+                    // TODO 이미지 추가 로직
+                    print('이미지 수정 버튼 클릭');
+                  },
+                  child: const Image(
+                    image: AssetImage("assets/images/icons/circle_pen.png"),
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
               ),
               Positioned(
                 top: 244.77,
@@ -124,36 +129,55 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 top: 748.77,
                 left: 129,
                 child: SizedBox(
-                    width: 132,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              print('로그아웃 버튼 클릭'); // 로그아웃 기능 구현
+                  width: 132,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext buildContext) {
+                              return const LogoutModal();
                             },
-                            child: const Text('로그아웃',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
-                          ),
-                          Container(
-                            width: 1,
-                            height: 11,
+                          );
+                        },
+                        child: const Text(
+                          '로그아웃',
+                          style: TextStyle(
                             color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                           ),
-                          InkWell(
-                            onTap: () {
-                              print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
-                            },
-                            child: const Text('회원탈퇴',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                        ),
+                      ),
+                      Container(
+                        width: 1,
+                        height: 11,
+                        color: primaryColor,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserDeleteScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          '회원탈퇴',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                           ),
-                        ])),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

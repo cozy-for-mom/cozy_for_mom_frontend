@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/tap_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
@@ -27,6 +28,9 @@ class _SupplementRecordState extends State<SupplementRecord> {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now(); // 현재 날짜
     String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
+
+    final supplementNameController = TextEditingController();
+    final supplementTargetCountController = TextEditingController();
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -112,7 +116,124 @@ class _SupplementRecordState extends State<SupplementRecord> {
           ),
         ],
       ),
-      floatingActionButton: CustomFloatingButton(),
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AlertDialog(
+                    title: const Center(
+                        child: Text(
+                      "영양제 등록",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+                    content: SizedBox(
+                      height: 150,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF7F7FA),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextField(
+                                controller: supplementNameController,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                cursorColor: primaryColor,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  floatingLabelStyle: TextStyle(
+                                    color: Color(0xff858998),
+                                  ),
+                                  labelText: "이름",
+                                  hintText: "영양제 이름 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xffE1E1E7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF7F7FA),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextField(
+                                controller: supplementTargetCountController,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                cursorColor: primaryColor,
+                                decoration: const InputDecoration(
+                                  floatingLabelStyle: TextStyle(
+                                    color: Color(0xff858998),
+                                  ),
+                                  border: InputBorder.none,
+                                  labelText: "목표 섭취량",
+                                  hintText: "횟수 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xffE1E1E7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Tap(
+                    onTap: () {
+                      final supplementName = supplementNameController.text;
+                      final supplementTargetCount =
+                          supplementTargetCountController.text;
+                      // TODO 영양제 등록하기 api
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: 280, // TODO AlertDialog와 길이 어떻게 맞추기
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "등록하기",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

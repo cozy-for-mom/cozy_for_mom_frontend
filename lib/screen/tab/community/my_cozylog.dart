@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -23,6 +24,7 @@ class MyCozylog extends StatefulWidget {
 class _MyCozylogState extends State<MyCozylog> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final cozyLogs = [
       CozyLog(
         id: 1,
@@ -76,7 +78,10 @@ class _MyCozylogState extends State<MyCozylog> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -84,20 +89,27 @@ class _MyCozylogState extends State<MyCozylog> {
                         builder: (context) => const CozylogMain()));
               },
             ),
-            title: const Text('내 코지로그',
-                style: TextStyle(
-                    color: mainTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18)),
+            title: const Text(
+              '내 코지로그',
+              style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18),
+            ),
             actions: [
               InkWell(
                 onTap: () {
-                  print('검색 페이지 이동'); // TODO 검색창 이동 구현
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CozyLogSearchPage(),
+                    ),
+                  );
                 },
                 child: const Image(
                     width: 20,
                     height: 20,
-                    image: AssetImage("assets/images/icons/search_black.png")),
+                    image: AssetImage("assets/images/icons/icon_search.png")),
               ),
               IconButton(
                 icon: const Image(
@@ -132,32 +144,38 @@ class _MyCozylogState extends State<MyCozylog> {
               },
             ),
       bottomSheet: widget.isEditMode
-          ? BottomSheet(
-              onClosing: () {},
-              builder: (BuildContext context) {
-                ListModifyState cozylogListModifyState =
-                    context.watch<ListModifyState>();
-                int selectedCount = cozylogListModifyState.selectedCount;
+          ? SizedBox(
+              width: screenWidth - 40,
+              child: Container(
+                color: Colors.transparent,
+                child: BottomSheet(
+                  onClosing: () {},
+                  builder: (BuildContext context) {
+                    ListModifyState cozylogListModifyState =
+                        context.watch<ListModifyState>();
+                    int selectedCount = cozylogListModifyState.selectedCount;
 
-                bool isAnySelected = selectedCount > 0;
+                    bool isAnySelected = selectedCount > 0;
 
-                return BottomButtonWidget(
-                  isActivated: isAnySelected,
-                  text: '코지로그 삭제',
-                  tapped: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const DeleteModal(
-                          title: '코지로그가',
-                          text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                    return BottomButtonWidget(
+                      isActivated: isAnySelected,
+                      text: '코지로그 삭제',
+                      tapped: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const DeleteModal(
+                              title: '코지로그가',
+                              text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                            );
+                          },
+                          barrierDismissible: false,
                         );
                       },
-                      barrierDismissible: false,
                     );
                   },
-                );
-              },
+                ),
+              ),
             )
           : null,
     );

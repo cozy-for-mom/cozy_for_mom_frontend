@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -111,11 +112,19 @@ class HomeFragment extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const RecordIcon(
-                        recordTypeName: "meal",
-                        recordTypeKorName: "식단",
-                        imageWidth: 26,
-                        imageHeight: 37,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MealScreen()));
+                        },
+                        child: const RecordIcon(
+                          recordTypeName: "meal",
+                          recordTypeKorName: "식단",
+                          imageWidth: 26,
+                          imageHeight: 37,
+                        ),
                       ),
                       InkWell(
                           onTap: () {
@@ -164,63 +173,73 @@ class HomeFragment extends StatelessWidget {
                   const SizedBox(
                     height: 44,
                   ),
-                  Container(
-                    width: 350,
-                    height: 123,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffEDF0FA),
-                      borderRadius: BorderRadius.all(Radius.circular(9)),
-                    ),
-                    child: const Row(
-                      children: [
-                        SizedBox(
-                          width: 19,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SupplementRecord(),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "잊지 말고 기록하세요",
-                              style: TextStyle(
-                                fontSize: 16,
+                      );
+                    },
+                    child: Container(
+                      width: 350,
+                      height: 123,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffEDF0FA),
+                        borderRadius: BorderRadius.all(Radius.circular(9)),
+                      ),
+                      child: const Row(
+                        children: [
+                          SizedBox(
+                            width: 19,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "잊지 말고 기록하세요",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 11.34,
-                            ),
-                            Text(
-                              "철분제는 챙겨드셨나요?",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                              SizedBox(
+                                height: 11.34,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 49,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                "assets/images/icons/icon_supplement.png",
+                              Text(
+                                "철분제는 챙겨드셨나요?",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              height: 43,
-                              width: 19,
-                            ),
-                            Image(
-                              image: AssetImage(
-                                "assets/images/icons/icon_clock.png",
+                            ],
+                          ),
+                          SizedBox(
+                            width: 49,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Image(
+                                image: AssetImage(
+                                  "assets/images/icons/icon_supplement.png",
+                                ),
+                                height: 43,
+                                width: 19,
                               ),
-                              height: 66,
-                              width: 66,
-                            ),
-                          ],
-                        ),
-                      ],
+                              Image(
+                                image: AssetImage(
+                                  "assets/images/icons/icon_clock.png",
+                                ),
+                                height: 66,
+                                width: 66,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

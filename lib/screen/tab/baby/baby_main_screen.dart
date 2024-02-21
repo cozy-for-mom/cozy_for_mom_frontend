@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -7,18 +8,18 @@ import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: BabyMainPage(),
+    home: BabyMainScreen(),
   ));
 }
 
-class BabyMainPage extends StatefulWidget {
-  const BabyMainPage({super.key});
+class BabyMainScreen extends StatefulWidget {
+  const BabyMainScreen({super.key});
 
   @override
-  State<BabyMainPage> createState() => _BabyMainPageState();
+  State<BabyMainScreen> createState() => _BabyMainScreenState();
 }
 
-class _BabyMainPageState extends State<BabyMainPage> {
+class _BabyMainScreenState extends State<BabyMainScreen> {
   final baby = BabyProfile(
       babyId: 1,
       image: "assets/images/babyProfileTest.png",
@@ -177,11 +178,17 @@ class _BabyMainPageState extends State<BabyMainPage> {
                     ),
                     InkWell(
                       onTap: () {
-                        print('코지로그 페이지 이동'); // TODO 코지로그 페이지 연동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyCozylog(),
+                          ),
+                        );
                       },
                       child: const CustomButton(
-                          text: '코지로그',
-                          imagePath: "assets/images/icons/cozylog.png"),
+                        text: '코지로그',
+                        imagePath: "assets/images/icons/cozylog.png",
+                      ),
                     ),
                   ]),
             ),

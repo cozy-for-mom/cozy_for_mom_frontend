@@ -1,9 +1,12 @@
+import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
-import 'package:cozy_for_mom_frontend/screen/mypage/propfile_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 
 ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
@@ -194,8 +197,12 @@ class _MyPageState extends State<MyPage> {
                         imageWidth: 27.3,
                         imageHeight: 24.34,
                         onPressed: () {
-                          // TODO 코지로그 페이지 이동 구현해야 함
-                          print('코지로그 버튼 클릭됨');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyCozylog(),
+                            ),
+                          );
                         }),
                     Container(
                       width: 1, // 수직선의 두께 조절
@@ -210,8 +217,12 @@ class _MyPageState extends State<MyPage> {
                         imageWidth: 18.4,
                         imageHeight: 24,
                         onPressed: () {
-                          // TODO 스크랩 내역 페이지 이동 구현해야함
-                          print('스크랩 내역 버튼 클릭됨');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyScrap(),
+                            ),
+                          );
                         }),
                   ],
                 ),
@@ -255,7 +266,7 @@ class _MyPageState extends State<MyPage> {
                                   ),
                                   child: TextButton(
                                     onPressed: () {
-                                      print("편집 버튼 클릭");
+                                      print("편집 클릭");
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
@@ -285,14 +296,14 @@ class _MyPageState extends State<MyPage> {
                                       return GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            print("태아 프로필 추가 버튼 클릭");
                                             // TODO 태아 프로필 추가 페이지 이동 구현해야 함
-                                            profiles.add(BabyProfile(
-                                              babyId: babyId++,
-                                              name: "아룽이",
-                                              image:
-                                                  "assets/images/babyProfileTest.jpeg",
-                                            ));
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const BabyRegisterScreen(),
+                                              ),
+                                            );
                                           });
                                         },
                                         child: InkWell(
