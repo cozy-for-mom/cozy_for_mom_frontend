@@ -61,6 +61,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/images/icons/navigation_baby.png
+    - assets/images/icons/navigation_home.png
+    - assets/images/icons/navigation_community.png
     - assets/images/icons/diary.png
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
@@ -72,6 +75,7 @@ flutter:
     - assets/images/babyProfileTest.jpeg
     - assets/images/icons/plusDotted.png
     - assets/images/subtract.png
+    - assets/images/icons/default_meal.png
     - assets/images/icons/icon_baby.png
     - assets/images/icons/icon_bloodsugar.png
     - assets/images/icons/icon_clock.png
