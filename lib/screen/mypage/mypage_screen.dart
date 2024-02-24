@@ -57,17 +57,16 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           Positioned(
-            top: 66,
-            left: 356,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pop(); // 현재 화면을 닫음
-              },
-              child: const Image(
-                  image: AssetImage('assets/images/icons/close.png'),
-                  width: 16,
-                  height: 16),
-            ),
+            top: 47,
+            left: 348,
+            child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // 현재 화면을 닫음
+                }),
           ),
           Positioned(
             top: 119,
@@ -189,8 +188,6 @@ class _MyPageState extends State<MyPage> {
                   children: [
                     CustomTextButton(
                         text: '코지로그',
-                        textColor: mainTextColor,
-                        textWeight: FontWeight.w600,
                         imagePath: 'assets/images/icons/cozylog.png',
                         imageWidth: 27.3,
                         imageHeight: 24.34,
@@ -205,8 +202,6 @@ class _MyPageState extends State<MyPage> {
                     ),
                     CustomTextButton(
                         text: '스크랩 내역',
-                        textColor: mainTextColor,
-                        textWeight: FontWeight.w600,
                         imagePath: 'assets/images/icons/scrap.png',
                         imageWidth: 18.4,
                         imageHeight: 24,
@@ -323,8 +318,6 @@ class _MyPageState extends State<MyPage> {
                                           return CustomProfileButton(
                                             text: profiles[index].name,
                                             imagePath: profiles[index].image,
-                                            offBackColor:
-                                                const Color(0xffF8F8FA),
                                             isSelected: activeProfile ==
                                                 profiles[index],
                                             onPressed: () {

@@ -1,3 +1,5 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -91,13 +93,19 @@ class CozylogMain extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              print('검색 페이지 이동'); // TODO 검색창 이동 구현
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CozyLogSearchPage(),
+                                ),
+                              );
                             },
                             child: const Image(
                                 width: 20,
                                 height: 20,
                                 image: AssetImage(
-                                    "assets/images/icons/search_black.png")),
+                                    "assets/images/icons/icon_search.png")),
                           ),
                           IconButton(
                             icon: const Image(
@@ -222,15 +230,17 @@ class CozylogMain extends StatelessWidget {
               ),
             ),
             const Positioned(
-                top: 393.4,
-                left: 21,
-                child: Text(
-                  '최신 코지로그',
-                  style: TextStyle(
-                      color: mainTextColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18),
-                )),
+              top: 393.4,
+              left: 21,
+              child: Text(
+                '최신 코지로그',
+                style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                ),
+              ),
+            ),
             Positioned(
               top: 427,
               left: 20,
@@ -259,8 +269,14 @@ class CozylogMain extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-          CustomFloatingButton(), // TODO 버튼 클릭 시 코지로그 등록 페이지로 이동
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CozylogRecordPage()));
+        },
+      ),
     );
   }
 }
