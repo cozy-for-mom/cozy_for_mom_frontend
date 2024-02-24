@@ -123,9 +123,6 @@ flutter:
     - assets/images/icons/unpass.png
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
-    - assets/images/icons/supplement_off.png
-
-    - assets/test_json/supplement.json
     - assets/test_json/weight.json
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
