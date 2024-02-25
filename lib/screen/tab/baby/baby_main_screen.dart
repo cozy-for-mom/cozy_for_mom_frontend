@@ -21,7 +21,7 @@ class BabyMainScreen extends StatefulWidget {
 
 class _BabyMainScreenState extends State<BabyMainScreen> {
   final baby = BabyProfile(
-      babyId: 1,
+      id: 1,
       image: "assets/images/babyProfileTest.png",
       name: "미룽이",
       isProfileSelected: true);

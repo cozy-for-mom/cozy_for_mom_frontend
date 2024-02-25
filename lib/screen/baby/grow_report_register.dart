@@ -1,11 +1,11 @@
+import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
+import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
-
-ValueNotifier<BabyProfile?> selectedProfile = ValueNotifier<BabyProfile?>(null);
 
 class GrowReportRegister extends StatefulWidget {
   const GrowReportRegister({super.key});
@@ -15,78 +15,111 @@ class GrowReportRegister extends StatefulWidget {
 }
 
 class _GrowReportRegisterState extends State<GrowReportRegister> {
+  List<Baby> babies = List.empty();
   Color bottomLineColor = mainLineColor;
   TextEditingController titleController = TextEditingController();
-  TextEditingController contentController = TextEditingController();
-  List<TextEditingController> infoControllers =
-      List.generate(5, (index) => TextEditingController());
-
+  TextEditingController diaryController = TextEditingController();
+  Map<Baby, List<TextEditingController>> infoControllersByBabies = {};
+  late ValueNotifier<Baby?> selectedBaby;
   double _textFieldHeight = 50.0; // 초기 높이
+
   List<BabyProfile> profiles = [
     BabyProfile(
-        babyId: 1,
-        name: "미룽이",
-        image:
-            'assets/images/icons/babyProfileOn.png'), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
+      id: 1,
+      name: "미룽이",
+      image: 'assets/images/icons/babyProfileOn.png',
+    ), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
     BabyProfile(
-        babyId: 2, name: "행운이", image: 'assets/images/icons/babyProfileOff.png')
+      id: 2,
+      name: "행운이",
+      image: 'assets/images/icons/babyProfileOff.png',
+    )
   ];
+
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
   double calculateHeight(String text) {
     return 50.0 + text.length.toDouble() / 1.2;
   }
 
-  bool isRegisterButtonEnabled() {
-    return titleController.text.isNotEmpty ||
-        contentController.text.isNotEmpty ||
-        infoControllers.any((controller) => controller.text.isNotEmpty);
+  @override
+  void initState() {
+    babies = [
+      Baby(
+        id: 1,
+        name: "미룽이",
+        image: 'assets/images/icons/babyProfileOn.png',
+      ), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
+      Baby(
+        id: 2,
+        name: "행운이",
+        image: 'assets/images/icons/babyProfileOff.png',
+      )
+    ];
+
+    infoControllersByBabies = {
+      for (var e in babies)
+        e: List.generate(5, (index) => TextEditingController())
+    };
+
+    selectedBaby = ValueNotifier<Baby?>(babies[0]);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final babyGrowthApiService = BabyGrowthApiService();
+
+    bool isRegisterButtonEnabled() {
+      return titleController.text.isNotEmpty ||
+          diaryController.text.isNotEmpty ||
+          infoControllersByBabies.values.any(
+              (element) => element.any((element) => element.text.isNotEmpty));
+    }
+
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          "성장 보고서",
+          style: TextStyle(
+            color: mainTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            title: const Text(
-              '성장 보고서',
-              style: TextStyle(
-                color: mainTextColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 20, left: 10, bottom: 32),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: profiles.map((profile) {
-                  return ValueListenableBuilder<BabyProfile?>(
-                    valueListenable: selectedProfile,
+                children: babies.map((baby) {
+                  return ValueListenableBuilder<Baby?>(
+                    valueListenable: selectedBaby,
                     builder: (context, activeProfile, child) {
                       return CustomProfileButton(
-                        text: profile.name,
-                        imagePath: profile.image,
+                        text: baby.name,
+                        imagePath: baby.image,
                         offBackColor: const Color(0xffF0F0F5),
-                        isSelected: activeProfile == profile,
+                        isSelected: activeProfile == baby,
                         onPressed: () {
-                          selectedProfile.value = profile;
-                          print(
-                              'id:${profile.babyId} ${profile.name} 버튼이 클릭되었습니다.'); // TODO 다둥이일 경우 성장보고서 컴포넌트 전환
+                          setState(() {
+                            selectedBaby.value = baby;
+                          });
                         },
                       );
                     },
@@ -175,7 +208,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: _textFieldHeight,
                 child: TextFormField(
-                  controller: contentController,
+                  controller: diaryController,
                   textAlignVertical: TextAlignVertical.top,
                   textAlign: TextAlign.start,
                   maxLines: null,
@@ -223,9 +256,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               (BuildContext context, int index) {
                 final type = babyInfoType[index];
                 final unit = babyInfoUnit[index];
-                final control = infoControllers[index];
-                return ValueListenableBuilder<BabyProfile?>(
-                  valueListenable: selectedProfile,
+                final control =
+                    infoControllersByBabies[selectedBaby.value]?[index];
+                return ValueListenableBuilder<Baby?>(
+                  valueListenable: selectedBaby,
                   builder: (context, activeProfile, child) {
                     return Column(children: [
                       const Padding(padding: EdgeInsets.only(bottom: 30)),
@@ -250,7 +284,39 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
               child: InkWell(
                 onTap: () {
-                  print("등록 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
+                  babyGrowthApiService
+                      .createBabyProfileGrowth(BabyProfileGrowth(
+                    id: null,
+                    date: DateTime.now(),
+                    growthImageUrl: "growthImageUrl",
+                    diary: diaryController.text,
+                    title: titleController.text,
+                    babies: babies
+                        .map(
+                          (baby) => BabyGrowth(
+                            id: null,
+                            babyId: baby.id,
+                            babyGrowthInfo: BabyGrowthInfo(
+                              weight: parseDouble(
+                                  infoControllersByBabies[baby]?[0].text ??
+                                      '0'),
+                              headDiameter: parseDouble(
+                                  infoControllersByBabies[baby]?[1].text ??
+                                      '0'),
+                              headCircum: parseDouble(
+                                  infoControllersByBabies[baby]?[2].text ??
+                                      '0'),
+                              abdomenCircum: parseDouble(
+                                  infoControllersByBabies[baby]?[3].text ??
+                                      '0'),
+                              thighLength: parseDouble(
+                                  infoControllersByBabies[baby]?[4].text ??
+                                      '0'),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ));
                 },
                 child: Container(
                   width: screenWidth,
@@ -276,5 +342,26 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
         ],
       ),
     );
+  }
+}
+
+class Baby {
+  final int id;
+  final String name;
+  final String image;
+  bool isProfileSelected = false; // 프로필 선택 상태를 저장
+
+  Baby(
+      {required this.id,
+      required this.name,
+      required this.image,
+      this.isProfileSelected = false});
+}
+
+double parseDouble(String value, {double defaultValue = 0.0}) {
+  try {
+    return double.parse(value);
+  } catch (e) {
+    return defaultValue;
   }
 }
