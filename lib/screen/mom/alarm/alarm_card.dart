@@ -87,7 +87,10 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                     showDialog(
                       context: context,
                       builder: (BuildContext buildContext) {
-                        return const DeleteModal();
+                        return const DeleteModal(
+                          text: "",
+                          title: "",
+                        );
                       },
                     );
                   },
