@@ -1,0 +1,20 @@
+{
+    "timestamp": "2024-01-29T08:58:01.45732",
+    "status": 200,
+    "data": {
+        "mealRecordList": [
+            {
+                "mealId": 1,
+                "dateTime": "2024-02-26 10:10:10",
+                "mealType": "아침",
+                "mealImageUrl": "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2a4t/image/w_yQeuiLSMJCqBEn7wiD__r07T4.jpg"
+            },
+            {
+                "mealId": 2,
+                "dateTime": "2024-02-26 14:10:10",
+                "mealType": "점심",
+                "mealImageUrl": "https://homecuisine.co.kr/files/attach/images/140/568/068/1a35dcd464cc1c5520b7b4a8c4ed7532.JPG"
+            }
+        ]
+    }
+}
