@@ -93,6 +93,7 @@ flutter:
     - assets/images/icons/close.png
     - assets/images/icons/icon_switch.png
     - assets/images/icons/icon_comment.png
+    - assets/images/icons/photo_register.png
     - assets/images/icons/icon_scrap.png
     - assets/images/icons/submit_inactive.png
     - assets/images/icons/submit_active.png
