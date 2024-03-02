@@ -37,30 +37,28 @@ class _MealScreenState extends State<MealScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantMeals = snapshot.data! as List<MealModel>;
-            containsBreakfast = pregnantMeals.any((meal) =>
-                meal.mealType == MealType.breakfast.korName.substring(0, 2));
-            containsLunch = pregnantMeals.any((meal) =>
-                meal.mealType == MealType.lunch.korName.substring(0, 2));
-            containsDinner = pregnantMeals.any((meal) =>
-                meal.mealType == MealType.dinner.korName.substring(0, 2));
+            containsBreakfast = pregnantMeals.any(
+                (meal) => meal.mealType == MealType.breakfast.engUpperCase);
+            containsLunch = pregnantMeals
+                .any((meal) => meal.mealType == MealType.lunch.engUpperCase);
+            containsDinner = pregnantMeals
+                .any((meal) => meal.mealType == MealType.dinner.engUpperCase);
             breakfastImageUrl = containsBreakfast
                 ? pregnantMeals
                     .firstWhere((meal) =>
-                        meal.mealType ==
-                        MealType.breakfast.korName.substring(0, 2))
+                        meal.mealType == MealType.breakfast.engUpperCase)
                     .imageUrl
                 : null;
             lunchImageUrl = containsLunch
                 ? pregnantMeals
-                    .firstWhere((meal) =>
-                        meal.mealType == MealType.lunch.korName.substring(0, 2))
+                    .firstWhere(
+                        (meal) => meal.mealType == MealType.lunch.engUpperCase)
                     .imageUrl
                 : null;
             dinnerImageUrl = containsDinner
                 ? pregnantMeals
-                    .firstWhere((meal) =>
-                        meal.mealType ==
-                        MealType.dinner.korName.substring(0, 2))
+                    .firstWhere(
+                        (meal) => meal.mealType == MealType.dinner.engUpperCase)
                     .imageUrl
                 : null;
           }
@@ -158,8 +156,7 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.breakfast.korName
-                                                  .substring(0, 2))
+                                              MealType.breakfast.engUpperCase)
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -194,8 +191,7 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.breakfast.korName
-                                                .substring(0, 2))
+                                            MealType.breakfast.engUpperCase)
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -290,8 +286,7 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.lunch.korName
-                                                  .substring(0, 2))
+                                              MealType.lunch.engUpperCase)
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -326,8 +321,7 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.lunch.korName
-                                                .substring(0, 2))
+                                            MealType.lunch.engUpperCase)
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -423,8 +417,7 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.dinner.korName
-                                                  .substring(0, 2))
+                                              MealType.dinner.engUpperCase)
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -459,8 +452,7 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.dinner.korName
-                                                .substring(0, 2))
+                                            MealType.dinner.engUpperCase)
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
