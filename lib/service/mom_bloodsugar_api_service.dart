@@ -84,7 +84,7 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   // TODO 혈당 수치 기록 수정 api 연동
-  Future<PregnantBloosdugar> updateBloodsugar(
+  Future<PregnantBloosdugar> modifyBloodsugar(
       int id, DateTime dateTime, String type, double level) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     Map data = {
@@ -103,7 +103,7 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   // TODO 영양제 섭취 기록 삭제 api 연동
-  Future<void> deleteSupplement(int id) async {
+  Future<void> deleteBloodsugar(int id) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     Response res = await delete(url);
 
