@@ -80,8 +80,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                 isButtonEnabled.value = true; // 입력값이 없을 때
                               }
                             },
+                            maxLength: 3,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 suffixText: 'mg / dL',
                                 suffixStyle: const TextStyle(
