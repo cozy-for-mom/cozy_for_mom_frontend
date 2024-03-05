@@ -19,13 +19,15 @@ class PregnantSupplement {
       required this.dateTimes});
 
   factory PregnantSupplement.fromJson(Map<String, dynamic> json) {
+    List<String> datetimes = (json['records'] as List<dynamic>)
+        .map((record) => record['datetime'] as String)
+        .toList();
     return PregnantSupplement(
       supplementId: json['supplementId'] as int,
       supplementName: json['supplementName'],
       targetCount: json['targetCount'] as int,
       realCount: json['realCount'] as int,
-      dateTimes: List<DateTime>.from(
-          json['datetimes'].map((dateTime) => DateTime.parse(dateTime))),
+      dateTimes: datetimes.map((datetime) => DateTime.parse(datetime)).toList(),
     );
   }
 }
