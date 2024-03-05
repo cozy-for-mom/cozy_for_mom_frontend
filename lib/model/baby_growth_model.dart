@@ -4,7 +4,7 @@ class BabyProfileGrowth {
   final String growthImageUrl;
   final String diary;
   final String title;
-  final List<BabyGrowth> babies;
+  final List<BabyGrowth>? babies;
 
   BabyProfileGrowth({
     required this.id,
@@ -12,7 +12,7 @@ class BabyProfileGrowth {
     required this.growthImageUrl,
     required this.diary,
     required this.title,
-    required this.babies,
+    this.babies,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,21 +23,21 @@ class BabyProfileGrowth {
       'diary': diary,
       'title': title,
       'babies': babies
-          .map((baby) => baby.toJson())
+          ?.map((baby) => baby.toJson())
           .toList(), // BabyGrowth 객체 리스트를 맵 리스트로 변환
     };
   }
 
   factory BabyProfileGrowth.fromJson(Map<String, dynamic> json) {
-    var list = json['babies'] as List;
-    List<BabyGrowth> babyList =
-        list.map((i) => BabyGrowth.fromJson(i)).toList();
+    var list = json['babies'] as List?;
+    List<BabyGrowth>? babyList =
+        list?.map((i) => BabyGrowth.fromJson(i)).toList();
 
     return BabyProfileGrowth(
       id: json['id'],
       date: DateTime.parse(json['date']),
-      growthImageUrl: json['growthImageUrl'],
-      diary: json['diary'],
+      growthImageUrl: json['imageUrl'],
+      diary: json['content'],
       title: json['title'],
       babies: babyList,
     );

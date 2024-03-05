@@ -1,10 +1,10 @@
+import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
-import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -170,7 +170,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const GrowReportRegister()));
+                                    const BabyGrowthReportListScreen()));
                       },
                       child: const CustomButton(
                           text: '성장 보고서',
