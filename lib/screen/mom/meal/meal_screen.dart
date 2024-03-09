@@ -33,32 +33,34 @@ class _MealScreenState extends State<MealScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return FutureBuilder(
-        future: momMealViewModel.getMeals(now),
+        future: momMealViewModel.getMeals(DateTime(2024, 3, 1)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantMeals = snapshot.data! as List<MealModel>;
-            containsBreakfast = pregnantMeals.any(
-                (meal) => meal.mealType == MealType.breakfast.engUpperCase);
-            containsLunch = pregnantMeals
-                .any((meal) => meal.mealType == MealType.lunch.engUpperCase);
-            containsDinner = pregnantMeals
-                .any((meal) => meal.mealType == MealType.dinner.engUpperCase);
+            containsBreakfast = pregnantMeals.any((meal) =>
+                meal.mealType == MealType.breakfast.korName.substring(0, 2));
+            containsLunch = pregnantMeals.any((meal) =>
+                meal.mealType == MealType.lunch.korName.substring(0, 2));
+            containsDinner = pregnantMeals.any((meal) =>
+                meal.mealType == MealType.dinner.korName.substring(0, 2));
             breakfastImageUrl = containsBreakfast
                 ? pregnantMeals
                     .firstWhere((meal) =>
-                        meal.mealType == MealType.breakfast.engUpperCase)
+                        meal.mealType ==
+                        MealType.breakfast.korName.substring(0, 2))
                     .imageUrl
                 : null;
             lunchImageUrl = containsLunch
                 ? pregnantMeals
-                    .firstWhere(
-                        (meal) => meal.mealType == MealType.lunch.engUpperCase)
+                    .firstWhere((meal) =>
+                        meal.mealType == MealType.lunch.korName.substring(0, 2))
                     .imageUrl
                 : null;
             dinnerImageUrl = containsDinner
                 ? pregnantMeals
-                    .firstWhere(
-                        (meal) => meal.mealType == MealType.dinner.engUpperCase)
+                    .firstWhere((meal) =>
+                        meal.mealType ==
+                        MealType.dinner.korName.substring(0, 2))
                     .imageUrl
                 : null;
           }
@@ -156,7 +158,8 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.breakfast.engUpperCase)
+                                              MealType.breakfast.korName
+                                                  .substring(0, 2))
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -191,7 +194,8 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.breakfast.engUpperCase)
+                                            MealType.breakfast.korName
+                                                .substring(0, 2))
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -286,7 +290,8 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.lunch.engUpperCase)
+                                              MealType.lunch.korName
+                                                  .substring(0, 2))
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -321,7 +326,8 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.lunch.engUpperCase)
+                                            MealType.lunch.korName
+                                                .substring(0, 2))
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -417,7 +423,8 @@ class _MealScreenState extends State<MealScreen> {
                                       pregnantMeals
                                           .firstWhere((meal) =>
                                               meal.mealType ==
-                                              MealType.dinner.engUpperCase)
+                                              MealType.dinner.korName
+                                                  .substring(0, 2))
                                           .imageUrl,
                                       fit: BoxFit.cover,
                                     ),
@@ -452,7 +459,8 @@ class _MealScreenState extends State<MealScreen> {
                                     dateFormat.format(pregnantMeals
                                         .firstWhere((meal) =>
                                             meal.mealType ==
-                                            MealType.dinner.engUpperCase)
+                                            MealType.dinner.korName
+                                                .substring(0, 2))
                                         .dateTime),
                                     style: const TextStyle(
                                       color: Colors.white,
