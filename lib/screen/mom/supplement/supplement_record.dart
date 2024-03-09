@@ -30,7 +30,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return FutureBuilder(
-        future: momSupplementViewModel.getSupplements(now),
+        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
+        future: momSupplementViewModel.getSupplements(DateTime(2024, 3, 3)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantSupplements = snapshot.data! as List<PregnantSupplement>;

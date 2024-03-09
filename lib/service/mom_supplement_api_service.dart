@@ -20,7 +20,7 @@ class SupplementApiService extends ChangeNotifier {
 
       // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(res.body);
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> supplementsData = body['data']['supplements'];
       List<PregnantSupplement> supplements = supplementsData.map((supplement) {
         return PregnantSupplement.fromJson(supplement);
