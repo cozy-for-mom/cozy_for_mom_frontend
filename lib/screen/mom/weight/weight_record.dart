@@ -42,7 +42,7 @@ class _WeightRecordState extends State<WeightRecord> {
     DateTime now = DateTime.now(); // 현재 날짜
     String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
     return FutureBuilder(
-        future: momWeightViewModel.getWeights(now, 'daily'),
+        future: momWeightViewModel.getWeights(DateTime(2024, 3, 3), 'daily'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             data = snapshot.data!;
@@ -158,7 +158,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                   width: 105,
                                   child: TextFormField(
                                     textAlign: TextAlign.end,
-                                    maxLength: 6,
+                                    maxLength: 5,
                                     showCursor: false,
                                     controller: _weightController,
                                     focusNode: _weightFocus,

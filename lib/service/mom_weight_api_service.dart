@@ -13,13 +13,13 @@ class WeightApiService extends ChangeNotifier {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/weight?date=$formattedDate&type=$type');
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
-      // Response res = await get(url);
+      Response res = await get(url);
       String jsonString =
           await rootBundle.loadString('assets/test_json/weight.json');
 
       // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(jsonString);
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> weightsData = body['data']['weightList'];
       List<PregnantWeight> weights = weightsData.map((weight) {
         return PregnantWeight.fromJson(weight);
