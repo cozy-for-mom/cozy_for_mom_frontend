@@ -188,6 +188,8 @@ class _MyPageState extends State<MyPage> {
                   children: [
                     CustomTextButton(
                         text: '코지로그',
+                        textColor: mainTextColor,
+                        textWeight: FontWeight.w600,
                         imagePath: 'assets/images/icons/cozylog.png',
                         imageWidth: 27.3,
                         imageHeight: 24.34,
@@ -202,6 +204,8 @@ class _MyPageState extends State<MyPage> {
                     ),
                     CustomTextButton(
                         text: '스크랩 내역',
+                        textColor: mainTextColor,
+                        textWeight: FontWeight.w600,
                         imagePath: 'assets/images/icons/scrap.png',
                         imageWidth: 18.4,
                         imageHeight: 24,
@@ -318,6 +322,8 @@ class _MyPageState extends State<MyPage> {
                                           return CustomProfileButton(
                                             text: profiles[index].name,
                                             imagePath: profiles[index].image,
+                                            offBackColor:
+                                                const Color(0xffF8F8FA),
                                             isSelected: activeProfile ==
                                                 profiles[index],
                                             onPressed: () {
