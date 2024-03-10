@@ -34,9 +34,9 @@ class BabyProfileGrowth {
         list?.map((i) => BabyGrowth.fromJson(i)).toList();
 
     return BabyProfileGrowth(
-      id: json['id'],
+      id: json['growthReportId'],
       date: DateTime.parse(json['date']),
-      growthImageUrl: json['imageUrl'],
+      growthImageUrl: json['growthImageUrl'],
       diary: json['content'],
       title: json['title'],
       babies: babyList,
@@ -47,11 +47,13 @@ class BabyProfileGrowth {
 class BabyGrowth {
   final int? id;
   final int babyId;
+  final String name;
   final BabyGrowthInfo babyGrowthInfo;
 
   BabyGrowth({
     this.id,
     required this.babyId,
+    required this.name,
     required this.babyGrowthInfo,
   });
 
@@ -66,9 +68,10 @@ class BabyGrowth {
   // 기존의 fromJson 메서드는 유지
   factory BabyGrowth.fromJson(Map<String, dynamic> json) {
     return BabyGrowth(
-      id: json['id'],
+      id: json['babyId'],
+      name: json['babyName'],
       babyId: json['babyId'],
-      babyGrowthInfo: BabyGrowthInfo.fromJson(json['babyGrowthInfo']),
+      babyGrowthInfo: BabyGrowthInfo.fromJson(json['growthInfo']),
     );
   }
 }

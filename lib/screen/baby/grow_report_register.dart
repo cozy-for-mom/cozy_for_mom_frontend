@@ -8,7 +8,11 @@ import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
 
 class GrowReportRegister extends StatefulWidget {
-  const GrowReportRegister({super.key});
+  final int? babyProfileGrowthId;
+  const GrowReportRegister({
+    super.key,
+    required this.babyProfileGrowthId,
+  });
 
   @override
   State<GrowReportRegister> createState() => _GrowReportRegisterState();
@@ -295,6 +299,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                         .map(
                           (baby) => BabyGrowth(
                             id: null,
+                            name: "dd",
                             babyId: baby.id,
                             babyGrowthInfo: BabyGrowthInfo(
                               weight: parseDouble(

@@ -44,4 +44,24 @@ class BabyGrowthApiService {
       throw Exception('성장 보고서 목록 조회 실패');
     }
   }
+
+  Future<BabyProfileGrowth> getBabyProfileGrowth(
+    int id,
+  ) async {
+    var urlString = '$baseUrl/growth/$id?userId=1'; // TODO userId 넣는 방식 수정
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await get(
+      url,
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      dynamic data = body['data'];
+      BabyProfileGrowth growth = BabyProfileGrowth.fromJson(data);
+      return growth;
+    } else {
+      throw Exception('성장 보고서 조회 실패 - id: $id');
+    }
+  }
 }

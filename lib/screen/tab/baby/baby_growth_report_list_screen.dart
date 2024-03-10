@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -155,7 +156,15 @@ class _BabyGrowthReportListScreenState
                             final dateTime = report.date;
                             return InkWell(
                               onTap: () {
-                                print("card 클릭"); // TODO 상세 조회페이지로 이동
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BabyGrowthReportDetailScreen(
+                                      babyProfileGrowthId: report.id,
+                                    ),
+                                  ),
+                                );
                               },
                               child: Container(
                                 child: Padding(
