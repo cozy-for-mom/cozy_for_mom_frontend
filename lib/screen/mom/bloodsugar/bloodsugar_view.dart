@@ -26,8 +26,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
         Provider.of<BloodsugarApiService>(context, listen: true);
     DateTime now = DateTime.now(); // 현재 날짜
     return FutureBuilder(
-        future:
-            bloodsugarPeriodViewModel.getPeriodBloodsugars(now, 'daily', 10),
+        future: bloodsugarPeriodViewModel.getPeriodBloodsugars(
+            DateTime(2024, 3, 1), 'daily'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             data = snapshot.data!;

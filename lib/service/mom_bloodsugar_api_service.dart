@@ -34,12 +34,12 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> getPeriodBloodsugars(
-      DateTime date, String type, int size) async {
+      DateTime date, String type) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
       final url = Uri.parse(
-          '$baseUrl/bloodsugar?date=$formattedDate&type=$type&size=$size');
+          '$baseUrl/bloodsugar/period?date=$formattedDate&type=$type');
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
       Response res = await get(url);
       String jsonString = await rootBundle
@@ -47,8 +47,7 @@ class BloodsugarApiService extends ChangeNotifier {
 
       // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(jsonString);
-      print(body);
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
       List<BloodsugarPerPeriod> bloodsugars = bloodsugarsData.map((bloodsugar) {
         return BloodsugarPerPeriod.fromJson(bloodsugar);
