@@ -1,5 +1,3 @@
-import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_view.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -124,11 +122,12 @@ class _MyScrapState extends State<MyScrap> {
               ),
             ],
           ),
-          SliverToBoxAdapter(
-            child: widget.isEditMode
-                ? ScrapListModify(cozyLogs: cozyLogs)
-                : ScrapListView(cozyLogs: cozyLogs),
-          ),
+          // TODO
+          // SliverToBoxAdapter(
+          //   child: widget.isEditMode
+          //       ? ScrapListModify(cozyLogs: cozyLogs)
+          //       : ScrapListView(cozyLogs: cozyLogs),
+          // ),
         ],
       ),
       floatingActionButton: widget.isEditMode

@@ -1,12 +1,17 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 
 class CozylogListView extends StatefulWidget {
-  final List<CozyLog> cozyLogs;
-  const CozylogListView({super.key, this.cozyLogs = const []});
+  final List<CozyLogForList> cozyLogs;
+  final bool isMyCozyLog;
+  const CozylogListView({
+    super.key,
+    this.cozyLogs = const [],
+    this.isMyCozyLog = false,
+  });
 
   @override
   State<CozylogListView> createState() => _CozylogListViewState();
@@ -87,6 +92,7 @@ class _CozylogListViewState extends State<CozylogListView> {
                         .map((cozylog) => CozylogViewWidget(
                               cozylog: cozylog,
                               isEditMode: isEditMode,
+                              isMyCozyLog: widget.isMyCozyLog,
                             ))
                         .toList(),
                   ),

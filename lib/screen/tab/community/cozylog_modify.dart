@@ -1,13 +1,13 @@
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
 class CozylogListModify extends StatefulWidget {
-  final List<CozyLog> cozyLogs;
+  final List<CozyLogForList> cozyLogs;
   const CozylogListModify({super.key, this.cozyLogs = const []});
 
   @override
@@ -108,7 +108,8 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                       isEditMode: true,
                       listModifyState: cozylogListModifyState,
                       onSelectedChanged: (isSelected) {
-                        cozylogListModifyState.toggleSelected(cozylog.id);
+                        cozylogListModifyState
+                            .toggleSelected(cozylog.cozyLogId);
                         setState(() {});
                       }))
                   .toList(),

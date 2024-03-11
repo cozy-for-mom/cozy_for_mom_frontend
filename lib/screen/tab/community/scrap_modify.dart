@@ -1,13 +1,13 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
 class ScrapListModify extends StatefulWidget {
-  final List<CozyLog> cozyLogs;
+  final List<CozyLogForList> cozyLogs;
   const ScrapListModify({super.key, this.cozyLogs = const []});
 
   @override
@@ -108,7 +108,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                       isEditMode: true,
                       listModifyState: scrapListModifyState,
                       onSelectedChanged: (isSelected) {
-                        scrapListModifyState.toggleSelected(cozylog.id);
+                        scrapListModifyState.toggleSelected(cozylog.cozyLogId);
                         setState(() {});
                       }))
                   .toList(),

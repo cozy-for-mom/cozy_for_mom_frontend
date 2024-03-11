@@ -26,6 +26,50 @@ class CozyLog {
   });
 }
 
+class CozyLogForList {
+  final int cozyLogId;
+  final String title;
+  final String summary;
+  final CozyLogModeType mode;
+  final DateTime date; // 생성일? 수정일?
+  final int commentCount;
+  final int scrapCount;
+  final int imageCount;
+  final String imageUrl;
+
+  CozyLogForList({
+    required this.cozyLogId,
+    required this.title,
+    required this.summary,
+    required this.mode,
+    required this.date,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageCount,
+    required this.imageUrl,
+  });
+
+  factory CozyLogForList.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    return CozyLogForList(
+      cozyLogId: json['id'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      mode: mode,
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+}
+
 enum CozyLogModeType { public, private }
 
 class CozyLogImage {
