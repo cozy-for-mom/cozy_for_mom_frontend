@@ -28,7 +28,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
         Provider.of<BloodsugarApiService>(context, listen: true);
     DateTime now = DateTime.now(); // 현재 날짜
     return FutureBuilder(
-        future: momBloodsugarViewModel.getBloodsugars(now),
+        future: momBloodsugarViewModel.getBloodsugars(DateTime(2024, 3, 2)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;

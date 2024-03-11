@@ -14,14 +14,14 @@ class BloodsugarApiService extends ChangeNotifier {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/bloodsugar?date=$formattedDate');
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
-      // Response res = await get(url);
+      Response res = await get(url);
       String jsonString =
           await rootBundle.loadString('assets/test_json/bloodsugar.json');
 
       // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(jsonString);
-      List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+      List<dynamic> bloodsugarsData = body['data']['bloodSugars'];
       List<PregnantBloosdugar> bloodsugars = bloodsugarsData.map((bloodsugar) {
         return PregnantBloosdugar.fromJson(bloodsugar);
       }).toList();
@@ -37,16 +37,18 @@ class BloodsugarApiService extends ChangeNotifier {
       DateTime date, String type, int size) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
       final url = Uri.parse(
           '$baseUrl/bloodsugar?date=$formattedDate&type=$type&size=$size');
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
-      // Response res = await get(url);
+      Response res = await get(url);
       String jsonString = await rootBundle
           .loadString('assets/test_json/bloodsugar_period.json');
 
       // TODO 상태 코드에 따른 에러 처리 추가
       // if (jsonString.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(jsonString);
+      print(body);
       List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
       List<BloodsugarPerPeriod> bloodsugars = bloodsugarsData.map((bloodsugar) {
         return BloodsugarPerPeriod.fromJson(bloodsugar);

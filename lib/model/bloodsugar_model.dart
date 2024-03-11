@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class PregnantBloosdugars {
   List<PregnantBloosdugar> bloodsugars;
 
