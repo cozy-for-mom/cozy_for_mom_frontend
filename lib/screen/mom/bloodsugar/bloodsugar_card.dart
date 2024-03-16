@@ -5,6 +5,9 @@ import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/service/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
+import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 
 class BloodsugarCard extends StatefulWidget {
   final String time;
@@ -20,6 +23,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
   late Map<String, dynamic> data;
   late String type;
   late List<PregnantBloosdugar> pregnantBloodsugars;
+  bool _isChangedValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +31,9 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
     BloodsugarApiService momBloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     DateTime now = DateTime.now(); // 현재 날짜
+    // print('++++++++++++++++++${widget.time}+++++++++++++++++');
     return FutureBuilder(
-        future: momBloodsugarViewModel.getBloodsugars(DateTime(2024, 3, 2)),
+        future: momBloodsugarViewModel.getBloodsugars(now),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;
@@ -69,6 +74,13 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                             .level
                             .toString()
                         : '-';
+                    int id = pregnantBloodsugars.any((bloodsugar) =>
+                            bloodsugar.type == '${widget.time} $period')
+                        ? pregnantBloodsugars
+                            .firstWhere((bloodsugar) =>
+                                bloodsugar.type == '${widget.time} $period')
+                            .id
+                        : -1;
                     // globalState.bloodSugarData[widget.time + period] ?? '-';
                     return Column(
                       children: [
@@ -84,13 +96,52 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                               children: <Widget>[
                                 InkWell(
                                   onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return BloodsugarModal(
-                                            time: widget.time, period: period);
-                                      },
-                                    );
+                                    input == '-'
+                                        ? showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return BloodsugarModal(
+                                                time: widget.time,
+                                                period: period,
+                                              );
+                                            },
+                                          )
+                                        : showModalBottomSheet(
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SelectBottomModal(
+                                                  selec1: '기록 수정하기',
+                                                  selec2: '기록 삭제하기',
+                                                  tap1: () {
+                                                    Navigator.pop(context);
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return BloodsugarModal(
+                                                          time: widget.time,
+                                                          period: period,
+                                                          id: id,
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  tap2: () {
+                                                    Navigator.pop(context);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return DeleteModal(
+                                                              text:
+                                                                  '등록된 기록을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                                              title: '기록이',
+                                                              tapFunc:
+                                                                  momBloodsugarViewModel
+                                                                      .deleteBloodsugar(
+                                                                          id));
+                                                        });
+                                                  });
+                                            });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(

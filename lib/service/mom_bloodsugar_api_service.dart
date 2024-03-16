@@ -13,23 +13,25 @@ class BloodsugarApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/bloodsugar?date=$formattedDate');
-      // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
       Response res = await get(url);
-      String jsonString =
-          await rootBundle.loadString('assets/test_json/bloodsugar.json');
+      // String jsonString =
+      //     await rootBundle.loadString('assets/test_json/bloodsugar.json');
 
-      // TODO 상태 코드에 따른 에러 처리 추가
-      // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
-      List<dynamic> bloodsugarsData = body['data']['bloodSugars'];
-      List<PregnantBloosdugar> bloodsugars = bloodsugarsData.map((bloodsugar) {
-        return PregnantBloosdugar.fromJson(bloodsugar);
-      }).toList();
-      return bloodsugars;
+      if (res.statusCode == 200) {
+        Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+        List<dynamic> bloodsugarsData = body['data']['bloodSugars'];
+        List<PregnantBloosdugar> bloodsugars =
+            bloodsugarsData.map((bloodsugar) {
+          return PregnantBloosdugar.fromJson(bloodsugar);
+        }).toList();
+        return bloodsugars;
+      } else {
+        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+      }
     } catch (e) {
       // 에러 처리
       print('error $e');
-      rethrow;
+      throw e; // 예외 다시 던지기
     }
   }
 
@@ -40,24 +42,26 @@ class BloodsugarApiService extends ChangeNotifier {
 
       final url = Uri.parse(
           '$baseUrl/bloodsugar/period?date=$formattedDate&type=$type');
-      // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
       Response res = await get(url);
-      String jsonString = await rootBundle
-          .loadString('assets/test_json/bloodsugar_period.json');
+      // String jsonString = await rootBundle
+      //     .loadString('assets/test_json/bloodsugar_period.json');
 
-      // TODO 상태 코드에 따른 에러 처리 추가
-      // if (jsonString.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
-      List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
-      List<BloodsugarPerPeriod> bloodsugars = bloodsugarsData.map((bloodsugar) {
-        return BloodsugarPerPeriod.fromJson(bloodsugar);
-      }).toList();
-      String periodType = body['data']['type'];
+      if (res.statusCode == 200) {
+        Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+        List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
+        List<BloodsugarPerPeriod> bloodsugars =
+            bloodsugarsData.map((bloodsugar) {
+          return BloodsugarPerPeriod.fromJson(bloodsugar);
+        }).toList();
+        String periodType = body['data']['type'];
 
-      return {
-        'type': periodType,
-        'bloodsugars': bloodsugars,
-      };
+        return {
+          'type': periodType,
+          'bloodsugars': bloodsugars,
+        };
+      } else {
+        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+      }
     } catch (e) {
       // 에러 처리
       print(e);
@@ -66,40 +70,44 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   // TODO 혈당 수치 기록 api 연동
-  Future<PregnantBloosdugar> recordBloodsugar(
-      DateTime dateTime, String type, double level) async {
+  Future<int> recordBloodsugar(
+      DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar');
     Map data = {
-      'date': dateTime.toIso8601String(),
+      'date': DateFormat('yyyy-MM-dd').format(dateTime),
       'type': type,
       'level': level
     };
-
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
-    if (response.statusCode == 200) {
-      return PregnantBloosdugar.fromJson(json.decode(response.body));
+    Map<String, dynamic> responseData = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      return responseData['data']['bloodSugarRecordId'];
     } else {
-      throw Exception('$dateTime $type 혈당 수치 기록을 실패하였습니다.');
+      throw Exception(
+          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록을 실패하였습니다.');
     }
   }
 
   // TODO 혈당 수치 기록 수정 api 연동
-  Future<PregnantBloosdugar> modifyBloodsugar(
-      int id, DateTime dateTime, String type, double level) async {
+  Future<int> modifyBloodsugar(
+      int id, DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     Map data = {
-      'date': dateTime.toIso8601String(),
+      'date': DateFormat('yyyy-MM-dd').format(dateTime),
       'type': type,
       'level': level
     };
-
+    print(jsonEncode(data));
     final Response response =
         await put(url, headers: headers, body: jsonEncode(data));
+    print(response.statusCode);
+    Map<String, dynamic> responseData = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      return PregnantBloosdugar.fromJson(json.decode(response.body));
+      return responseData['data']['bloodSugarRecordId'];
     } else {
-      throw Exception('$dateTime $type 혈당 수치 기록 수정을 실패하였습니다.');
+      throw Exception(
+          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록 수정을 실패하였습니다.');
     }
   }
 
@@ -107,8 +115,7 @@ class BloodsugarApiService extends ChangeNotifier {
   Future<void> deleteBloodsugar(int id) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     Response res = await delete(url);
-
-    if (res.statusCode == 200) {
+    if (res.statusCode == 204) {
       print('혈당 기록이 삭제되었습니다.');
     } else {
       throw '혈당 기록 삭제를 실패하였습니다.';
