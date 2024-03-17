@@ -12,7 +12,7 @@ class CozyLogApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/me/cozy-log?size=$size';
-    if (lastId == null) urlString += '&lastId=0';
+    if (lastId != null) urlString += '&lastId=$lastId';
     final url = Uri.parse(urlString);
     dynamic response;
     response = await get(

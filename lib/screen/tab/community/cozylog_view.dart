@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CozylogListView extends StatefulWidget {
   final List<CozyLogForList> cozyLogs;
@@ -18,6 +19,9 @@ class CozylogListView extends StatefulWidget {
   @override
   State<CozylogListView> createState() => _CozylogListViewState();
 }
+
+final PagingController<int, CozyLogForList> _pagingController =
+    PagingController(firstPageKey: 0);
 
 class _CozylogListViewState extends State<CozylogListView> {
   bool isEditMode = false;
@@ -89,6 +93,16 @@ class _CozylogListViewState extends State<CozylogListView> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: contentBoxTwoColor),
+                  // child: PagedListView<int, CozyLogForList>(
+                  //   pagingController: _pagingController,
+                  //   builderDelegate: PagedChildBuilderDelegate<CozyLogForList>(
+                  //     itemBuilder: (context, item, index) => CozylogViewWidget(
+                  //       cozylog: item,
+                  //       isEditMode: isEditMode,
+                  //       isMyCozyLog: widget.isMyCozyLog,
+                  //     ),
+                  //   ),
+                  // ),
                   child: Column(
                     children: widget.cozyLogs
                         .map((cozylog) => CozylogViewWidget(
@@ -119,7 +133,7 @@ class _CozylogListViewState extends State<CozylogListView> {
                               fontWeight: FontWeight.w500,
                               fontSize: 14)),
                     ]),
-              )
+              ),
       ],
     );
   }
