@@ -43,7 +43,7 @@ class _MyCozylogState extends State<MyCozylog> {
           SliverAppBar(
             pinned: true,
             centerTitle: true,
-            backgroundColor: Colors.white,
+            backgroundColor: backgroundColor,
             elevation: 0,
             leading: IconButton(
               icon: const Icon(
