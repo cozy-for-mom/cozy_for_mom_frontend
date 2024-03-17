@@ -30,4 +30,24 @@ class CozyLogApiService {
       throw Exception('성장 보고서 목록 조회 실패');
     }
   }
+
+  Future<CozyLog> getCozyLog(
+    int id,
+  ) async {
+    var urlString = '$baseUrl/cozy-log/$id?userId=1';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await get(
+      url,
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      dynamic data = body['data'];
+
+      return CozyLog.fromJson(data);
+    } else {
+      throw Exception('성장 보고서(id: $id) 조회 실패');
+    }
+  }
 }

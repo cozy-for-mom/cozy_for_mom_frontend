@@ -65,9 +65,13 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
               InkWell(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CozyLogDetailScreen()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CozyLogDetailScreen(
+                        id: widget.cozylog.cozyLogId,
+                      ),
+                    ),
+                  );
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,9 +170,8 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image(
-                                        image:
-                                            AssetImage(widget.cozylog.imageUrl),
+                                      child: Image.network(
+                                        widget.cozylog.imageUrl,
                                         width: 88,
                                         height: 88,
                                         fit: BoxFit.cover,

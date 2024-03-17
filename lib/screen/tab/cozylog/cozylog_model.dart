@@ -1,5 +1,5 @@
 class CozyLog {
-  final int cozyLogId;
+  final int? cozyLogId;
   final CozyLogWriter writer;
   final String title;
   final String content;
@@ -24,6 +24,30 @@ class CozyLog {
     required this.viewCount,
     required this.isScrapped,
   });
+
+  factory CozyLog.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    List<dynamic> imageList = json['imageList'];
+    return CozyLog(
+      cozyLogId: json['id'],
+      writer: CozyLogWriter.fromJson(json['writer']),
+      imageList:
+          imageList.map((image) => CozyLogImage.fromJson(image)).toList(),
+      title: json['title'],
+      content: json['content'],
+      mode: mode,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      scrapCount: json['scrapCount'],
+      viewCount: json['viewCount'],
+      isScrapped: json['scraped'],
+    );
+  }
 }
 
 class CozyLogForList {
@@ -73,13 +97,23 @@ class CozyLogForList {
 enum CozyLogModeType { public, private }
 
 class CozyLogImage {
+  final int imageId;
   final String imageUrl;
   final String description;
 
   CozyLogImage({
+    required this.imageId,
     required this.imageUrl,
     required this.description,
   });
+
+  factory CozyLogImage.fromJson(Map<String, dynamic> json) {
+    return CozyLogImage(
+      imageId: json['imageId'],
+      imageUrl: json['imageUrl'],
+      description: json['description'],
+    );
+  }
 }
 
 class CozyLogWriter {
@@ -92,6 +126,14 @@ class CozyLogWriter {
     required this.nickname,
     required this.imageUrl,
   });
+
+  factory CozyLogWriter.fromJson(Map<String, dynamic> json) {
+    return CozyLogWriter(
+      id: json['id'],
+      nickname: json['nickname'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
 
 class CozyLogSearchResponse {
