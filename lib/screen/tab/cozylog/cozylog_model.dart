@@ -45,9 +45,19 @@ class CozyLog {
       updatedAt: DateTime.parse(json['updatedAt']),
       scrapCount: json['scrapCount'],
       viewCount: json['viewCount'],
-      isScrapped: json['scraped'],
+      isScrapped: json['isScraped'],
     );
   }
+}
+
+class MyCozyLogListWrapper {
+  final List<CozyLogForList> cozyLogs;
+  final int totalCount;
+
+  MyCozyLogListWrapper({
+    required this.cozyLogs,
+    required this.totalCount,
+  });
 }
 
 class CozyLogForList {

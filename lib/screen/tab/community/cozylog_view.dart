@@ -7,10 +7,12 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.d
 class CozylogListView extends StatefulWidget {
   final List<CozyLogForList> cozyLogs;
   final bool isMyCozyLog;
+  final int totalCount;
   const CozylogListView({
     super.key,
     this.cozyLogs = const [],
     this.isMyCozyLog = false,
+    required this.totalCount,
   });
 
   @override
@@ -45,7 +47,7 @@ class _CozylogListViewState extends State<CozylogListView> {
                         height: 23.32),
                     const SizedBox(width: 8),
                     Text(
-                      '${widget.cozyLogs.length}개의 코지로그',
+                      '${widget.totalCount}개의 코지로그',
                       style: const TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,

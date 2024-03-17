@@ -8,7 +8,12 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dar
 
 class CozylogListModify extends StatefulWidget {
   final List<CozyLogForList> cozyLogs;
-  const CozylogListModify({super.key, this.cozyLogs = const []});
+  final int totalCount;
+  const CozylogListModify({
+    super.key,
+    this.cozyLogs = const [],
+    required this.totalCount,
+  });
 
   @override
   State<CozylogListModify> createState() => _CozylogListModifyState();

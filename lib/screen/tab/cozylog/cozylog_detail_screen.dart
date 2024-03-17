@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_edit_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_component.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
@@ -30,7 +31,6 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   ));
 
   TextEditingController textController = TextEditingController();
-
   List<CozyLogComment> commentList = [
     CozyLogComment(
       commentId: 2,
@@ -72,7 +72,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   void initState() {
     super.initState();
     futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
-    isMyCozyLog = true; // TODO 고쳐
+    isMyCozyLog = true; // TODO 고쳐야됨
   }
 
   @override
@@ -231,8 +231,15 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                         ),
                                                       )),
                                                       onTap: () {
-                                                        // TODO 수정하기 페이지로 이동
-                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CozylogEditPage(
+                                                              id: widget.id,
+                                                            ),
+                                                          ),
+                                                        );
                                                       },
                                                     ),
                                                     ListTile(

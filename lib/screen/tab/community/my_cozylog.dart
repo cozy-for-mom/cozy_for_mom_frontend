@@ -23,12 +23,12 @@ class MyCozylog extends StatefulWidget {
 }
 
 class _MyCozylogState extends State<MyCozylog> {
-  late Future<List<CozyLogForList>> cozyLogs;
+  late Future<MyCozyLogListWrapper> cozyLogWrapper;
 
   @override
   void initState() {
     super.initState();
-    cozyLogs = CozyLogApiService().getCozyLogs(null, 10);
+    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(null, 10);
   }
 
   @override
@@ -96,13 +96,17 @@ class _MyCozylogState extends State<MyCozylog> {
           ),
           SliverToBoxAdapter(
             child: FutureBuilder(
-              future: cozyLogs,
+              future: cozyLogWrapper,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return widget.isEditMode
-                      ? CozylogListModify(cozyLogs: snapshot.data!)
+                      ? CozylogListModify(
+                          cozyLogs: snapshot.data!.cozyLogs,
+                          totalCount: snapshot.data!.totalCount,
+                        )
                       : CozylogListView(
-                          cozyLogs: snapshot.data!,
+                          cozyLogs: snapshot.data!.cozyLogs,
+                          totalCount: snapshot.data!.totalCount,
                           isMyCozyLog: true,
                         );
                 } else {

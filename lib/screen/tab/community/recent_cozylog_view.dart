@@ -137,7 +137,7 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                               widget.cozylog.mode ==
                                                       CozyLogModeType.public
                                                   ? const Text(
-                                                      '비공개',
+                                                      '공개',
                                                       style: TextStyle(
                                                         color:
                                                             Color(0xffAAAAAA),
@@ -147,7 +147,7 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                                       ),
                                                     )
                                                   : const Text(
-                                                      '공개',
+                                                      '비공개',
                                                       style: TextStyle(
                                                         color:
                                                             Color(0xffAAAAAA),
