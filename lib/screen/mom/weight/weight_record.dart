@@ -20,6 +20,7 @@ class _WeightRecordState extends State<WeightRecord> {
   late WeightApiService momWeightViewModel;
   late Map<String, dynamic> data;
   late double todayWeight;
+  late Duration lastRecordDate;
   late List<PregnantWeight> pregnantWeights;
   final TextEditingController _weightController = TextEditingController();
   // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
@@ -37,18 +38,21 @@ class _WeightRecordState extends State<WeightRecord> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     WeightApiService momWeightViewModel =
         Provider.of<WeightApiService>(context, listen: true);
     DateTime now = DateTime.now(); // 현재 날짜
     String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
     return FutureBuilder(
-        future: momWeightViewModel.getWeights(DateTime(2024, 3, 3), 'daily'),
+        future: momWeightViewModel.getWeights(now, 'daily'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             data = snapshot.data!;
             todayWeight = data['todayWeight'];
             pregnantWeights = data['weights'] ?? [];
-            if (!_isInitialized) {
+            lastRecordDate =
+                now.difference(DateTime.parse(data['lastRecordDate']));
+            if (!_isInitialized && todayWeight > 0) {
               _weightController.text = todayWeight.toString();
               _isInitialized = true;
             }
@@ -65,7 +69,7 @@ class _WeightRecordState extends State<WeightRecord> {
               children: [
                 Positioned(
                   top: 47,
-                  width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+                  width: screenWidth - 20, // TODO 화면 너비에 맞춘 width로 수정해야함
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -125,7 +129,7 @@ class _WeightRecordState extends State<WeightRecord> {
                   top: 205,
                   left: 20,
                   child: Container(
-                    width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+                    width: screenWidth - 40, // TODO 화면 너비에 맞춘 width로 수정해야함
                     height: 86,
                     decoration: BoxDecoration(
                         color: contentBoxTwoColor,
@@ -136,17 +140,17 @@ class _WeightRecordState extends State<WeightRecord> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Column(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('나의 체중',
+                                const Text('나의 체중',
                                     style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 18)),
-                                Text('마지막 측정 3일전',
-                                    style: TextStyle(
+                                Text('마지막 측정 ${lastRecordDate.inDays}일전',
+                                    style: const TextStyle(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12)),
@@ -190,6 +194,13 @@ class _WeightRecordState extends State<WeightRecord> {
                                           unitTextColor = beforeInputColor;
                                         }
                                       });
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      _isInitialized
+                                          ? momWeightViewModel.modifyWeights(
+                                              now, double.parse(value))
+                                          : momWeightViewModel.recordWeights(
+                                              now, double.parse(value));
                                     },
                                   ),
                                 ),
