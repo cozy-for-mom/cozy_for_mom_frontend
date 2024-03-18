@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_edit_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_component.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
@@ -252,8 +253,18 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                         ),
                                                       )),
                                                       onTap: () {
-                                                        // TODO 삭제하기 API 호출
+                                                        CozyLogApiService()
+                                                            .deleteCozyLog(
+                                                                cozyLog
+                                                                    .cozyLogId!);
                                                         Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const MyCozylog(), // TODO 개선해야함. 뒤로가기후 새로고침되도록.
+                                                          ),
+                                                        );
                                                       },
                                                     ),
                                                   ]),

@@ -103,25 +103,30 @@ class CozyLogApiService {
       ),
     );
 
-    print(
-      {
-        'id': id,
-        'title': title,
-        'content': content,
-        'mode': switch (mode) {
-          CozyLogModeType.private => 'PRIVATE',
-          CozyLogModeType.public => 'PUBLIC',
-        },
-        'imageList': [],
-      },
-    );
-
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       Map<String, dynamic> data = body['data'];
       return data['modifiedCozyLogId'] as int;
     } else {
       throw Exception('성장 보고서(id: $id) 수정 실패');
+    }
+  }
+
+  void deleteCozyLog(
+    int id,
+  ) async {
+    var urlString = '$baseUrl/cozy-log/$id?userId=1';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await delete(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 204) {
+      return;
+    } else {
+      throw Exception('성장 보고서(id: $id) 삭제 실패');
     }
   }
 }
