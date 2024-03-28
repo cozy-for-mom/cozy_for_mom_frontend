@@ -5,7 +5,10 @@ import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 class DeleteModal extends StatefulWidget {
   final String text;
   final String title;
-  const DeleteModal({super.key, required this.text, required this.title});
+  final Future<void>? tapFunc;
+
+  const DeleteModal(
+      {super.key, required this.text, required this.title, this.tapFunc});
 
   @override
   State<DeleteModal> createState() => _DeleteModalState();
