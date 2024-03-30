@@ -29,7 +29,7 @@ class CozyLogApiService {
       }).toList();
       return MyCozyLogListWrapper(cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
-      throw Exception('성장 보고서 목록 조회 실패');
+      throw Exception('코지로그 목록 조회 실패');
     }
   }
 
@@ -54,7 +54,7 @@ class CozyLogApiService {
       }).toList();
       return cozyLogs;
     } else {
-      throw Exception('성장 보고서 목록 조회 실패');
+      throw Exception('코지로그 목록 조회 실패');
     }
   }
 
@@ -73,7 +73,7 @@ class CozyLogApiService {
       dynamic data = body['data'];
       return CozyLog.fromJson(data);
     } else {
-      throw Exception('성장 보고서(id: $id) 조회 실패');
+      throw Exception('코지로그(id: $id) 조회 실패');
     }
   }
 
@@ -108,7 +108,7 @@ class CozyLogApiService {
       Map<String, dynamic> data = body['data'];
       return data['modifiedCozyLogId'] as int;
     } else {
-      throw Exception('성장 보고서(id: $id) 수정 실패');
+      throw Exception('코지로그(id: $id) 수정 실패');
     }
   }
 
@@ -126,7 +126,55 @@ class CozyLogApiService {
     if (response.statusCode == 204) {
       return;
     } else {
-      throw Exception('성장 보고서(id: $id) 삭제 실패');
+      throw Exception('코지로그(id: $id) 삭제 실패');
+    }
+  }
+
+  Future<void> scrapCozyLog(
+    int cozyLogId,
+  ) async {
+    var urlString = '$baseUrl/scrap';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogId': cozyLogId,
+          'isScraped': true,
+        },
+      ),
+    );
+
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
+    }
+  }
+
+  Future<void> unscrapCozyLog(
+    int cozyLogId,
+  ) async {
+    var urlString = '$baseUrl/scrap';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogId': cozyLogId,
+          'isScraped': false,
+        },
+      ),
+    );
+
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
 }

@@ -22,7 +22,7 @@ class CozyLogDetailScreen extends StatefulWidget {
 
 class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   late Future<CozyLog> futureCozyLog;
-  late bool isMyCozyLog;
+  bool isMyCozyLog = false;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
   String commentInput = '';
 
@@ -73,7 +73,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   void initState() {
     super.initState();
     futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
-    isMyCozyLog = true; // TODO 고쳐야됨
+    futureCozyLog.then((value) =>
+        isMyCozyLog = value.writer.id == 3); // TODO user id 판단 로직 가져오기
   }
 
   @override
@@ -310,8 +311,21 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                   ),
                                 )
                               : IconButton(
-                                  onPressed: () {
-                                    // 스크랩 버튼 누르기 API
+                                  onPressed: () async {
+                                    // 스크랩 상태에 따른 API 호출
+                                    if (cozyLog.isScrapped) {
+                                      await CozyLogApiService()
+                                          .unscrapCozyLog(widget.id);
+                                    } else {
+                                      await CozyLogApiService()
+                                          .scrapCozyLog(widget.id);
+                                    }
+
+                                    // 상태 업데이트
+                                    setState(() {
+                                      futureCozyLog = CozyLogApiService()
+                                          .getCozyLog(widget.id);
+                                    });
                                   },
                                   icon: cozyLog.isScrapped
                                       ? const Icon(

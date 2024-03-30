@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -12,27 +13,30 @@ import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 
-class CozylogMain extends StatelessWidget {
+class CozylogMain extends StatefulWidget {
   const CozylogMain({super.key});
+
+  @override
+  State<CozylogMain> createState() => _CozylogMainState();
+}
+
+class _CozylogMainState extends State<CozylogMain> {
+  late Future<List<CozyLogForList>> cozyLogs;
+
+  @override
+  void initState() {
+    super.initState();
+    cozyLogs = CozyLogApiService().getCozyLogs(
+      null,
+      10,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
-    final cozyLogs = [
-      CozyLogForList(
-        cozyLogId: 1,
-        commentCount: 3,
-        scrapCount: 10,
-        mode: CozyLogModeType.public,
-        imageCount: 1,
-        title: "산부인과 다녀왔어요ㅋㅋ",
-        summary: "오늘 산부인과 다녀왔어요^_^ 오는길에 딸기가 보이길래 한 팩 사왔네요.",
-        date: DateTime(2000),
-        imageUrl: "assets/images/test_image.png",
-      ),
-    ];
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -238,15 +242,24 @@ class CozylogMain extends StatelessWidget {
                   color: contentBoxTwoColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: cozyLogs
-                        .map((cozylog) => CozylogViewWidget(
-                              cozylog: cozylog,
-                              isMyCozyLog: true,
-                            ))
-                        .toList(),
-                  ),
+                child: FutureBuilder(
+                  future: cozyLogs,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: snapshot.data!
+                              .map((cozylog) => CozylogViewWidget(
+                                    cozylog: cozylog,
+                                    isMyCozyLog: false,
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    } else {
+                      return const Text("최근 작성된 글이 없습니다.");
+                    }
+                  },
                 ),
               ),
             ),
