@@ -4,7 +4,6 @@ import 'package:cozy_for_mom_frontend/model/weight_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class WeightApiService extends ChangeNotifier {
@@ -15,7 +14,6 @@ class WeightApiService extends ChangeNotifier {
       Response res = await get(url);
       // String jsonString =
       //     await rootBundle.loadString('assets/test_json/weight.json');
-
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> weightsData = body['data']['weightList'];
@@ -24,7 +22,6 @@ class WeightApiService extends ChangeNotifier {
         }).toList();
         double todayWeight = body['data']['todayWeight'];
         String lastRecordDate = body['data']['lastRecordDate'];
-        print('${weightsData} ${formattedDate}');
 
         return {
           'todayWeight': todayWeight,
@@ -41,7 +38,7 @@ class WeightApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> recordWeights(DateTime dateTime, double weight) async {
+  Future<void> recordWeight(DateTime dateTime, double weight) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     final url = Uri.parse('$baseUrl/weight');
     Map data = {'date': formattedDate, 'weight': weight};
@@ -56,16 +53,13 @@ class WeightApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> modifyWeights(DateTime dateTime, double weight) async {
+  Future<void> modifyWeight(DateTime dateTime, double weight) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     final url = Uri.parse('$baseUrl/weight?date=$formattedDate');
     Map data = {'weight': weight};
 
     final Response response =
         await put(url, headers: headers, body: jsonEncode(data));
-    print(url);
-    print(jsonEncode(data));
-    print(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       return;
     } else {

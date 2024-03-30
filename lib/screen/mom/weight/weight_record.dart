@@ -69,7 +69,7 @@ class _WeightRecordState extends State<WeightRecord> {
               children: [
                 Positioned(
                   top: 47,
-                  width: screenWidth - 20, // TODO 화면 너비에 맞춘 width로 수정해야함
+                  width: screenWidth - 20,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -129,7 +129,7 @@ class _WeightRecordState extends State<WeightRecord> {
                   top: 205,
                   left: 20,
                   child: Container(
-                    width: screenWidth - 40, // TODO 화면 너비에 맞춘 width로 수정해야함
+                    width: screenWidth - 40,
                     height: 86,
                     decoration: BoxDecoration(
                         color: contentBoxTwoColor,
@@ -197,9 +197,9 @@ class _WeightRecordState extends State<WeightRecord> {
                                     },
                                     onFieldSubmitted: (value) {
                                       _isInitialized
-                                          ? momWeightViewModel.modifyWeights(
+                                          ? momWeightViewModel.modifyWeight(
                                               now, double.parse(value))
-                                          : momWeightViewModel.recordWeights(
+                                          : momWeightViewModel.recordWeight(
                                               now, double.parse(value));
                                     },
                                   ),
