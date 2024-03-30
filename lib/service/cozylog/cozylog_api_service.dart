@@ -33,6 +33,35 @@ class CozyLogApiService {
     }
   }
 
+  Future<ScrapCozyLogListWrapper> getScrapCozyLogs(
+    int? lastId,
+    int size,
+  ) async {
+    var urlString = '$baseUrl/scrap?userId=1&size=$size';
+    if (lastId != null) {
+      urlString += '&lastId=$lastId';
+    }
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await get(
+      url,
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+
+      int totalCount = body['data']['totalCount'];
+      List<CozyLogForList> cozyLogs =
+          (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
+        return CozyLogForList.fromJson(cozyLog);
+      }).toList();
+      return ScrapCozyLogListWrapper(
+          cozyLogs: cozyLogs, totalCount: totalCount);
+    } else {
+      throw Exception('코지로그 목록 조회 실패');
+    }
+  }
+
   Future<List<CozyLogForList>> getCozyLogs(
     int? lastId,
     int size,

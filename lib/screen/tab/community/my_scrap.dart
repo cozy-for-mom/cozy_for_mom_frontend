@@ -1,8 +1,12 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_view.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
@@ -20,51 +24,44 @@ class MyScrap extends StatefulWidget {
 }
 
 class _MyScrapState extends State<MyScrap> {
+  late Future<ScrapCozyLogListWrapper> cozyLogWrapper;
+
+  PagingController<int, CozyLogForList> pagingController =
+      PagingController(firstPageKey: 0);
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      // print("fetch Page $pageKey");
+      final cozyLogWrapper =
+          await CozyLogApiService().getScrapCozyLogs(pageKey, 5);
+      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final isLastPage = cozyLogs.length < 5;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(cozyLogs);
+      } else {
+        final nextPageKey = cozyLogs.lastOrNull?.cozyLogId;
+        pagingController.appendPage(cozyLogs, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(null, 5);
+    pagingController = PagingController(firstPageKey: 0);
+    pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cozyLogs = [
-      CozyLog(
-        id: 1,
-        commentCount: 3,
-        scrapCount: 10,
-        imageCount: 1,
-        title: "산부인과 다녀왔어요ㅋㅋ",
-        summary: "오늘 산부인과 다녀왔어요^_^ 오는길에 딸기가 보이길래 한 팩 사왔네요.",
-        date: "2023-10-28",
-        imageUrl: "assets/images/test_image.png",
-      ),
-      CozyLog(
-        id: 2,
-        commentCount: 4,
-        scrapCount: 10,
-        imageCount: 2,
-        title: "오늘 병원에 다녀왔는데 새로운 정보를 알게 되어서 공유합니다~",
-        summary: "의외로 임신중 날계란을 피해야한다고 하더라고요 몰랐던 사실이라 공유합니다.",
-        date: "2023-10-29",
-        imageUrl: "assets/images/test_image2.png",
-      ),
-      CozyLog(
-        id: 3,
-        commentCount: 4,
-        scrapCount: 8,
-        imageCount: 0,
-        title: "영양제 뭐 드시나요?",
-        summary: "임신 중에 유독 과일이 먹고싶더라고요 근데 요즘 과일 값이 금값이라 내키는대로 사먹을 수가 없네요ㅠㅠ",
-        date: "2023-10-29",
-      ),
-      CozyLog(
-        id: 4,
-        commentCount: 16,
-        scrapCount: 2,
-        imageCount: 0,
-        title: "산모교실? 같은데 가보신분~",
-        summary:
-            "인스타보면 산모교실 참석하면 바운서도 주고 하던데유ㅎㅎㅎ 거기 가면 뭐하는건가요? 어떤 도움을 받을 수 있는지 궁금해서 코지로그 글 올려봅니당",
-        date: "2023-10-28",
-      ),
-      // 추가적인 CozyLog 인스턴스들...
-    ];
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
@@ -73,7 +70,7 @@ class _MyScrapState extends State<MyScrap> {
           SliverAppBar(
             pinned: true,
             centerTitle: true,
-            backgroundColor: Colors.transparent,
+            backgroundColor: backgroundColor,
             elevation: 0,
             leading: IconButton(
               icon: const Icon(
@@ -123,11 +120,19 @@ class _MyScrapState extends State<MyScrap> {
             ],
           ),
           // TODO
-          // SliverToBoxAdapter(
-          //   child: widget.isEditMode
-          //       ? ScrapListModify(cozyLogs: cozyLogs)
-          //       : ScrapListView(cozyLogs: cozyLogs),
-          // ),
+          SliverToBoxAdapter(
+              child: FutureBuilder(
+            future: cozyLogWrapper,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return widget.isEditMode
+                    ? ScrapListModify(cozyLogs: snapshot.data!.cozyLogs)
+                    : ScrapListView(cozyLogs: snapshot.data!.cozyLogs);
+              } else {
+                return const Text("코지로그를 스크랩해보세요"); // TODO
+              }
+            },
+          )),
         ],
       ),
       floatingActionButton: widget.isEditMode

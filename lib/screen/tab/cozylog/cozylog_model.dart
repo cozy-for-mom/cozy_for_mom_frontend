@@ -60,6 +60,16 @@ class MyCozyLogListWrapper {
   });
 }
 
+class ScrapCozyLogListWrapper {
+  final List<CozyLogForList> cozyLogs;
+  final int totalCount;
+
+  ScrapCozyLogListWrapper({
+    required this.cozyLogs,
+    required this.totalCount,
+  });
+}
+
 class CozyLogForList {
   final int cozyLogId;
   final String title;
