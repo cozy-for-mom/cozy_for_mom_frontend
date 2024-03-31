@@ -8,7 +8,13 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dar
 
 class ScrapListModify extends StatefulWidget {
   final List<CozyLogForList> cozyLogs;
-  const ScrapListModify({super.key, this.cozyLogs = const []});
+  final int totalCount;
+
+  const ScrapListModify({
+    super.key,
+    this.cozyLogs = const [],
+    required this.totalCount,
+  });
 
   @override
   State<ScrapListModify> createState() => _ScrapListModifyState();
@@ -44,7 +50,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
-                          '${scrapListModifyState.selectedCount}/${widget.cozyLogs.length}',
+                          '${scrapListModifyState.selectedCount}/${widget.totalCount}',
                           style: const TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,

@@ -290,9 +290,10 @@ class _MyCozylogState extends State<MyCozylog> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const DeleteModal(
+                            return DeleteModal(
                               title: '코지로그가',
                               text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              onPressed: () {},
                             );
                           },
                           barrierDismissible: false,

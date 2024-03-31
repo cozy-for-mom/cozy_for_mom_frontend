@@ -206,4 +206,27 @@ class CozyLogApiService {
       throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
+
+  Future<void> bulkUnscrapCozyLog(
+    List<int> cozyLogIds,
+  ) async {
+    var urlString = '$baseUrl/scrap/unscraps?userId=1';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogIds': cozyLogIds,
+        },
+      ),
+    );
+
+    if (response.statusCode == 204) {
+      return;
+    } else {
+      throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
+    }
+  }
 }

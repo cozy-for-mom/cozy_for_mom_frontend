@@ -5,7 +5,13 @@ import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 class DeleteModal extends StatefulWidget {
   final String text;
   final String title;
-  const DeleteModal({super.key, required this.text, required this.title});
+  final void Function() onPressed;
+  const DeleteModal({
+    super.key,
+    required this.text,
+    required this.title,
+    required this.onPressed,
+  });
 
   @override
   State<DeleteModal> createState() => _DeleteModalState();
@@ -65,7 +71,7 @@ class _DeleteModalState extends State<DeleteModal> {
                     Navigator.of(context).pop();
                     DeleteCompleteAlertModal.showDeleteCompleteDialog(
                         context, widget.title);
-                    // TODO 삭제 기능 구현
+                    widget.onPressed();
                   },
                   child: Container(
                     width: 56,

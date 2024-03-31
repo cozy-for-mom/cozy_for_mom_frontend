@@ -126,8 +126,14 @@ class _MyScrapState extends State<MyScrap> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return widget.isEditMode
-                    ? ScrapListModify(cozyLogs: snapshot.data!.cozyLogs)
-                    : ScrapListView(cozyLogs: snapshot.data!.cozyLogs);
+                    ? ScrapListModify(
+                        cozyLogs: snapshot.data!.cozyLogs,
+                        totalCount: snapshot.data!.totalCount,
+                      )
+                    : ScrapListView(
+                        cozyLogs: snapshot.data!.cozyLogs,
+                        totalCount: snapshot.data!.totalCount,
+                      );
               } else {
                 return const Text("코지로그를 스크랩해보세요"); // TODO
               }
@@ -166,9 +172,18 @@ class _MyScrapState extends State<MyScrap> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const DeleteModal(
+                            return DeleteModal(
                               title: '스크랩이',
                               text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              onPressed: () async {
+                                await CozyLogApiService().bulkUnscrapCozyLog(
+                                  scrapListModifyState.selectedIds,
+                                );
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MyScrap()));
+                              },
                             );
                           },
                           barrierDismissible: false,

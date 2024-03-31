@@ -6,7 +6,12 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.d
 
 class ScrapListView extends StatefulWidget {
   final List<CozyLogForList> cozyLogs;
-  const ScrapListView({super.key, this.cozyLogs = const []});
+  final int totalCount;
+  const ScrapListView({
+    super.key,
+    this.cozyLogs = const [],
+    required this.totalCount,
+  });
 
   @override
   State<ScrapListView> createState() => _ScrapListViewState();
@@ -40,7 +45,7 @@ class _ScrapListViewState extends State<ScrapListView> {
                         height: 24),
                     const SizedBox(width: 8),
                     Text(
-                      '${widget.cozyLogs.length}개의 스크랩',
+                      '${widget.totalCount}개의 스크랩',
                       style: const TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,
