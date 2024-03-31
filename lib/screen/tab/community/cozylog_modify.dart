@@ -35,7 +35,6 @@ class _CozylogListModifyState extends State<CozylogListModify> {
       final cozyLogs = cozyLogWrapper.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
-      print(cozyLogs.length);
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
       } else {
@@ -85,7 +84,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
-                          '${cozylogListModifyState.selectedCount}/${widget.cozyLogs.length}',
+                          '${cozylogListModifyState.selectedCount}/${widget.totalCount}',
                           style: const TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
@@ -150,6 +149,11 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                   cozylog: item,
                   isEditMode: true,
                   isMyCozyLog: true,
+                  listModifyState: cozylogListModifyState,
+                  onSelectedChanged: (isSelected) {
+                    cozylogListModifyState.toggleSelected(item.cozyLogId);
+                    setState(() {});
+                  },
                 ),
               ),
             ),

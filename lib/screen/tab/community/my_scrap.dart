@@ -180,9 +180,10 @@ class _MyScrapState extends State<MyScrap> {
                                   scrapListModifyState.selectedIds,
                                 );
                                 Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const MyScrap()));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const MyScrap()),
+                                );
                               },
                             );
                           },
