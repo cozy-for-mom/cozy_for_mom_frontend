@@ -28,4 +28,30 @@ class CozyLogCommentApiService {
       throw Exception('코지로그(id: $id) 댓글 조회 실패');
     }
   }
+
+  Future<bool> postComment(
+    int cozyLogId,
+    int? parentId,
+    String content,
+  ) async {
+    var urlString = '$baseUrl/cozy-log/$cozyLogId/comment?userId=1';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'parentId': parentId,
+          'comment': content,
+        },
+      ),
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw Exception('코지로그(id: $cozyLogId) 댓글 작성 실패');
+    }
+  }
 }

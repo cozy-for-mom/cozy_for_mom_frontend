@@ -25,6 +25,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   late Future<CozyLog> futureCozyLog;
   late Future<List<CozyLogComment>> futureComments;
   bool isMyCozyLog = false;
+  int? parentCommentIdToReply;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
   String commentInput = '';
 
@@ -34,42 +35,6 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   ));
 
   TextEditingController textController = TextEditingController();
-  List<CozyLogComment> commentList = [
-    CozyLogComment(
-      commentId: 2,
-      parentId: null,
-      content: "정보 감사합니다! 헤헤",
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      writerId: 2,
-      writerImageUrl: null,
-      writerNickname: "cozy",
-      subComments: [
-        CozyLogComment(
-          commentId: 2,
-          parentId: null,
-          content: "답글 테스트",
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          writerId: 2,
-          writerImageUrl: null,
-          writerNickname: "제니",
-          subComments: null,
-        ),
-      ],
-    ),
-    CozyLogComment(
-      commentId: 3,
-      parentId: null,
-      content: "정보 감사합니다! 헤헤2",
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      writerId: 3,
-      writerImageUrl: null,
-      writerNickname: "도톨이",
-      subComments: [],
-    )
-  ];
 
   @override
   void initState() {
@@ -406,18 +371,25 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                               return SizedBox(
                                 height: 300,
                                 child: ListView.builder(
+                                  shrinkWrap: true,
                                   physics:
-                                      const AlwaysScrollableScrollPhysics(), // new
+                                      const AlwaysScrollableScrollPhysics(),
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
                                     return Column(
                                       children: [
                                         CozyLogCommentComponent(
-                                          comment: snapshot.data![index],
-                                          subComments: snapshot
-                                                  .data![index].subComments ??
-                                              [],
-                                        ),
+                                            comment: snapshot.data![index],
+                                            subComments: snapshot
+                                                    .data![index].subComments ??
+                                                [],
+                                            onReply: () {
+                                              setState(() {
+                                                parentCommentIdToReply =
+                                                    snapshot
+                                                        .data![index].parentId;
+                                              });
+                                            }),
                                         const Divider(
                                           height: 5,
                                         ),
@@ -464,15 +436,28 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             },
                             cursorColor: primaryColor,
                             decoration: InputDecoration(
-                              hintText: "댓글을 남겨주세요.",
+                              hintText: parentCommentIdToReply != null
+                                  ? "답글을 남겨주세요."
+                                  : "댓글을 남겨주세요.",
                               hintStyle: const TextStyle(
                                 color: Color(0xffBCC0C7),
                                 fontSize: 14,
                               ),
                               suffixIcon: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   if (commentInput != '') {
-                                    print("send"); // TODO API 호출
+                                    await CozyLogCommentApiService()
+                                        .postComment(
+                                      widget.id,
+                                      parentCommentIdToReply,
+                                      commentInput,
+                                    );
+                                    setState(() {
+                                      textController.text = '';
+                                      futureComments =
+                                          CozyLogCommentApiService()
+                                              .getCozyLogComments(widget.id);
+                                    });
                                   }
                                 },
                                 child: Padding(

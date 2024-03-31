@@ -7,10 +7,12 @@ class CozyLogCommentComponent extends StatelessWidget {
     super.key,
     required this.comment,
     required this.subComments,
+    required this.onReply,
   });
 
   final CozyLogComment comment;
   final List<CozyLogComment> subComments;
+  final Function() onReply;
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +76,13 @@ class CozyLogCommentComponent extends StatelessWidget {
                         const SizedBox(
                           width: 7,
                         ),
-                        const Text(
-                          "답글쓰기",
-                          style: TextStyle(
-                            color: Color(0xffAAAAAA),
+                        InkWell(
+                          onTap: onReply,
+                          child: const Text(
+                            "답글쓰기",
+                            style: TextStyle(
+                              color: Color(0xffAAAAAA),
+                            ),
                           ),
                         ),
                       ],
@@ -87,87 +92,86 @@ class CozyLogCommentComponent extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
           subComments.isNotEmpty
-              ? SizedBox(
-                  height: 70,
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        height: 50,
-                        child: comment.writerImageUrl == null
-                            ? Image.asset("assets/images/icons/momProfile.png")
-                            : Image.network(
-                                comment.writerImageUrl!,
-                              ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: subComments.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  subComments[index].writerNickname,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+              ? const SizedBox(
+                  height: 20,
+                )
+              : const SizedBox(),
+          subComments.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 50.0), // 왼쪽 패딩으로 인덴트 조정
+                  child: Column(
+                    children: subComments.map((subComment) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  subComments[index].content,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      dateFormat
-                                          .format(subComments[index].createdAt),
-                                      style: const TextStyle(
-                                        color: Color(0xffAAAAAA),
+                                height: 50,
+                                child: comment.writerImageUrl == null
+                                    ? Image.asset(
+                                        "assets/images/icons/momProfile.png")
+                                    : Image.network(
+                                        comment.writerImageUrl!,
                                       ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    subComment.writerNickname,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    const SizedBox(
-                                      width: 7,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    subComment.content,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    // const Text(
-                                    //   "답글쓰기",
-                                    //   style: TextStyle(
-                                    //     color: Color(0xffAAAAAA),
-                                    //   ),
-                                    // ),
-                                  ],
-                                )
-                              ],
-                            );
-                          },
-                        ),
-                      )
-                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        dateFormat.format(subComment.createdAt),
+                                        style: const TextStyle(
+                                          color: Color(0xffAAAAAA),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 7,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 )
-              : Container()
+              : Container(),
         ],
       ),
     );
