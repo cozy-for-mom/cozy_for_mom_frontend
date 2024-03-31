@@ -25,7 +25,11 @@ class CozyLogCommentComponent extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
                 height: 50,
                 child: comment.writerImageUrl == null
                     ? Image.asset("assets/images/icons/momProfile.png")
@@ -94,7 +98,11 @@ class CozyLogCommentComponent extends StatelessWidget {
                       const SizedBox(
                         width: 50,
                       ),
-                      SizedBox(
+                      Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
                         height: 50,
                         child: comment.writerImageUrl == null
                             ? Image.asset("assets/images/icons/momProfile.png")

@@ -6,6 +6,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_compone
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_comment_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,7 @@ class CozyLogDetailScreen extends StatefulWidget {
 
 class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   late Future<CozyLog> futureCozyLog;
+  late Future<List<CozyLogComment>> futureComments;
   bool isMyCozyLog = false;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
   String commentInput = '';
@@ -75,6 +77,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
     futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
     futureCozyLog.then((value) =>
         isMyCozyLog = value.writer.id == 3); // TODO user id 판단 로직 가져오기
+
+    futureComments = CozyLogCommentApiService().getCozyLogComments(widget.id);
   }
 
   @override
@@ -392,31 +396,40 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         ),
                       ),
                       // 댓글 목록
-
                       const Divider(
                         height: 5,
                       ),
-                      SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(), // new
-                          itemCount: commentList.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                CozyLogCommentComponent(
-                                  comment: commentList[index],
-                                  subComments:
-                                      commentList[index].subComments ?? [],
+                      FutureBuilder(
+                          future: futureComments,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 300,
+                                child: ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(), // new
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        CozyLogCommentComponent(
+                                          comment: snapshot.data![index],
+                                          subComments: snapshot
+                                                  .data![index].subComments ??
+                                              [],
+                                        ),
+                                        const Divider(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
-                                const Divider(
-                                  height: 5,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
                       // 댓글 입력
                       Padding(
                         padding: const EdgeInsets.all(10.0),

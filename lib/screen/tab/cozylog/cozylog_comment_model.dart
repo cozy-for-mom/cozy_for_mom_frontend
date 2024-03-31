@@ -20,4 +20,21 @@ class CozyLogComment {
     required this.writerImageUrl,
     required this.subComments,
   });
+
+  factory CozyLogComment.fromJson(Map<String, dynamic> json) {
+    List<dynamic> subComments = json['childComment'];
+    return CozyLogComment(
+      commentId: json['commentId'],
+      parentId: json['parentId'],
+      content: json['comment'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      writerId: json['writerId'],
+      writerNickname: json['writerNickname'],
+      writerImageUrl: json['writerImageUrl'],
+      subComments: subComments
+          .map((comment) => CozyLogComment.fromJson(comment))
+          .toList(),
+    );
+  }
 }
