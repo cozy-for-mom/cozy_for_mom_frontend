@@ -1,37 +1,31 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
+import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
+import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
 
 class SupplementCard extends StatefulWidget {
   final String name;
   final int targetCount;
   int realCount;
   List<DateTime> takeTimes;
+  List<int> ids;
 
   SupplementCard(
       {super.key,
       required this.name,
       required this.targetCount,
       required this.realCount,
-      required this.takeTimes});
+      required this.takeTimes,
+      required this.ids});
 
   @override
   _SupplementCardState createState() => _SupplementCardState();
 }
 
 class _SupplementCardState extends State<SupplementCard> {
-  void _handleButtonClick() {
-    // 클릭한 시간을 현재 시간으로 설정
-    DateTime currentTime = DateTime.now();
-
-    // '먹었어요' 버튼 클릭 시 realCount 증가 및 클릭한 시간 저장 (상태관리)
-    // TODO 섭취한 영양제 기록 api 요청
-    setState(() {
-      widget.realCount++;
-      widget.takeTimes.add(currentTime);
-    });
-  }
-
   // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
   double calculateCardHeight(int itemCount) {
     double buttonHeight = 36;
@@ -42,6 +36,8 @@ class _SupplementCardState extends State<SupplementCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    late DateTime currentTime;
+    SupplementApiService supplementApi = SupplementApiService();
     return Card(
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -92,9 +88,54 @@ class _SupplementCardState extends State<SupplementCard> {
                     (index) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: InkWell(
-                        onTap: () {
-                          _handleButtonClick();
-                        },
+                        onTap: widget.realCount > index
+                            ? () {
+                                currentTime = DateTime.now();
+                                int id = widget.ids[index];
+                                showModalBottomSheet(
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SelectBottomModal(
+                                          selec1: '시간 수정하기',
+                                          selec2: '기록 삭제하기',
+                                          tap1: () async {
+                                            Navigator.pop(context);
+                                            setState(() {
+                                              supplementApi
+                                                  .modifySupplementIntake(id,
+                                                      widget.name, currentTime);
+                                            });
+                                          },
+                                          tap2: () {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return DeleteModal(
+                                                    text:
+                                                        '기록된 시간을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                                    title: '기록이',
+                                                    tapFunc: () => supplementApi
+                                                        .deleteSupplementIntake(
+                                                            id),
+                                                  );
+                                                });
+                                          });
+                                    });
+                              }
+                            : () {
+                                print('${widget.realCount} $index');
+
+                                setState(() {
+                                  currentTime = DateTime.now();
+                                  // TODO 아래 2줄 : 영양제 섭취 기록 시, 화면 리렌더링하는 방법 찾으면 제거해도 되는 코드
+                                  widget.realCount++;
+                                  widget.takeTimes.add(currentTime);
+                                  supplementApi.recordSupplementIntake(
+                                      widget.name, currentTime);
+                                });
+                              },
                         child: Container(
                           width: 106,
                           height: 36,
