@@ -379,6 +379,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     return Column(
                                       children: [
                                         CozyLogCommentComponent(
+                                            cozyLog: cozyLog,
+                                            isMyCozyLog: isMyCozyLog,
                                             comment: snapshot.data![index],
                                             subComments: snapshot
                                                     .data![index].subComments ??
@@ -388,6 +390,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                 parentCommentIdToReply =
                                                     snapshot
                                                         .data![index].parentId;
+                                              });
+                                            },
+                                            onCommentUpdate: () {
+                                              setState(() {
+                                                futureComments =
+                                                    CozyLogCommentApiService()
+                                                        .getCozyLogComments(
+                                                            widget.id);
                                               });
                                             }),
                                         const Divider(

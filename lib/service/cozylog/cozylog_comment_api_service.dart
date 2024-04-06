@@ -54,4 +54,23 @@ class CozyLogCommentApiService {
       throw Exception('코지로그(id: $cozyLogId) 댓글 작성 실패');
     }
   }
+
+  Future<bool> deleteComment(
+    int cozyLogId,
+    int commentId,
+  ) async {
+    var urlString = '$baseUrl/cozy-log/$cozyLogId/comment/$commentId?userId=1';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await delete(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 204) {
+      return true;
+    } else {
+      throw Exception('코지로그(id: $cozyLogId) 댓글 삭제 실패');
+    }
+  }
 }
