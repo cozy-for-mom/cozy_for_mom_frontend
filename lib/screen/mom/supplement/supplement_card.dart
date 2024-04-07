@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_modal.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_time_correction_modal.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SupplementCard extends StatefulWidget {
