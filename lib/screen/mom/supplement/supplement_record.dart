@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
+
 import 'package:provider/provider.dart';
 
 class SupplementRecord extends StatefulWidget {
@@ -140,10 +141,16 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: SupplementCard(
+                                  supplementId: supplement.supplementId,
                                   name: supplement.supplementName,
                                   targetCount: supplement.targetCount,
                                   realCount: supplement.realCount,
-                                  takeTimes: supplement.dateTimes,
+                                  takeTimes: supplement.records
+                                      .map((record) => record.datetime)
+                                      .toList(),
+                                  recordIds: supplement.records
+                                      .map((record) => record.id)
+                                      .toList(),
                                 ));
                           }).toList(),
                   ),

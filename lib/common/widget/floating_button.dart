@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class CustomFloatingButton extends StatelessWidget {
   void Function()? pressed;
+
   CustomFloatingButton({
     this.pressed,
     super.key,
@@ -19,9 +20,6 @@ class CustomFloatingButton extends StatelessWidget {
       child: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         backgroundColor: primaryColor,
-        // onPressed: () {
-        //   print('플로팅 버튼 클릭'); // TODO 각각 필요한 페이지 이동 및 등록 팝업 등 구현
-        // },
         onPressed: pressed,
         child: Image.asset(
           'assets/images/icons/plus_white.png',

@@ -1,33 +1,46 @@
 class PregnantSupplements {
-  List<PregnantSupplement> supplement;
+  List<PregnantSupplement> supplements;
 
-  PregnantSupplements(this.supplement);
+  PregnantSupplements(this.supplements);
 }
 
 class PregnantSupplement {
-  int? supplementId;
+  int supplementId;
   String supplementName;
   int targetCount;
   int realCount;
-  List<DateTime> dateTimes;
+  List<Record> records;
 
   PregnantSupplement(
-      {this.supplementId,
+      {required this.supplementId,
       required this.supplementName,
       required this.targetCount,
       required this.realCount,
-      required this.dateTimes});
+      required this.records});
 
   factory PregnantSupplement.fromJson(Map<String, dynamic> json) {
-    List<String> datetimes = (json['records'] as List<dynamic>)
-        .map((record) => record['datetime'] as String)
-        .toList();
     return PregnantSupplement(
       supplementId: json['supplementId'] as int,
       supplementName: json['supplementName'],
       targetCount: json['targetCount'] as int,
       realCount: json['realCount'] as int,
-      dateTimes: datetimes.map((datetime) => DateTime.parse(datetime)).toList(),
+      records: (json['records'] as List)
+          .map((recordJson) => Record.fromJson(recordJson))
+          .toList(),
+    );
+  }
+}
+
+class Record {
+  final int id;
+  final DateTime datetime;
+
+  Record({required this.id, required this.datetime});
+
+  factory Record.fromJson(Map<String, dynamic> json) {
+    return Record(
+      id: json['id'],
+      datetime: DateTime.parse(json['datetime']),
     );
   }
 }
