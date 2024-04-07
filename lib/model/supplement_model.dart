@@ -5,14 +5,14 @@ class PregnantSupplements {
 }
 
 class PregnantSupplement {
-  int? supplementId;
+  int supplementId;
   String supplementName;
   int targetCount;
   int realCount;
   List<Record> records;
 
   PregnantSupplement(
-      {this.supplementId,
+      {required this.supplementId,
       required this.supplementName,
       required this.targetCount,
       required this.realCount,

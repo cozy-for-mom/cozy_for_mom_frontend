@@ -1,5 +1,4 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/tap_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
@@ -141,13 +140,14 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: SupplementCard(
+                                  supplementId: supplement.supplementId,
                                   name: supplement.supplementName,
                                   targetCount: supplement.targetCount,
                                   realCount: supplement.realCount,
                                   takeTimes: supplement.records
                                       .map((record) => record.datetime)
                                       .toList(),
-                                  ids: supplement.records
+                                  recordIds: supplement.records
                                       .map((record) => record.id)
                                       .toList(),
                                 ));

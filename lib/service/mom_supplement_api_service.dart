@@ -4,7 +4,6 @@ import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class SupplementApiService extends ChangeNotifier {
@@ -27,7 +26,7 @@ class SupplementApiService extends ChangeNotifier {
       }
     } catch (e) {
       // 에러 처리
-      print('1 $e');
+      print('$e');
       rethrow;
     }
   }
@@ -43,7 +42,6 @@ class SupplementApiService extends ChangeNotifier {
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> responseData =
         jsonDecode(utf8.decode(response.bodyBytes));
-    print(responseData);
     if (response.statusCode == 201) {
       return responseData['data']['supplementRecordId'];
     } else {
@@ -51,26 +49,19 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
-  // TODO 영양제 섭취 기록(섭취시간) 수정
   Future<int> modifySupplementIntake(
-      int id, String name, DateTime takeTime) async {
+      int id, String name, String takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
-    Map data = {
-      'supplementName': name,
-      'dateTime': DateFormat('yyyy-MM-dd HH:mm:ss').format(takeTime)
-    };
+    Map data = {'supplementName': name, 'datetime': takeTime};
 
     final Response response =
-        await post(url, headers: headers, body: jsonEncode(data));
+        await put(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> responseData =
         jsonDecode(utf8.decode(response.bodyBytes));
-    print(responseData);
-    print(response.statusCode);
-    print(jsonEncode(data));
-    if (response.statusCode == 201) {
-      return responseData['data']['id'];
+    if (response.statusCode == 200) {
+      return responseData['data']['supplementRecordId'];
     } else {
-      throw Exception('$name 섭취 기록 등록을 실패하였습니다.');
+      throw Exception('$name 섭취 기록 수정을 실패하였습니다.');
     }
   }
 
@@ -85,9 +76,8 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
-  // TODO 나의 영양제 등록
-  Future<PregnantSupplement> registerSupplement(
-      PregnantSupplement supplement) async {
+  // TODO 나의 영양제 등록 팝업 머지 후 연동 작업하기
+  Future<int> registerSupplement(PregnantSupplement supplement) async {
     final url = Uri.parse('$baseUrl/supplement');
     Map data = {
       'supplementName': supplement.supplementName,
@@ -95,8 +85,10 @@ class SupplementApiService extends ChangeNotifier {
     };
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
-    if (response.statusCode == 200) {
-      return PregnantSupplement.fromJson(json.decode(response.body));
+    Map<String, dynamic> responseData =
+        jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 201) {
+      return responseData['data']['supplementRecordId'];
     } else {
       throw Exception('${supplement.supplementName} 등록을 실패하였습니다.');
     }
@@ -106,7 +98,7 @@ class SupplementApiService extends ChangeNotifier {
   Future<PregnantSupplement> modifySupplement(
       String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
-    Map data = {'supplementName': name, 'dateTime': takeTime.toIso8601String()};
+    Map data = {'supplementName': name, 'datetime': takeTime.toIso8601String()};
 
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
@@ -117,15 +109,14 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
-  // TODO 나의 영양제 삭제 api 연동
-  Future<void> deleteSupplement(String name, DateTime takeTime) async {
-    final url = Uri.parse('$baseUrl/supplement/intake');
+  Future<void> deleteSupplement(int id) async {
+    final url = Uri.parse('$baseUrl/supplement/$id');
     Response res = await delete(url);
 
-    if (res.statusCode == 200) {
-      print('${name}-${takeTime} 기록이 삭제되었습니다.');
+    if (res.statusCode == 204) {
+      print('$id 영양제가 삭제되었습니다.');
     } else {
-      throw '${name}-${takeTime} 기록 삭제를 실패하였습니다.';
+      throw '$id 영양제 삭제를 실패하였습니다.';
     }
   }
 }
