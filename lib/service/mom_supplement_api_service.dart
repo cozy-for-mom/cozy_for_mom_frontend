@@ -76,21 +76,18 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
-  // TODO 나의 영양제 등록 팝업 머지 후 연동 작업하기
-  Future<int> registerSupplement(PregnantSupplement supplement) async {
+  Future<int> registerSupplement(String name, int targetCount) async {
     final url = Uri.parse('$baseUrl/supplement');
-    Map data = {
-      'supplementName': supplement.supplementName,
-      'targetCount': supplement.targetCount
-    };
+    Map data = {'supplementName': name, 'targetCount': targetCount};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> responseData =
         jsonDecode(utf8.decode(response.bodyBytes));
+    print(responseData);
     if (response.statusCode == 201) {
-      return responseData['data']['supplementRecordId'];
+      return responseData['data']['supplementId'];
     } else {
-      throw Exception('${supplement.supplementName} 등록을 실패하였습니다.');
+      throw Exception('$name 영양제 등록을 실패하였습니다.');
     }
   }
 
