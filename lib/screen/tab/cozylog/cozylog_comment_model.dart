@@ -1,5 +1,6 @@
 class CozyLogComment {
   final int commentId;
+  final bool isDeleted;
   final int? parentId;
   final String content;
   final DateTime createdAt;
@@ -11,6 +12,7 @@ class CozyLogComment {
 
   CozyLogComment({
     required this.commentId,
+    required this.isDeleted,
     required this.parentId,
     required this.content,
     required this.createdAt,
@@ -25,6 +27,7 @@ class CozyLogComment {
     List<dynamic> subComments = json['childComment'];
     return CozyLogComment(
       commentId: json['commentId'],
+      isDeleted: json['isDeleted'],
       parentId: json['parentId'],
       content: json['comment'],
       createdAt: DateTime.parse(json['createdAt']),

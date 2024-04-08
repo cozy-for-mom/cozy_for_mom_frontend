@@ -26,6 +26,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   late Future<List<CozyLogComment>> futureComments;
   bool isMyCozyLog = false;
   int? parentCommentIdToReply;
+  int? commentIdToUpdate;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
   String commentInput = '';
 
@@ -390,14 +391,32 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                 parentCommentIdToReply =
                                                     snapshot
                                                         .data![index].parentId;
+                                                textController.text = '';
+                                                submitIcon = const Image(
+                                                    image: AssetImage(
+                                                  "assets/images/icons/submit_inactive.png",
+                                                ));
                                               });
                                             },
-                                            onCommentUpdate: () {
+                                            requestCommentsUpdate: () {
                                               setState(() {
                                                 futureComments =
                                                     CozyLogCommentApiService()
                                                         .getCozyLogComments(
                                                             widget.id);
+                                              });
+                                            },
+                                            onCommentUpdate:
+                                                (CozyLogComment comment) {
+                                              setState(() {
+                                                commentIdToUpdate =
+                                                    comment.commentId;
+                                                textController.text =
+                                                    comment.content;
+                                                submitIcon = const Image(
+                                                    image: AssetImage(
+                                                  "assets/images/icons/submit_active.png",
+                                                ));
                                               });
                                             }),
                                         const Divider(
@@ -456,12 +475,22 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                               suffixIcon: GestureDetector(
                                 onTap: () async {
                                   if (commentInput != '') {
-                                    await CozyLogCommentApiService()
-                                        .postComment(
-                                      widget.id,
-                                      parentCommentIdToReply,
-                                      commentInput,
-                                    );
+                                    if (commentIdToUpdate == null) {
+                                      await CozyLogCommentApiService()
+                                          .postComment(
+                                        widget.id,
+                                        parentCommentIdToReply,
+                                        commentInput,
+                                      );
+                                    } else {
+                                      await CozyLogCommentApiService()
+                                          .updateComment(
+                                        widget.id,
+                                        commentIdToUpdate!,
+                                        parentCommentIdToReply,
+                                        commentInput,
+                                      );
+                                    }
                                     setState(() {
                                       textController.text = '';
                                       futureComments =
