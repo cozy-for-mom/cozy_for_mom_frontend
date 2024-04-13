@@ -41,7 +41,7 @@ class _LineChartState extends State<LineChart> {
       backgroundColor: Colors.white,
       series: <ChartSeries>[
         LineSeries<LineChartData, String>(
-          dataSource: widget.dataList,
+          dataSource: widget.dataList.reversed.toList(),
           xValueMapper: (LineChartData data, _) => data.xValue,
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
@@ -126,25 +126,27 @@ class _LineChartState extends State<LineChart> {
         minorGridLines: const MinorGridLines(
           width: 1,
         ),
-        minimum: widget.baseValue,
-        plotBands: <PlotBand>[
-          PlotBand(
-            borderColor: thickLineColor,
-            color: thickLineColor,
-            isVisible: true,
-            borderWidth: 1.7,
-            start: widget.baseValue,
-            end: widget.baseValue,
-          ),
-          PlotBand(
-            borderColor: thickLineColor,
-            color: thickLineColor,
-            isVisible: true,
-            borderWidth: 2.5,
-            start: widget.baseValue + 15, // TODO 어떻게 지정해야할지 고민 필요
-            end: widget.baseValue + 15,
-          ),
-        ],
+
+        // minimum: widget.baseValue - 20,
+        // maximum: widget.baseValue
+        // plotBands: <PlotBand>[
+        //   PlotBand(
+        //     borderColor: thickLineColor,
+        //     color: thickLineColor,
+        //     isVisible: true,
+        //     borderWidth: 1.7,
+        //     start: widget.baseValue,
+        //     end: widget.baseValue,
+        //   ),
+        //   PlotBand(
+        //     borderColor: thickLineColor,
+        //     color: thickLineColor,
+        //     isVisible: true,
+        //     borderWidth: 2.5,
+        //     start: widget.baseValue + 15, // TODO 어떻게 지정해야할지 고민 필요
+        //     end: widget.baseValue + 15,
+        //   ),
+        // ],
       ),
     );
   }
