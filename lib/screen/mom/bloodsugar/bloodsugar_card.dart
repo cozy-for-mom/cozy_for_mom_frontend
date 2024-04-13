@@ -135,7 +135,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                               text:
                                                                   '등록된 기록을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                                                               title: '기록이',
-                                                              tapFunc:
+                                                              tapFunc: () =>
                                                                   momBloodsugarViewModel
                                                                       .deleteBloodsugar(
                                                                           id));

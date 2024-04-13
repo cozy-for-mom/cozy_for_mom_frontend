@@ -67,7 +67,7 @@ class _MealScreenState extends State<MealScreen> {
                         return DeleteModal(
                             text: '등록된 식단을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                             title: '식단이',
-                            tapFunc: momMealViewModel.deleteWeight(id));
+                            tapFunc: () => momMealViewModel.deleteWeight(id));
                       });
                 });
           });
