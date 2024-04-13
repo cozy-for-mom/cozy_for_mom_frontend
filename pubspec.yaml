@@ -40,9 +40,9 @@ dependencies:
   table_calendar: ^3.0.8
   time_picker_spinner: ^0.0.1
   provider: ^6.0.5
-  image_picker: ^1.0.4
   flutter_slidable: ^0.6.0
   http:
+  http_parser:
   
 dev_dependencies:
   flutter_test:
@@ -127,6 +127,7 @@ flutter:
 
     - assets/test_json/supplement.json
     - assets/test_json/weight.json
+    - assets/test_json/meal.json
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
