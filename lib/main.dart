@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom_weight_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom_meal_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom_bloodsugar_api_service.dart';
 
 void main() {
   initializeDateFormatting('ko_KR', null).then((_) {
@@ -21,6 +22,7 @@ void main() {
           ChangeNotifierProvider(create: (context) => SupplementApiService()),
           ChangeNotifierProvider(create: (context) => WeightApiService()),
           ChangeNotifierProvider(create: (context) => MealApiService()),
+          ChangeNotifierProvider(create: (context) => BloodsugarApiService())
         ],
         child: const App(),
       ),

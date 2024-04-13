@@ -112,7 +112,7 @@ class _LineChartState extends State<LineChart> {
         ),
       ),
       primaryYAxis: NumericAxis(
-        interval: 5,
+        interval: 10,
         axisLine: const AxisLine(width: 1, color: Colors.white),
         majorTickLines: const MajorTickLines(width: 0), // 제거
         opposedPosition: true,
@@ -126,9 +126,10 @@ class _LineChartState extends State<LineChart> {
         minorGridLines: const MinorGridLines(
           width: 1,
         ),
-
-        // minimum: widget.baseValue - 20,
-        // maximum: widget.baseValue
+        // minimum: double.parse((widget.baseValue - 15).toStringAsFixed(0)),
+        minimum: widget.unit == "kg"
+            ? (widget.baseValue - 10)
+            : ((widget.baseValue - 15) / 10).roundToDouble() * 10,
         // plotBands: <PlotBand>[
         //   PlotBand(
         //     borderColor: thickLineColor,
