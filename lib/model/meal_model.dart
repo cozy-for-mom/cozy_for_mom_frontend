@@ -21,11 +21,10 @@ class MealModel {
 }
 
 enum MealType {
-  breakfast("아침식사", "BREAKFAST"),
-  lunch("점심식사", "LUNCH"),
-  dinner("저녁식사", "DINNER");
+  breakfast("아침식사"),
+  lunch("점심식사"),
+  dinner("저녁식사");
 
   final String korName;
-  final String engUpperCase;
-  const MealType(this.korName, this.engUpperCase);
+  const MealType(this.korName);
 }

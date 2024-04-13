@@ -13,7 +13,7 @@ class PregnantWeight {
   factory PregnantWeight.fromJson(Map<String, dynamic> json) {
     return PregnantWeight(
       weight: json['weight'] as double,
-      dateTime: json['date'] as String,
+      dateTime: json['endDate'] as String,
     );
   }
 }

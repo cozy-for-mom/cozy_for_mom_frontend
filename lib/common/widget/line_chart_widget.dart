@@ -41,7 +41,7 @@ class _LineChartState extends State<LineChart> {
       backgroundColor: Colors.white,
       series: <ChartSeries>[
         LineSeries<LineChartData, String>(
-          dataSource: widget.dataList,
+          dataSource: widget.dataList.reversed.toList(),
           xValueMapper: (LineChartData data, _) => data.xValue,
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
