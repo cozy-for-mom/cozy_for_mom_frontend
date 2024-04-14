@@ -67,7 +67,11 @@ class CozyLogApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/cozy-log/list?size=$size';
-    if (lastId == null) urlString += '&lastId=0';
+    if (lastId == null) {
+      urlString += '&lastId=0';
+    } else {
+      urlString += '$lastId=$lastId';
+    }
     urlString += '&sort=LATELY';
     final url = Uri.parse(urlString);
     dynamic response;
@@ -84,6 +88,45 @@ class CozyLogApiService {
       return cozyLogs;
     } else {
       throw Exception('코지로그 목록 조회 실패');
+    }
+  }
+
+  Future<CozyLogSearchResponse> searchCozyLogs(
+    String keyword,
+    int? lastId,
+    int size,
+    CozyLogSearchSortType sortType,
+  ) async {
+    var urlString = '$baseUrl/cozy-log/search?size=$size';
+    if (lastId == null) {
+      urlString += '&lastId=0';
+    } else {
+      urlString += '&lastId=$lastId';
+    }
+    var sortTypeString = 'LATELY';
+    if (sortType == CozyLogSearchSortType.comment) {
+      sortTypeString = 'COMMENT';
+    }
+    urlString += '&sort=$sortTypeString';
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await get(
+      url,
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      List<CozyLogSearchResult> cozyLogs =
+          (body['data']['results'] as List<dynamic>).map((cozyLog) {
+        return CozyLogSearchResult.fromJson(cozyLog);
+      }).toList();
+      int totalCount = body['data']['totalCount'];
+      return CozyLogSearchResponse(
+        results: cozyLogs,
+        totalElements: totalCount,
+      );
+    } else {
+      throw Exception('코지로그 검색 조회 실패');
     }
   }
 

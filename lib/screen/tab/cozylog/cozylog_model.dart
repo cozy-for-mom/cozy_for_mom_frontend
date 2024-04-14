@@ -170,7 +170,7 @@ class CozyLogSearchResult {
   final int id;
   final String title;
   final String summary;
-  final String date;
+  final DateTime date;
   final int commentCount;
   final int scrapCount;
   final String? imageUrl;
@@ -186,6 +186,19 @@ class CozyLogSearchResult {
     required this.imageUrl,
     required this.imageCount,
   });
+
+  factory CozyLogSearchResult.fromJson(Map<String, dynamic> json) {
+    return CozyLogSearchResult(
+      id: json['id'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
 
 enum CozyLogSearchSortType {

@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_result_page.dart';
 import 'package:flutter/material.dart';
 
 class CozyLogSearchPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class CozyLogSearchPage extends StatefulWidget {
 class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
   // TODO 조회 API로 대체
   final searchHistories = ["체중", "임산부", "병원검사", "영양제", "임신"];
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +34,25 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.white,
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 17,
                       ),
-                      Image(
+                      const Image(
                         image:
                             AssetImage("assets/images/icons/icon_search.png"),
                         width: 15,
                         height: 15,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: TextField(
                           cursorColor: primaryColor,
                           cursorHeight: 15,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             focusColor: primaryColor,
                             fillColor: primaryColor,
                             border: InputBorder.none,
@@ -61,7 +63,16 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                             ),
                             hintText: "검색어를 입력해주세요",
                           ),
-                          // style: TextStyle(color: Color(0xff858998)),
+                          onSubmitted: (String value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CozyLogSearchResultPage(
+                                  searchKeyword: value,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -189,6 +200,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
             const SizedBox(
               height: 17,
             ),
+
             const Text(
               "검색어를 입력해보세요!",
               style: TextStyle(
