@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 // TODO 전역으로 상태 관리 필요한 변수는 이 클래스에서 관리
 class MyDataModel with ChangeNotifier {
   Map<String, String> bloodSugarData = {}; // 시간대와 혈당 수치 매핑
+  DateTime _selectedDay = DateTime.now();
 
   void setBloodSugarData(String time, String value) {
     bloodSugarData[time] = value;
@@ -11,5 +12,12 @@ class MyDataModel with ChangeNotifier {
 
   String? getBloodSugarData(String time) {
     return bloodSugarData[time];
+  }
+
+  DateTime get selectedDay => _selectedDay;
+
+  void updateSelectedDay(DateTime newDay) {
+    _selectedDay = newDay;
+    notifyListeners();
   }
 }

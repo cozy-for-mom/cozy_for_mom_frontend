@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,11 @@ class _MealScreenState extends State<MealScreen> {
     MealApiService momMealViewModel =
         Provider.of<MealApiService>(context, listen: true);
     ImageApiService imageApiService = ImageApiService();
+    final globalData = Provider.of<MyDataModel>(context);
+    DateTime selectedDate = globalData.selectedDay;
     DateFormat dateFormat = DateFormat('aa hh:mm');
     DateTime now = DateTime.now(); // 현재 날짜
-    String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
+    String formattedDate = DateFormat('M.d E', 'ko_KR').format(selectedDate);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     Future<dynamic> showSelectModal(int id) {
@@ -74,9 +77,10 @@ class _MealScreenState extends State<MealScreen> {
     }
 
     return FutureBuilder(
-        future: momMealViewModel.getMeals(now),
+        future: momMealViewModel.getMeals(selectedDate), //TODO
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print(selectedDate);
             pregnantMeals = snapshot.data! as List<MealModel>;
             containsBreakfast = pregnantMeals.any((meal) =>
                 meal.mealType == MealType.breakfast.korName.substring(0, 2));
@@ -154,7 +158,7 @@ class _MealScreenState extends State<MealScreen> {
                         Row(
                           children: [
                             Text(
-                              formattedDate,
+                              formattedDate, //TODO
                               style: const TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w600,
