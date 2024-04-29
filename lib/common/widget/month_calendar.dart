@@ -13,14 +13,13 @@ class MonthCalendar extends StatefulWidget {
 }
 
 class _MonthCalendarState extends State<MonthCalendar> {
-  DateTime _selectedDay = DateTime.now();
-  Map<DateTime, List<Widget>> _events = {
-    DateTime.now(): [],
-  };
+  // Map<DateTime, List<Widget>> _events = {
+  //   DateTime.now(): [],
+  // };
 
   @override
   Widget build(BuildContext context) {
-    final globalDate = Provider.of<MyDataModel>(context);
+    final globalDate = Provider.of<MyDataModel>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SizedBox(
@@ -29,13 +28,12 @@ class _MonthCalendarState extends State<MonthCalendar> {
             focusedDay: globalDate.selectedDay,
             firstDay: DateTime(2000),
             lastDay: DateTime.now(),
-            eventLoader: (date) => _events[date] ?? [],
+            // eventLoader: (date) => _events[date] ?? [],
             selectedDayPredicate: (date) {
               return isSameDay(date, globalDate.selectedDay);
             },
             onDaySelected: (date, events) {
               setState(() {
-                // _selectedDay = date;
                 globalDate.updateSelectedDay(date);
               });
             },
@@ -111,6 +109,8 @@ class MonthCalendarModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final globalDate = Provider.of<MyDataModel>(context, listen: false);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -138,8 +138,8 @@ class MonthCalendarModal extends StatelessWidget {
                   top: 20, bottom: 40, left: 20, right: 20),
               width: screenWidth,
               height: screenHeight * (0.7),
-              child: ChangeNotifierProvider(
-                create: (context) => MyDataModel(),
+              child: ChangeNotifierProvider.value(
+                value: globalDate,
                 child: const MonthCalendar(),
               ),
             ),
