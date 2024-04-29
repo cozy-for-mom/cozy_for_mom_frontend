@@ -32,11 +32,9 @@ class _MealScreenState extends State<MealScreen> {
     MealApiService momMealViewModel =
         Provider.of<MealApiService>(context, listen: true);
     ImageApiService imageApiService = ImageApiService();
-    final globalData = Provider.of<MyDataModel>(context);
-    DateTime selectedDate = globalData.selectedDay;
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
     DateFormat dateFormat = DateFormat('aa hh:mm');
     DateTime now = DateTime.now(); // 현재 날짜
-    String formattedDate = DateFormat('M.d E', 'ko_KR').format(selectedDate);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     Future<dynamic> showSelectModal(int id) {
@@ -55,7 +53,7 @@ class _MealScreenState extends State<MealScreen> {
                     if (selectedImage != null) {
                       final imageUrl =
                           imageApiService.uploadImage(selectedImage);
-                      momMealViewModel.modifyMeals(id, now,
+                      momMealViewModel.modifyMeals(id, globalData.selectedDay,
                           MealType.breakfast.korName.substring(0, 2), imageUrl);
                     } else {
                       print('No image selected.');
@@ -77,10 +75,9 @@ class _MealScreenState extends State<MealScreen> {
     }
 
     return FutureBuilder(
-        future: momMealViewModel.getMeals(selectedDate), //TODO
+        future: momMealViewModel.getMeals(globalData.selectedDay),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(selectedDate);
             pregnantMeals = snapshot.data! as List<MealModel>;
             containsBreakfast = pregnantMeals.any((meal) =>
                 meal.mealType == MealType.breakfast.korName.substring(0, 2));
@@ -146,58 +143,61 @@ class _MealScreenState extends State<MealScreen> {
                     const SizedBox(
                       height: 50,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              formattedDate, //TODO
-                              style: const TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                              ),
-                            ),
-                            IconButton(
-                              alignment: AlignmentDirectional.centerStart,
-                              icon: const Icon(Icons.expand_more),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  backgroundColor: contentBoxTwoColor
-                                      .withOpacity(0.0), // 팝업창 자체 색 : 투명
-                                  context: context,
-                                  builder: (context) {
-                                    return const MonthCalendarModal();
-                                  },
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                            icon: const Image(
-                                image:
-                                    AssetImage('assets/images/icons/alert.png'),
-                                height: 32,
-                                width: 32),
+                    Consumer<MyDataModel>(builder: (context, globalData, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AlarmSettingPage(
-                                            type: CardType.supplement,
-                                          )));
-                            })
-                      ],
-                    ),
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                DateFormat('M.d E', 'ko_KR')
+                                    .format(globalData.selectedDate),
+                                style: const TextStyle(
+                                  color: mainTextColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              IconButton(
+                                alignment: AlignmentDirectional.centerStart,
+                                icon: const Icon(Icons.expand_more),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    backgroundColor: contentBoxTwoColor
+                                        .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                                    context: context,
+                                    builder: (context) {
+                                      return const MonthCalendarModal();
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                              icon: const Image(
+                                  image: AssetImage(
+                                      'assets/images/icons/alert.png'),
+                                  height: 32,
+                                  width: 32),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AlarmSettingPage(
+                                              type: CardType.supplement,
+                                            )));
+                              })
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -279,7 +279,7 @@ class _MealScreenState extends State<MealScreen> {
                                     final imageUrl = imageApiService
                                         .uploadImage(selectedImage);
                                     momMealViewModel.recordMeals(
-                                        now,
+                                        globalData.selectedDate,
                                         MealType.breakfast.korName
                                             .substring(0, 2),
                                         imageUrl);
@@ -420,7 +420,7 @@ class _MealScreenState extends State<MealScreen> {
                                     final imageUrl = imageApiService
                                         .uploadImage(selectedImage);
                                     momMealViewModel.recordMeals(
-                                        now,
+                                        globalData.selectedDay,
                                         MealType.lunch.korName.substring(0, 2),
                                         imageUrl);
                                   } else {
