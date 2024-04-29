@@ -7,6 +7,9 @@ import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart'
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/service/mom_weight_api_service.dart';
+import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:provider/provider.dart';
 
 class WeightRecord extends StatefulWidget {
@@ -39,19 +42,21 @@ class _WeightRecordState extends State<WeightRecord> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
+
     WeightApiService momWeightViewModel =
         Provider.of<WeightApiService>(context, listen: true);
     DateTime now = DateTime.now(); // 현재 날짜
-    String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
+    // String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
     return FutureBuilder(
-        future: momWeightViewModel.getWeights(now, 'daily'),
+        future: momWeightViewModel.getWeights(globalData.selectedDate, 'daily'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             data = snapshot.data!;
             todayWeight = data['todayWeight'];
             pregnantWeights = data['weights'] ?? [];
-            lastRecordDate =
-                now.difference(DateTime.parse(data['lastRecordDate']));
+            lastRecordDate = globalData.selectedDate
+                .difference(DateTime.parse(data['lastRecordDate']));
             if (!_isInitialized && todayWeight > 0) {
               _weightController.text = todayWeight.toString();
               _isInitialized = true;
@@ -68,55 +73,67 @@ class _WeightRecordState extends State<WeightRecord> {
             body: Stack(
               children: [
                 Positioned(
-                  top: 47,
-                  width: screenWidth - 20,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.arrow_back_ios),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          Row(
-                            children: [
-                              Text(formattedDate,
-                                  style: const TextStyle(
-                                      color: mainTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18)),
-                              IconButton(
-                                alignment: AlignmentDirectional.centerStart,
-                                icon: const Icon(Icons.expand_more),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    backgroundColor: contentBoxTwoColor
-                                        .withOpacity(0.0), // 팝업창 자체 색 : 투명
-                                    context: context,
-                                    builder: (context) {
-                                      return const MonthCalendarModal();
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                              icon: const Image(
-                                  image: AssetImage(
-                                      'assets/images/icons/alert.png'),
-                                  height: 32,
-                                  width: 32),
+                    top: 47,
+                    width: screenWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Consumer<MyDataModel>(
+                          builder: (context, globalData, _) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back_ios),
                               onPressed: () {
-                                print(
-                                    '알림창 아이콘 클릭'); // TODO 알림창 아이콘 onPressed{} 구현해야 함
-                              })
-                        ]),
-                  ),
-                ),
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  DateFormat('M.d E', 'ko_KR')
+                                      .format(globalData.selectedDate),
+                                  style: const TextStyle(
+                                    color: mainTextColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                IconButton(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  icon: const Icon(Icons.expand_more),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      backgroundColor: contentBoxTwoColor
+                                          .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                                      context: context,
+                                      builder: (context) {
+                                        return const MonthCalendarModal();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                                icon: const Image(
+                                    image: AssetImage(
+                                        'assets/images/icons/alert.png'),
+                                    height: 32,
+                                    width: 32),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AlarmSettingPage(
+                                                type: CardType.supplement,
+                                              )));
+                                })
+                          ],
+                        );
+                      }),
+                    )),
                 const Positioned(
                     top: 103,
                     left: 20,
