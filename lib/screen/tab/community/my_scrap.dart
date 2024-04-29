@@ -175,7 +175,7 @@ class _MyScrapState extends State<MyScrap> {
                             return DeleteModal(
                               title: '스크랩이',
                               text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                              onPressed: () async {
+                              tapFunc: () async {
                                 await CozyLogApiService().bulkUnscrapCozyLog(
                                   scrapListModifyState.selectedIds,
                                 );
