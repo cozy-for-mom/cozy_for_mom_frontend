@@ -22,11 +22,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
-    final globalState = Provider.of<MyDataModel>(context, listen: false);
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
     textController.text =
-        (globalState.getBloodSugarData(widget.time + widget.period) ?? '');
+        (globalData.getBloodSugarData(widget.time + widget.period) ?? '');
     ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
-    DateTime now = DateTime.now(); // 현재 날짜
     BloodsugarApiService bloodsugarApi = BloodsugarApiService();
 
     return Dialog(
@@ -76,11 +75,11 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             controller: textController,
                             onChanged: (text) {
                               if (text.isEmpty) {
-                                globalState.setBloodSugarData(
+                                globalData.setBloodSugarData(
                                     widget.time + widget.period, '-');
                                 isButtonEnabled.value = false; // 입력값이 없을 때
                               } else {
-                                globalState.setBloodSugarData(
+                                globalData.setBloodSugarData(
                                     widget.time + widget.period, text);
                                 isButtonEnabled.value = true; // 입력값이 있을 때
                               }
@@ -134,11 +133,11 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       widget.id > 0
                           ? bloodsugarApi.modifyBloodsugar(
                               widget.id,
-                              now,
+                              globalData.selectedDate,
                               '${widget.time} ${widget.period}',
                               int.parse(textController.text))
                           : bloodsugarApi.recordBloodsugar(
-                              now,
+                              globalData.selectedDate,
                               '${widget.time} ${widget.period}',
                               int.parse(textController.text));
                       Navigator.of(context).pop();

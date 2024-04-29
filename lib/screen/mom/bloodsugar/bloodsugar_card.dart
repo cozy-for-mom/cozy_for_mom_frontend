@@ -27,13 +27,11 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final globalState = Provider.of<MyDataModel>(context);
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
     BloodsugarApiService momBloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
-    DateTime now = DateTime.now(); // 현재 날짜
-    // print('++++++++++++++++++${widget.time}+++++++++++++++++');
     return FutureBuilder(
-        future: momBloodsugarViewModel.getBloodsugars(now),
+        future: momBloodsugarViewModel.getBloodsugars(globalData.selectedDate),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;

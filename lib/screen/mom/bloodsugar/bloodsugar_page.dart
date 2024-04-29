@@ -6,6 +6,9 @@ import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_view.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
+
+import 'package:provider/provider.dart';
 
 class BloodsugarPage extends StatefulWidget {
   const BloodsugarPage({super.key});
@@ -24,66 +27,73 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now(); // 현재 날짜
-    String formattedDate = DateFormat('M.d E', 'ko_KR').format(now);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Positioned(
-            top: 47,
-            width: 400, // TODO 화면 너비에 맞춘 width로 수정해야 함
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(formattedDate,
-                            style: const TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18)),
-                        IconButton(
-                          alignment: AlignmentDirectional.centerStart,
-                          icon: const Icon(Icons.expand_more),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              backgroundColor: contentBoxTwoColor
-                                  .withOpacity(0.0), // 팝업창 자체 색 : 투명
-                              context: context,
-                              builder: (context) {
-                                return const MonthCalendarModal();
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                        icon: const Image(
-                            image: AssetImage('assets/images/icons/alert.png'),
-                            height: 32,
-                            width: 32),
+              top: 47,
+              width: screenWidth,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Consumer<MyDataModel>(builder: (context, globalData, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AlarmSettingPage(
-                                        type: CardType.bloodsugar,
-                                      ))); // TODO 알림창 아이콘 onPressed{} 구현해야 함
-                        })
-                  ]),
-            ),
-          ),
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            DateFormat('M.d E', 'ko_KR')
+                                .format(globalData.selectedDate),
+                            style: const TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),
+                          IconButton(
+                            alignment: AlignmentDirectional.centerStart,
+                            icon: const Icon(Icons.expand_more),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                backgroundColor: contentBoxTwoColor
+                                    .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                                context: context,
+                                builder: (context) {
+                                  return const MonthCalendarModal();
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                          icon: const Image(
+                              image:
+                                  AssetImage('assets/images/icons/alert.png'),
+                              height: 32,
+                              width: 32),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AlarmSettingPage(
+                                          type: CardType.supplement,
+                                        )));
+                          })
+                    ],
+                  );
+                }),
+              )),
           Positioned(
               top: 104,
               left: 20,
@@ -145,7 +155,6 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
             const BloodsugarRecord(), // showRecordView가 true인 경우 혈당 기록 페이지를 보여줌
           if (!isRecordActive)
             const BloodsugarView(), // showRecordView가 false인 경우 기간별 조회 페이지를 보여줌
-          // TODO 혈당 기간별 조회 페이지 구현해야 함
         ],
       ),
     );
