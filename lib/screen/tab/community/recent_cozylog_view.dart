@@ -1,18 +1,21 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
+import 'package:intl/intl.dart';
 
 class CozylogViewWidget extends StatefulWidget {
   final bool isEditMode;
-  final CozyLog cozylog;
+  final bool isMyCozyLog;
+  final CozyLogForList cozylog;
   final ListModifyState? listModifyState;
   final ValueChanged<bool>? onSelectedChanged;
   const CozylogViewWidget(
       {super.key,
       this.isEditMode = false,
       required this.cozylog,
+      this.isMyCozyLog = false,
       this.listModifyState,
       this.onSelectedChanged});
   @override
@@ -40,13 +43,13 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                             isSelected = !isSelected;
                             widget.onSelectedChanged?.call(!(widget
                                     .listModifyState
-                                    ?.isSelected(widget.cozylog.id) ??
+                                    ?.isSelected(widget.cozylog.cozyLogId) ??
                                 false));
                           });
                         },
                         child: Image(
                           image: widget.listModifyState
-                                      ?.isSelected(widget.cozylog.id) ??
+                                      ?.isSelected(widget.cozylog.cozyLogId) ??
                                   false
                               //isSelected
                               ? const AssetImage(
@@ -62,9 +65,13 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
               InkWell(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CozyLogDetailScreen()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CozyLogDetailScreen(
+                        id: widget.cozylog.cozyLogId,
+                      ),
+                    ),
+                  );
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,24 +112,66 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12)),
                                 const SizedBox(height: 6),
-                                Text(widget.cozylog.date,
-                                    style: const TextStyle(
+                                Row(
+                                  children: [
+                                    Text(
+                                      DateFormat('yyyy. MM. dd')
+                                          .format(widget.cozylog.date),
+                                      style: const TextStyle(
                                         color: Color(0xffAAAAAA),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12)),
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    widget.isMyCozyLog
+                                        ? Row(
+                                            children: [
+                                              const Text(
+                                                " · ",
+                                                style: TextStyle(
+                                                  color: Color(0xffAAAAAA),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              widget.cozylog.mode ==
+                                                      CozyLogModeType.public
+                                                  ? const Text(
+                                                      '공개',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xffAAAAAA),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 12,
+                                                      ),
+                                                    )
+                                                  : const Text(
+                                                      '비공개',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xffAAAAAA),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 12,
+                                                      ),
+                                                    )
+                                            ],
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                          (widget.cozylog.imageCount == 0 ||
-                                  widget.cozylog.imageUrl == null)
+                          (widget.cozylog.imageCount == 0)
                               ? Container()
                               : Stack(
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image(
-                                        image: AssetImage(
-                                            widget.cozylog.imageUrl!),
+                                      child: Image.network(
+                                        widget.cozylog.imageUrl,
                                         width: 88,
                                         height: 88,
                                         fit: BoxFit.cover,
@@ -181,18 +230,22 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                           SizedBox(
                             width: 67.76,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Image(
-                                    image: AssetImage(
-                                        'assets/images/icons/scrap_gray.png'),
-                                    width: 11.76,
-                                    height: 15.68),
-                                Text('스크랩 ${widget.cozylog.scrapCount}',
-                                    style: const TextStyle(
-                                        color: Color(0xffAAAAAA),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12)),
+                                  image: AssetImage(
+                                      'assets/images/icons/scrap_gray.png'),
+                                  width: 11.76,
+                                  height: 15.68,
+                                ),
+                                const SizedBox(width: 7),
+                                Text(
+                                  '스크랩 ${widget.cozylog.scrapCount}',
+                                  style: const TextStyle(
+                                    color: Color(0xffAAAAAA),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

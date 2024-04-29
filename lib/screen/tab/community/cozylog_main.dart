@@ -1,57 +1,42 @@
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 
-class CozylogMain extends StatelessWidget {
+class CozylogMain extends StatefulWidget {
   const CozylogMain({super.key});
+
+  @override
+  State<CozylogMain> createState() => _CozylogMainState();
+}
+
+class _CozylogMainState extends State<CozylogMain> {
+  late Future<List<CozyLogForList>> cozyLogs;
+
+  @override
+  void initState() {
+    super.initState();
+    cozyLogs = CozyLogApiService().getCozyLogs(
+      null,
+      10,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
-    final cozyLogs = [
-      CozyLog(
-        id: 1,
-        commentCount: 3,
-        scrapCount: 10,
-        imageCount: 1,
-        title: "산부인과 다녀왔어요ㅋㅋ",
-        summary: "오늘 산부인과 다녀왔어요^_^ 오는길에 딸기가 보이길래 한 팩 사왔네요.",
-        date: "2023-10-28",
-        imageUrl: "assets/images/test_image.png",
-      ),
-      CozyLog(
-        id: 2,
-        commentCount: 4,
-        scrapCount: 10,
-        imageCount: 2,
-        title: "오늘 병원에 다녀왔는데 새로운 정보를 알게 되어서 공유합니다~",
-        summary: "의외로 임신중 날계란을 피해야한다고 하더라고요 몰랐던 사실이라 공유합니다.",
-        date: "2023-10-29",
-        imageUrl: "assets/images/test_image2.png",
-      ),
-      CozyLog(
-        id: 3,
-        commentCount: 4,
-        scrapCount: 8,
-        imageCount: 0,
-        title: "영양제 뭐 드시나요?",
-        summary: "임신 중에 유독 과일이 먹고싶더라고요 근데 요즘 과일 값이 금값이라 내키는대로 사먹을 수가 없네요ㅠㅠ",
-        date: "2023-10-29",
-      ),
-      // 추가적인 CozyLog 인스턴스들...
-    ];
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -257,12 +242,24 @@ class CozylogMain extends StatelessWidget {
                   color: contentBoxTwoColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: cozyLogs
-                        .map((cozylog) => CozylogViewWidget(cozylog: cozylog))
-                        .toList(),
-                  ),
+                child: FutureBuilder(
+                  future: cozyLogs,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: snapshot.data!
+                              .map((cozylog) => CozylogViewWidget(
+                                    cozylog: cozylog,
+                                    isMyCozyLog: false,
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    } else {
+                      return const Text("최근 작성된 글이 없습니다.");
+                    }
+                  },
                 ),
               ),
             ),

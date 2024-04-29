@@ -9,14 +9,15 @@ class CozyLog {
   final String? imageUrl;
   final String mode;
 
-  CozyLog(
-      {required this.id,
-      required this.commentCount,
-      required this.scrapCount,
-      required this.imageCount,
-      required this.title,
-      required this.summary,
-      required this.date,
-      this.imageUrl,
-      this.mode = 'PRIVATE'});
+  CozyLog({
+    required this.id,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageCount,
+    required this.title,
+    required this.summary,
+    required this.date,
+    this.imageUrl,
+    this.mode = 'PRIVATE',
+  });
 }

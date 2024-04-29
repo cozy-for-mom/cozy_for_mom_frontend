@@ -1,13 +1,15 @@
+import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_modify.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/common/widget/bottom_button_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
@@ -22,51 +24,45 @@ class MyCozylog extends StatefulWidget {
 }
 
 class _MyCozylogState extends State<MyCozylog> {
+  late Future<MyCozyLogListWrapper> cozyLogWrapper;
+
+  PagingController<int, CozyLogForList> pagingController =
+      PagingController(firstPageKey: 0);
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final cozyLogWrapper =
+          await CozyLogApiService().getMyCozyLogs(pageKey, 10);
+      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final isLastPage = cozyLogs.length < 10;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(cozyLogs);
+      } else {
+        final nextPageKey = cozyLogs.lastOrNull?.cozyLogId;
+        pagingController.appendPage(cozyLogs, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(null, 10);
+    pagingController = PagingController(firstPageKey: 0);
+    pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cozyLogs = [
-      CozyLog(
-        id: 1,
-        commentCount: 3,
-        scrapCount: 10,
-        imageCount: 1,
-        title: "산부인과 다녀왔어요ㅋㅋ",
-        summary: "오늘 산부인과 다녀왔어요^_^ 오는길에 딸기가 보이길래 한 팩 사왔네요.",
-        date: "2023-10-28",
-        imageUrl: "assets/images/test_image.png",
-      ),
-      CozyLog(
-        id: 2,
-        commentCount: 4,
-        scrapCount: 10,
-        imageCount: 2,
-        title: "오늘 병원에 다녀왔는데 새로운 정보를 알게 되어서 공유합니다~",
-        summary: "의외로 임신중 날계란을 피해야한다고 하더라고요 몰랐던 사실이라 공유합니다.",
-        date: "2023-10-29",
-        imageUrl: "assets/images/test_image2.png",
-      ),
-      CozyLog(
-        id: 3,
-        commentCount: 4,
-        scrapCount: 8,
-        imageCount: 0,
-        title: "영양제 뭐 드시나요?",
-        summary: "임신 중에 유독 과일이 먹고싶더라고요 근데 요즘 과일 값이 금값이라 내키는대로 사먹을 수가 없네요ㅠㅠ",
-        date: "2023-10-29",
-      ),
-      CozyLog(
-        id: 4,
-        commentCount: 16,
-        scrapCount: 2,
-        imageCount: 0,
-        title: "산모교실? 같은데 가보신분~",
-        summary:
-            "인스타보면 산모교실 참석하면 바운서도 주고 하던데유ㅎㅎㅎ 거기 가면 뭐하는건가요? 어떤 도움을 받을 수 있는지 궁금해서 코지로그 글 올려봅니당",
-        date: "2023-10-28",
-      ),
-      // 추가적인 CozyLog 인스턴스들...
-    ];
+    final screenHeight = MediaQuery.of(context).size.height;
+    const boxHeight = 20 + 143.0; //screenHeight * (0.6);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
@@ -75,7 +71,7 @@ class _MyCozylogState extends State<MyCozylog> {
           SliverAppBar(
             pinned: true,
             centerTitle: true,
-            backgroundColor: Colors.transparent,
+            backgroundColor: backgroundColor,
             elevation: 0,
             leading: IconButton(
               icon: const Icon(
@@ -127,10 +123,140 @@ class _MyCozylogState extends State<MyCozylog> {
             ],
           ),
           SliverToBoxAdapter(
-            child: widget.isEditMode
-                ? CozylogListModify(cozyLogs: cozyLogs)
-                : CozylogListView(cozyLogs: cozyLogs),
-          ),
+            child: FutureBuilder(
+              future: cozyLogWrapper,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return widget.isEditMode
+                      ? CozylogListModify(
+                          cozyLogs: snapshot.data!.cozyLogs,
+                          totalCount: snapshot.data!.totalCount,
+                        )
+                      : Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                width: screenWidth - 40,
+                                height: 53,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffF0F0F5),
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(children: [
+                                        const Image(
+                                            image: AssetImage(
+                                                'assets/images/icons/cozylog.png'),
+                                            width: 25.02,
+                                            height: 23.32),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '${snapshot.data!.totalCount}개의 코지로그',
+                                          style: const TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14),
+                                        ),
+                                      ]),
+                                      InkWell(
+                                        onTap: () {
+                                          snapshot.data!.cozyLogs.isNotEmpty
+                                              ? setState(() {
+                                                  // isEditMode = !isEditMode;
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const MyCozylog(
+                                                        isEditMode: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                })
+                                              : setState(() {});
+                                        },
+                                        child: const Text(
+                                          '편집',
+                                          style: TextStyle(
+                                              color: offButtonTextColor,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                            const SizedBox(height: 22),
+                            snapshot.data!.cozyLogs.isNotEmpty
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 20,
+                                      right: 20,
+                                      bottom: 60,
+                                    ),
+                                    child: Container(
+                                      width: screenWidth - 40,
+                                      height: boxHeight *
+                                              snapshot.data!.cozyLogs.length +
+                                          20,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: contentBoxTwoColor,
+                                      ),
+                                      child: PagedListView<int, CozyLogForList>(
+                                        padding: EdgeInsets.zero,
+                                        pagingController: pagingController,
+                                        builderDelegate:
+                                            PagedChildBuilderDelegate<
+                                                CozyLogForList>(
+                                          itemBuilder: (context, item, index) =>
+                                              CozylogViewWidget(
+                                            cozylog: item,
+                                            isEditMode: false,
+                                            isMyCozyLog: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    width: 150,
+                                    height: screenHeight * (0.6),
+                                    child: const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image(
+                                              image: AssetImage(
+                                                  'assets/images/icons/cozylog_off.png'),
+                                              width: 45.31,
+                                              height: 40.77),
+                                          SizedBox(height: 12),
+                                          Text('코지로그를 작성해 보세요!',
+                                              style: TextStyle(
+                                                  color: Color(0xff9397A4),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14)),
+                                        ]),
+                                  ),
+                          ],
+                        );
+                } else {
+                  return const Text("코지로그를 작성해보세요"); // TODO
+                }
+              },
+            ),
+          )
         ],
       ),
       floatingActionButton: widget.isEditMode
@@ -164,9 +290,18 @@ class _MyCozylogState extends State<MyCozylog> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const DeleteModal(
+                            return DeleteModal(
                               title: '코지로그가',
                               text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              onPressed: () async {
+                                await CozyLogApiService().bulkUnscrapCozyLog(
+                                    []); // TODO 일괄 삭제 API로 변경
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const MyCozylog()),
+                                );
+                              },
                             );
                           },
                           barrierDismissible: false,
