@@ -25,24 +25,6 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xffF7F7FA),
-        title: const Text(
-          "알림 설정",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        elevation: 0,
-        leading: IconButton(
-          color: Colors.black,
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -52,6 +34,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 100,
+                ),
                 const TextField(
                   cursorColor: primaryColor,
                   decoration: InputDecoration(

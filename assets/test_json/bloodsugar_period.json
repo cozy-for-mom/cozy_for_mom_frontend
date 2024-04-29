@@ -1,0 +1,49 @@
+{
+    "timestamp": "2024-01-28 18:23:01",
+    "status": 200,
+    "data": {
+        "type": "daily",
+        "bloodsugars": [
+								{
+                    "endDate": "2021-03-01",
+                    "averageLevel": 108.33333333333333
+                },
+                {
+                    "endDate": "2021-03-02",
+                    "averageLevel": 105.0
+                },
+                {
+                    "endDate": "2021-03-03",
+                    "averageLevel": 99.2
+                },
+                {
+                    "endDate": "2021-03-04",
+                    "averageLevel": 104.5
+                },
+                {
+                    "endDate": "2021-03-05",
+                    "averageLevel": 113.2222
+                },
+                {
+                    "endDate": "2021-03-06",
+                    "averageLevel": 110.0
+                },
+                {
+                    "endDate": "2021-03-07",
+                    "averageLevel": 0.0
+                },
+                {
+                    "endDate": "2021-03-08",
+                    "averageLevel": 100.0
+                },
+                {
+                    "endDate": "2021-03-09",
+                    "averageLevel": 103.5
+                },
+                {
+                    "endDate": "2021-03-10",
+                    "averageLevel": 105.9
+                }
+         ]
+    }
+}
