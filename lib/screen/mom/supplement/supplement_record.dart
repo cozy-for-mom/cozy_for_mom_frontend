@@ -30,13 +30,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
         Provider.of<SupplementApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final globalData = Provider.of<MyDataModel>(context, listen: false);
 
     return Scaffold(
-        // FutureBuilder(
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(
-          builder: (context, myData, _) {
+          builder: (context, globalData, _) {
             return FutureBuilder(
                 future: momSupplementViewModel
                     .getSupplements(globalData.selectedDay),
@@ -51,9 +49,6 @@ class _SupplementRecordState extends State<SupplementRecord> {
                       backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
                     ));
                   }
-
-                  // return Scaffold(
-                  // backgroundColor: backgroundColor,
                   return Stack(
                     children: [
                       Positioned(
