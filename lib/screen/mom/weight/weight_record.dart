@@ -27,15 +27,12 @@ class _WeightRecordState extends State<WeightRecord> {
   late List<PregnantWeight> pregnantWeights;
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
-  // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
-  final FocusNode _weightFocus = FocusNode();
-  Color unitTextColor = const Color(0xffE0E0E0);
+  Color unitTextColor = beforeInputColor;
 
-  // 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
+// 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
   @override
   void dispose() {
     _weightController.dispose();
-    _weightFocus.dispose();
     super.dispose();
   }
 
@@ -55,16 +52,21 @@ class _WeightRecordState extends State<WeightRecord> {
                 if (snapshot.hasData) {
                   data = snapshot.data!;
                   todayWeight = data['todayWeight'];
+                  // print('--------tw--------- $todayWeight');
+                  print(_isInitialized);
                   pregnantWeights = data['weights'] ?? [];
-                  lastRecordDate = globalData.selectedDate
+                  lastRecordDate = DateTime.now()
                       .difference(DateTime.parse(data['lastRecordDate']));
-                  if (todayWeight > 0) {
+                  if (!_isInitialized &&
+                      todayWeight > 0 &&
+                      _weightController.text != todayWeight.toString()) {
                     _weightController.text = todayWeight.toString();
-                    print(_weightController.text);
-                    if (!_isInitialized) {
-                      _isInitialized = true;
-                    }
+                    _isInitialized = true;
                   }
+                  print('wt ${_weightController.text} tw $todayWeight');
+                  // print(_weightController.text);
+
+                  // print('--------wt--------- ${_weightController.text}');
                 }
                 if (!snapshot.hasData) {
                   return const Center(
@@ -185,10 +187,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                       child: TextFormField(
                                         textAlign: TextAlign.end,
                                         maxLength: 5,
-                                        showCursor: false,
                                         controller: _weightController,
-                                        focusNode: _weightFocus,
                                         keyboardType: TextInputType.number,
+                                        cursorColor: primaryColor,
+                                        cursorWidth: 0.8,
+                                        cursorHeight: 26,
                                         decoration: const InputDecoration(
                                             contentPadding:
                                                 EdgeInsets.symmetric(
@@ -202,10 +205,10 @@ class _WeightRecordState extends State<WeightRecord> {
                                               fontSize: 28,
                                             )),
                                         style: TextStyle(
-                                          color: _weightController.text ==
-                                                  todayWeight.toString()
-                                              ? afterInputColor
-                                              : unitTextColor,
+                                          color:
+                                              _weightController.text.isNotEmpty
+                                                  ? afterInputColor
+                                                  : unitTextColor,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 28,
                                         ),
@@ -232,10 +235,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                     Text(
                                       'kg',
                                       style: TextStyle(
-                                          color: _weightController.text ==
-                                                  todayWeight.toString()
-                                              ? afterInputColor
-                                              : unitTextColor,
+                                          color:
+                                              _weightController.text.isNotEmpty
+                                                  // todayWeight.toString()
+                                                  ? afterInputColor
+                                                  : unitTextColor,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 28),
                                     ),
@@ -258,12 +262,6 @@ class _WeightRecordState extends State<WeightRecord> {
                               return LineChartData(formattedDate, data.weight);
                             }).toList())
                         ],
-                        // dataList: [
-                        //   LineChartData("05.11", 55),
-                        //   LineChartData("05.15", 52),
-                        //   LineChartData("05.17", 55),
-                        //   LineChartData("05.22", 60),
-                        // ],
                       ),
                     ),
                   ],
