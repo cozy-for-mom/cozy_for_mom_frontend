@@ -86,6 +86,9 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             },
                             maxLength: 3,
                             textAlign: TextAlign.start,
+                            cursorWidth: 0.8,
+                            cursorHeight: 15,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -99,7 +102,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16)),
-                            cursorColor: beforeInputColor,
+                            cursorColor: primaryColor,
                             style: const TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
