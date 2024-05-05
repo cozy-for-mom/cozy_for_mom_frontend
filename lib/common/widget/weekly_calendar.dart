@@ -1,6 +1,8 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:provider/provider.dart';
 
 class WeeklyCalendar extends StatefulWidget {
   const WeeklyCalendar({super.key});
@@ -10,19 +12,22 @@ class WeeklyCalendar extends StatefulWidget {
 }
 
 class _WeeklyCalendarState extends State<WeeklyCalendar> {
-  var _selectedDay;
   DateTime _focusedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    final globalDate = Provider.of<MyDataModel>(context, listen: true);
+
     return TableCalendar(
       focusedDay: _focusedDay,
+      firstDay: DateTime(2020),
+      lastDay: DateTime.now(),
       calendarFormat: CalendarFormat.week,
       headerVisible: false,
       daysOfWeekHeight: 20,
       locale: 'ko_KR',
-      selectedDayPredicate: (day) {
-        return isSameDay(_selectedDay, day);
+      selectedDayPredicate: (date) {
+        return isSameDay(date, globalDate.selectedDay);
       },
       calendarStyle: const CalendarStyle(
         weekendTextStyle: TextStyle(
@@ -48,11 +53,9 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
           color: Color(0xff858998),
         ),
       ),
-      firstDay: DateTime.utc(2010, 10, 16),
-      lastDay: DateTime.utc(2030, 3, 14),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
-          _selectedDay = selectedDay;
+          globalDate.updateSelectedDay(selectedDay);
           _focusedDay = focusedDay;
         });
       },

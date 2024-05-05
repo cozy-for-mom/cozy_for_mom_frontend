@@ -13,10 +13,7 @@ class MonthCalendar extends StatefulWidget {
 }
 
 class _MonthCalendarState extends State<MonthCalendar> {
-  // Map<DateTime, List<Widget>> _events = {
-  //   DateTime.now(): [],
-  // };
-
+  DateTime _focusedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
     final globalDate = Provider.of<MyDataModel>(context, listen: true);
@@ -26,15 +23,15 @@ class _MonthCalendarState extends State<MonthCalendar> {
           width: screenWidth - 40,
           child: TableCalendar(
             focusedDay: globalDate.selectedDay,
-            firstDay: DateTime(2000),
+            firstDay: DateTime(2020),
             lastDay: DateTime.now(),
-            // eventLoader: (date) => _events[date] ?? [],
             selectedDayPredicate: (date) {
               return isSameDay(date, globalDate.selectedDay);
             },
-            onDaySelected: (date, events) {
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                globalDate.updateSelectedDay(date);
+                globalDate.updateSelectedDay(selectedDay);
+                _focusedDay = focusedDay;
               });
             },
             locale: 'ko-KR',
