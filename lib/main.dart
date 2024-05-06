@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/app.dart';
+import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart'; // 한국어 로케일을 사용하기 위해 추가
 import 'package:provider/provider.dart';
@@ -22,7 +23,8 @@ void main() {
           ChangeNotifierProvider(create: (context) => SupplementApiService()),
           ChangeNotifierProvider(create: (context) => WeightApiService()),
           ChangeNotifierProvider(create: (context) => MealApiService()),
-          ChangeNotifierProvider(create: (context) => BloodsugarApiService())
+          ChangeNotifierProvider(create: (context) => BloodsugarApiService()),
+          ChangeNotifierProvider(create: (context) => UserApiService())
         ],
         child: const App(),
       ),
