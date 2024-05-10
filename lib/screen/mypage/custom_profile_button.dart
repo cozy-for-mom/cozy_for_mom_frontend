@@ -57,6 +57,8 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
             const SizedBox(height: 6),
             Text(
               widget.text,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
               style: TextStyle(
                   color: widget.isSelected ? primaryColor : offButtonTextColor,
                   fontWeight: FontWeight.w600,

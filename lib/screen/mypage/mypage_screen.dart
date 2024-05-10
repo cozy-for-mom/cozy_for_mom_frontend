@@ -30,7 +30,6 @@ class _MyPageState extends State<MyPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder(
-        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -38,6 +37,7 @@ class _MyPageState extends State<MyPage> {
             daysPassed = totalDays - (pregnantInfo['dDay'] as int);
             percentage = daysPassed / totalDays;
             selectedProfile = pregnantInfo['recentBabyProfile'];
+            print(selectedProfile!.babies.first.babyId);
           }
           if (!snapshot.hasData) {
             return const Center(
@@ -329,28 +329,39 @@ class _MyPageState extends State<MyPage> {
                                             return CustomProfileButton(
                                               text: pregnantInfo['babyProfiles']
                                                       [index]
-                                                  .babies[0]
-                                                  .babyName,
+                                                  .babies
+                                                  .map((baby) => baby.babyName)
+                                                  .join('/'),
                                               imagePath:
                                                   pregnantInfo['babyProfiles']
                                                           [index]
                                                       .babyProfileImageUrl,
                                               offBackColor:
                                                   const Color(0xffF8F8FA),
-                                              onPressed: () {
-                                                setState(() {
-                                                  selectedProfile =
-                                                      pregnantInfo[
-                                                              'babyProfiles']
-                                                          [index];
-                                                  userViewModel.modifyMainBaby(
-                                                      pregnantInfo[
+                                              onPressed: () async {
+                                                try {
+                                                  await userViewModel
+                                                      .modifyMainBaby(pregnantInfo[
                                                                   'babyProfiles']
                                                               [index]
                                                           .babyProfileId);
-                                                });
-                                                print(
-                                                    'id:${pregnantInfo['babyProfiles'][index].babyProfileId} ${pregnantInfo['babyProfiles'][index].babies[0].babyName} 버튼이 클릭되었습니다.');
+                                                  setState(() {
+                                                    selectedProfile =
+                                                        pregnantInfo[
+                                                                'babyProfiles']
+                                                            [index];
+                                                    pregnantInfo[
+                                                            'recentBabyProfile'] =
+                                                        pregnantInfo[
+                                                                'babyProfiles']
+                                                            [index];
+                                                  });
+                                                  print(
+                                                      'id:${selectedProfile!.babyProfileId} ${selectedProfile!.babies.map((baby) => baby.babyName)} 태아로 변경되었습니다.');
+                                                } catch (e) {
+                                                  // 에러 처리
+                                                  print('프로필 변경 실패: $e');
+                                                }
                                               },
                                               isSelected: pregnantInfo[
                                                           'recentBabyProfile'] !=
