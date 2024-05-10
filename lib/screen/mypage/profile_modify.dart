@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/profile_info_form.dart';
 import 'package:provider/provider.dart';
 
 class MomProfileModify extends StatefulWidget {
@@ -183,19 +183,18 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               }
                               return Column(
                                 children: [
-                                  InfoInputForm(
+                                  ProfileInfoForm(
                                     title: type,
                                     hint: hint,
                                     controller: textController,
                                   ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(bottom: 20)),
+                                  const SizedBox(height: 24),
                                 ],
                               );
                             }).toList(),
                           )),
                       Positioned(
-                        top: 780,
+                        top: 820,
                         left: 129,
                         child: SizedBox(
                           width: 132,
