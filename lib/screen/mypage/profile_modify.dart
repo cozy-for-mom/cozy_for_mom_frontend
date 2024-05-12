@@ -34,171 +34,211 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
 
     return FutureBuilder(
-        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
-        future: userViewModel.getUserInfo(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            pregnantInfo = snapshot.data!;
-            introduceController.text = pregnantInfo['introduce'];
+      future: userViewModel.getUserInfo(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          pregnantInfo = snapshot.data!;
+          introduceController.text = pregnantInfo['introduce'];
 
-            return Scaffold(
-              resizeToAvoidBottomInset: true,
-              backgroundColor: backgroundColor,
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  height: screenHeight,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 47,
-                        child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back_ios),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                const SizedBox(
-                                    width: 110), // TODO 화면 너비에 맞춘 width로 수정해야함
-                                const Text('프로필 수정',
-                                    style: TextStyle(
-                                        color: mainTextColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18)),
-                              ],
-                            )),
+          return Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: backgroundColor,
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  pinned: true,
+                  elevation: 0,
+                  backgroundColor: backgroundColor,
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding: EdgeInsets.zero,
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          const SizedBox(width: 100),
+                          const Text('프로필 수정',
+                              style: TextStyle(
+                                  color: mainTextColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18)),
+                        ],
                       ),
-                      const Positioned(
-                          top: 119,
+                    ),
+                  ),
+                  leading: Container(),
+                  actions: [
+                    InkWell(
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 20, bottom: 10),
+                        alignment: Alignment.center,
+                        width: 53,
+                        height: 29,
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(33),
+                        ),
+                        child: const Text(
+                          '완료',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
+                        ),
+                      ),
+                      onTap: () {
+                        print('수정 완료');
+                      },
+                    ),
+                  ],
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 140,
+                    child: Stack(
+                      children: [
+                        const Positioned(
+                          top: 10,
                           left: 145,
                           child: Image(
                               image: AssetImage(
                                   "assets/images/icons/momProfile.png"),
                               width: 100,
-                              height: 100)),
-                      Positioned(
-                        top: 181,
-                        left: 229,
-                        child: InkWell(
-                          onTap: () {
-                            // TODO 이미지 추가 로직
-                            print('이미지 수정 버튼 클릭');
-                          },
-                          child: const Image(
-                            image: AssetImage(
-                                "assets/images/icons/circle_pen.png"),
-                            width: 24,
-                            height: 24,
+                              height: 100),
+                        ),
+                        Positioned(
+                          top: 181 - 109,
+                          left: 229,
+                          child: InkWell(
+                            onTap: () {
+                              // 이미지 추가 로직
+                              print('이미지 수정 버튼 클릭');
+                            },
+                            child: const Image(
+                              image: AssetImage(
+                                  "assets/images/icons/circle_pen.png"),
+                              width: 24,
+                              height: 24,
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                          top: 245,
-                          left: 21,
-                          child: SizedBox(
-                            width: screenWidth - 40,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const Text("소개",
-                                    style: TextStyle(
-                                        color: offButtonTextColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14)),
-                                SizedBox(
-                                  width: screenWidth - 40,
-                                  child: TextFormField(
-                                    controller: introduceController,
-                                    textAlign: TextAlign.start,
-                                    cursorColor: primaryColor,
-                                    cursorHeight: 17,
-                                    cursorWidth: 1.5,
-                                    maxLength: 30,
-                                    style: const TextStyle(
-                                        color: mainTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16),
-                                    decoration: InputDecoration(
-                                      counterStyle: const TextStyle(
-                                          color: offButtonTextColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14),
-                                      border: InputBorder.none,
-                                      hintText: "자기소개를 입력해주세요",
-                                      hintStyle: const TextStyle(
-                                          color: beforeInputColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
-                                      suffixIcon:
-                                          introduceController.text.isNotEmpty
-                                              ? IconButton(
-                                                  icon: Image.asset(
-                                                    'assets/images/icons/text_delete.png',
-                                                    width: 16,
-                                                    height: 16,
-                                                  ),
-                                                  onPressed: () {
-                                                    introduceController.clear();
-                                                  },
-                                                )
-                                              : null,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    width: screenWidth - 40,
+                    height: 96,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          "소개",
+                          style: TextStyle(
+                              color: offButtonTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14),
+                        ),
+                        Container(
+                          child: TextFormField(
+                            controller: introduceController,
+                            textAlign: TextAlign.start,
+                            cursorColor: primaryColor,
+                            cursorHeight: 17,
+                            cursorWidth: 1.5,
+                            maxLength: 30,
+                            style: const TextStyle(
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),
+                            decoration: InputDecoration(
+                              counterText: '',
+                              counterStyle: const TextStyle(
+                                  color: offButtonTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
+                              border: InputBorder.none,
+                              hintText: "자기소개를 입력해주세요",
+                              hintStyle: const TextStyle(
+                                  color: beforeInputColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16),
+                              suffixIcon: introduceController.text.isNotEmpty
+                                  ? IconButton(
+                                      icon: Image.asset(
+                                        'assets/images/icons/text_delete.png',
+                                        width: 16,
+                                        height: 16,
+                                      ),
+                                      onPressed: () {
+                                        introduceController.clear();
+                                      },
+                                    )
+                                  : null,
                             ),
-                          )),
-                      Positioned(
-                        top: 245 + 67.47,
-                        left: 20,
-                        child: Container(
+                          ),
+                        ),
+                        Container(
                           width: screenWidth - 40,
                           height: 1,
                           color: mainLineColor,
                         ),
-                      ),
-                      Positioned(
-                          top: 359.47,
-                          left: 20,
-                          child: Column(
-                            children: momInfoType.map((type) {
-                              String hint = '';
-                              TextEditingController textController =
-                                  TextEditingController();
-                              if (type == '이름') {
-                                hint = '이름을 입력해주세요.';
-                                textController.text = pregnantInfo['name'];
-                              } else if (type == '닉네임') {
-                                hint = '8자 이내로 입력해주세요.';
-                                textController.text = pregnantInfo['nickname'];
-                              } else if (type == '이메일') {
-                                hint = 'cozy@cozy.com';
-                                textController.text = pregnantInfo['email'];
-                              } else {
-                                hint = 'YYYY.MM.DD';
-                                textController.text = pregnantInfo['birth'];
-                              }
-                              return Column(
-                                children: [
-                                  ProfileInfoForm(
-                                    title: type,
-                                    hint: hint,
-                                    controller: textController,
-                                  ),
-                                  const SizedBox(height: 24),
-                                ],
-                              );
-                            }).toList(),
-                          )),
-                      Positioned(
-                        top: 820,
-                        left: 129,
-                        child: SizedBox(
-                          width: 132,
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      String type = momInfoType[index];
+                      String hint = '';
+                      TextEditingController textController =
+                          TextEditingController();
+                      if (type == '이름') {
+                        hint = '이름을 입력해주세요.';
+                        textController.text = pregnantInfo['name'];
+                      } else if (type == '닉네임') {
+                        hint = '8자 이내로 입력해주세요.';
+                        textController.text = pregnantInfo['nickname'];
+                      } else if (type == '이메일') {
+                        hint = 'cozy@cozy.com';
+                        textController.text = pregnantInfo['email'];
+                      } else {
+                        hint = 'YYYY.MM.DD';
+                        textController.text = pregnantInfo['birth'];
+                      }
+                      return Column(
+                        children: [
+                          ProfileInfoForm(
+                            title: type,
+                            hint: hint,
+                            controller: textController,
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      );
+                    },
+                    childCount: momInfoType.length,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    width: 132,
+                    height: 21,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 820,
+                          left: 0,
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
@@ -226,7 +266,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  print('회원탈퇴 버튼 클릭'); // TODO 회원탈퇴 기능 구현
+                                  print('회원탈퇴 버튼 클릭');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -246,18 +286,21 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          } else {
-            return const Center(
-                child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
-            ));
-          }
-        });
+              ],
+            ),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
+            ),
+          );
+        }
+      },
+    );
   }
 }

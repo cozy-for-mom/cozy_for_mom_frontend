@@ -174,9 +174,9 @@ class _CozylogMainState extends State<CozylogMain> {
                             ],
                           ),
                           const SizedBox(height: 5),
-                          const Text(
-                            '안녕하세요 반가워요!',
-                            style: TextStyle(
+                          Text(
+                            pregnantInfo['introduce'],
+                            style: const TextStyle(
                                 color: Color(0xff8A8A8A),
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14),
