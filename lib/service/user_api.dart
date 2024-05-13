@@ -75,7 +75,6 @@ class UserApiService extends ChangeNotifier {
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
 
-    print(response.body);
     if (response.statusCode == 200) {
       return;
     } else {

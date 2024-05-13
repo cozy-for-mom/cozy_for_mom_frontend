@@ -1,7 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/profile_info_form.dart';
@@ -19,10 +18,20 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   late Map<String, dynamic> pregnantInfo;
   late TextEditingController introduceController;
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
+  bool _isSuffixVisible = false;
+  Map<String, TextEditingController> controllers = {};
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controllers.values.forEach((controller) {
+      controller.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -39,7 +48,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
         if (snapshot.hasData) {
           pregnantInfo = snapshot.data!;
           introduceController.text = pregnantInfo['introduce'];
-
+          Map<String, TextEditingController> controllers = {
+            '이름': TextEditingController(text: pregnantInfo['name']),
+            '닉네임': TextEditingController(text: pregnantInfo['nickname']),
+            '이메일': TextEditingController(text: pregnantInfo['email']),
+            '생년월일': TextEditingController(text: pregnantInfo['birth'])
+          };
           return Scaffold(
             resizeToAvoidBottomInset: true,
             backgroundColor: backgroundColor,
@@ -93,6 +107,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                       ),
                       onTap: () {
                         print('수정 완료');
+                        print(
+                            '${controllers['이름']!.text}.${controllers['닉네임']!.text}.${controllers['이메일']!.text}.${controllers['생년월일']!.text}.${introduceController.text}');
                       },
                     ),
                   ],
@@ -170,7 +186,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                   color: beforeInputColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16),
-                              suffixIcon: introduceController.text.isNotEmpty
+                              suffixIcon: introduceController.text.isNotEmpty &&
+                                      _isSuffixVisible
                                   ? IconButton(
                                       icon: Image.asset(
                                         'assets/images/icons/text_delete.png',
@@ -183,6 +200,11 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                     )
                                   : null,
                             ),
+                            onTap: () {
+                              setState(() {
+                                _isSuffixVisible = true;
+                              });
+                            },
                           ),
                         ),
                         Container(
@@ -199,27 +221,25 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     (context, index) {
                       String type = momInfoType[index];
                       String hint = '';
-                      TextEditingController textController =
-                          TextEditingController();
                       if (type == '이름') {
                         hint = '이름을 입력해주세요.';
-                        textController.text = pregnantInfo['name'];
+                        // controllers[type]!.text = pregnantInfo['name'];
                       } else if (type == '닉네임') {
                         hint = '8자 이내로 입력해주세요.';
-                        textController.text = pregnantInfo['nickname'];
+                        // controllers[type]!.text = pregnantInfo['nickname'];
                       } else if (type == '이메일') {
                         hint = 'cozy@cozy.com';
-                        textController.text = pregnantInfo['email'];
+                        // controllers[type]!.text = pregnantInfo['email'];
                       } else {
                         hint = 'YYYY.MM.DD';
-                        textController.text = pregnantInfo['birth'];
+                        // controllers[type]!.text = pregnantInfo['birth'];
                       }
                       return Column(
                         children: [
                           ProfileInfoForm(
                             title: type,
                             hint: hint,
-                            controller: textController,
+                            controller: controllers[type],
                           ),
                           const SizedBox(height: 24),
                         ],
