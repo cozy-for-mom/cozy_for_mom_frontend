@@ -19,7 +19,7 @@ class ProfileInfoForm extends StatefulWidget {
 }
 
 class _ProfileInfoFormState extends State<ProfileInfoForm> {
-  bool _isHintVisible = true;
+  bool _isSuffixVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +62,14 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                       fontSize: 16),
-                  hintText: _isHintVisible ? widget.hint : null,
+                  hintText: widget.hint,
                   hintStyle: const TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 16),
-                  suffixIcon: widget.title == '닉네임' || widget.title == '이메일'
+                  suffixIcon: (widget.title == '닉네임' ||
+                              widget.title == '이메일') &&
+                          _isSuffixVisible
                       ? SizedBox(
                           width: 42,
                           child: Row(
@@ -77,6 +79,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                                 onTap: () {
                                   setState(() {
                                     widget.controller!.clear();
+                                    _isSuffixVisible = false;
                                   });
                                 },
                                 child: const Image(
@@ -102,19 +105,22 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                 ),
                 onTap: () {
                   setState(() {
-                    _isHintVisible = false;
+                    _isSuffixVisible = true;
                   });
                 },
                 onChanged: (text) {
                   setState(() {
                     if (text.isEmpty) {
                       widget.controller!.clear();
-                      _isHintVisible = true;
+                      _isSuffixVisible = false;
+                    } else {
+                      _isSuffixVisible = true;
                     }
+                    print(widget.controller!.text);
                   });
                 },
               )),
-          widget.title == '닉네임' || widget.title == '이메일'
+          (widget.title == '닉네임' || widget.title == '이메일') && _isSuffixVisible
               ? Padding(
                   padding: EdgeInsets.only(top: 5, left: 10),
                   child: Text(
