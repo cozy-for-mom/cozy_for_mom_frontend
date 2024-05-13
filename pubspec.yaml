@@ -132,6 +132,7 @@ flutter:
     - assets/images/icons/supplement_off.png
     - assets/images/icons/logout_agree_active.png
     - assets/images/icons/logout_agree_inactive.png
+    - assets/images/icons/babyProfile.png
 
     - assets/test_json/supplement.json
     - assets/test_json/weight.json
