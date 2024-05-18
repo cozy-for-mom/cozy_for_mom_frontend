@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/services.dart';
-import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 import 'package:intl/intl.dart';
 
 class SupplementModal extends StatefulWidget {

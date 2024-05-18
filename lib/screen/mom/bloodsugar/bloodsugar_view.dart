@@ -3,7 +3,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
-import 'package:cozy_for_mom_frontend/service/mom_bloodsugar_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:provider/provider.dart';
 
 class BloodsugarView extends StatefulWidget {
