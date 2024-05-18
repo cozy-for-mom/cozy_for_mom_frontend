@@ -47,6 +47,7 @@ dependencies:
   http:
   http_parser:
   image_picker: ^0.8.4+4
+  camera: ^0.10.5+9
   
 dev_dependencies:
   flutter_test:

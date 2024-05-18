@@ -28,7 +28,7 @@ class UserApiService extends ChangeNotifier {
         String birth = userData['birth'];
         String email = userData['email'];
         int dDay = userData['dDay'];
-
+        print(birth);
         return {
           'name': name,
           'nickname': nickname,
@@ -49,17 +49,16 @@ class UserApiService extends ChangeNotifier {
   }
 
   Future<void> modifyUserProfile(String name, String nickname, String introduce,
-      String imageUrl, String birth, String email) async {
+      Future<String?> imageUrl, String birth, String email) async {
     final url = Uri.parse('$baseUrl/me');
     Map data = {
       'name': name,
       'nickname': nickname,
       'introduce': introduce,
-      'imageUrl': imageUrl,
+      'imageUrl': await imageUrl,
       'birth': birth,
       'email': email
     };
-
     final Response response =
         await put(url, headers: headers, body: jsonEncode(data));
     if (response.statusCode == 200) {
