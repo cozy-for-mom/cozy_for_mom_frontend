@@ -67,7 +67,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    # - assets/configs/.env
+    - assets/configs/.env
     - assets/images/icons/navigation_baby.png
     - assets/images/icons/navigation_home.png
     - assets/images/icons/navigation_community.png
