@@ -6,7 +6,7 @@ import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:cozy_for_mom_frontend/service/mom_meal_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_meal_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
