@@ -50,6 +50,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   jwt_decoder: ^2.0.1
   flutter_dotenv: ^5.1.0
+  sign_in_with_apple: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -67,7 +68,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    # - assets/configs/.env
+    - assets/configs/.env
     - assets/images/icons/navigation_baby.png
     - assets/images/icons/navigation_home.png
     - assets/images/icons/navigation_community.png
