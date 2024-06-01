@@ -13,7 +13,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final List<String> info = ['단태아', '다태아', '아직 모르겠어요'];
+    final List<String> info = ['단태아', '다태아'];
     return Stack(
       children: [
         const Positioned(
