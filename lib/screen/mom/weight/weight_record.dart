@@ -6,7 +6,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
-import 'package:cozy_for_mom_frontend/service/mom_weight_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
 import 'package:provider/provider.dart';
 
 class WeightRecord extends StatefulWidget {
