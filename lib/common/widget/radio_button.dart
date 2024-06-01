@@ -3,10 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 
-enum RadioType {
-  fetalInfo,
-  gender,
-}
+enum RadioType { fetalInfo }
 
 class BuildRadioButton extends StatefulWidget {
   final String title;
@@ -32,9 +29,6 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
       case RadioType.fetalInfo:
         infoType = joinInputData.fetalInfo;
         break;
-      case RadioType.gender:
-        infoType = joinInputData.gender;
-        break;
     }
     return InkWell(
       splashColor: Colors.transparent,
@@ -42,8 +36,6 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
         setState(() {
           if (widget.radioButtonType == RadioType.fetalInfo) {
             joinInputData.setFetalInfo(widget.value);
-          } else if (widget.radioButtonType == RadioType.gender) {
-            joinInputData.setGender(widget.value);
           }
         });
       },
