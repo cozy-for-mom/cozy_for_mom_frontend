@@ -106,7 +106,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    joinInputData.nickname = value;
+                    joinInputData.setNickname(value);
                     _isNicknameValid = value.length <= 8;
                     _isInputValid = true;
                     if (value.isEmpty) {

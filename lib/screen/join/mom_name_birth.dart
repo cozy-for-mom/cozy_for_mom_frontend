@@ -85,7 +85,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.name = value;
+                        joinInputData.setName(value);
                       });
                     },
                   )),

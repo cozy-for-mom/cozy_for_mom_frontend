@@ -84,7 +84,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.dueDate = value;
+                        joinInputData.setDueDate(value);
                       });
                     },
                   )),

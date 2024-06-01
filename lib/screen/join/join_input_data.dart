@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class JoinInputData extends ChangeNotifier {
@@ -8,8 +9,9 @@ class JoinInputData extends ChangeNotifier {
   String dueDate = '';
   String laseMensesDate = '';
   String fetalInfo = '단태아';
-  String gender = '여아';
-  String birthName = '';
+  List<String> birthNames = [];
+  List<String> genders = [];
+  List<Baby> babies = [];
 
   void setEmail(String value) {
     email = value;
@@ -48,13 +50,24 @@ class JoinInputData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setGender(String value) {
-    gender = value;
-    notifyListeners();
+  void setBirthname(int index, String value) {
+    if (index >= birthNames.length) {
+      birthNames.add(value);
+    } else {
+      birthNames[index] = value;
+    }
   }
 
-  void setBirthname(String value) {
-    birthName = value;
+  void setGender(int index, String value) {
+    if (index >= genders.length) {
+      genders.add(value);
+    } else {
+      genders[index] = value;
+    }
+  }
+
+  void addBaby(Baby baby) {
+    babies.add(baby);
     notifyListeners();
   }
 }

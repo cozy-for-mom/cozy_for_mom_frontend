@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
+import 'package:intl/intl.dart';
 
 class MomProfileModify extends StatefulWidget {
   const MomProfileModify({super.key});
@@ -14,7 +15,11 @@ class MomProfileModify extends StatefulWidget {
 
 class _MomProfileModifyState extends State<MomProfileModify> {
   Color cusorColor = beforeInputColor;
-  final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
+  final user = UserInfo(
+      nickname: "쥬쥬",
+      name: "안소현",
+      email: "shsh@shsh.com",
+      birth: DateFormat('yyyy.MM.dd').format(DateTime(1999, 3, 3)));
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
   @override
   Widget build(BuildContext context) {

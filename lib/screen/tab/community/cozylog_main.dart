@@ -12,6 +12,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.d
 import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
+import 'package:intl/intl.dart';
 
 class CozylogMain extends StatefulWidget {
   const CozylogMain({super.key});
@@ -36,7 +37,11 @@ class _CozylogMainState extends State<CozylogMain> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
+    final user = UserInfo(
+        nickname: "쥬쥬",
+        name: "안소현",
+        email: "shsh@shsh.com",
+        birth: DateFormat('yyyy.MM.dd').format(DateTime(1999, 3, 3)));
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

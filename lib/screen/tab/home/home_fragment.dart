@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
+import 'package:intl/intl.dart';
 
 class HomeFragment extends StatelessWidget {
   const HomeFragment({
@@ -15,7 +16,11 @@ class HomeFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = User(1, "쥬쥬", "안소현", "shsh@shsh.com", DateTime(1999, 3, 3));
+    final user = UserInfo(
+        nickname: "쥬쥬",
+        name: "안소현",
+        email: "shsh@shsh.com",
+        birth: DateFormat('yyyy-MM-dd').format(DateTime(1999, 3, 3)));
 
     return Scaffold(
       body: Stack(
