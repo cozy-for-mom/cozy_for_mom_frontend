@@ -13,6 +13,7 @@ class BabyDuedateInputScreen extends StatefulWidget {
 class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
   TextEditingController dueDateController = TextEditingController();
   TextEditingController lastMensesController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -84,7 +85,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.setDueDate(value);
+                        joinInputData.setDueDate(value); // TODO 날짜 형식 자동 완성(?)
                       });
                     },
                   )),
@@ -136,7 +137,8 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.laseMensesDate = value;
+                        joinInputData
+                            .setLastMensesDate(value); // TODO 날짜 형식 자동 완성(?)
                       });
                     },
                   )),
