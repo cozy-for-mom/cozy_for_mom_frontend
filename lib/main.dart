@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/app.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 // 한국어 로케일을 사용하기 위해 추가
@@ -11,11 +12,15 @@ void main() async {
   await dotenv.load(
       fileName:
           'assets/configs/.env'); // 이 코드를 추가한다.initializeDateFormatting('ko_KR', null).then((_) {
+
+  await DeviceTokenManager().initialize();
+
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
     nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
     javaScriptAppKey: dotenv.env['KAKAO_JAVASCRIPT_APP_KEY']!,
   );
+
   // 'ko_KR'는 한국어 로케일
   runApp(
     MultiProvider(
