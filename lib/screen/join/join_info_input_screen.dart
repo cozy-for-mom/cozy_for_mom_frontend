@@ -1,3 +1,6 @@
+import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -10,6 +13,7 @@ import 'package:cozy_for_mom_frontend/screen/join/baby_fetal_info.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_gender_name.dart';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
+import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 
 class JoinInfoInputScreen extends StatefulWidget {
   const JoinInfoInputScreen({super.key});
@@ -23,6 +27,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   final joinApiService = JoinApiService();
   int _currentPage = 0;
   final int _totalPage = 6;
+  final tokenManager = TokenManager.TokenManager();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,10 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 curve: Curves.easeInOut,
               );
             } else {
-              print('첫 페이지입니다.');
+              // 첫 페이지에서 뒤로 갈 때는 다시 로그인 페이지로 이동
+              tokenManager.deleteToken();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             }
           },
         ),
@@ -61,7 +69,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
               } else {
                 print('마지막 페이지입니다.');
                 UserInfo userInfo = UserInfo(
-                  oauthType: 'apple',
+                  oauthType: joinInputData.oauthType.name,
                   name: joinInputData.name,
                   nickname: joinInputData.nickname,
                   birth: joinInputData.birth.replaceAll('.', '-'),

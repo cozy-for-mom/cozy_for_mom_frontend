@@ -12,6 +12,7 @@ class JoinApiService extends ChangeNotifier {
       'userInfo': userInfo.toJson(),
       'babyInfo': babyInfo.toJson(),
     };
+    print(data);
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
     print(utf8.decode(response.bodyBytes));

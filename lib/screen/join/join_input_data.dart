@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:flutter/material.dart';
 
 class JoinInputData extends ChangeNotifier {
@@ -12,6 +13,7 @@ class JoinInputData extends ChangeNotifier {
   List<String> birthNames = [];
   List<String> genders = [];
   List<Baby> babies = [];
+  OauthType oauthType = OauthType.none;
 
   void setEmail(String value) {
     email = value;
@@ -69,5 +71,9 @@ class JoinInputData extends ChangeNotifier {
   void addBaby(Baby baby) {
     babies.add(baby);
     notifyListeners();
+  }
+
+  void setOauthType(OauthType type) {
+    oauthType = type;
   }
 }

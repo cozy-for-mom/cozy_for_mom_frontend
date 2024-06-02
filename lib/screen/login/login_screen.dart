@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
@@ -6,6 +7,8 @@ import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
         body: FutureBuilder<String?>(
@@ -60,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget buildLoginScreen(double screenWidth, double screenHeight) {
+    final joinInputData = Provider.of<JoinInputData>(context);
     // 로그인 스크린 UI 구성
     return Stack(
       children: [
@@ -85,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: () async {
                   UserType userType = await kakaoLogin();
+                  joinInputData.setOauthType(OauthType.kakao);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
 
@@ -119,20 +124,38 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 13,
               ),
-              Container(
-                height: 60,
-                width: 350,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color(0xff393939),
-                ),
-                child: const Center(
-                  child: Text(
-                    "Apple로 시작하기",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
+              InkWell(
+                onTap: () async {
+                  UserType userType = await appleLogin();
+                  joinInputData.setOauthType(OauthType.apple);
+
+                  if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
+
+                  if (userType == UserType.guest) {
+                    // UserType이 guest이면 회원가입 페이지로 이동
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const JoinInfoInputScreen()));
+                  } else {
+                    // UserType이 user이면 MainScreen으로 이동
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const MainScreen()));
+                  }
+                },
+                child: Container(
+                  height: 60,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: const Color(0xff393939),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Apple로 시작하기",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 ),
@@ -223,5 +246,28 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return oauthApiService.authenticateByOauth(
         OauthType.kakao, kakaoAccessToken);
+  }
+
+  Future<UserType> appleLogin() async {
+    late String appleAuthCode;
+    try {
+      var res = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      // print(res.identityToken);
+      print('authorizationCode >>>>>>>> ${res.authorizationCode}');
+
+      // 애플 인증 코드 저장
+      appleAuthCode = res.authorizationCode;
+    } catch (e) {
+      print('애플로그인 실패: $e');
+      if (e is PlatformException && e.code == 'CANCELED') {
+        throw Exception(e.code); // TODO fix
+      }
+    }
+    return oauthApiService.authenticateByOauth(OauthType.apple, appleAuthCode);
   }
 }
