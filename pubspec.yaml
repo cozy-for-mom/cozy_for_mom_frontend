@@ -46,7 +46,6 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   fluttertoast: ^8.2.5
   http_parser:
-  image_picker: ^0.8.4+4
   camera: ^0.10.5+9
   http: ^1.1.0
   kakao_flutter_sdk_user: ^1.9.1+2
