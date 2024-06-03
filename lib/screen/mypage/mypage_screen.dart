@@ -20,11 +20,11 @@ int babyId = 1;
 class _MyPageState extends State<MyPage> {
   List<BabyProfile> profiles = [
     BabyProfile(
-        babyId: babyId++,
+        id: babyId++,
         name: "미룽이",
         image: 'assets/images/icons/babyProfileOn.png'),
     BabyProfile(
-        babyId: babyId++,
+        id: babyId++,
         name: "행운이",
         image: 'assets/images/icons/babyProfileOn.png')
   ];
@@ -330,7 +330,7 @@ class _MyPageState extends State<MyPage> {
                                               selectedProfile.value =
                                                   profiles[index]; // 프로필 활성화
                                               print(
-                                                  'id:${profiles[index].babyId} ${profiles[index].name} 버튼이 클릭되었습니다.');
+                                                  'id:${profiles[index].id} ${profiles[index].name} 버튼이 클릭되었습니다.');
                                             },
                                           );
                                         },
