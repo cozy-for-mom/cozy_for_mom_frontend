@@ -1,7 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
 import 'package:intl/intl.dart';

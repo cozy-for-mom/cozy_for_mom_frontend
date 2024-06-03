@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
-import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';

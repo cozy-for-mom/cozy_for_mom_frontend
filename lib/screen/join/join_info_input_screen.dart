@@ -12,7 +12,7 @@ import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_duedate.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_fetal_info.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_gender_name.dart';
-import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 
