@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
+import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -10,7 +10,7 @@ class UserApiService extends ChangeNotifier {
   Future<Map<String, dynamic>> getUserInfo() async {
     try {
       final url = Uri.parse('$baseUrl/me');
-      Response res = await get(url, headers: headers);
+      Response res = await get(url);
       if (res.statusCode == 200) {
         final body = jsonDecode(utf8.decode(res.bodyBytes));
         final userData = body['data'];

@@ -5,7 +5,10 @@ import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_time_correction_modal.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 class SupplementCard extends StatefulWidget {
   final int supplementId;
@@ -41,6 +44,8 @@ class _SupplementCardState extends State<SupplementCard> {
     final screenWidth = MediaQuery.of(context).size.width;
     late DateTime currentTime;
     SupplementApiService supplementApi = SupplementApiService();
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
+
     List<DateTime> sortedTakeTimes = widget.takeTimes
       ..sort((a, b) => a.compareTo(b));
     return SingleChildScrollView(
@@ -147,7 +152,6 @@ class _SupplementCardState extends State<SupplementCard> {
                           child: InkWell(
                             onTap: widget.realCount > index
                                 ? () {
-                                    currentTime = DateTime.now();
                                     int id = widget.recordIds[index];
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
@@ -186,7 +190,8 @@ class _SupplementCardState extends State<SupplementCard> {
                                   }
                                 : () {
                                     setState(() {
-                                      currentTime = DateTime.now();
+                                      currentTime = DateTime.parse(
+                                          '${globalData.selectedDate.toIso8601String().split('T')[0]} ${DateTime.now().toIso8601String().split('T')[1].substring(0, 12)}');
                                       // TODO 아래 2줄 : 영양제 섭취 기록 시, 화면 리렌더링하는 방법 찾으면 제거해도 되는 코드
                                       widget.realCount++;
                                       widget.takeTimes.add(currentTime);

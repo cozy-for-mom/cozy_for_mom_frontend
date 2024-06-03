@@ -1,6 +1,8 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class MonthCalendar extends StatefulWidget {
@@ -11,29 +13,25 @@ class MonthCalendar extends StatefulWidget {
 }
 
 class _MonthCalendarState extends State<MonthCalendar> {
-  DateTime _selectedDay = DateTime.now();
-  Map<DateTime, List<Widget>> _events = {
-    DateTime.now(): [],
-  };
-
+  DateTime _focusedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    final globalDate = Provider.of<MyDataModel>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-          width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
+      body: SizedBox(
+          width: screenWidth - 40,
           child: TableCalendar(
-            focusedDay: _selectedDay,
-            firstDay: DateTime(2000),
-            lastDay: DateTime(2100),
-            eventLoader: (date) => _events[date] ?? [],
+            focusedDay: globalDate.selectedDay,
+            firstDay: DateTime(2020),
+            lastDay: DateTime.now(),
             selectedDayPredicate: (date) {
-              // 선택한 날짜에 마크가 있도록 설정
-              return isSameDay(date, _selectedDay);
+              return isSameDay(date, globalDate.selectedDay);
             },
-            onDaySelected: (date, events) {
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                // 사용자가 다른 날짜를 클릭하면 마크를 업데이트
-                _selectedDay = date;
+                globalDate.updateSelectedDay(selectedDay);
+                _focusedDay = focusedDay;
               });
             },
             locale: 'ko-KR',
@@ -85,7 +83,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
                 return '$year.$month';
               }, // 타이틀 텍스트를 무엇으로 할 것인지 지정
             ),
-            daysOfWeekHeight: 34, // TODO 화면 높이에 맞춘 height로 수정해야함
+            daysOfWeekHeight: 34,
             daysOfWeekStyle: const DaysOfWeekStyle(
               weekdayStyle: TextStyle(
                 color: offButtonTextColor,
@@ -106,6 +104,10 @@ class MonthCalendarModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final globalDate = Provider.of<MyDataModel>(context, listen: false);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -128,12 +130,15 @@ class MonthCalendarModal extends StatelessWidget {
             ),
             child: Container(
               alignment: Alignment.topCenter,
-              color: const Color(0xffFAFAFA),
+              color: Colors.white,
               padding: const EdgeInsets.only(
                   top: 20, bottom: 40, left: 20, right: 20),
-              width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
-              height: 500, // TODO 화면 높이에 맞춘 height로 수정해야함
-              child: const MonthCalendar(),
+              width: screenWidth,
+              height: screenHeight * (0.7),
+              child: ChangeNotifierProvider.value(
+                value: globalDate,
+                child: const MonthCalendar(),
+              ),
             ),
           )
         ],

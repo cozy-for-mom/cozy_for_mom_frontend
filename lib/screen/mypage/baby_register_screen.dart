@@ -18,6 +18,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
         child: Column(
@@ -33,7 +34,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                   children: [
                     Center(
                       child: Image.asset(
-                        image?.path ?? 'assets/images/icons/momProfile.png',
+                        image?.path ?? 'assets/images/icons/babyProfile.png',
                         fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
                         width: 100,
                         height: 100,

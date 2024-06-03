@@ -1,8 +1,9 @@
-extension MapWithIndex<E> on List<E> {
-  List<T> mapWithIndex<T>(T Function(E item, int index) transform) {
-    List<T> result = [];
+extension MapWithIndex<T> on List<T> {
+  List<R> mapWithIndex<R>(R Function(T, int i) callback) {
+    List<R> result = [];
     for (int i = 0; i < length; i++) {
-      result.add(transform(this[i], i));
+      R item = callback(this[i], i);
+      result.add(item);
     }
     return result;
   }

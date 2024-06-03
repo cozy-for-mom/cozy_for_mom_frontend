@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/services.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class SupplementModal extends StatefulWidget {
   int id;
@@ -18,12 +20,15 @@ class _SupplementModalState extends State<SupplementModal> {
   bool isActivated = false;
   bool isBeforeButtonEnabled = false;
   bool isAfterButtonEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
     ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
     SupplementApiService supplementApi = SupplementApiService();
     final screenWidth = MediaQuery.of(context).size.width;
+    final globalData = Provider.of<MyDataModel>(context, listen: false);
+
     late String currentTime;
 
     String formatTime(String value) {
@@ -195,7 +200,7 @@ class _SupplementModalState extends State<SupplementModal> {
                       Navigator.pop(context);
                       String time;
                       currentTime = DateFormat('yyyy-MM-dd')
-                          .format(DateTime.now()); // TODO 캘린더 연동
+                          .format(globalData.selectedDate); // TODO 캘린더 연동
                       List<String> timeParts = textController.text.split(':');
                       int hourValue = int.tryParse(timeParts[0]) ?? 0;
                       int minuteValue = int.tryParse(timeParts[1]) ?? 0;
