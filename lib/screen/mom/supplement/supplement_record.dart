@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
-import 'package:cozy_for_mom_frontend/service/mom_supplement_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 
 import 'package:provider/provider.dart';
 

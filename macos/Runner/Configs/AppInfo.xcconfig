@@ -8,7 +8,7 @@
 PRODUCT_NAME = cozy_for_mom_frontend
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.cozyForMomFrontend
+PRODUCT_BUNDLE_IDENTIFIER = com.cozyformom
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
