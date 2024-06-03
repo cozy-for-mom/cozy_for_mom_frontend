@@ -1,5 +1,5 @@
 class CozyLog {
-  final int cozyLogId;
+  final int? cozyLogId;
   final CozyLogWriter writer;
   final String title;
   final String content;
@@ -24,18 +24,116 @@ class CozyLog {
     required this.viewCount,
     required this.isScrapped,
   });
+
+  factory CozyLog.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    List<dynamic> imageList = json['imageList'];
+    return CozyLog(
+      cozyLogId: json['id'],
+      writer: CozyLogWriter.fromJson(json['writer']),
+      imageList:
+          imageList.map((image) => CozyLogImage.fromJson(image)).toList(),
+      title: json['title'],
+      content: json['content'],
+      mode: mode,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      scrapCount: json['scrapCount'],
+      viewCount: json['viewCount'],
+      isScrapped: json['isScraped'],
+    );
+  }
+}
+
+class MyCozyLogListWrapper {
+  final List<CozyLogForList> cozyLogs;
+  final int totalCount;
+
+  MyCozyLogListWrapper({
+    required this.cozyLogs,
+    required this.totalCount,
+  });
+}
+
+class ScrapCozyLogListWrapper {
+  final List<CozyLogForList> cozyLogs;
+  final int totalCount;
+
+  ScrapCozyLogListWrapper({
+    required this.cozyLogs,
+    required this.totalCount,
+  });
+}
+
+class CozyLogForList {
+  final int cozyLogId;
+  final String title;
+  final String summary;
+  final CozyLogModeType mode;
+  final DateTime date; // 생성일? 수정일?
+  final int commentCount;
+  final int scrapCount;
+  final int imageCount;
+  final String imageUrl;
+
+  CozyLogForList({
+    required this.cozyLogId,
+    required this.title,
+    required this.summary,
+    required this.mode,
+    required this.date,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageCount,
+    required this.imageUrl,
+  });
+
+  factory CozyLogForList.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    return CozyLogForList(
+      cozyLogId: json['id'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      mode: mode,
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
 
 enum CozyLogModeType { public, private }
 
 class CozyLogImage {
+  final int imageId;
   final String imageUrl;
   final String description;
 
   CozyLogImage({
+    required this.imageId,
     required this.imageUrl,
     required this.description,
   });
+
+  factory CozyLogImage.fromJson(Map<String, dynamic> json) {
+    return CozyLogImage(
+      imageId: json['imageId'],
+      imageUrl: json['imageUrl'],
+      description: json['description'],
+    );
+  }
 }
 
 class CozyLogWriter {
@@ -48,6 +146,14 @@ class CozyLogWriter {
     required this.nickname,
     required this.imageUrl,
   });
+
+  factory CozyLogWriter.fromJson(Map<String, dynamic> json) {
+    return CozyLogWriter(
+      id: json['id'],
+      nickname: json['nickname'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
 
 class CozyLogSearchResponse {
@@ -64,7 +170,7 @@ class CozyLogSearchResult {
   final int id;
   final String title;
   final String summary;
-  final String date;
+  final DateTime date;
   final int commentCount;
   final int scrapCount;
   final String? imageUrl;
@@ -80,6 +186,19 @@ class CozyLogSearchResult {
     required this.imageUrl,
     required this.imageCount,
   });
+
+  factory CozyLogSearchResult.fromJson(Map<String, dynamic> json) {
+    return CozyLogSearchResult(
+      id: json['id'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
 
 enum CozyLogSearchSortType {

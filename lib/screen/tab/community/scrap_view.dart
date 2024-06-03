@@ -1,13 +1,17 @@
-import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 
 class ScrapListView extends StatefulWidget {
-  final List<CozyLog> cozyLogs;
-  const ScrapListView({super.key, this.cozyLogs = const []});
+  final List<CozyLogForList> cozyLogs;
+  final int totalCount;
+  const ScrapListView({
+    super.key,
+    this.cozyLogs = const [],
+    required this.totalCount,
+  });
 
   @override
   State<ScrapListView> createState() => _ScrapListViewState();
@@ -41,7 +45,7 @@ class _ScrapListViewState extends State<ScrapListView> {
                         height: 24),
                     const SizedBox(width: 8),
                     Text(
-                      '${widget.cozyLogs.length}개의 스크랩',
+                      '${widget.totalCount}개의 스크랩',
                       style: const TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,

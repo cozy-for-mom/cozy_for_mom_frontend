@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 class MyDataModel with ChangeNotifier {
   Map<String, String> bloodSugarData = {}; // 시간대와 혈당 수치 매핑
   DateTime selectedDate = DateTime.now();
+  int selectedProfileId = 0;
 
   void setBloodSugarData(String time, String value) {
     bloodSugarData[time] = value;
@@ -19,5 +20,14 @@ class MyDataModel with ChangeNotifier {
   void updateSelectedDay(DateTime newDay) {
     selectedDate = newDay;
     notifyListeners();
+  }
+
+  void setSelectedProfileId(int id) {
+    selectedProfileId = id;
+    notifyListeners();
+  }
+
+  int? getSelectedProfileId() {
+    return selectedProfileId;
   }
 }

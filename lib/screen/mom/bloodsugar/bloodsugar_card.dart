@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_modal.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:provider/provider.dart';
-import 'package:cozy_for_mom_frontend/service/mom_bloodsugar_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';

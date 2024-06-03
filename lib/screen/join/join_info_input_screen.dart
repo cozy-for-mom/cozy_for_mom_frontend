@@ -1,3 +1,5 @@
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -9,24 +11,7 @@ import 'package:cozy_for_mom_frontend/screen/join/baby_duedate.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_fetal_info.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_gender.dart';
 import 'package:cozy_for_mom_frontend/screen/join/baby_birthname.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const JoinInfoInputScreen(),
-      theme: ThemeData(
-        colorScheme: ColorScheme.light(),
-        fontFamily: 'Pretendard',
-      ),
-    );
-  }
-}
-// TODO main.dart의 하위 페이지로 연동 후, 위의 코드 삭제
+import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 
 class JoinInfoInputScreen extends StatefulWidget {
   const JoinInfoInputScreen({super.key});
@@ -39,12 +24,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final int _totalPage = 7;
-  // bool isButtonEnabled() {
-  //   switch (_currentPage) {
-  //     case 0:
-  //       return
-  //   }
-  // }
+  final tokenManager = TokenManager.TokenManager();
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +45,10 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                   curve: Curves.easeInOut,
                 );
               } else {
-                // 첫 페이지에서 뒤로 갈 때의 특별한 동작을 수행
-                print('첫 페이지입니다.');
+                // 첫 페이지에서 뒤로 갈 때는 다시 로그인 페이지로 이동
+                tokenManager.deleteToken();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const LoginScreen()));
               }
             },
           ),
