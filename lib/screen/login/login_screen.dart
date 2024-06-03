@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
@@ -33,17 +34,23 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
+    print(deviceToken);
+
     return Scaffold(
         body: FutureBuilder<String?>(
             future: accessToken,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
+                print('wating');
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 handleUserType(context);
+                print('circular');
                 return const Center(
                     child: CircularProgressIndicator()); // 결과 대기 중 표시
               } else {
+                print('success');
                 return buildLoginScreen(screenWidth, screenHeight);
               }
             }));

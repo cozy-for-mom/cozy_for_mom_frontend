@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
@@ -33,6 +34,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final joinInputData = Provider.of<JoinInputData>(context);
+    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -74,7 +77,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                   nickname: joinInputData.nickname,
                   birth: joinInputData.birth.replaceAll('.', '-'),
                   email: joinInputData.email,
-                  deviceToken: '',
+                  deviceToken: deviceToken,
                 );
                 List<Baby> babies =
                     List.generate(joinInputData.birthNames.length, (index) {

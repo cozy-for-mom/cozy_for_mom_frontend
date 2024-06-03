@@ -34,6 +34,7 @@ class OauthApiService {
       final accessToken =
           (response.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
+      print(accessToken);
       final decoded = JwtDecoder.decode(accessToken);
       return UserType.findByString(decoded['info']['role']);
     } else {
