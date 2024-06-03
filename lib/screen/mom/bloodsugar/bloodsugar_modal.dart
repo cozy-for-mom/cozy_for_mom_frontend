@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:provider/provider.dart';
+import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 
 class BloodsugarModal extends StatefulWidget {
   final String time;
   final String period;
+  final int id;
 
-  BloodsugarModal({super.key, required this.time, required this.period});
+  BloodsugarModal(
+      {super.key, required this.time, required this.period, this.id = 0});
 
   @override
   State<BloodsugarModal> createState() => _BloodsugarModalState();
@@ -23,6 +26,8 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
     textController.text =
         (globalState.getBloodSugarData(widget.time + widget.period) ?? '');
     ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
+    DateTime now = DateTime.now(); // 현재 날짜
+    BloodsugarApiService bloodsugarApi = BloodsugarApiService();
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -77,11 +82,13 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                               } else {
                                 globalState.setBloodSugarData(
                                     widget.time + widget.period, text);
-                                isButtonEnabled.value = true; // 입력값이 없을 때
+                                isButtonEnabled.value = true; // 입력값이 있을 때
                               }
                             },
+                            maxLength: 3,
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 suffixText: 'mg / dL',
                                 suffixStyle: const TextStyle(
@@ -124,6 +131,16 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
                     onTap: () {
+                      widget.id > 0
+                          ? bloodsugarApi.modifyBloodsugar(
+                              widget.id,
+                              now,
+                              '${widget.time} ${widget.period}',
+                              int.parse(textController.text))
+                          : bloodsugarApi.recordBloodsugar(
+                              now,
+                              '${widget.time} ${widget.period}',
+                              int.parse(textController.text));
                       Navigator.of(context).pop();
                     },
                     child: const Text(

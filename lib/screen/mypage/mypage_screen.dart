@@ -1,6 +1,4 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
@@ -59,17 +57,16 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           Positioned(
-            top: 66,
-            left: 356,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pop(); // 현재 화면을 닫음
-              },
-              child: const Image(
-                  image: AssetImage('assets/images/icons/close.png'),
-                  width: 16,
-                  height: 16),
-            ),
+            top: 47,
+            left: 348,
+            child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // 현재 화면을 닫음
+                }),
           ),
           Positioned(
             top: 119,
@@ -197,12 +194,8 @@ class _MyPageState extends State<MyPage> {
                         imageWidth: 27.3,
                         imageHeight: 24.34,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyCozylog(),
-                            ),
-                          );
+                          // TODO 코지로그 페이지 이동 구현해야 함
+                          print('코지로그 버튼 클릭됨');
                         }),
                     Container(
                       width: 1, // 수직선의 두께 조절
@@ -217,12 +210,8 @@ class _MyPageState extends State<MyPage> {
                         imageWidth: 18.4,
                         imageHeight: 24,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyScrap(),
-                            ),
-                          );
+                          // TODO 스크랩 내역 페이지 이동 구현해야함
+                          print('스크랩 내역 버튼 클릭됨');
                         }),
                   ],
                 ),

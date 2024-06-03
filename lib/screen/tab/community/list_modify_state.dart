@@ -1,5 +1,5 @@
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
-import 'package:cozy_for_mom_frontend/model/cozylog_model.dart';
 
 class ListModifyState extends ChangeNotifier {
   int _selectedCount = 0;
@@ -24,8 +24,8 @@ class ListModifyState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setAllSelected(List<CozyLog> cozyLogs) {
-    _selectedIds = cozyLogs.map((cozyLog) => cozyLog.id).toList();
+  void setAllSelected(List<CozyLogForList> cozyLogs) {
+    _selectedIds = cozyLogs.map((cozyLog) => cozyLog.cozyLogId).toList();
     _selectedCount = cozyLogs.length;
     notifyListeners();
   }

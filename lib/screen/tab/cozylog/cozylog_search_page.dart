@@ -1,4 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_result_page.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_local_storage_service.dart';
 import 'package:flutter/material.dart';
 
 class CozyLogSearchPage extends StatefulWidget {
@@ -9,8 +11,45 @@ class CozyLogSearchPage extends StatefulWidget {
 }
 
 class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
-  // TODO 조회 API로 대체
-  final searchHistories = ["체중", "임산부", "병원검사", "영양제", "임신"];
+  List<String> recentSearches = [];
+  late CozyLogLocalStorageService storageService;
+  final TextEditingController _controller = TextEditingController();
+  late final Future<List<String>> futureRecentFutureKeywords;
+  bool autoSave = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeStorageService(); // 서비스 초기화
+  }
+
+  Future<void> initializeStorageService() async {
+    storageService =
+        await CozyLogLocalStorageService.getInstance(); // 인스턴스 가져오기
+    storageService.getAutoSave().then((value) => autoSave = value);
+    await loadRecentSearches(); // 최근 검색어 로드
+  }
+
+  Future<void> loadRecentSearches() async {
+    List<String> searches =
+        await storageService.getRecentSearches(); // 최근 검색어 가져오기
+    setState(() {
+      recentSearches = searches; // UI 업데이트
+    });
+  }
+
+  Future<void> addSearch(String search) async {
+    if (autoSave) {
+      return await storageService.addRecentSearch(search); // 검색어 추가
+    }
+
+    await loadRecentSearches(); // 업데이트
+  }
+
+  Future<void> deleteSearch(String search) async {
+    await storageService.deleteRecentSearch(search); // 특정 검색어 삭제
+    await loadRecentSearches(); // 업데이트
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +71,25 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.white,
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 17,
                       ),
-                      Image(
+                      const Image(
                         image:
                             AssetImage("assets/images/icons/icon_search.png"),
                         width: 15,
                         height: 15,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: TextField(
                           cursorColor: primaryColor,
                           cursorHeight: 15,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             focusColor: primaryColor,
                             fillColor: primaryColor,
                             border: InputBorder.none,
@@ -61,19 +100,27 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                             ),
                             hintText: "검색어를 입력해주세요",
                           ),
-                          // style: TextStyle(color: Color(0xff858998)),
+                          onSubmitted: (String value) {
+                            addSearch(value);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CozyLogSearchResultPage(
+                                  searchKeyword: value,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-                InkWell(
-                  child: const Center(
+                const InkWell(
+                  child: Center(
                     child: Text("취소"),
                   ),
-                  onTap: () {
-                    Navigator.of(context).pop(); // 팝업 닫기
-                  },
                 )
               ],
             ),
@@ -96,25 +143,57 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      "전체 삭제",
-                      style: TextStyle(
-                        color: searchHistories.isNotEmpty
-                            ? const Color(0xff858998)
-                            : const Color(0xffD8DAE2),
-                        fontSize: 12,
+                    InkWell(
+                      child: Text(
+                        "전체 삭제",
+                        style: TextStyle(
+                          color: recentSearches.isNotEmpty
+                              ? const Color(0xff858998)
+                              : const Color(0xffD8DAE2),
+                          fontSize: 12,
+                        ),
                       ),
+                      onTap: () {
+                        storageService.clearRecentSearches();
+                        setState(() {
+                          recentSearches = [];
+                        });
+                      },
                     ),
                     const SizedBox(
                       width: 20,
                     ),
-                    const Text(
-                      "자동저장 끄기",
-                      style: TextStyle(
-                        color: Color(0xff858998),
-                        fontSize: 12,
-                      ),
-                    ),
+                    autoSave
+                        ? InkWell(
+                            child: const Text(
+                              "자동저장 끄기",
+                              style: TextStyle(
+                                color: Color(0xff858998),
+                                fontSize: 12,
+                              ),
+                            ),
+                            onTap: () {
+                              storageService.setAutoSave(false);
+                              setState(() {
+                                autoSave = false;
+                              });
+                            },
+                          )
+                        : InkWell(
+                            child: const Text(
+                              "자동저장 켜기",
+                              style: TextStyle(
+                                color: Color(0xff858998),
+                                fontSize: 12,
+                              ),
+                            ),
+                            onTap: () {
+                              storageService.setAutoSave(true);
+                              setState(() {
+                                autoSave = true;
+                              });
+                            },
+                          ),
                   ],
                 ),
               ],
@@ -130,7 +209,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                 height: 50,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: searchHistories.length,
+                  itemCount: recentSearches.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -150,22 +229,25 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                           child: Row(
                             children: [
                               Text(
-                                searchHistories[index],
+                                recentSearches[index],
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
                               const SizedBox(width: 12),
-                              const SizedBox(
+                              SizedBox(
                                 height: 8,
                                 width: 8,
                                 child: InkWell(
-                                  child: Image(
+                                  child: const Image(
                                     image: AssetImage(
                                         "assets/images/icons/icon_close.png"),
                                     width: 8,
                                     height: 8,
                                   ),
+                                  onTap: () {
+                                    deleteSearch(recentSearches[index]);
+                                  },
                                 ),
                               ),
                             ],
