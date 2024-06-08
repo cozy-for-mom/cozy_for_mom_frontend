@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:http/http.dart' as http;
@@ -17,14 +19,17 @@ class OauthApiService {
     // TODO 일단 device token은 일단 빈값을 담아 요청한다.
     var urlString = '$baseUrl/authenticate/oauth';
     final url = Uri.parse(urlString);
+    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
+    final headers = await getHeaders();
     dynamic response;
+
     response = await http.post(
       url,
       headers: headers,
       body: jsonEncode(
         {
           'oauthType': oauthType.name,
-          'deviceToken': '',
+          'deviceToken': deviceToken,
           'value': value,
         },
       ),
