@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class BloodsugarApiService extends ChangeNotifier {
@@ -13,9 +12,8 @@ class BloodsugarApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/bloodsugar?date=$formattedDate');
-      Response res = await get(url);
-      // String jsonString =
-      //     await rootBundle.loadString('assets/test_json/bloodsugar.json');
+      final headers = await getHeaders();
+      Response res = await get(url, headers: headers);
 
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -39,10 +37,11 @@ class BloodsugarApiService extends ChangeNotifier {
       DateTime date, String type) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      final headers = await getHeaders();
 
       final url = Uri.parse(
           '$baseUrl/bloodsugar/period?date=$formattedDate&type=$type');
-      Response res = await get(url);
+      Response res = await get(url, headers: headers);
       // String jsonString = await rootBundle
       //     .loadString('assets/test_json/bloodsugar_period.json');
 
@@ -73,6 +72,7 @@ class BloodsugarApiService extends ChangeNotifier {
   Future<int> recordBloodsugar(
       DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar');
+    final headers = await getHeaders();
     Map data = {
       'date': DateFormat('yyyy-MM-dd').format(dateTime),
       'type': type,
@@ -93,15 +93,14 @@ class BloodsugarApiService extends ChangeNotifier {
   Future<int> modifyBloodsugar(
       int id, DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
+    final headers = await getHeaders();
     Map data = {
       'date': DateFormat('yyyy-MM-dd').format(dateTime),
       'type': type,
       'level': level
     };
-    print(jsonEncode(data));
     final Response response =
         await put(url, headers: headers, body: jsonEncode(data));
-    print(response.statusCode);
     Map<String, dynamic> responseData = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return responseData['data']['bloodSugarRecordId'];
@@ -114,7 +113,8 @@ class BloodsugarApiService extends ChangeNotifier {
   // TODO 영양제 섭취 기록 삭제 api 연동
   Future<void> deleteBloodsugar(int id) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
-    Response res = await delete(url);
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('혈당 기록이 삭제되었습니다.');
     } else {

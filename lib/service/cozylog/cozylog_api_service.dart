@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:http/http.dart';
-
-const baseUrl = "http://43.202.14.104:8080/api/v1"; // TODO remove
-const headers = {'Content-Type': 'application/json; charset=UTF-8'};
 
 class CozyLogApiService {
   Future<MyCozyLogListWrapper> getMyCozyLogs(
@@ -12,12 +11,11 @@ class CozyLogApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/me/cozy-log?size=$size';
+    final headers = await getHeaders();
     if (lastId != null) urlString += '&lastId=$lastId';
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -38,14 +36,13 @@ class CozyLogApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/scrap?userId=1&size=$size';
+    final headers = await getHeaders();
     if (lastId != null) {
       urlString += '&lastId=$lastId';
     }
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -67,6 +64,7 @@ class CozyLogApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/cozy-log/list?size=$size';
+    final headers = await getHeaders();
     if (lastId == null) {
       urlString += '&lastId=0';
     } else {
@@ -75,9 +73,7 @@ class CozyLogApiService {
     urlString += '&sort=LATELY';
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -98,6 +94,7 @@ class CozyLogApiService {
     CozyLogSearchSortType sortType,
   ) async {
     var urlString = '$baseUrl/cozy-log/search?size=$size';
+    final headers = await getHeaders();
     if (lastId == null) {
       urlString += '&lastId=0';
     } else {
@@ -110,9 +107,7 @@ class CozyLogApiService {
     urlString += '&sort=$sortTypeString';
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -134,11 +129,10 @@ class CozyLogApiService {
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -156,6 +150,7 @@ class CozyLogApiService {
     CozyLogModeType mode,
   ) async {
     var urlString = '$baseUrl/cozy-log?userId=1';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
     response = await put(
@@ -188,6 +183,7 @@ class CozyLogApiService {
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
     response = await delete(
@@ -206,6 +202,7 @@ class CozyLogApiService {
     int cozyLogId,
   ) async {
     var urlString = '$baseUrl/scrap';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
     response = await post(
@@ -230,6 +227,7 @@ class CozyLogApiService {
     int cozyLogId,
   ) async {
     var urlString = '$baseUrl/scrap';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
     response = await post(
@@ -254,6 +252,7 @@ class CozyLogApiService {
     List<int> cozyLogIds,
   ) async {
     var urlString = '$baseUrl/scrap/unscraps?userId=1';
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
     response = await post(

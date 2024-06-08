@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,8 @@ class SupplementApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/supplement/intake?date=$formattedDate');
-      Response res = await get(url);
+      final headers = await getHeaders();
+      Response res = await get(url, headers: headers);
 
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -33,6 +35,7 @@ class SupplementApiService extends ChangeNotifier {
 
   Future<int> recordSupplementIntake(String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
+    final headers = await getHeaders();
     Map data = {
       'supplementName': name,
       'datetime': DateFormat('yyyy-MM-dd HH:mm:ss').format(takeTime)
@@ -52,6 +55,7 @@ class SupplementApiService extends ChangeNotifier {
   Future<int> modifySupplementIntake(
       int id, String name, String takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
+    final headers = await getHeaders();
     Map data = {'supplementName': name, 'datetime': takeTime};
 
     final Response response =
@@ -67,7 +71,8 @@ class SupplementApiService extends ChangeNotifier {
 
   Future<void> deleteSupplementIntake(int id) async {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
-    Response res = await delete(url);
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
 
     if (res.statusCode == 204) {
       print('$id 기록이 삭제되었습니다.');
@@ -78,6 +83,7 @@ class SupplementApiService extends ChangeNotifier {
 
   Future<int> registerSupplement(String name, int targetCount) async {
     final url = Uri.parse('$baseUrl/supplement');
+    final headers = await getHeaders();
     Map data = {'supplementName': name, 'targetCount': targetCount};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
@@ -95,6 +101,7 @@ class SupplementApiService extends ChangeNotifier {
   Future<PregnantSupplement> modifySupplement(
       String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
+    final headers = await getHeaders();
     Map data = {'supplementName': name, 'datetime': takeTime.toIso8601String()};
 
     final Response response =
@@ -108,7 +115,8 @@ class SupplementApiService extends ChangeNotifier {
 
   Future<void> deleteSupplement(int id) async {
     final url = Uri.parse('$baseUrl/supplement/$id');
-    Response res = await delete(url);
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
 
     if (res.statusCode == 204) {
       print('$id 영양제가 삭제되었습니다.');
