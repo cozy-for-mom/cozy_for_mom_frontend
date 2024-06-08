@@ -45,17 +45,17 @@ class _WeightRecordState extends State<WeightRecord> {
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
           _isInitialized = false;
           return FutureBuilder(
-              future: momWeightViewModel.getWeights(
-                  globalData.selectedDate, 'daily'),
+              future: momWeightViewModel.getWeights(globalData.selectedDate,
+                  'daily'), // TODO daily/weekly/monthly 지정
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   data = snapshot.data!;
                   todayWeight = data['todayWeight'];
-                  // print('--------tw--------- $todayWeight');
-                  print(_isInitialized);
                   pregnantWeights = data['weights'] ?? [];
-                  lastRecordDate = DateTime.now()
-                      .difference(DateTime.parse(data['lastRecordDate']));
+                  lastRecordDate = data['lastRecordDate'] == ''
+                      ? const Duration(days: -1) // TODO default value
+                      : DateTime.now()
+                          .difference(DateTime.parse(data['lastRecordDate']));
                   if (!_isInitialized &&
                       todayWeight > 0 &&
                       _weightController.text != todayWeight.toString()) {
@@ -63,9 +63,6 @@ class _WeightRecordState extends State<WeightRecord> {
                     _isInitialized = true;
                   }
                   print('wt ${_weightController.text} tw $todayWeight');
-                  // print(_weightController.text);
-
-                  // print('--------wt--------- ${_weightController.text}');
                 }
                 if (!snapshot.hasData) {
                   return const Center(
@@ -172,7 +169,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                             color: mainTextColor,
                                             fontWeight: FontWeight.w700,
                                             fontSize: 18)),
-                                    Text('마지막 측정 ${lastRecordDate.inDays}일전',
+                                    Text(
+                                        lastRecordDate ==
+                                                const Duration(days: -1)
+                                            ? '측정 기록이 없어요'
+                                            : '마지막 측정 ${lastRecordDate.inDays}일전',
                                         style: const TextStyle(
                                             color: primaryColor,
                                             fontWeight: FontWeight.w500,
@@ -253,14 +254,14 @@ class _WeightRecordState extends State<WeightRecord> {
                       left: 20,
                       child: TimeLineChart(
                         recordType: RecordType.weight,
-                        dataList: [
-                          if (data['weights'] != null)
-                            ...(pregnantWeights.map((data) {
-                              final formattedDate =
-                                  '${data.dateTime.substring(5, 7)}.${data.dateTime.substring(8)}';
-                              return LineChartData(formattedDate, data.weight);
-                            }).toList())
-                        ],
+                        dataList: pregnantWeights.isEmpty
+                            ? [LineChartData('00.00', 0)] // 기본 데이터를 넣어서 에러 방지
+                            : pregnantWeights.map((data) {
+                                final formattedDate =
+                                    '${data.dateTime.substring(5, 7)}.${data.dateTime.substring(8)}';
+                                return LineChartData(
+                                    formattedDate, data.weight);
+                              }).toList(),
                       ),
                     ),
                   ],
