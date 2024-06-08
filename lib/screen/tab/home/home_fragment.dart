@@ -24,30 +24,31 @@ class _HomeFragmentState extends State<HomeFragment> {
   @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder(
-        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
+          print('e ${snapshot.error}');
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;
           }
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+              backgroundColor: Colors.lightBlueAccent,
             ));
           }
 
           return Scaffold(
             body: Stack(
               children: [
-                const Positioned(
+                Positioned(
                   top: 0,
                   child: Image(
-                    width: 400, // TODO 화면 너비에 맞춘 width로 수정해야함
+                    width: screenWidth,
                     fit: BoxFit.cover,
-                    image: AssetImage(
+                    image: const AssetImage(
                       "assets/images/dark_sky.png",
                     ),
                   ),

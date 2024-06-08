@@ -42,15 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
             future: accessToken,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                print('wating');
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 handleUserType(context);
-                print('circular');
                 return const Center(
                     child: CircularProgressIndicator()); // 결과 대기 중 표시
               } else {
-                print('success');
                 return buildLoginScreen(screenWidth, screenHeight);
               }
             }));
