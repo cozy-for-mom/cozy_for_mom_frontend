@@ -29,7 +29,7 @@ class _HomeFragmentState extends State<HomeFragment> {
     return FutureBuilder(
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
-          print('e ${snapshot.error}');
+
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;
           }
