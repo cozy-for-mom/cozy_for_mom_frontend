@@ -2,33 +2,35 @@ import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 
 class UserApiService extends ChangeNotifier {
   Future<Map<String, dynamic>> getUserInfo() async {
     try {
+      final headers = await getHeaders();
       final url = Uri.parse('$baseUrl/me');
-      Response res = await get(url);
+      Response res = await get(url, headers: headers);
       if (res.statusCode == 200) {
         final body = jsonDecode(utf8.decode(res.bodyBytes));
         final userData = body['data'];
         List<dynamic> babyProfilesData = userData['babyProfile'];
-        // print(babyProfilesData);
         List<BabyProfile> babyProfiles = babyProfilesData.map((babyProfile) {
           return BabyProfile.fromJson(babyProfile);
         }).toList();
-        BabyProfile recentBabyProfile =
-            BabyProfile.fromJson(userData['recentBabyProfile']);
+        BabyProfile recentBabyProfile = userData['recentBabyProfile'] == null
+            ? babyProfiles.first
+            : BabyProfile.fromJson(userData['recentBabyProfile']);
+
         String name = userData['name'];
         String nickname = userData['nickname'];
-        String introduce = userData['introduce'];
+        String introduce = userData['introduce'] ?? '';
         String? imageUrl = userData['imageUrl'];
         String birth = userData['birth'];
         String email = userData['email'];
         int dDay = userData['dDay'];
-        print(birth);
+
         return {
           'name': name,
           'nickname': nickname,
@@ -50,6 +52,7 @@ class UserApiService extends ChangeNotifier {
 
   Future<void> modifyUserProfile(String name, String nickname, String introduce,
       Future<String?> imageUrl, String birth, String email) async {
+    final headers = await getHeaders();
     final url = Uri.parse('$baseUrl/me');
     Map data = {
       'name': name,
@@ -70,6 +73,7 @@ class UserApiService extends ChangeNotifier {
 
   Future<void> modifyMainBaby(int id) async {
     final url = Uri.parse('$baseUrl/me/baby/recent');
+    final headers = await getHeaders();
     Map data = {'babyProfileId': id};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
