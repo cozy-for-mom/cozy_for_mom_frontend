@@ -37,7 +37,7 @@ class SupplementApiService extends ChangeNotifier {
       'supplementName': name,
       'datetime': DateFormat('yyyy-MM-dd HH:mm:ss').format(takeTime)
     };
-
+    print(jsonEncode(data));
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> responseData =

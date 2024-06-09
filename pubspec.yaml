@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^2.2.2
   infinite_scroll_pagination: ^4.0.0
   fluttertoast: ^8.2.5
+  http_parser:
+  camera: ^0.10.5+9
   http: ^1.1.0
   kakao_flutter_sdk_user: ^1.9.1+2
   flutter_secure_storage: ^9.0.0
@@ -143,6 +145,17 @@ flutter:
     - assets/images/icons/unpass.png
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
+    - assets/images/icons/supplement_off.png
+    - assets/images/icons/logout_agree_active.png
+    - assets/images/icons/logout_agree_inactive.png
+    - assets/images/icons/babyProfile.png
+
+    - assets/test_json/supplement.json
+    - assets/test_json/weight.json
+    - assets/test_json/meal.json
+    - assets/test_json/bloodsugar.json
+    - assets/test_json/bloodsugar_period.json
+    
     - assets/images/icons/radio_selected.png
     - assets/images/icons/radio_unselected.png
     - assets/images/test_image.png

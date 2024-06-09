@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/app.dart';
+import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,7 +31,12 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => MyDataModel()),
         ChangeNotifierProvider(create: (context) => ListModifyState()),
-        // ChangeNotifierProvider(create: (context) => JoinInputData()), // TODO 회원가입 (정보입력) 페이지 연동 후, 주석 해제
+        ChangeNotifierProvider(create: (context) => JoinInputData()),
+          ChangeNotifierProvider(create: (context) => SupplementApiService()),
+          ChangeNotifierProvider(create: (context) => WeightApiService()),
+          ChangeNotifierProvider(create: (context) => MealApiService()),
+          ChangeNotifierProvider(create: (context) => BloodsugarApiService()),
+          ChangeNotifierProvider(create: (context) => UserApiService())
       ],
       child: const App(),
     ),
