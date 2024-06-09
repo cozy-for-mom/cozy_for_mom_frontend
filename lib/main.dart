@@ -2,17 +2,20 @@ import 'package:cozy_for_mom_frontend/app.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // 한국어 로케일을 사용하기 위해 추가
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
-void main() async {
-  await dotenv.load(
-      fileName:
-          'assets/configs/.env'); // 이 코드를 추가한다.initializeDateFormatting('ko_KR', null).then((_) {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: 'assets/configs/.env');
+  await initializeNotifications();
   await DeviceTokenManager().initialize();
 
   // runApp() 호출 전 Flutter SDK 초기화
@@ -33,3 +36,50 @@ void main() async {
     ),
   );
 }
+
+Future<void> initializeNotifications() async {
+  final DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings(
+         requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+  );
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    iOS: initializationSettingsDarwin,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+      final String? payload = notificationResponse.payload;
+      if (payload != null && payload.isNotEmpty) {
+        await onSelectNotification(payload);
+      } else {
+        print('No payload found in notification response');
+      }
+    },
+  );
+
+  // test 알림 보내기
+  NotificationDetails details = const NotificationDetails(
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+     
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      "타이틀이 보여지는 영역입니다.",
+      "컨텐츠 내용이 보여지는 영역입니다.\ntest show()",
+      details,
+      payload: "/main_screen",
+    );
+}
+
+Future<void> onSelectNotification(String payload) async {
+  navigatorKey.currentState!.pushNamed(payload);
+}
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
