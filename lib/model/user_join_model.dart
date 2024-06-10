@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UserInfo {
   final String? oauthType;
   final String name;
@@ -32,6 +34,13 @@ class Baby {
         'name': name,
         'gender': gender,
       };
+  factory Baby.fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    return Baby(
+      name: json['name'],
+      gender: json['gender'],
+    );
+  }
 }
 
 class BabyInfo {
