@@ -17,7 +17,7 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   await dotenv.load(fileName: 'assets/configs/.env'); // 이 코드를 추가한다.
 
-  // await DeviceTokenManager().initialize();
+  await DeviceTokenManager().initialize();
 
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
