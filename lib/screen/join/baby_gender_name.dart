@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
 class BabyGenderScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class BabyGenderScreen extends StatefulWidget {
 }
 
 class _BabyGenderScreenState extends State<BabyGenderScreen> {
+  final List<String> genderItems = ['남아', '여아', '아직 모르겠어요'];
   List<TextEditingController> birthNameControllers = [];
   List<String> genders = [];
   int currentGenderIndex = -1;
@@ -44,8 +46,6 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final joinInputData = Provider.of<JoinInputData>(context);
-
-    final List<String> info = ['남아', '여아', '아직 모르겠어요'];
     return SizedBox(
       height: screenHeight - 43,
       child: CustomScrollView(
@@ -55,7 +55,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 90, left: 20),
+                  padding: EdgeInsets.only(top: 50, left: 20),
                   child: Text('아기의 정보를 입력해주세요',
                       style: TextStyle(
                           color: mainTextColor,
@@ -143,46 +143,95 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14)),
                             const SizedBox(height: 10),
-                            Container(
+                            SizedBox(
                               width: screenWidth - 40,
-                              height: 48,
-                              padding: const EdgeInsets.only(
-                                  top: 10, bottom: 10, left: 20, right: 20),
-                              decoration: BoxDecoration(
-                                  color: contentBoxTwoColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: SizedBox(
-                                width: screenWidth - 60,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      genders[index].isEmpty
-                                          ? const Text('성별',
-                                              style: TextStyle(
-                                                  color: beforeInputColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14))
-                                          : Text(genders[index],
+                              child: DropdownButtonFormField2<String>(
+                                // TODO 드롭다운 위치 조정_화면 넘어갈 경우에
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(top: 15),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                hint: const Text(
+                                  '성별',
+                                  style: TextStyle(
+                                      color: beforeInputColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14),
+                                ),
+                                items: genderItems
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Center(
+                                            child: Text(
+                                              item,
                                               style: const TextStyle(
-                                                  color: mainTextColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 14)),
-                                      SizedBox(
-                                        width: 20,
-                                        child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                currentGenderIndex = index;
-                                                isGenderModal = !isGenderModal;
-                                              });
-                                            },
-                                            icon: const Icon(
-                                                CupertinoIcons.chevron_down,
-                                                size: 15,
-                                                color: offButtonTextColor)),
+                                                color: offButtonTextColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  String g = value.toString();
+                                  setState(() {
+                                    if (g == '남아' || g == '여아') {
+                                      g = g.replaceAll('아', '자');
+                                    }
+                                    genders[currentGenderIndex] = g;
+                                    joinInputData.setGender(
+                                        currentGenderIndex, g);
+                                  });
+                                },
+                                buttonStyleData: ButtonStyleData(
+                                  height: 48,
+                                  width: screenWidth - 40,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: contentBoxTwoColor,
+                                  ),
+                                ),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(CupertinoIcons.chevron_down,
+                                      size: 15, color: offButtonTextColor),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 188,
+                                  width: screenWidth - 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: contentBoxTwoColor,
+                                  ),
+                                  elevation: 0,
+                                ),
+                                selectedItemBuilder: (BuildContext context) {
+                                  return genderItems.map<Widget>((String item) {
+                                    return Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          color: mainTextColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                        ),
                                       ),
-                                    ]),
+                                    );
+                                  }).toList();
+                                },
+                                onMenuStateChange: (isOpen) {
+                                  setState(() {
+                                    currentGenderIndex = index;
+                                  });
+                                },
                               ),
                             ),
                           ],
@@ -201,43 +250,6 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
               },
               childCount: babyCount,
             ),
-          ),
-          SliverToBoxAdapter(
-            child: isGenderModal
-                ? Container(
-                    width: screenWidth - 40,
-                    height: 188,
-                    padding: const EdgeInsets.only(
-                        top: 25, bottom: 25, left: 10, right: 10),
-                    decoration: BoxDecoration(
-                        color: contentBoxTwoColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: info
-                          .map((g) => InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (g == '남아' || g == '여아') {
-                                      g = g.replaceAll('아', '자');
-                                    }
-                                    genders[currentGenderIndex] = g;
-                                    joinInputData.setGender(
-                                        currentGenderIndex, g);
-                                    isGenderModal = !isGenderModal;
-                                  });
-                                },
-                                child: Text(g,
-                                    style: const TextStyle(
-                                      color: offButtonTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    )),
-                              ))
-                          .toList(),
-                    ),
-                  )
-                : Container(),
           ),
           SliverToBoxAdapter(
             child: joinInputData.fetalInfo == '다태아'
