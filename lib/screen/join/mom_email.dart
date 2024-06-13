@@ -20,7 +20,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('사용할 이메일을 입력해 주세요',
               style: TextStyle(
@@ -29,7 +29,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
               style: TextStyle(
@@ -38,7 +38,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 220,
+          top: 180,
           left: 20,
           child: Container(
               width: screenWidth - 40,

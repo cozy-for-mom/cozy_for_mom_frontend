@@ -17,7 +17,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('아기의 정보를 입력해주세요',
               style: TextStyle(
@@ -26,7 +26,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
               style: TextStyle(
@@ -35,7 +35,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 221,
+          top: 181,
           left: 20,
           child: SizedBox(
             width: screenWidth - 40,
