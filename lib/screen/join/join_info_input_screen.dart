@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
@@ -93,6 +94,9 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                     babies: babies);
 
                 joinApiService.signUp(userInfo, babyInfo);
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) =>
+                        const MainScreen())); // TODO 회원가입 성공했을 때, 메인페이지로 넘어가는지 확인 필요
               }
             },
             child: Padding(
@@ -121,7 +125,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             ),
           ),
           Positioned.fill(
-            top: 0,
+            top: 43,
             left: 0,
             child: PageView(
               controller: _pageController,
