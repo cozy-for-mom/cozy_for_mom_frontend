@@ -1,6 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
-import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 fontSize: 18)),
         actions: [
           InkWell(
-            onTap: () {
+            onTap: () async {
               if (_currentPage < _totalPage - 1) {
                 _pageController.nextPage(
                   duration: const Duration(milliseconds: 200),
@@ -93,10 +93,23 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                         joinInputData.laseMensesDate.replaceAll('.', '-'),
                     babies: babies);
 
-                joinApiService.signUp(userInfo, babyInfo);
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) =>
-                        const MainScreen())); // TODO 회원가입 성공했을 때, 메인페이지로 넘어가는지 확인 필요
+                try {
+                  final response =
+                      await joinApiService.signUp(userInfo, babyInfo);
+                  if (response['status'] == 201) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
+                    );
+                  } else {
+                    DeleteCompleteAlertModal.showDeleteCompleteDialog(
+                        context, '회원가입을 실패했습니다.');
+                  }
+                } catch (e) {
+                  print('회원가입 중 에러 발생: $e');
+                  DeleteCompleteAlertModal.showDeleteCompleteDialog(
+                      context, '회원가입 중 에러가 발생했습니다.');
+                }
               }
             },
             child: Padding(
