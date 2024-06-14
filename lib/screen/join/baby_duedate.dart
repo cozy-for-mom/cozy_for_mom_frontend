@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
@@ -13,6 +14,7 @@ class BabyDuedateInputScreen extends StatefulWidget {
 class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
   TextEditingController dueDateController = TextEditingController();
   TextEditingController lastMensesController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -22,7 +24,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('출산 예정일을 입력해주세요',
               style: TextStyle(
@@ -31,7 +33,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('출산 예정일은 마이로그에서 수정할 수 있어요.',
               style: TextStyle(
@@ -40,7 +42,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 190,
+          top: 150,
           left: 20,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +86,15 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.dueDate = value;
+                        // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
+                        String parsedDate;
+                        if (value.length == 8) {
+                          parsedDate = DateFormat('yyyy.MM.dd')
+                              .format(DateTime.parse(value));
+                        } else {
+                          parsedDate = value;
+                        }
+                        joinInputData.dueDate = parsedDate;
                       });
                     },
                   )),
@@ -92,7 +102,7 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
           ),
         ),
         Positioned(
-          top: 294,
+          top: 254,
           left: 20,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +146,14 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.laseMensesDate = value;
+                        String parsedDate;
+                        if (value.length == 8) {
+                          parsedDate = DateFormat('yyyy.MM.dd')
+                              .format(DateTime.parse(value));
+                        } else {
+                          parsedDate = value;
+                        }
+                        joinInputData.laseMensesDate = parsedDate;
                       });
                     },
                   )),

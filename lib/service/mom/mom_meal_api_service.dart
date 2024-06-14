@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class MealApiService extends ChangeNotifier {
@@ -12,8 +12,9 @@ class MealApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/meal?date=$formattedDate');
+      final headers = await getHeaders();
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
-      Response res = await get(url);
+      Response res = await get(url, headers: headers);
 
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -36,6 +37,7 @@ class MealApiService extends ChangeNotifier {
       DateTime dateTime, String mealType, Future<String?> imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal');
+    final headers = await getHeaders();
     Map data = {
       'datetime': formattedDate,
       'mealType': mealType,
@@ -56,6 +58,7 @@ class MealApiService extends ChangeNotifier {
       Future<String?> imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal/$id');
+    final headers = await getHeaders();
     Map data = {
       'datetime': formattedDate,
       'mealType': mealType,
@@ -74,7 +77,8 @@ class MealApiService extends ChangeNotifier {
 
   Future<void> deleteWeight(int id) async {
     final url = Uri.parse('$baseUrl/meal/$id');
-    Response res = await delete(url);
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('$id 식사 기록이 삭제되었습니다.');
     } else {

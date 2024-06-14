@@ -1,17 +1,14 @@
 import 'dart:convert';
 
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:cozy_for_mom_frontend/service/base_api.dart';
 
-const baseUrl = "http://43.202.14.104:8080/api/v1"; // TODO remove
-const headers = {'Content-Type': 'application/json; charset=UTF-8'};
-
-enum OauthType {
-  apple,
-  kakao,
-}
+enum OauthType { apple, kakao, none }
 
 class OauthApiService {
   final tokenManager = TokenManager.TokenManager();
@@ -22,14 +19,17 @@ class OauthApiService {
     // TODO 일단 device token은 일단 빈값을 담아 요청한다.
     var urlString = '$baseUrl/authenticate/oauth';
     final url = Uri.parse(urlString);
+    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
+    final headers = await getHeaders();
     dynamic response;
+
     response = await http.post(
       url,
       headers: headers,
       body: jsonEncode(
         {
           'oauthType': oauthType.name,
-          'deviceToken': '',
+          'deviceToken': deviceToken,
           'value': value,
         },
       ),
@@ -39,6 +39,7 @@ class OauthApiService {
       final accessToken =
           (response.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
+      print(accessToken);
       final decoded = JwtDecoder.decode(accessToken);
       return UserType.findByString(decoded['info']['role']);
     } else {

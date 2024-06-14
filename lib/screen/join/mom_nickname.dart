@@ -22,7 +22,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('사용할 닉네임을 입력해주세요',
               style: TextStyle(
@@ -31,7 +31,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('닉네임은 마이로그에서도 수정할 수 있어요.',
               style: TextStyle(
@@ -40,7 +40,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 220,
+          top: 180,
           left: 20,
           child: Container(
               width: screenWidth - 40,
@@ -106,7 +106,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    joinInputData.nickname = value;
+                    joinInputData.setNickname(value);
                     _isNicknameValid = value.length <= 8;
                     _isInputValid = true;
                     if (value.isEmpty) {
@@ -118,7 +118,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
         ),
         _isInputValid
             ? Positioned(
-                top: 279,
+                top: 239,
                 left: 39,
                 child: Text(
                   _isNicknameValid

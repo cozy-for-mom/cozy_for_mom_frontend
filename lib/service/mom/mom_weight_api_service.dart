@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/weight_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -11,9 +12,8 @@ class WeightApiService extends ChangeNotifier {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/weight?date=$formattedDate&type=$type');
-      Response res = await get(url);
-      // String jsonString =
-      //     await rootBundle.loadString('assets/test_json/weight.json');
+      final headers = await getHeaders();
+      Response res = await get(url, headers: headers);
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> weightsData = body['data']['weightList'];
@@ -21,7 +21,7 @@ class WeightApiService extends ChangeNotifier {
           return PregnantWeight.fromJson(weight);
         }).toList();
         double todayWeight = body['data']['todayWeight'];
-        String lastRecordDate = body['data']['lastRecordDate'];
+        String lastRecordDate = body['data']['lastRecordDate'] ?? '';
 
         return {
           'todayWeight': todayWeight,
@@ -41,6 +41,7 @@ class WeightApiService extends ChangeNotifier {
   Future<void> recordWeight(DateTime dateTime, double weight) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     final url = Uri.parse('$baseUrl/weight');
+    final headers = await getHeaders();
     Map data = {'date': formattedDate, 'weight': weight};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
@@ -56,6 +57,7 @@ class WeightApiService extends ChangeNotifier {
   Future<void> modifyWeight(DateTime dateTime, double weight) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
     final url = Uri.parse('$baseUrl/weight?date=$formattedDate');
+    final headers = await getHeaders();
     Map data = {'weight': weight};
 
     final Response response =

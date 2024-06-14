@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ASAuthorizationAppleID</key>
+	<dict>
+		<key>ASAuthorizationAppleIDProvider</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -22,6 +27,19 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -30,8 +48,15 @@
 	<string>NSCameraUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>NSPhotoLibraryUsageDescription</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We need your permission to track your activity.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -51,26 +76,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-	  <dict>
-	    <key>CFBundleTypeRole</key>
-	    <string>Editor</string>
-	    <key>CFBundleURLName</key>
-	    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	    <key>CFBundleURLSchemes</key>
-	    <array>
-	      <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	    </array>
-	  </dict>
-	</array>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We need your permission to track your activity.</string>
-	<key>ASAuthorizationAppleID</key>
-	<dict>
-	  <key>ASAuthorizationAppleIDProvider</key>
-	  <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	</dict>
 </dict>
 </plist>
-

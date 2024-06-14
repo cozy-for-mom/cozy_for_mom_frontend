@@ -13,11 +13,11 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final List<String> info = ['단태아', '다태아', '아직 모르겠어요'];
+    final List<String> info = ['단태아', '다태아'];
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('아기의 정보를 입력해주세요',
               style: TextStyle(
@@ -26,7 +26,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
               style: TextStyle(
@@ -35,7 +35,7 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 221,
+          top: 181,
           left: 20,
           child: SizedBox(
             width: screenWidth - 40,

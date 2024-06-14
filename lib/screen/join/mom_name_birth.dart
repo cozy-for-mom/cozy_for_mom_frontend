@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
@@ -23,7 +24,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
     return Stack(
       children: [
         const Positioned(
-          top: 90,
+          top: 50,
           left: 20,
           child: Text('산모님에 대해 알려주세요',
               style: TextStyle(
@@ -32,7 +33,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                   fontSize: 26)),
         ),
         const Positioned(
-          top: 135,
+          top: 95,
           left: 20,
           child: Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
               style: TextStyle(
@@ -41,7 +42,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                   fontSize: 14)),
         ),
         Positioned(
-          top: 190,
+          top: 150,
           left: 20,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.name = value;
+                        joinInputData.setName(value);
                       });
                     },
                   )),
@@ -93,7 +94,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
           ),
         ),
         Positioned(
-          top: 294,
+          top: 254,
           left: 20,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +138,14 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        joinInputData.birth = value;
+                        String parsedDate;
+                        if (value.length == 8) {
+                          parsedDate = DateFormat('yyyy.MM.dd')
+                              .format(DateTime.parse(value));
+                        } else {
+                          parsedDate = value;
+                        }
+                        joinInputData.birth = parsedDate;
                       });
                     },
                   )),

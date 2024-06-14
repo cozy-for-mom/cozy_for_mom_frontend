@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart';
@@ -8,8 +10,13 @@ import 'package:http/http.dart';
 class ImageApiService {
   Future<String?> uploadImage(XFile imageFile) async {
     var url = '$baseUrl/image';
-    var request = MultipartRequest('POST', Uri.parse(url));
-
+    final tokenManager = TokenManager.TokenManager();
+    String? token = await tokenManager.getToken(); // 비동기적으로 토큰을 받아옴
+    var request = MultipartRequest(
+      'POST',
+      Uri.parse(url),
+    );
+    request.headers['Authorization'] = 'Bearer $token';
     request.files.add(await MultipartFile.fromPath('image', imageFile.path,
         contentType: MediaType('image', 'jpg')));
     final response = await request.send();

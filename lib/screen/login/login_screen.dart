@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
@@ -7,6 +8,7 @@ import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,11 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
     print(deviceToken);
-    
+
     return Scaffold(
         body: FutureBuilder<String?>(
             future: accessToken,
@@ -65,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget buildLoginScreen(double screenWidth, double screenHeight) {
+    final joinInputData = Provider.of<JoinInputData>(context);
     // 로그인 스크린 UI 구성
     return Stack(
       children: [
@@ -90,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: () async {
                   UserType userType = await kakaoLogin();
+                  joinInputData.setOauthType(OauthType.kakao);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
 
@@ -127,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: () async {
                   UserType userType = await appleLogin();
+                  joinInputData.setOauthType(OauthType.apple);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
 
@@ -215,10 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<UserType> kakaoLogin() async {
     late String kakaoAccessToken;
+    late String? email;
     if (await isKakaoTalkInstalled()) {
       try {
         var res = await UserApi.instance.loginWithKakaoTalk();
         kakaoAccessToken = res.accessToken;
+        var user = await UserApi.instance.me();
+        email = user.kakaoAccount?.email;
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
         // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
@@ -230,6 +238,8 @@ class _LoginScreenState extends State<LoginScreen> {
         try {
           var res = await UserApi.instance.loginWithKakaoAccount();
           kakaoAccessToken = res.accessToken;
+          var user = await UserApi.instance.me();
+          email = user.kakaoAccount?.email;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
         }
@@ -239,16 +249,24 @@ class _LoginScreenState extends State<LoginScreen> {
         var res = await UserApi.instance.loginWithKakaoAccount();
         print('카카오계정으로 로그인 성공');
         kakaoAccessToken = res.accessToken;
+        var user = await UserApi.instance.me();
+        email = user.kakaoAccount?.email;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
     }
+
+    if (email != null && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setEmail(email);
+    }
+
     return oauthApiService.authenticateByOauth(
         OauthType.kakao, kakaoAccessToken);
   }
 
   Future<UserType> appleLogin() async {
     late String appleAuthCode;
+    late String? email;
     try {
       var res = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -261,11 +279,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // 애플 인증 코드 저장
       appleAuthCode = res.authorizationCode;
+      email = res.email;
     } catch (e) {
       print('애플로그인 실패: $e');
       if (e is PlatformException && e.code == 'CANCELED') {
         throw Exception(e.code); // TODO fix
       }
+    }
+    if (email != null && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
     return oauthApiService.authenticateByOauth(OauthType.apple, appleAuthCode);
   }

@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
+import 'package:cozy_for_mom_frontend/service/base_api.dart';
+import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:http/http.dart';
-
-const baseUrl = "http://43.202.14.104:8080/api/v1"; // TODO remove
 
 class BabyGrowthApiService {
   Future<BabyProfileGrowth> createBabyProfileGrowth(
       BabyProfileGrowth growth) async {
     final url = Uri.parse("/v1/growth");
+    final headers = await getHeaders();
     final response = await post(
       url,
+      headers: headers,
       body: jsonEncode(growth.toJson()),
     );
 
@@ -26,12 +28,11 @@ class BabyGrowthApiService {
     int size,
   ) async {
     var urlString = '$baseUrl/growth/board?size=$size';
+    final headers = await getHeaders();
     if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -49,11 +50,10 @@ class BabyGrowthApiService {
     int id,
   ) async {
     var urlString = '$baseUrl/growth/$id?userId=1'; // TODO userId 넣는 방식 수정
+    final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
-    response = await get(
-      url,
-    );
+    response = await get(url, headers: headers);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
