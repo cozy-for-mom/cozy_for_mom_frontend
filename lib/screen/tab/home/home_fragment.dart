@@ -7,6 +7,7 @@ import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeFragment extends StatefulWidget {
@@ -25,11 +26,12 @@ class _HomeFragmentState extends State<HomeFragment> {
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
+    DateTime now = DateTime.now();
+    int nowHour = int.parse(DateFormat('HH').format(now));
 
     return FutureBuilder(
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
-
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;
           }
@@ -48,9 +50,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                   child: Image(
                     width: screenWidth,
                     fit: BoxFit.cover,
-                    image: const AssetImage(
-                      "assets/images/dark_sky.png",
-                    ),
+                    image: AssetImage(
+                        // 아침: AM4 ~ PM12 / 점심(저녁): PM12 ~ PM8 / 밤: PM8 ~ AM4
+                        nowHour >= 4 && nowHour < 12
+                            ? "assets/images/home_morning.png"
+                            : nowHour >= 12 && nowHour < 20
+                                ? "assets/images/home_afternoon.png"
+                                : "assets/images/home_evening.png"),
                   ),
                 ),
                 Positioned(
