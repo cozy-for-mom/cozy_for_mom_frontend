@@ -37,40 +37,36 @@ class _MealScreenState extends State<MealScreen> {
     DateTime now = DateTime.now(); // 현재 날짜
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    Future<dynamic> showSelectModal(int id) {
+    Future<dynamic> showSelectModal(int id, String mealType) {
       return showModalBottomSheet(
           backgroundColor: Colors.transparent,
           context: context,
           builder: (BuildContext context) {
             return SelectBottomModal(
-                selec1: '수정하기',
-                selec2: '사진 삭제하기',
-                tap1: () async {
-                  Navigator.pop(context);
-                  final selectedImage = await ImagePicker()
-                      .pickImage(source: ImageSource.gallery);
-                  setState(() {
-                    if (selectedImage != null) {
-                      final imageUrl =
-                          imageApiService.uploadImage(selectedImage);
-                      momMealViewModel.modifyMeals(id, globalData.selectedDay,
-                          MealType.breakfast.korName.substring(0, 2), imageUrl);
-                    } else {
-                      print('No image selected.');
-                    }
-                  });
-                },
-                tap2: () {
-                  Navigator.pop(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return DeleteModal(
-                            text: '등록된 식단을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                            title: '식단이',
-                            tapFunc: () => momMealViewModel.deleteWeight(id));
-                      });
-                });
+              selec1: '수정하기',
+              selec2: '사진 삭제하기',
+              tap1: () async {
+                Navigator.pop(context);
+                final selectedImage =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (selectedImage != null) {
+                  final imageUrl =
+                      await imageApiService.uploadImage(selectedImage);
+                  await momMealViewModel.modifyMeals(id, globalData.selectedDay,
+                      mealType.substring(0, 2), imageUrl);
+                  setState(() {});
+                } else {
+                  print('No image selected.');
+                }
+              },
+              tap2: () async {
+                // 삭제 작업 수행
+                await momMealViewModel.deleteWeight(id);
+                Navigator.pop(context);
+                // 상태 업데이트
+                setState(() {});
+              },
+            );
           });
     }
 
@@ -111,8 +107,8 @@ class _MealScreenState extends State<MealScreen> {
                             icon: const Icon(Icons.expand_more),
                             onPressed: () {
                               showModalBottomSheet(
-                                backgroundColor: contentBoxTwoColor
-                                    .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                                backgroundColor: Colors.transparent,
+                                elevation: 0.0,
                                 context: context,
                                 builder: (context) {
                                   return const MonthCalendarModal();
@@ -218,7 +214,8 @@ class _MealScreenState extends State<MealScreen> {
                           containsBreakfast // TODO List로 수정하면 좋을 듯
                               ? InkWell(
                                   onTap: () {
-                                    showSelectModal(breakfastId!);
+                                    showSelectModal(breakfastId!,
+                                        MealType.breakfast.korName);
                                   },
                                   child: Stack(
                                     children: [
@@ -280,19 +277,21 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
-                                    setState(() {
-                                      if (selectedImage != null) {
-                                        final imageUrl = imageApiService
-                                            .uploadImage(selectedImage);
-                                        momMealViewModel.recordMeals(
-                                            globalData.selectedDate,
-                                            MealType.breakfast.korName
-                                                .substring(0, 2),
-                                            imageUrl);
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    });
+                                    if (selectedImage != null) {
+                                      final imageUrl = await imageApiService
+                                          .uploadImage(selectedImage);
+                                      await momMealViewModel.recordMeals(
+                                        globalData.selectedDate,
+                                        MealType.breakfast.korName
+                                            .substring(0, 2),
+                                        imageUrl,
+                                      );
+                                      setState(() {
+                                        breakfastImageUrl = imageUrl;
+                                      });
+                                    } else {
+                                      print('No image selected.');
+                                    }
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -361,7 +360,8 @@ class _MealScreenState extends State<MealScreen> {
                           containsLunch
                               ? InkWell(
                                   onTap: () {
-                                    showSelectModal(lunchId!);
+                                    showSelectModal(
+                                        lunchId!, MealType.lunch.korName);
                                   },
                                   child: Stack(
                                     children: [
@@ -423,19 +423,20 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
-                                    setState(() {
-                                      if (selectedImage != null) {
-                                        final imageUrl = imageApiService
-                                            .uploadImage(selectedImage);
-                                        momMealViewModel.recordMeals(
-                                            globalData.selectedDay,
-                                            MealType.lunch.korName
-                                                .substring(0, 2),
-                                            imageUrl);
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    });
+                                    if (selectedImage != null) {
+                                      final imageUrl = await imageApiService
+                                          .uploadImage(selectedImage);
+                                      await momMealViewModel.recordMeals(
+                                        globalData.selectedDate,
+                                        MealType.lunch.korName.substring(0, 2),
+                                        imageUrl,
+                                      );
+                                      setState(() {
+                                        containsLunch = !containsLunch;
+                                      });
+                                    } else {
+                                      print('No image selected.');
+                                    }
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -504,7 +505,8 @@ class _MealScreenState extends State<MealScreen> {
                           containsDinner
                               ? InkWell(
                                   onTap: () {
-                                    showSelectModal(dinnerId!);
+                                    showSelectModal(
+                                        dinnerId!, MealType.dinner.korName);
                                   },
                                   child: Stack(
                                     children: [
@@ -566,19 +568,20 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
-                                    setState(() {
-                                      if (selectedImage != null) {
-                                        final imageUrl = imageApiService
-                                            .uploadImage(selectedImage);
-                                        momMealViewModel.recordMeals(
-                                            now,
-                                            MealType.dinner.korName
-                                                .substring(0, 2),
-                                            imageUrl);
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    });
+                                    if (selectedImage != null) {
+                                      final imageUrl = await imageApiService
+                                          .uploadImage(selectedImage);
+                                      await momMealViewModel.recordMeals(
+                                        globalData.selectedDate,
+                                        MealType.dinner.korName.substring(0, 2),
+                                        imageUrl,
+                                      );
+                                      setState(() {
+                                        containsDinner = !containsDinner;
+                                      });
+                                    } else {
+                                      print('No image selected.');
+                                    }
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
