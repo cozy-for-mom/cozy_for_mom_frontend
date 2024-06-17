@@ -64,8 +64,8 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                             icon: const Icon(Icons.expand_more),
                             onPressed: () {
                               showModalBottomSheet(
-                                backgroundColor: contentBoxTwoColor
-                                    .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                                backgroundColor: Colors.transparent,
+                                elevation: 0.0,
                                 context: context,
                                 builder: (context) {
                                   return const MonthCalendarModal();

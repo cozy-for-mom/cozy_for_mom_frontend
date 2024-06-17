@@ -1,6 +1,8 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
+import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +78,8 @@ class _BabyGrowthReportListScreenState
                       InkWell(
                         onTap: () {
                           showModalBottomSheet(
-                            backgroundColor: contentBoxTwoColor
-                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
                             context: context,
                             builder: (context) {
                               return const MonthCalendarModal();
@@ -104,8 +106,8 @@ class _BabyGrowthReportListScreenState
                       InkWell(
                         onTap: () {
                           showModalBottomSheet(
-                            backgroundColor: contentBoxTwoColor
-                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
                             context: context,
                             builder: (context) {
                               return const MonthCalendarModal();
@@ -286,6 +288,14 @@ class _BabyGrowthReportListScreenState
             ),
           ],
         ),
+      ),
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const GrowReportRegister()));
+        },
       ),
     );
   }
