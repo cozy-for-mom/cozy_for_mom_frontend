@@ -124,7 +124,6 @@ flutter:
     - assets/images/icons/cozylog.png
     - assets/images/icons/diary_cozylog.png
     - assets/images/babyhome_dark.png
-    - assets/images/babyhome_dark_n.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
     - assets/images/icons/comment.png
@@ -151,6 +150,7 @@ flutter:
     - assets/images/home_morning.png
     - assets/images/home_afternoon.png
     - assets/images/home_evening.png
+    - assets/images/baby_illust/
 
     - assets/test_json/supplement.json
     - assets/test_json/weight.json
