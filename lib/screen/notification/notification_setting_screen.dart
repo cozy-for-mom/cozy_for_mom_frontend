@@ -25,6 +25,23 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: const Color(0xffF7F7FA),
+        elevation: 0,
+        title: const Text(
+          "알림 설정",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+        ),
+        leading: IconButton(
+          color: Colors.black,
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -35,7 +52,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 100,
+                  height: 10,
                 ),
                 const TextField(
                   cursorColor: primaryColor,
@@ -67,7 +84,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                   height: 50,
                 ),
                 const Text(
-                  "알림 받을 시간",
+                  "알림 받을 시간", // TODO 혈당-측정 시간, 영양제-복용 시간으로 바꾸기
                   style: TextStyle(
                     color: Color(0xff2B2D35),
                     fontWeight: FontWeight.bold,
@@ -78,6 +95,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                   height: 10,
                 ),
                 const NotificationSettingCard(),
+                const SizedBox(
+                  height: 20,
+                ),
                 const Center(
                   child: Text(
                     "+ 알림 받을 시간 추가하기",

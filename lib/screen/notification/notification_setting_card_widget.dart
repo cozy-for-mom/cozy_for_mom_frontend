@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:time_picker_spinner/time_picker_spinner.dart';
 
 class NotificationSettingCard extends StatefulWidget {
@@ -29,283 +30,154 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
   }
 
   // 텍스트 입력 필드의 내용을 제어하고 관리
-  final TextEditingController hourEditingController = TextEditingController();
-  final TextEditingController minuteEditingController = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
+  bool isBeforeButtonEnabled = false;
+  bool isAfterButtonEnabled = true;
   // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
   final FocusNode hourFocusNode = FocusNode();
   final FocusNode minuteFocusNode = FocusNode();
+  String formatTime(String value) {
+    if (value.length >= 3) {
+      // HH:mm 형식으로 포맷팅
+      return '${value.substring(0, 2)} : ${value.substring(2)}';
+    }
+    return value;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10.0,
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 78,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 30,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 96,
-              height: 35,
-              decoration: const BoxDecoration(
-                color: Color(0xffF0F0F5),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50.0),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  AnimatedAlign(
-                    alignment: Alignment(xAlign, 0),
-                    duration: const Duration(milliseconds: 300),
-                    child: Container(
-                      width: 96 * 0.5,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        xAlign = amAlign;
-                        amColor = selectedColor;
-                        pmColor = normalColor;
-                      });
-                    },
-                    child: Align(
-                      alignment: const Alignment(-1, 0),
-                      child: Container(
-                        width: 96 * 0.5,
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Text(
-                          '오전',
-                          style: TextStyle(
-                            color: amColor,
-                            fontWeight: FontWeight.bold,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              width: screenWidth - 80,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 96,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          color: offButtonColor,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isBeforeButtonEnabled = true;
+                                isAfterButtonEnabled = false;
+                              });
+                            },
+                            child: Container(
+                                width: 45,
+                                height: 29,
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: isBeforeButtonEnabled
+                                        ? primaryColor
+                                        : offButtonColor),
+                                child: Text('오전',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: isBeforeButtonEnabled
+                                          ? Colors.white
+                                          : offButtonTextColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ))),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        xAlign = pmAlign;
-                        amColor = normalColor;
-                        pmColor = selectedColor;
-                      });
-                    },
-                    child: Align(
-                      alignment: const Alignment(1, 0),
-                      child: Container(
-                        width: 96 * 0.5,
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Text(
-                          '오후',
-                          style: TextStyle(
-                            color: pmColor,
-                            fontWeight: FontWeight.bold,
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isBeforeButtonEnabled = false;
+                                isAfterButtonEnabled = true;
+                              });
+                            },
+                            child: Container(
+                                width: 45,
+                                height: 29,
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: isAfterButtonEnabled
+                                        ? primaryColor
+                                        : contentBoxTwoColor),
+                                child: Text('오후',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: isAfterButtonEnabled
+                                          ? Colors.white
+                                          : offButtonTextColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ))),
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 90,
+                      child: Center(
+                        child: TextFormField(
+                          autocorrect: true,
+                          controller: textEditingController,
+                          textAlign: TextAlign.center,
+                          maxLength: 7,
+                          showCursor: false,
+                          keyboardType: TextInputType.datetime,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 4),
+                              border: InputBorder.none,
+                              counterText: '',
+                              hintText: '00 : 00',
+                              hintStyle: TextStyle(
+                                  color: offButtonTextColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24)),
+                          style: const TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24),
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              textEditingController.value =
+                                  textEditingController.value.copyWith(
+                                text: formatTime(value),
+                                selection: TextSelection.collapsed(
+                                    offset: formatTime(value).length),
+                              );
+                              // isButtonEnabled.value = true;
+                            } else {
+                              // isButtonEnabled.value = false;
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: TextFormField(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: Center(
-                              child: TimePickerSpinner(
-                                is24HourMode: false,
-                                locale: const Locale('ko', ''),
-                                time: DateTime(
-                                    2023, // meaningless time
-                                    1, // meaningless time
-                                    1, // meaningless time
-                                    int.parse(hourEditingController.text == ''
-                                        ? "0"
-                                        : (amColor == selectedColor
-                                            ? hourEditingController.text
-                                            : (int.parse(hourEditingController
-                                                        .text) +
-                                                    12)
-                                                .toString())),
-                                    int.parse(minuteEditingController.text == ''
-                                        ? "0"
-                                        : minuteEditingController.text)),
-                                onTimeChange: (time) {
-                                  if (time.hour > 12) {
-                                    setState(() {
-                                      xAlign = pmAlign;
-                                      amColor = normalColor;
-                                      pmColor = selectedColor;
-                                    });
-                                  }
-                                  if (time.hour < 12) {
-                                    setState(() {
-                                      xAlign = amAlign;
-                                      amColor = selectedColor;
-                                      pmColor = normalColor;
-                                    });
-                                  }
-                                  hourEditingController.text = time.hour > 12
-                                      ? (time.hour - 12)
-                                          .toString()
-                                          .padLeft(2, '0')
-                                      : time.hour.toString().padLeft(2, '0');
-                                  minuteEditingController.text =
-                                      time.minute.toString().padLeft(2, '0');
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    readOnly: true,
-                    keyboardType: TextInputType.number,
-                    maxLength: 2,
-                    cursorHeight: 28,
-                    controller: hourEditingController,
-                    focusNode: hourFocusNode,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      contentPadding: EdgeInsets.symmetric(vertical: 7),
-                      border: InputBorder.none,
-                      hintText: '00',
-                      hintStyle: TextStyle(
-                        color: Color(0xff2B2D35),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 28,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      color: Color(0xff2B2D35),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-                const Text(
-                  " : ",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: 40,
-                  child: TextFormField(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: Center(
-                              child: TimePickerSpinner(
-                                is24HourMode: false,
-                                locale: const Locale('ko', ''),
-                                time: DateTime(
-                                    2023, // meaningless time
-                                    1, // meaningless time
-                                    1, // meaningless time
-                                    int.parse(hourEditingController.text == ''
-                                        ? "0"
-                                        : (amColor == selectedColor
-                                            ? hourEditingController.text
-                                            : (int.parse(hourEditingController
-                                                        .text) +
-                                                    12)
-                                                .toString())),
-                                    int.parse(minuteEditingController.text == ''
-                                        ? "0"
-                                        : minuteEditingController.text)),
-                                onTimeChange: (time) {
-                                  if (time.hour > 12) {
-                                    setState(() {
-                                      xAlign = pmAlign;
-                                      amColor = normalColor;
-                                      pmColor = selectedColor;
-                                    });
-                                  }
-                                  if (time.hour < 12) {
-                                    setState(() {
-                                      xAlign = amAlign;
-                                      amColor = selectedColor;
-                                      pmColor = normalColor;
-                                    });
-                                  }
-                                  hourEditingController.text = time.hour > 12
-                                      ? (time.hour - 12)
-                                          .toString()
-                                          .padLeft(2, '0')
-                                      : time.hour.toString().padLeft(2, '0');
-                                  minuteEditingController.text =
-                                      time.minute.toString().padLeft(2, '0');
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    readOnly: true,
-                    maxLength: 2,
-                    keyboardType: TextInputType.number,
-                    cursorHeight: 28,
-                    controller: minuteEditingController,
-                    focusNode: minuteFocusNode,
-                    decoration: const InputDecoration(
-                      counterText: "",
-                      contentPadding: EdgeInsets.symmetric(vertical: 7),
-                      border: InputBorder.none,
-                      hintText: '00',
-                      hintStyle: TextStyle(
-                        color: Color(0xff2B2D35),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 28,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      color: Color(0xff2B2D35),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ])),
+        ],
       ),
     );
   }
