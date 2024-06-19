@@ -78,10 +78,7 @@ class _MyScrapState extends State<MyScrap> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CozylogMain()));
+                Navigator.of(context).pop();
               },
             ),
             title: const Text('스크랩',
