@@ -8,14 +8,13 @@ import 'package:http/http.dart';
 class BabyGrowthApiService {
   Future<BabyProfileGrowth> createBabyProfileGrowth(
       BabyProfileGrowth growth) async {
-    final url = Uri.parse("/v1/growth");
+    final url = Uri.parse("$baseUrl/v1/growth");
     final headers = await getHeaders();
     final response = await post(
       url,
       headers: headers,
       body: jsonEncode(growth.toJson()),
     );
-
     if (response.statusCode == 200) {
       return BabyProfileGrowth.fromJson(jsonDecode(response.body));
     } else {
