@@ -19,17 +19,30 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+          backgroundColor: backgroundColor,
+          elevation: 0,
+          leading: Container(),
+          actions: [
+            IconButton(
+                color: Colors.black,
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // 현재 화면을 닫음
+                }),
+          ]),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, bottom: 40, top: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 70,
-                ),
                 Stack(
                   children: [
                     Center(
@@ -109,8 +122,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                     child: TextFormField(
                       onTap: () {
                         showModalBottomSheet(
-                          backgroundColor: contentBoxTwoColor
-                              .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                          backgroundColor: Colors.transparent,
+                          elevation: 0.0,
                           context: context,
                           builder: (context) {
                             return const MonthCalendarModal();

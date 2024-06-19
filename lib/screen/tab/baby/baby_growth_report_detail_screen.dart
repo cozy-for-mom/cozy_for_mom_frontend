@@ -170,10 +170,7 @@ class _BabyGrowthReportDetailScreenState
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const GrowReportRegister(
-                                                          babyProfileGrowthId:
-                                                              1,
-                                                        ),
+                                                            const GrowReportRegister(),
                                                       ),
                                                     );
                                                   },
