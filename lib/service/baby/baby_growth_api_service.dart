@@ -11,9 +11,10 @@ class BabyGrowthApiService {
   
   Future<int> createBabyProfileGrowth(
       BabyProfileGrowth growth) async {
-    final url = Uri.parse("$baseUrl/growth");
     final headers = await getHeaders();
-    final response = await post(
+    if (growth.id != null) {
+    final url = Uri.parse("$baseUrl/growth/${growth.id}");
+  final response = await put(
       url,
       headers: headers,
       body: jsonEncode(growth.toJson()),
@@ -23,6 +24,20 @@ class BabyGrowthApiService {
     } else {
       throw Exception('성장 보고서 저장 실패');
     }
+    } else {
+    final url = Uri.parse("$baseUrl/growth");
+      final response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(growth.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
+    } else {
+      throw Exception('성장 보고서 저장 실패');
+    }
+    }
+    
   }
 
   Future<Pair<List<BabyProfileGrowth>, DateTime>> getBabyProfileGrowths(

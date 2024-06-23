@@ -71,21 +71,6 @@ void initState() {
     if (widget.babyProfileGrowth != null) {
 
       infoControllersByBabies = {
-        //  weight: parseDouble(
-        //                           infoControllersByBabies[baby]?[0].text ??
-        //                               '0'),
-        //                       headDiameter: parseDouble(
-        //                           infoControllersByBabies[baby]?[1].text ??
-        //                               '0'),
-        //                       headCircum: parseDouble(
-        //                           infoControllersByBabies[baby]?[2].text ??
-        //                               '0'),
-        //                       abdomenCircum: parseDouble(
-        //                           infoControllersByBabies[baby]?[3].text ??
-        //                               '0'),
-        //                       thighLength: parseDouble(
-        //                           infoControllersByBabies[baby]?[4].text ??
-        //                               '0'),
           for (int i = 0; i < babies.length; i++)
     babies[i]: List.generate(5, (index) {
       var babyGrowthInfo = widget.babyProfileGrowth!.babies![i].babyGrowthInfo;
@@ -346,7 +331,7 @@ void initState() {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
               child: InkWell(
                 onTap: () async {
-                  final reportId = await  babyGrowthApiService
+                  final reportId = await babyGrowthApiService
                       .createBabyProfileGrowth(BabyProfileGrowth(
                     id: null,
                     babyProfileId: babyProfileId!,
