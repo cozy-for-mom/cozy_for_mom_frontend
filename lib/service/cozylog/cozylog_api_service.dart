@@ -143,10 +143,50 @@ class CozyLogApiService {
     }
   }
 
+  Future<int> createCozyLog(
+    String title,
+    String content,
+    List<CozyLogImage> images,
+    CozyLogModeType mode,
+  ) async {
+    var urlString = '$baseUrl/cozy-log';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'title': title,
+          'content': content,
+          'mode': switch (mode) {
+            CozyLogModeType.private => 'PRIVATE',
+            CozyLogModeType.public => 'PUBLIC',
+          },
+          'imageList': images.map((e) => {
+            "imageId": e.imageId,
+            "imageUrl": e.imageUrl,
+            "description": e.description,
+          }).toList(), 
+        },
+      ),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> data = body['data'];
+      return data['cozyLogId'] as int;
+    } else {
+      throw Exception('코지로그 작성 실패');
+    }
+  }
+
   Future<int> updateCozyLog(
     int id,
     String title,
     String content,
+    List<CozyLogImage> images,
     CozyLogModeType mode,
   ) async {
     var urlString = '$baseUrl/cozy-log?userId=1';
@@ -165,7 +205,11 @@ class CozyLogApiService {
             CozyLogModeType.private => 'PRIVATE',
             CozyLogModeType.public => 'PUBLIC',
           },
-          'imageList': [],
+          'imageList': images.map((e) => {
+            "imageId": e.imageId,
+            "imageUrl": e.imageUrl,
+            "description": e.description,
+          }),
         },
       ),
     );

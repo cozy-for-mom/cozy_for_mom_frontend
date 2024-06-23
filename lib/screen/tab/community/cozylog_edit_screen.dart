@@ -291,6 +291,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                 cozyLog.cozyLogId!,
                                 titleController.text,
                                 contentController.text,
+                                [],
                                 mode,
                               )
                               .then(

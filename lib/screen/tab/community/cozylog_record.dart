@@ -1,3 +1,6 @@
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
@@ -20,13 +23,14 @@ class CozylogRecordPage extends StatefulWidget {
 }
 
 class _CozylogRecordPageState extends State<CozylogRecordPage> {
+  CozyLogApiService cozyLogApiService = CozyLogApiService();
   Color bottomLineColor = mainLineColor;
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
   bool isRegisterButtonEnabled() {
     return titleController.text.isNotEmpty || contentController.text.isNotEmpty;
   }
-
+  CozyLogModeType mode = CozyLogModeType.public;
   File? selectedImage;
 
   Future<void> _pickImage() async {
@@ -227,8 +231,20 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                         return SelectBottomModal(
                                           selec1: '공개',
                                           selec2: '비공개',
-                                          tap1: () {}, // TODO 공개 설정 함수 실행문 구현
-                                          tap2: () {}, // TODO 비공개 설정 함수 실행문 구현
+                                          tap1: () {
+                                            print("공개 클릭");
+                                            setState(() {
+                                              mode = CozyLogModeType.public;
+                                            });
+                                            Navigator.pop(context); 
+                                          },
+                                          tap2: () {
+                                            print("비공개 클릭");
+                                            setState(() {
+                                              mode = CozyLogModeType.private;
+                                            });
+                                            Navigator.pop(context);
+                                          },
                                         );
                                       },
                                     );
@@ -250,7 +266,19 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                   left: 20,
                   child: InkWell(
                     onTap: () {
-                      print("작성 완료 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
+                      cozyLogApiService.createCozyLog(titleController.text, contentController.text, [], mode)
+                       .then(
+                                (value) => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CozyLogDetailScreen(
+                                        id: value,
+                                      ),
+                                    ),
+                                  )
+                                },
+                              );;
                     },
                     child: Container(
                       width: screenWidth - 40,
