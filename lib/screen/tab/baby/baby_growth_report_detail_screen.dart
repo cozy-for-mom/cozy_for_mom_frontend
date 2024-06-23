@@ -169,9 +169,9 @@ class _BabyGrowthReportDetailScreenState
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const GrowReportRegister(
-                                                          babyProfileGrowthId:
-                                                              1,
+                                                             GrowReportRegister(
+                                                          babyProfileGrowth:
+                                                              snapshot.data,
                                                         ),
                                                       ),
                                                     );

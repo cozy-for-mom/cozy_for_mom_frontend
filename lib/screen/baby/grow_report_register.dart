@@ -12,10 +12,10 @@ import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GrowReportRegister extends StatefulWidget {
-  final int? babyProfileGrowthId;
+  final BabyProfileGrowth? babyProfileGrowth;
   const GrowReportRegister({
     super.key,
-    required this.babyProfileGrowthId,
+    required this.babyProfileGrowth,
   });
 
   @override
@@ -27,6 +27,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   late ImageApiService imageApiService;
   late int? babyProfileId;
   Color bottomLineColor = mainLineColor;
+
   TextEditingController titleController = TextEditingController();
   TextEditingController diaryController = TextEditingController();
   Map<Baby, List<TextEditingController>> infoControllersByBabies = {};
@@ -50,6 +51,11 @@ void initState() {
   }
 
   Future<void> initializeBabyInfo() async {
+    if (widget.babyProfileGrowth != null) {
+      growthImageUrl = widget.babyProfileGrowth!.growthImageUrl;
+      titleController = TextEditingController(text: widget.babyProfileGrowth!.title);
+      diaryController = TextEditingController(text: widget.babyProfileGrowth!.diary);
+    }
     userLocalStorageService = await UserLocalStorageService.getInstance();
     babyProfileId = await userLocalStorageService.getBabyProfileId();
 
@@ -62,9 +68,48 @@ void initState() {
 
     // Initialize selectedBaby and infoControllersByBabies here
     selectedBaby = ValueNotifier<Baby?>(babies.isNotEmpty ? babies[0] : null);
-    infoControllersByBabies = {
-      for (var e in babies) e: List.generate(5, (index) => TextEditingController())
-    };
+    if (widget.babyProfileGrowth != null) {
+
+      infoControllersByBabies = {
+        //  weight: parseDouble(
+        //                           infoControllersByBabies[baby]?[0].text ??
+        //                               '0'),
+        //                       headDiameter: parseDouble(
+        //                           infoControllersByBabies[baby]?[1].text ??
+        //                               '0'),
+        //                       headCircum: parseDouble(
+        //                           infoControllersByBabies[baby]?[2].text ??
+        //                               '0'),
+        //                       abdomenCircum: parseDouble(
+        //                           infoControllersByBabies[baby]?[3].text ??
+        //                               '0'),
+        //                       thighLength: parseDouble(
+        //                           infoControllersByBabies[baby]?[4].text ??
+        //                               '0'),
+          for (int i = 0; i < babies.length; i++)
+    babies[i]: List.generate(5, (index) {
+      var babyGrowthInfo = widget.babyProfileGrowth!.babies![i].babyGrowthInfo;
+      switch (index) {
+        case 0:
+          return TextEditingController(text: babyGrowthInfo.weight.toString());
+        case 1:
+          return TextEditingController(text: babyGrowthInfo.headDiameter.toString());
+        case 2:
+          return TextEditingController(text: babyGrowthInfo.headCircum.toString());
+        case 3:
+          return TextEditingController(text: babyGrowthInfo.abdomenCircum.toString());
+        case 4:
+          return TextEditingController(text: babyGrowthInfo.thighLength.toString());
+        default:
+          return TextEditingController();
+      }
+    })
+        };
+    } else {
+      infoControllersByBabies = {
+          for (var e in babies) e: List.generate(5, (index) => TextEditingController())
+        };
+    }
 
     setState(() {});
     imageApiService = ImageApiService();

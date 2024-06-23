@@ -54,7 +54,7 @@ class _BabyGrowthReportListScreenState
         ),
       ),
       floatingActionButton: CustomFloatingButton(pressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GrowReportRegister(babyProfileGrowthId: null),),);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => GrowReportRegister(babyProfileGrowth: null),),);
       },),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
