@@ -332,8 +332,8 @@ void initState() {
               child: InkWell(
                 onTap: () async {
                   final reportId = await babyGrowthApiService
-                      .createBabyProfileGrowth(BabyProfileGrowth(
-                    id: null,
+                      .registerBabyProfileGrowth(BabyProfileGrowth(
+                    id: widget.babyProfileGrowth?.id,
                     babyProfileId: babyProfileId!,
                     date: DateTime.now(),
                     growthImageUrl: growthImageUrl,

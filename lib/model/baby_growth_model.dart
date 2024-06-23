@@ -19,7 +19,7 @@ class BabyProfileGrowth {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'growthDairyId': id,
       'babyProfileId': babyProfileId,
       'date': date.toIso8601String().substring(0, 10), // DateTime 객체를 ISO8601 문자열로 변환
       'growthImageUrl': growthImageUrl,

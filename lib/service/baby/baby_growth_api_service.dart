@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 
 class BabyGrowthApiService {
   
-  Future<int> createBabyProfileGrowth(
+  Future<int> registerBabyProfileGrowth(
       BabyProfileGrowth growth) async {
     final headers = await getHeaders();
     if (growth.id != null) {
