@@ -232,14 +232,12 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                           selec1: '공개',
                                           selec2: '비공개',
                                           tap1: () {
-                                            print("공개 클릭");
                                             setState(() {
                                               mode = CozyLogModeType.public;
                                             });
                                             Navigator.pop(context); 
                                           },
                                           tap2: () {
-                                            print("비공개 클릭");
                                             setState(() {
                                               mode = CozyLogModeType.private;
                                             });
@@ -249,9 +247,9 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                       },
                                     );
                                   },
-                                  child: const Image(
+                                  child: Image(
                                       image: AssetImage(
-                                          'assets/images/icons/disclosure.png'),
+                                          mode == CozyLogModeType.private ? 'assets/images/icons/cozylog_private.png' : 'assets/images/icons/cozylog_public.png',),
                                       width: 36,
                                       height: 36),
                                 )

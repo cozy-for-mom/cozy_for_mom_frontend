@@ -268,10 +268,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                           },
                                         );
                                       },
-                                      child: const Image(
+                                      child: Image(
                                         image: AssetImage(
-                                            'assets/images/icons/disclosure.png'),
-                                        width: 36,
+                                          mode == CozyLogModeType.private ? 'assets/images/icons/cozylog_private.png' : 'assets/images/icons/cozylog_public.png'
+                                          ),
+                            width: 36,
                                         height: 36,
                                       ),
                                     )
