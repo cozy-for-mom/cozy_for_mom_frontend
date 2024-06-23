@@ -1,33 +1,37 @@
 import 'dart:convert';
 
+import 'package:cozy_for_mom_frontend/common/extension/pair.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
 import 'package:http/http.dart';
 
 class BabyGrowthApiService {
-  Future<BabyProfileGrowth> createBabyProfileGrowth(
+  
+  Future<int> createBabyProfileGrowth(
       BabyProfileGrowth growth) async {
-    final url = Uri.parse("/v1/growth");
+    final url = Uri.parse("$baseUrl/growth");
     final headers = await getHeaders();
     final response = await post(
       url,
       headers: headers,
       body: jsonEncode(growth.toJson()),
     );
-
-    if (response.statusCode == 200) {
-      return BabyProfileGrowth.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
     } else {
       throw Exception('성장 보고서 저장 실패');
     }
   }
 
-  Future<List<BabyProfileGrowth>> getBabyProfileGrowths(
+  Future<Pair<List<BabyProfileGrowth>, DateTime>> getBabyProfileGrowths(
     int? lastId,
     int size,
   ) async {
-    var urlString = '$baseUrl/growth/board?size=$size';
+   UserLocalStorageService userStorageService = await UserLocalStorageService.getInstance();
+   final babyProfileId = await userStorageService.getBabyProfileId();
+    var urlString = '$baseUrl/growth/$babyProfileId/board?size=$size';
     final headers = await getHeaders();
     if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
@@ -37,10 +41,12 @@ class BabyGrowthApiService {
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       List<dynamic> data = body['data']['list'];
+      DateTime nextExaminationDate = DateTime.parse(body['data']['nextExaminationDate']);
+
       List<BabyProfileGrowth> growths = data.map((growth) {
-        return BabyProfileGrowth.fromJson(growth);
+        return BabyProfileGrowth.fromJson(growth, babyProfileId!);
       }).toList();
-      return growths;
+      return Pair(growths, nextExaminationDate);
     } else {
       throw Exception('성장 보고서 목록 조회 실패');
     }
@@ -49,7 +55,9 @@ class BabyGrowthApiService {
   Future<BabyProfileGrowth> getBabyProfileGrowth(
     int id,
   ) async {
-    var urlString = '$baseUrl/growth/$id?userId=1'; // TODO userId 넣는 방식 수정
+   UserLocalStorageService userStorageService = await UserLocalStorageService.getInstance();
+   final babyProfileId = await userStorageService.getBabyProfileId();
+    var urlString = '$baseUrl/growth/$id';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic response;
@@ -58,7 +66,7 @@ class BabyGrowthApiService {
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       dynamic data = body['data'];
-      BabyProfileGrowth growth = BabyProfileGrowth.fromJson(data);
+      BabyProfileGrowth growth = BabyProfileGrowth.fromJson(data, babyProfileId!);
       return growth;
     } else {
       throw Exception('성장 보고서 조회 실패 - id: $id');

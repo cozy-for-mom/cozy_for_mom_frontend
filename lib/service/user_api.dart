@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class UserApiService extends ChangeNotifier {
   Future<Map<String, dynamic>> getUserInfo() async {
+  UserLocalStorageService storageService = await UserLocalStorageService.getInstance();
     try {
       final headers = await getHeaders();
       final url = Uri.parse('$baseUrl/me');
@@ -31,6 +33,7 @@ class UserApiService extends ChangeNotifier {
         String birth = userData['birth'];
         String email = userData['email'];
         int dDay = userData['dDay'];
+        storageService.setUser(User(name: name, nickname: nickname, introduce: introduce, birth: birth, email: email, babyProfile: recentBabyProfile, recentBabyProfile: recentBabyProfile, dDay: dDay,),);
         
         return {
           'name': name,

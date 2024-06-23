@@ -1,13 +1,15 @@
 class BabyProfileGrowth {
   final int? id;
+  final int babyProfileId;
   final DateTime date;
-  final String growthImageUrl;
+  final String? growthImageUrl;
   final String diary;
   final String title;
   final List<BabyGrowth>? babies;
 
   BabyProfileGrowth({
     required this.id,
+    required this.babyProfileId,
     required this.date,
     required this.growthImageUrl,
     required this.diary,
@@ -18,9 +20,10 @@ class BabyProfileGrowth {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'date': date.toIso8601String(), // DateTime 객체를 ISO8601 문자열로 변환
+      'babyProfileId': babyProfileId,
+      'date': date.toIso8601String().substring(0, 10), // DateTime 객체를 ISO8601 문자열로 변환
       'growthImageUrl': growthImageUrl,
-      'diary': diary,
+      'content': diary,
       'title': title,
       'babies': babies
           ?.map((baby) => baby.toJson())
@@ -28,13 +31,14 @@ class BabyProfileGrowth {
     };
   }
 
-  factory BabyProfileGrowth.fromJson(Map<String, dynamic> json) {
+  factory BabyProfileGrowth.fromJson(Map<String, dynamic> json, int babyProfileId) {
     var list = json['babies'] as List?;
     List<BabyGrowth>? babyList =
         list?.map((i) => BabyGrowth.fromJson(i)).toList();
 
     return BabyProfileGrowth(
       id: json['growthReportId'],
+      babyProfileId: babyProfileId,
       date: DateTime.parse(json['date']),
       growthImageUrl: json['growthImageUrl'],
       diary: json['content'],
@@ -61,7 +65,7 @@ class BabyGrowth {
     return {
       'id': id,
       'babyId': babyId,
-      'babyGrowthInfo': babyGrowthInfo.toJson(), // BabyGrowthInfo 객체를 JSON으로 변환
+      'growthInfo': babyGrowthInfo.toJson(), // BabyGrowthInfo 객체를 JSON으로 변환
     };
   }
 

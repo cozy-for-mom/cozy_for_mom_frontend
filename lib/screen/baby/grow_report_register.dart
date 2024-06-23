@@ -1,11 +1,15 @@
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/image_api.dart';
+import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/info_input_form.dart';
+import 'package:image_picker/image_picker.dart';
 
 class GrowReportRegister extends StatefulWidget {
   final int? babyProfileGrowthId;
@@ -19,7 +23,9 @@ class GrowReportRegister extends StatefulWidget {
 }
 
 class _GrowReportRegisterState extends State<GrowReportRegister> {
-  List<Baby> babies = List.empty();
+  late UserLocalStorageService userLocalStorageService;
+  late ImageApiService imageApiService;
+  late int? babyProfileId;
   Color bottomLineColor = mainLineColor;
   TextEditingController titleController = TextEditingController();
   TextEditingController diaryController = TextEditingController();
@@ -27,18 +33,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   late ValueNotifier<Baby?> selectedBaby;
   double _textFieldHeight = 50.0; // 초기 높이
 
-  List<BabyProfile> profiles = [
-    BabyProfile(
-      id: 1,
-      name: "미룽이",
-      image: 'assets/images/icons/babyProfileOn.png',
-    ), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
-    BabyProfile(
-      id: 2,
-      name: "행운이",
-      image: 'assets/images/icons/babyProfileOff.png',
-    )
-  ];
+  late BabyProfile babyProfile;
+  List<Baby> babies = List.empty();
+  String? growthImageUrl = null;
 
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
@@ -47,26 +44,30 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   }
 
   @override
-  void initState() {
-    babies = [
-      Baby(
-        id: 1,
-        name: "미룽이",
-        image: 'assets/images/icons/babyProfileOn.png',
-      ), // TODO 태아 기본 프로필 이미지 on/off 논의 후 수정
-      Baby(
-        id: 2,
-        name: "행운이",
-        image: 'assets/images/icons/babyProfileOff.png',
-      )
-    ];
+void initState() {
+    super.initState();
+    initializeBabyInfo();
+  }
 
+  Future<void> initializeBabyInfo() async {
+    userLocalStorageService = await UserLocalStorageService.getInstance();
+    babyProfileId = await userLocalStorageService.getBabyProfileId();
+
+    final babyIds = await userLocalStorageService.getBabyIds();
+    final babyNames = await userLocalStorageService.getBabyNames();
+    babyProfile = BabyProfile(id: babyProfileId!, name: babyNames!.join("/"), image: "");
+
+    final babySize = babyIds!.length;
+    babies = List<Baby>.generate(babySize, (index) => Baby(id: babyIds[index], name: babyNames[index], image: ""));
+
+    // Initialize selectedBaby and infoControllersByBabies here
+    selectedBaby = ValueNotifier<Baby?>(babies.isNotEmpty ? babies[0] : null);
     infoControllersByBabies = {
-      for (var e in babies)
-        e: List.generate(5, (index) => TextEditingController())
+      for (var e in babies) e: List.generate(5, (index) => TextEditingController())
     };
 
-    selectedBaby = ValueNotifier<Baby?>(babies[0]);
+    setState(() {});
+    imageApiService = ImageApiService();
   }
 
   @override
@@ -191,15 +192,27 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   color: offButtonColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: CustomTextButton(
+                child: growthImageUrl != null ? Image.network(growthImageUrl!) : CustomTextButton(
                   text: '사진을 등록해보세요!',
                   textColor: const Color(0xff9397A4),
                   textWeight: FontWeight.w500,
                   imagePath: 'assets/images/icons/photo_register.png',
                   imageWidth: 45.6,
                   imageHeight: 36.9,
-                  onPressed: () {
-                    print('사진등록 버튼 클릭됨'); // TODO 사진 등록 및 불러오기 구현
+                  onPressed: () async {
+                      final selectedImage = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      setState(() async{
+                        if (selectedImage != null) {
+                          final imageUrl = await imageApiService
+                              .uploadImage(selectedImage);
+                              print(imageUrl);
+                              growthImageUrl = imageUrl;
+                              setState(() {});
+                        } else {
+                          print('No image selected.');
+                        }
+                      });
                   },
                 ),
               ),
@@ -287,12 +300,13 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
               child: InkWell(
-                onTap: () {
-                  babyGrowthApiService
+                onTap: () async {
+                  final reportId = await  babyGrowthApiService
                       .createBabyProfileGrowth(BabyProfileGrowth(
                     id: null,
+                    babyProfileId: babyProfileId!,
                     date: DateTime.now(),
-                    growthImageUrl: "growthImageUrl",
+                    growthImageUrl: growthImageUrl,
                     diary: diaryController.text,
                     title: titleController.text,
                     babies: babies
@@ -321,7 +335,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                           ),
                         )
                         .toList(),
-                  ));
+                  )).then((value) => 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BabyGrowthReportDetailScreen(babyProfileGrowthId: value)))
+              );
+                  
                 },
                 child: Container(
                   width: screenWidth,
