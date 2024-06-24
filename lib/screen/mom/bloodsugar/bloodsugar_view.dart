@@ -37,7 +37,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
           return Stack(

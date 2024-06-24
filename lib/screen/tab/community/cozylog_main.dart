@@ -43,7 +43,6 @@ class _CozylogMainState extends State<CozylogMain> {
     final screenHeight = MediaQuery.of(context).size.height;
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
-        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -52,7 +51,8 @@ class _CozylogMainState extends State<CozylogMain> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
 

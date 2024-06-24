@@ -85,7 +85,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
           return Scaffold(

@@ -71,7 +71,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
           return Scaffold(
@@ -114,7 +115,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(babyNames.join('/'),
+                        Text(babyNames.join(''),
                             style: const TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w700,

@@ -44,7 +44,8 @@ class _MyPageState extends State<MyPage> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
 

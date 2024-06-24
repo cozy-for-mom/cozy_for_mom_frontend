@@ -407,7 +407,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
         } else {
           return const Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ),
           );
         }

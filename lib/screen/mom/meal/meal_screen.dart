@@ -199,7 +199,8 @@ class _MealScreenState extends State<MealScreen> {
                 if (!snapshot.hasData) {
                   return const Center(
                       child: CircularProgressIndicator(
-                    backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+                    backgroundColor: primaryColor,
+                    color: Colors.white,
                   ));
                 }
                 return SingleChildScrollView(
