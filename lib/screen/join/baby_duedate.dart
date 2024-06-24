@@ -5,7 +5,8 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 
 class BabyDuedateInputScreen extends StatefulWidget {
-  const BabyDuedateInputScreen({super.key});
+  final Function(bool) updateValidity;
+  const BabyDuedateInputScreen({super.key, required this.updateValidity});
 
   @override
   State<BabyDuedateInputScreen> createState() => _BabyDuedateInputScreenState();
@@ -88,13 +89,16 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                       setState(() {
                         // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
                         String parsedDate;
-                        if (value.length == 8) {
+                        if (value.length == 8 && _isNumeric(value)) {
                           parsedDate = DateFormat('yyyy.MM.dd')
                               .format(DateTime.parse(value));
                         } else {
                           parsedDate = value;
                         }
                         joinInputData.dueDate = parsedDate;
+                        widget.updateValidity(
+                            dueDateController.text.isNotEmpty &
+                                lastMensesController.text.isNotEmpty);
                       });
                     },
                   )),
@@ -147,13 +151,16 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                     onChanged: (value) {
                       setState(() {
                         String parsedDate;
-                        if (value.length == 8) {
+                        if (value.length == 8 && _isNumeric(value)) {
                           parsedDate = DateFormat('yyyy.MM.dd')
                               .format(DateTime.parse(value));
                         } else {
                           parsedDate = value;
                         }
                         joinInputData.laseMensesDate = parsedDate;
+                        widget.updateValidity(
+                            dueDateController.text.isNotEmpty &
+                                lastMensesController.text.isNotEmpty);
                       });
                     },
                   )),
@@ -163,4 +170,9 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
       ],
     );
   }
+}
+
+bool _isNumeric(String value) {
+  final numericRegex = RegExp(r'^[0-9]+$');
+  return numericRegex.hasMatch(value);
 }

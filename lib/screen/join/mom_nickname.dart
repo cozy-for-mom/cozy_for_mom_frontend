@@ -6,7 +6,8 @@ import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'dart:async';
 
 class MomNicknameInputScreen extends StatefulWidget {
-  const MomNicknameInputScreen({super.key});
+  final Function(bool) updateValidity;
+  const MomNicknameInputScreen({super.key, required this.updateValidity});
 
   @override
   State<MomNicknameInputScreen> createState() => _MomNicknameInputScreenState();
@@ -139,6 +140,9 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                       });
                     });
                   }
+                  widget.updateValidity(_isNicknameLengthNotExceeded &
+                      _isNicknameNotDuplicated &
+                      _isNicknameValid);
                 },
               )),
         ),
