@@ -83,8 +83,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                       width: 405, // TODO 화면 너비에 맞춘 width로 수정해야함
                       fit: BoxFit.cover,
                       image: AssetImage(
-                          // 낮: AM7 ~ PM7 / 밤: PM7 ~ AM7
-                          nowHour >= 7 && nowHour < 19
+                          //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                          nowHour >= 8 && nowHour < 18
                               ? "assets/images/babyhome_morning.png"
                               : "assets/images/babyhome_dark.png")),
                 ),
@@ -121,8 +121,11 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 fontSize: 26)),
                         const SizedBox(height: 5),
                         Text('임신 ${week}주차 ${day}일째',
-                            style: const TextStyle(
-                                color: Color(0xff9D8DFF),
+                            style: TextStyle(
+                                color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                                    nowHour >= 8 && nowHour < 18
+                                        ? const Color(0xffFE8282)
+                                        : const Color(0xff9D8DFF),
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16)),
                       ],
@@ -144,16 +147,19 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "${babyNames.join('/')}와 만나는 날",
-                            style: const TextStyle(
+                          const Text(
+                            "아기와 만나기까지",
+                            style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
                           Text(' D-${dDay}', // TODO 밤/낮 따라 색상 바꿔줘야 함
-                              style: const TextStyle(
-                                  color: babyNightBar,
+                              style: TextStyle(
+                                  color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                                      nowHour >= 8 && nowHour < 18
+                                          ? const Color(0xffFE8282)
+                                          : const Color(0xff9D8DFF),
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16)),
                         ],

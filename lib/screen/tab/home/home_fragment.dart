@@ -28,6 +28,9 @@ class _HomeFragmentState extends State<HomeFragment> {
     final screenWidth = MediaQuery.of(context).size.width;
     DateTime now = DateTime.now();
     int nowHour = int.parse(DateFormat('HH').format(now));
+    int nowMonth = int.parse(DateFormat('M').format(now));
+    int nowDay = int.parse(DateFormat('d').format(now));
+    String nowWeekDay = DateFormat.EEEE('ko').format(now);
 
     return FutureBuilder(
         future: userViewModel.getUserInfo(),
@@ -38,7 +41,8 @@ class _HomeFragmentState extends State<HomeFragment> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
 
@@ -51,53 +55,52 @@ class _HomeFragmentState extends State<HomeFragment> {
                     width: screenWidth,
                     fit: BoxFit.cover,
                     image: AssetImage(
-                        // 아침: AM4 ~ PM12 / 점심(저녁): PM12 ~ PM8 / 밤: PM8 ~ AM4
-                        nowHour >= 4 && nowHour < 12
+                        // 아침: AM8 ~AM11 / 점심(저녁): PM12 ~ PM6 / 밤: PM6 ~ AM7
+                        nowHour >= 8 && nowHour < 12
                             ? "assets/images/home_morning.png"
-                            : nowHour >= 12 && nowHour < 20
+                            : nowHour >= 12 && nowHour < 19
                                 ? "assets/images/home_afternoon.png"
                                 : "assets/images/home_evening.png"),
                   ),
                 ),
                 Positioned(
                   top: 128,
-                  left: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            pregnantInfo['nickname'],
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Text(
-                            " ",
-                            style: TextStyle(
-                              fontSize: 26,
-                            ),
-                          ),
-                          const Text(
-                            "산모님,",
-                            style: TextStyle(
-                              fontSize: 26,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      const Text(
-                        "오늘도 안녕하세요",
-                        style: TextStyle(
-                          fontSize: 26,
+                  left: 0,
+                  right: 0,
+                  child: SizedBox(
+                    width: 186,
+                    height: 105,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$nowMonth월 $nowDay일 $nowWeekDay',
+                          style: TextStyle(
+                              color: nowHour >= 8 && nowHour < 12
+                                  ? morningTextColor
+                                  : nowHour >= 12 && nowHour < 19
+                                      ? afternoonTextColor
+                                      : nightTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16),
                         ),
-                      ),
-                    ],
+                        // const SizedBox(height: 6),
+                        Text(
+                          '${pregnantInfo['nickname']} 산모님',
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const Text(
+                          "오늘도 안녕하세요",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Positioned(
