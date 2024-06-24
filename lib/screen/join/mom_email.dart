@@ -58,7 +58,6 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                     fontWeight: FontWeight.w400,
                     fontSize: 14),
                 decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 10),
                   border: InputBorder.none,
                 ),
               )),
