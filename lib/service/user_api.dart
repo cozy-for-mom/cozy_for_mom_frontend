@@ -20,9 +20,8 @@ class UserApiService extends ChangeNotifier {
         List<BabyProfile> babyProfiles = babyProfilesData.map((babyProfile) {
           return BabyProfile.fromJson(babyProfile);
         }).toList();
-        BabyProfile recentBabyProfile = userData['recentBabyProfile'] == null
-            ? babyProfiles.first
-            : BabyProfile.fromJson(userData['recentBabyProfile']);
+        BabyProfile recentBabyProfile =
+            BabyProfile.fromJson(userData['recentBabyProfile']);
 
         String name = userData['name'];
         String nickname = userData['nickname'];
@@ -31,7 +30,7 @@ class UserApiService extends ChangeNotifier {
         String birth = userData['birth'];
         String email = userData['email'];
         int dDay = userData['dDay'];
-        
+
         return {
           'name': name,
           'nickname': nickname,

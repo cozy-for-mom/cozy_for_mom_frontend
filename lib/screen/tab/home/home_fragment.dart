@@ -69,7 +69,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                   right: 0,
                   child: SizedBox(
                     width: 186,
-                    height: 105,
+                    height: 103,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -84,7 +84,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                               fontWeight: FontWeight.w600,
                               fontSize: 16),
                         ),
-                        // const SizedBox(height: 6),
+                        const SizedBox(height: 3),
                         Text(
                           '${pregnantInfo['nickname']} 산모님',
                           style: const TextStyle(
