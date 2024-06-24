@@ -6,7 +6,7 @@ class CozyLog {
   final String title;
   final String summary;
   final String date;
-  final String? imageUrl;
+  final List<CozyLogImage> images;
   final String mode;
 
   CozyLog({
@@ -17,7 +17,19 @@ class CozyLog {
     required this.title,
     required this.summary,
     required this.date,
-    this.imageUrl,
+    required this.images,
     this.mode = 'PRIVATE',
+  });
+}
+
+class CozyLogImage {
+  final int? imageId;
+  final String imageUrl;
+  final String description;
+
+  CozyLogImage({
+    required this.imageId,
+    required this.imageUrl,
+    required this.description,
   });
 }
