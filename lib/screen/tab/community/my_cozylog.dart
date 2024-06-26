@@ -293,10 +293,10 @@ class _MyCozylogState extends State<MyCozylog> {
                             return DeleteModal(
                               title: '코지로그가',
                               text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                              tapFunc: () async {
-                                await CozyLogApiService().bulkUnscrapCozyLog(
-                                    []); // TODO 일괄 삭제 API로 변경
-                                Navigator.pushReplacement(
+                              tapFunc: () {
+                                CozyLogApiService().bulkDeleteCozyLog(
+                                    cozylogListModifyState.selectedIds);
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const MyCozylog()),
