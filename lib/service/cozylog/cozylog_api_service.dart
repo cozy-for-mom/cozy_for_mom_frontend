@@ -209,7 +209,7 @@ class CozyLogApiService {
             "imageId": e.imageId,
             "imageUrl": e.imageUrl,
             "description": e.description,
-          }),
+          }).toList(), 
         },
       ),
     );
@@ -291,6 +291,58 @@ class CozyLogApiService {
       throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
+
+
+Future<void> bulkDeleteCozyLog(
+    List<int> cozyLogIds,
+  ) async {
+    var urlString = '$baseUrl/me/cozy-log';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await delete(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogIds': cozyLogIds,
+        },
+      ),
+    );
+
+    print(response.body);
+    if (response.statusCode == 204) {
+      print("삭제왼료");
+      return;
+    } else {
+      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+    }
+  }
+
+Future<void> bulkAllDeleteCozyLog(
+    List<int> cozyLogIds,
+  ) async {
+    var urlString = '$baseUrl/me/cozy-log/all';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogIds': cozyLogIds,
+        },
+      ),
+    );
+
+    if (response.statusCode == 204) {
+      return;
+    } else {
+      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+    }
+  }
+
 
   Future<void> bulkUnscrapCozyLog(
     List<int> cozyLogIds,

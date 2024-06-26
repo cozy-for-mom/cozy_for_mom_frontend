@@ -18,6 +18,12 @@ class TokenManager {
 
   Future<void> setToken(String accessToken) async {
     await _storage.write(key: accessTokenKey, value: accessToken);
+
+  }
+
+  Future<int> getUserId() async {
+    return await _storage.read(key: accessTokenKey).then((value) => 
+        int.parse(JwtDecoder.decode(value!)['info']['userId']));
   }
 
   Future<UserType> getUserType() async {
