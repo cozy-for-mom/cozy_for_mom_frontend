@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/extension/pair.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
@@ -7,6 +8,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class BabyGrowthReportListScreen extends StatefulWidget {
   const BabyGrowthReportListScreen({super.key});
@@ -18,12 +20,13 @@ class BabyGrowthReportListScreen extends StatefulWidget {
 
 class _BabyGrowthReportListScreenState
     extends State<BabyGrowthReportListScreen> {
-  late Future<List<BabyProfileGrowth>> growths;
+  DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
+  late Future<Pair<List<BabyProfileGrowth>, DateTime>> data;
 
   @override
   void initState() {
     super.initState();
-    growths = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
+    data = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
   }
 
   @override
@@ -48,6 +51,16 @@ class _BabyGrowthReportListScreenState
             Navigator.of(context).pop();
           },
         ),
+      ),
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GrowReportRegister(babyProfileGrowth: null),
+            ),
+          );
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -86,11 +99,19 @@ class _BabyGrowthReportListScreenState
                             },
                           );
                         },
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Text(
-                              "2023년 10월 27일", // TODO 수정해야함
-                            ),
+                            FutureBuilder(
+                                future: data,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(dateFormat
+                                        .format(snapshot.data.second));
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
                             SizedBox(
                               width: 5,
                             ),
@@ -136,7 +157,7 @@ class _BabyGrowthReportListScreenState
               height: 30,
             ),
             FutureBuilder(
-              future: growths,
+              future: data,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return Expanded(
@@ -147,14 +168,14 @@ class _BabyGrowthReportListScreenState
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
-                          top: 18.0,
+                          top: 5.0,
                           left: 3,
                           right: 3,
                         ),
                         child: ListView.builder(
-                          itemCount: snapshot.data.length,
+                          itemCount: snapshot.data.first.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final report = snapshot.data[index];
+                            final report = snapshot.data.first[index];
                             final dateTime = report.date;
                             return InkWell(
                               onTap: () {
@@ -171,12 +192,12 @@ class _BabyGrowthReportListScreenState
                               child: Container(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 10.0),
+                                      horizontal: 27.0, vertical: 5.0),
                                   child: Column(
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Flexible(
                                             flex: 7,
@@ -241,12 +262,12 @@ class _BabyGrowthReportListScreenState
                                         ],
                                       ),
                                       const SizedBox(
-                                        height: 15,
+                                        height: 8,
                                       ),
                                       const Divider(
                                         color: Color(0xffE1E1E7),
                                         thickness: 1.0,
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -288,14 +309,6 @@ class _BabyGrowthReportListScreenState
             ),
           ],
         ),
-      ),
-      floatingActionButton: CustomFloatingButton(
-        pressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const GrowReportRegister()));
-        },
       ),
     );
   }

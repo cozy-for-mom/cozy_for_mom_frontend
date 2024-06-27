@@ -76,6 +76,7 @@ flutter:
     - assets/images/icons/navigation_home.png
     - assets/images/icons/navigation_community.png
     - assets/images/icons/diary.png
+    - assets/images/icons/diary_inactive.png
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
     - assets/images/icons/babyProfileOff.png

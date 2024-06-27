@@ -90,8 +90,7 @@ class _BabyGrowthReportDetailScreenState
                             builder: (context, activeProfile, child) {
                               return CustomProfileButton(
                                 text: baby.name,
-                                imagePath:
-                                    'assets/images/icons/babyProfileOn.png', // TODO 수정
+                                imagePath: '',
                                 offBackColor: const Color(0xffF0F0F5),
                                 isSelected: activeProfile == baby,
                                 onPressed: () {
@@ -170,7 +169,10 @@ class _BabyGrowthReportDetailScreenState
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const GrowReportRegister(),
+                                                            GrowReportRegister(
+                                                          babyProfileGrowth:
+                                                              snapshot.data,
+                                                        ),
                                                       ),
                                                     );
                                                   },
@@ -244,10 +246,12 @@ class _BabyGrowthReportDetailScreenState
                           color: offButtonColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Image.network(
-                          snapshot.data!.growthImageUrl,
-                          fit: BoxFit.cover,
-                        ),
+                        child: snapshot.data!.growthImageUrl != null
+                            ? Image.network(
+                                snapshot.data!.growthImageUrl!,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(),
                       ),
                     ),
                   ),
