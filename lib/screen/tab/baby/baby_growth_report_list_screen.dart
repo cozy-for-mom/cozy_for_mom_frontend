@@ -23,7 +23,6 @@ class _BabyGrowthReportListScreenState
     DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
   late Future<Pair<List<BabyProfileGrowth>, DateTime>> data;
 
-
   @override
   void initState() {
     super.initState();
@@ -53,9 +52,16 @@ class _BabyGrowthReportListScreenState
           },
         ),
       ),
-      floatingActionButton: CustomFloatingButton(pressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GrowReportRegister(babyProfileGrowth: null),),);
-      },),
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GrowReportRegister(babyProfileGrowth: null),
+            ),
+          );
+        },
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -96,17 +102,16 @@ class _BabyGrowthReportListScreenState
                         child: Row(
                           children: [
                             FutureBuilder(
-              future: data,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                              dateFormat.format(snapshot.data.second)
-                            );
-                } else {
-                  return Container();
-                }
-              }
-                            ),
+                                future: data,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(dateFormat
+                                        .format(snapshot.data.second));
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
                             SizedBox(
                               width: 5,
                             ),
@@ -304,14 +309,6 @@ class _BabyGrowthReportListScreenState
             ),
           ],
         ),
-      ),
-      floatingActionButton: CustomFloatingButton(
-        pressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const GrowReportRegister()));
-        },
       ),
     );
   }

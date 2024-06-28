@@ -24,7 +24,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
   late SupplementApiService momSupplementViewModel;
   late List<PregnantSupplement> pregnantSupplements;
   late List<int> supplementIds;
-  late List<int> supplementIntakes = [];
+  late List<DateTime> supplementIntakes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,10 @@ class _SupplementRecordState extends State<SupplementRecord> {
       });
     }
 
-    void updateSupplementIntake(int id) {
+    void updateSupplementIntake(DateTime newData) {
       setState(() {
-        supplementIntakes.remove(id);
-        supplementIntakes.add(id);
+        supplementIntakes.remove;
+        supplementIntakes.add(newData);
       });
     }
 
@@ -187,6 +187,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                             .map((record) => record.id)
                                             .toList(),
                                         onDelete: deleteSupplement,
+                                        onUpdate: (updatedData) =>
+                                            updateSupplementIntake(updatedData),
                                       ));
                                 }).toList(),
                         ),

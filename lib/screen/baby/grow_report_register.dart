@@ -68,7 +68,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
         babySize,
         (index) =>
             Baby(id: babyIds[index], name: babyNames![index], image: ""));
-
+    
     // Initialize selectedBaby and infoControllersByBabies here
     selectedBaby = ValueNotifier<Baby?>(babies.isNotEmpty ? babies[0] : null);
     if (widget.babyProfileGrowth != null) {
@@ -104,7 +104,6 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           e: List.generate(5, (index) => TextEditingController())
       };
     }
-
     setState(() {});
     imageApiService = ImageApiService();
   }

@@ -220,8 +220,7 @@ class _SupplementModalState extends State<SupplementModal> {
                           widget.id, widget.name, time);
 
                       setState(() {
-                        Navigator.pop(context);
-                        // 수정된 시간을 반영하여 상태를 업데이트
+                        Navigator.pop(context, DateTime.parse(time));
                       });
                     },
                     child: const Text(

@@ -4,7 +4,6 @@ import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
-import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -155,7 +154,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
-                          Text(' D-${dDay}', // TODO 밤/낮 따라 색상 바꿔줘야 함
+                          Text(' D-${dDay}',
                               style: TextStyle(
                                   color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
                                       nowHour >= 8 && nowHour < 18
