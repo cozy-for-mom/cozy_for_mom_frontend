@@ -1,4 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
@@ -42,7 +44,8 @@ class _MyPageState extends State<MyPage> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
 
@@ -194,19 +197,22 @@ class _MyPageState extends State<MyPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CustomTextButton(
-                              text: '코지로그',
+                              text: '내 코지로그',
                               textColor: mainTextColor,
                               textWeight: FontWeight.w600,
                               imagePath: 'assets/images/icons/cozylog.png',
                               imageWidth: 27.3,
                               imageHeight: 24.34,
                               onPressed: () {
-                                // TODO 코지로그 페이지 이동 구현해야 함
-                                print('코지로그 버튼 클릭됨');
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyCozylog()));
                               }),
                           Container(
-                            width: 1, // 수직선의 두께 조절
-                            height: 42, // 수직선의 높이 조절
+                            width: 1,
+                            height: 42,
                             color: const Color(0xffE8E8ED),
                           ),
                           CustomTextButton(
@@ -217,8 +223,10 @@ class _MyPageState extends State<MyPage> {
                               imageWidth: 18.4,
                               imageHeight: 24,
                               onPressed: () {
-                                // TODO 스크랩 내역 페이지 이동 구현해야함
-                                print('스크랩 내역 버튼 클릭됨');
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MyScrap()));
                               }),
                         ],
                       ),

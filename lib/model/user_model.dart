@@ -54,7 +54,7 @@ class BabyProfile {
 
   BabyProfile(
       {required this.babyProfileId,
-      this.babyProfileImageUrl,
+      this.babyProfileImageUrl = '',
       required this.babies});
 
   factory BabyProfile.fromJson(Map<String, dynamic> json) {

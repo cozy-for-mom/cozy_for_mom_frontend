@@ -67,7 +67,8 @@ class _WeightRecordState extends State<WeightRecord> {
                 if (!snapshot.hasData) {
                   return const Center(
                       child: CircularProgressIndicator(
-                    backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+                    backgroundColor: primaryColor,
+                    color: Colors.white,
                   ));
                 }
                 return Stack(
@@ -105,9 +106,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                       icon: const Icon(Icons.expand_more),
                                       onPressed: () {
                                         showModalBottomSheet(
-                                          backgroundColor:
-                                              contentBoxTwoColor.withOpacity(
-                                                  0.0), // 팝업창 자체 색 : 투명
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0.0,
                                           context: context,
                                           builder: (context) {
                                             return const MonthCalendarModal();

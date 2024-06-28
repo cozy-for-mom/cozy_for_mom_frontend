@@ -1,6 +1,8 @@
+import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -41,7 +43,6 @@ class _CozylogMainState extends State<CozylogMain> {
     final screenHeight = MediaQuery.of(context).size.height;
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
-        // TODO 캘린더 연동 (선택한 날짜로 API 요청하도록 수정)
         future: userViewModel.getUserInfo(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -50,7 +51,8 @@ class _CozylogMainState extends State<CozylogMain> {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+              backgroundColor: primaryColor,
+              color: Colors.white,
             ));
           }
 
@@ -80,7 +82,11 @@ class _CozylogMainState extends State<CozylogMain> {
                             IconButton(
                               icon: const Icon(Icons.arrow_back_ios),
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainScreen())); // TODO depth가 복잡해져서 커뮤니티에서는 뒤로가기하면 메인페이지로 가도록 픽스
                               },
                             ),
                             const SizedBox(

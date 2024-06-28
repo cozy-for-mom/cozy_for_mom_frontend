@@ -5,7 +5,7 @@ import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 class DeleteModal extends StatefulWidget {
   final String text;
   final String title;
-  final VoidCallback? tapFunc;
+  final Future<void> Function()? tapFunc;
 
   const DeleteModal(
       {super.key, required this.text, required this.title, this.tapFunc});
@@ -63,9 +63,9 @@ class _DeleteModalState extends State<DeleteModal> {
                 ),
                 Container(width: 1, height: 65, color: const Color(0xffD9D9D9)),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    await widget.tapFunc!();
                     Navigator.of(context).pop();
-                    widget.tapFunc?.call();
                     DeleteCompleteAlertModal.showDeleteCompleteDialog(
                         context, widget.title);
                   },

@@ -34,14 +34,14 @@ class MealApiService extends ChangeNotifier {
   }
 
   Future<int> recordMeals(
-      DateTime dateTime, String mealType, Future<String?> imageUrl) async {
+      DateTime dateTime, String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal');
     final headers = await getHeaders();
     Map data = {
       'datetime': formattedDate,
       'mealType': mealType,
-      'mealImageUrl': await imageUrl
+      'mealImageUrl': imageUrl
     };
 
     final Response response =
@@ -54,15 +54,15 @@ class MealApiService extends ChangeNotifier {
     }
   }
 
-  Future<int> modifyMeals(int id, DateTime dateTime, String mealType,
-      Future<String?> imageUrl) async {
+  Future<int> modifyMeals(
+      int id, DateTime dateTime, String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal/$id');
     final headers = await getHeaders();
     Map data = {
       'datetime': formattedDate,
       'mealType': mealType,
-      'mealImageUrl': await imageUrl
+      'mealImageUrl': imageUrl
     };
 
     final Response response =

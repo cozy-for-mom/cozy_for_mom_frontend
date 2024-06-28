@@ -85,8 +85,8 @@ class _BabyGrowthReportListScreenState
                       InkWell(
                         onTap: () {
                           showModalBottomSheet(
-                            backgroundColor: contentBoxTwoColor
-                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
                             context: context,
                             builder: (context) {
                               return const MonthCalendarModal();
@@ -122,8 +122,8 @@ class _BabyGrowthReportListScreenState
                       InkWell(
                         onTap: () {
                           showModalBottomSheet(
-                            backgroundColor: contentBoxTwoColor
-                                .withOpacity(0.0), // 팝업창 자체 색 : 투명
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
                             context: context,
                             builder: (context) {
                               return const MonthCalendarModal();
@@ -304,6 +304,14 @@ class _BabyGrowthReportListScreenState
             ),
           ],
         ),
+      ),
+      floatingActionButton: CustomFloatingButton(
+        pressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const GrowReportRegister()));
+        },
       ),
     );
   }

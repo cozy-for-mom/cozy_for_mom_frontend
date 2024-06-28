@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
@@ -42,11 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
             future: accessToken,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: primaryColor,
+                  color: Colors.white,
+                ));
               } else if (snapshot.hasData) {
                 handleUserType(context);
                 return const Center(
-                    child: CircularProgressIndicator()); // 결과 대기 중 표시
+                    child: CircularProgressIndicator(
+                  backgroundColor: primaryColor,
+                  color: Colors.white,
+                )); // 결과 대기 중 표시
               } else {
                 return buildLoginScreen(screenWidth, screenHeight);
               }

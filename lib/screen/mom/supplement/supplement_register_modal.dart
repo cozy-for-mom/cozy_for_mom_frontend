@@ -1,9 +1,11 @@
+import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 
 class SupplementRegisterModal extends StatefulWidget {
-  SupplementRegisterModal({super.key});
+  final void Function(int) onRegister;
+  SupplementRegisterModal({super.key, required this.onRegister});
 
   @override
   State<SupplementRegisterModal> createState() =>
@@ -11,14 +13,14 @@ class SupplementRegisterModal extends StatefulWidget {
 }
 
 class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController targetCountController = TextEditingController();
+  ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
+  bool isNameEmpty = true;
+  bool isTargetCountEmpty = true;
   @override
   Widget build(BuildContext context) {
     SupplementApiService supplementApi = SupplementApiService();
-    TextEditingController nameController = TextEditingController();
-    TextEditingController targetCountController = TextEditingController();
-    ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
-    bool isNameEmpty = true;
-    bool isTargetCountEmpty = true;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Dialog(
@@ -96,7 +98,7 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16)),
-                                    cursorColor: beforeInputColor,
+                                    cursorColor: primaryColor,
                                     style: const TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
@@ -153,7 +155,7 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16)),
-                                    cursorColor: beforeInputColor,
+                                    cursorColor: primaryColor,
                                     style: const TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
@@ -180,10 +182,12 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      supplementApi.registerSupplement(nameController.text,
+                    onTap: () async {
+                      int id = await supplementApi.registerSupplement(
+                          nameController.text,
                           int.parse(targetCountController.text));
+                      Navigator.of(context).pop();
+                      widget.onRegister(id);
                     },
                     child: const Text(
                       '등록하기',
