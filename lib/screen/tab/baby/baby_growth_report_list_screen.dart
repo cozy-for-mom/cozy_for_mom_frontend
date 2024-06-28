@@ -20,7 +20,7 @@ class BabyGrowthReportListScreen extends StatefulWidget {
 
 class _BabyGrowthReportListScreenState
     extends State<BabyGrowthReportListScreen> {
-  DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
+    DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
   late Future<Pair<List<BabyProfileGrowth>, DateTime>> data;
 
   @override
@@ -264,10 +264,10 @@ class _BabyGrowthReportListScreenState
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      const Divider(
-                                        color: Color(0xffE1E1E7),
-                                        thickness: 1.0,
-                                      ),
+                                        const Divider(
+                                          color: Color(0xffE1E1E7),
+                                          thickness: 1.0,
+                                        ),
                                     ],
                                   ),
                                 ),

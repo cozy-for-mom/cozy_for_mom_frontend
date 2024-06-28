@@ -246,12 +246,10 @@ class _BabyGrowthReportDetailScreenState
                           color: offButtonColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: snapshot.data!.growthImageUrl != null
-                            ? Image.network(
-                                snapshot.data!.growthImageUrl!,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(),
+                        child: snapshot.data!.growthImageUrl != null ? Image.network(
+                          snapshot.data!.growthImageUrl!,
+                          fit: BoxFit.cover,
+                        ) : Container(),
                       ),
                     ),
                   ),

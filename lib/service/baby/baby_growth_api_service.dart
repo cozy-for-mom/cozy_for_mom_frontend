@@ -8,20 +8,30 @@ import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.da
 import 'package:http/http.dart';
 
 class BabyGrowthApiService {
-  Future<int> registerBabyProfileGrowth(BabyProfileGrowth growth) async {
+  Future<int> registerBabyProfileGrowth(
+      BabyProfileGrowth growth) async {
     final headers = await getHeaders();
     if (growth.id != null) {
-      final url = Uri.parse("$baseUrl/growth/${growth.id}");
-      final response = await put(
-        url,
-        headers: headers,
-        body: jsonEncode(growth.toJson()),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
-      } else {
-        throw Exception('성장 보고서 저장 실패');
-      }
+    final url = Uri.parse("$baseUrl/growth/${growth.id}");
+  final response = await put(
+      url,
+      headers: headers,
+      body: jsonEncode(growth.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
+    } else {
+      throw Exception('성장 보고서 저장 실패');
+    }
+    } else {
+    final url = Uri.parse("$baseUrl/growth");
+      final response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(growth.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
     } else {
       final url = Uri.parse("$baseUrl/growth");
       final response = await post(
@@ -35,6 +45,8 @@ class BabyGrowthApiService {
         throw Exception('성장 보고서 저장 실패');
       }
     }
+    }
+    
   }
 
   Future<Pair<List<BabyProfileGrowth>, DateTime>> getBabyProfileGrowths(
