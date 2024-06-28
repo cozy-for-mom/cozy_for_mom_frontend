@@ -33,17 +33,7 @@ class BabyGrowthApiService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)['data']['growthReportId'];
     } else {
-      final url = Uri.parse("$baseUrl/growth");
-      final response = await post(
-        url,
-        headers: headers,
-        body: jsonEncode(growth.toJson()),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
-      } else {
-        throw Exception('성장 보고서 저장 실패');
-      }
+      throw Exception('성장 보고서 저장 실패');
     }
     }
     
