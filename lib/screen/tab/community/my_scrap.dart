@@ -153,45 +153,47 @@ class _MyScrapState extends State<MyScrap> {
             ),
       bottomSheet: widget.isEditMode
           ? SizedBox(
-              width: screenWidth - 40,
-              child: Container(
-                color: Colors.transparent,
-                child: BottomSheet(
-                  onClosing: () {},
-                  builder: (BuildContext context) {
-                    ListModifyState scrapListModifyState =
-                        context.watch<ListModifyState>();
-                    int selectedCount = scrapListModifyState.selectedCount;
-
-                    bool isAnySelected = selectedCount > 0;
-
-                    return BottomButtonWidget(
-                      isActivated: isAnySelected,
-                      text: '스크랩 삭제',
-                      tapped: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DeleteModal(
-                              title: '스크랩이',
-                              text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                              tapFunc: () async {
-                                await CozyLogApiService().bulkUnscrapCozyLog(
-                                  scrapListModifyState.selectedIds,
-                                );
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MyScrap()),
-                                );
-                              },
-                            );
-                          },
-                          barrierDismissible: false,
-                        );
-                      },
-                    );
-                  },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                child: Container(
+                  color: Colors.transparent,
+                  child: BottomSheet(
+                    onClosing: () {},
+                    builder: (BuildContext context) {
+                      ListModifyState scrapListModifyState =
+                          context.watch<ListModifyState>();
+                      int selectedCount = scrapListModifyState.selectedCount;
+              
+                      bool isAnySelected = selectedCount > 0;
+              
+                      return BottomButtonWidget(
+                        isActivated: isAnySelected,
+                        text: '스크랩 삭제',
+                        tapped: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteModal(
+                                title: '스크랩이',
+                                text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                tapFunc: () async {
+                                  await CozyLogApiService().bulkUnscrapCozyLog(
+                                    scrapListModifyState.selectedIds,
+                                  );
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MyScrap()),
+                                  );
+                                },
+                              );
+                            },
+                            barrierDismissible: false,
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             )
