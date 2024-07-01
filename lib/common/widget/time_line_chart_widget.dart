@@ -82,21 +82,23 @@ Widget _tabBar() {
 }
 
 Widget _tabBarView(TimeLineChart widget) {
+  LineChartData minValuePoint = widget.dataList
+      .reduce((current, next) => current.yValue < next.yValue ? current : next);
   return TabBarView(
     children: [
       LineChart(
         dataList: widget.dataList,
-        baseValue: widget.dataList[0].yValue,
+        baseValue: minValuePoint.yValue,
         unit: widget.recordType.unit,
       ),
       LineChart(
         dataList: widget.dataList,
-        baseValue: widget.dataList[0].yValue,
+        baseValue: minValuePoint.yValue,
         unit: widget.recordType.unit,
       ),
       LineChart(
         dataList: widget.dataList,
-        baseValue: widget.dataList[0].yValue,
+        baseValue: minValuePoint.yValue,
         unit: widget.recordType.unit,
       ),
     ],
