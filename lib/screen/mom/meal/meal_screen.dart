@@ -71,6 +71,36 @@ class _MealScreenState extends State<MealScreen> {
           });
     }
 
+    Future<XFile?> showImageSelectModal() async {
+      XFile? selectedImage;
+
+      // 사용자 선택에 따라 모달을 닫고, 이미지 선택
+      String? choice = await showModalBottomSheet<String>(
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (BuildContext context) {
+            return SelectBottomModal(
+              selec1: '사진 촬영하기',
+              selec2: '앨범에서 가져오기',
+              tap1: () {
+                Navigator.pop(context, 'camera');
+              },
+              tap2: () {
+                Navigator.pop(context, 'gallery');
+              },
+            );
+          });
+
+      // 모달이 닫힌 후, 선택에 따라 이미지를 선택
+      if (choice != null) {
+        ImageSource source =
+            choice == 'camera' ? ImageSource.camera : ImageSource.gallery;
+        selectedImage = await ImagePicker().pickImage(source: source);
+      }
+
+      return selectedImage;
+    }
+
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: PreferredSize(
@@ -277,8 +307,8 @@ class _MealScreenState extends State<MealScreen> {
                                   ))
                               : InkWell(
                                   onTap: () async {
-                                    final selectedImage = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
+                                    final selectedImage =
+                                        await showImageSelectModal();
                                     setState(() {
                                       isBreakfastLoading = true; // 로딩 시작
                                     });
@@ -441,8 +471,8 @@ class _MealScreenState extends State<MealScreen> {
                                   ))
                               : InkWell(
                                   onTap: () async {
-                                    final selectedImage = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
+                                    final selectedImage =
+                                        await showImageSelectModal();
                                     setState(() {
                                       isLunchLoading = true; // 로딩 시작
                                     });
@@ -604,8 +634,8 @@ class _MealScreenState extends State<MealScreen> {
                                   ))
                               : InkWell(
                                   onTap: () async {
-                                    final selectedImage = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
+                                    final selectedImage =
+                                        await showImageSelectModal();
                                     setState(() {
                                       isDinnerLoading = true; // 로딩 시작
                                     });
