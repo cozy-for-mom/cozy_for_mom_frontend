@@ -11,7 +11,6 @@ import 'package:cozy_for_mom_frontend/service/mom/mom_meal_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 
 class MealScreen extends StatefulWidget {
   const MealScreen({super.key});
@@ -26,6 +25,9 @@ class _MealScreenState extends State<MealScreen> {
   late bool containsBreakfast, containsLunch, containsDinner;
   late String? breakfastImageUrl, lunchImageUrl, dinnerImageUrl;
   late int? breakfastId, lunchId, dinnerId;
+  bool isBreakfastLoading = false;
+  bool isLunchLoading = false;
+  bool isDinnerLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,6 @@ class _MealScreenState extends State<MealScreen> {
     ImageApiService imageApiService = ImageApiService();
     final globalData = Provider.of<MyDataModel>(context, listen: false);
     DateFormat dateFormat = DateFormat('aa hh:mm');
-    DateTime now = DateTime.now(); // 현재 날짜
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     Future<dynamic> showSelectModal(int id, String mealType) {
@@ -60,9 +61,9 @@ class _MealScreenState extends State<MealScreen> {
                 }
               },
               tap2: () async {
+                Navigator.pop(context);
                 // 삭제 작업 수행
                 await momMealViewModel.deleteWeight(id);
-                Navigator.pop(context);
                 // 상태 업데이트
                 setState(() {});
               },
@@ -212,7 +213,7 @@ class _MealScreenState extends State<MealScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          containsBreakfast // TODO List로 수정하면 좋을 듯
+                          containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
                               ? InkWell(
                                   onTap: () {
                                     showSelectModal(breakfastId!,
@@ -278,6 +279,9 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
+                                    setState(() {
+                                      isBreakfastLoading = true; // 로딩 시작
+                                    });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(selectedImage);
@@ -289,9 +293,13 @@ class _MealScreenState extends State<MealScreen> {
                                       );
                                       setState(() {
                                         breakfastImageUrl = imageUrl;
+                                        isBreakfastLoading = false; // 로딩 완료
                                       });
                                     } else {
                                       print('No image selected.');
+                                      setState(() {
+                                        isBreakfastLoading = false; // 로딩 완료
+                                      });
                                     }
                                   },
                                   child: Container(
@@ -307,25 +315,36 @@ class _MealScreenState extends State<MealScreen> {
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              child: const Column(
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
-                                                  Image(
-                                                    image: AssetImage(
-                                                      "assets/images/icons/default_meal.png",
-                                                    ),
-                                                    height: 43,
-                                                    width: 19,
-                                                  ),
-                                                  Text(
-                                                    "클릭하여 식사를 기록해 보세요",
-                                                    style: TextStyle(
-                                                      color: Color(0xff9397A4),
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                ],
+                                                children: isBreakfastLoading
+                                                    ? [
+                                                        const Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              primaryColor,
+                                                          color: Colors.white,
+                                                        ))
+                                                      ]
+                                                    : [
+                                                        const Image(
+                                                          image: AssetImage(
+                                                            "assets/images/icons/default_meal.png",
+                                                          ),
+                                                          height: 43,
+                                                          width: 19,
+                                                        ),
+                                                        const Text(
+                                                          "클릭하여 식사를 기록해 보세요",
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff9397A4),
+                                                            fontSize: 14,
+                                                          ),
+                                                        )
+                                                      ],
                                               )),
                                         ),
                                         Positioned(
@@ -424,6 +443,9 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
+                                    setState(() {
+                                      isLunchLoading = true; // 로딩 시작
+                                    });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(selectedImage);
@@ -434,9 +456,13 @@ class _MealScreenState extends State<MealScreen> {
                                       );
                                       setState(() {
                                         containsLunch = !containsLunch;
+                                        isLunchLoading = false; // 로딩 완료
                                       });
                                     } else {
                                       print('No image selected.');
+                                      setState(() {
+                                        isLunchLoading = false; // 로딩 완료
+                                      });
                                     }
                                   },
                                   child: Container(
@@ -452,25 +478,36 @@ class _MealScreenState extends State<MealScreen> {
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              child: const Column(
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
-                                                  Image(
-                                                    image: AssetImage(
-                                                      "assets/images/icons/default_meal.png",
-                                                    ),
-                                                    height: 43,
-                                                    width: 19,
-                                                  ),
-                                                  Text(
-                                                    "클릭하여 식사를 기록해 보세요",
-                                                    style: TextStyle(
-                                                      color: Color(0xff9397A4),
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                ],
+                                                children: isLunchLoading
+                                                    ? [
+                                                        const Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              primaryColor,
+                                                          color: Colors.white,
+                                                        ))
+                                                      ]
+                                                    : [
+                                                        const Image(
+                                                          image: AssetImage(
+                                                            "assets/images/icons/default_meal.png",
+                                                          ),
+                                                          height: 43,
+                                                          width: 19,
+                                                        ),
+                                                        const Text(
+                                                          "클릭하여 식사를 기록해 보세요",
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff9397A4),
+                                                            fontSize: 14,
+                                                          ),
+                                                        )
+                                                      ],
                                               )),
                                         ),
                                         Positioned(
@@ -569,6 +606,9 @@ class _MealScreenState extends State<MealScreen> {
                                   onTap: () async {
                                     final selectedImage = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
+                                    setState(() {
+                                      isDinnerLoading = true; // 로딩 시작
+                                    });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(selectedImage);
@@ -579,9 +619,13 @@ class _MealScreenState extends State<MealScreen> {
                                       );
                                       setState(() {
                                         containsDinner = !containsDinner;
+                                        isDinnerLoading = false; // 로딩 완료
                                       });
                                     } else {
                                       print('No image selected.');
+                                      setState(() {
+                                        isDinnerLoading = false; // 로딩 완료
+                                      });
                                     }
                                   },
                                   child: Container(
@@ -597,25 +641,36 @@ class _MealScreenState extends State<MealScreen> {
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              child: const Column(
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
-                                                  Image(
-                                                    image: AssetImage(
-                                                      "assets/images/icons/default_meal.png",
-                                                    ),
-                                                    height: 43,
-                                                    width: 19,
-                                                  ),
-                                                  Text(
-                                                    "클릭하여 식사를 기록해 보세요",
-                                                    style: TextStyle(
-                                                      color: Color(0xff9397A4),
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                ],
+                                                children: isDinnerLoading
+                                                    ? [
+                                                        const Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              primaryColor,
+                                                          color: Colors.white,
+                                                        ))
+                                                      ]
+                                                    : [
+                                                        const Image(
+                                                          image: AssetImage(
+                                                            "assets/images/icons/default_meal.png",
+                                                          ),
+                                                          height: 43,
+                                                          width: 19,
+                                                        ),
+                                                        const Text(
+                                                          "클릭하여 식사를 기록해 보세요",
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff9397A4),
+                                                            fontSize: 14,
+                                                          ),
+                                                        )
+                                                      ],
                                               )),
                                         ),
                                         Positioned(
