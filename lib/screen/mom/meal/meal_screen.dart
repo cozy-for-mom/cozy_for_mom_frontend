@@ -35,7 +35,6 @@ class _MealScreenState extends State<MealScreen> {
         Provider.of<MealApiService>(context, listen: true);
     ImageApiService imageApiService = ImageApiService();
     final globalData = Provider.of<MyDataModel>(context, listen: false);
-    DateFormat dateFormat = DateFormat('aa hh:mm');
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     Future<dynamic> showSelectModal(int id, String mealType) {
@@ -286,23 +285,6 @@ class _MealScreenState extends State<MealScreen> {
                                           ),
                                         ),
                                       ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left: 20,
-                                        child: Text(
-                                          dateFormat.format(pregnantMeals
-                                              .firstWhere((meal) =>
-                                                  meal.mealType ==
-                                                  MealType.breakfast.korName
-                                                      .substring(0, 2))
-                                              .dateTime),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ))
                               : InkWell(
@@ -450,23 +432,6 @@ class _MealScreenState extends State<MealScreen> {
                                           ),
                                         ),
                                       ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left: 20,
-                                        child: Text(
-                                          dateFormat.format(pregnantMeals
-                                              .firstWhere((meal) =>
-                                                  meal.mealType ==
-                                                  MealType.lunch.korName
-                                                      .substring(0, 2))
-                                              .dateTime),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ))
                               : InkWell(
@@ -610,23 +575,6 @@ class _MealScreenState extends State<MealScreen> {
                                                 color: primaryColor,
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left: 20,
-                                        child: Text(
-                                          dateFormat.format(pregnantMeals
-                                              .firstWhere((meal) =>
-                                                  meal.mealType ==
-                                                  MealType.dinner.korName
-                                                      .substring(0, 2))
-                                              .dateTime),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
