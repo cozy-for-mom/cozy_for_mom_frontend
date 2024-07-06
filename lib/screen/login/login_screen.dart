@@ -282,7 +282,6 @@ class _LoginScreenState extends State<LoginScreen> {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      // print(res.identityToken);
       print('authorizationCode >>>>>>>> ${res.authorizationCode}');
 
       // 애플 인증 코드 저장
