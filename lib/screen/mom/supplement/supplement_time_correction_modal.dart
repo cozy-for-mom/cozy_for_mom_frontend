@@ -196,8 +196,7 @@ class _SupplementModalState extends State<SupplementModal> {
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
                       String time;
                       currentTime = DateFormat('yyyy-MM-dd')
                           .format(globalData.selectedDate); // TODO 캘린더 연동
@@ -216,8 +215,14 @@ class _SupplementModalState extends State<SupplementModal> {
 
                       time =
                           '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
-                      supplementApi.modifySupplementIntake(
+
+                      await supplementApi.modifySupplementIntake(
                           widget.id, widget.name, time);
+
+                      setState(() {
+                        Navigator.pop(context);
+                        // 수정된 시간을 반영하여 상태를 업데이트
+                      });
                     },
                     child: const Text(
                       '등록하기',

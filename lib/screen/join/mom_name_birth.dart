@@ -5,7 +5,8 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 
 class MomNameBirthInputScreen extends StatefulWidget {
-  const MomNameBirthInputScreen({super.key});
+  final Function(bool) updateValidity;
+  const MomNameBirthInputScreen({super.key, required this.updateValidity});
 
   @override
   State<MomNameBirthInputScreen> createState() =>
@@ -88,6 +89,8 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                       setState(() {
                         joinInputData.setName(value);
                       });
+                      widget.updateValidity(nameController.text.isNotEmpty &
+                          birthController.text.isNotEmpty);
                     },
                   )),
             ],
@@ -139,13 +142,15 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     onChanged: (value) {
                       setState(() {
                         String parsedDate;
-                        if (value.length == 8) {
+                        if (value.length == 8 && _isNumeric(value)) {
                           parsedDate = DateFormat('yyyy.MM.dd')
                               .format(DateTime.parse(value));
                         } else {
                           parsedDate = value;
                         }
                         joinInputData.birth = parsedDate;
+                        widget.updateValidity(nameController.text.isNotEmpty &
+                            birthController.text.isNotEmpty);
                       });
                     },
                   )),
@@ -155,4 +160,9 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
       ],
     );
   }
+}
+
+bool _isNumeric(String value) {
+  final numericRegex = RegExp(r'^[0-9]+$');
+  return numericRegex.hasMatch(value);
 }

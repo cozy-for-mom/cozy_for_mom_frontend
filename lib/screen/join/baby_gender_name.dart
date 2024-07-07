@@ -6,7 +6,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
 class BabyGenderScreen extends StatefulWidget {
-  const BabyGenderScreen({super.key});
+  final Function(bool) updateValidity;
+  const BabyGenderScreen({super.key, required this.updateValidity});
 
   @override
   State<BabyGenderScreen> createState() => _BabyGenderScreenState();
@@ -31,6 +32,17 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
       birthNameControllers.add(TextEditingController());
       genders.add('');
     });
+  }
+
+  void _validateFields() {
+    bool allFieldsValid = true;
+    for (int i = 0; i < birthNameControllers.length; i++) {
+      if (birthNameControllers[i].text.isEmpty || genders[i].isEmpty) {
+        allFieldsValid = false;
+        break;
+      }
+    }
+    widget.updateValidity(allFieldsValid);
   }
 
   @override
@@ -133,6 +145,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                   onChanged: (value) {
                                     setState(() {
                                       joinInputData.setBirthname(index, value);
+                                      _validateFields();
                                     });
                                   },
                                 )),
@@ -187,6 +200,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                     genders[currentGenderIndex] = g;
                                     joinInputData.setGender(
                                         currentGenderIndex, g);
+                                    _validateFields();
                                   });
                                 },
                                 buttonStyleData: ButtonStyleData(

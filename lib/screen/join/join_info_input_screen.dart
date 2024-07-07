@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';
@@ -30,6 +31,50 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   int _currentPage = 0;
   final int _totalPage = 6;
   final tokenManager = TokenManager.TokenManager();
+  final bool _isEmailValid = true;
+  bool _isNameAndBirthValid = false;
+  bool _isNicknameValid = false;
+  bool _isDueAtAndLastPeriodAtValid = false;
+  final bool _isFetalInfoValid = true;
+  bool _isBabyNameAndGenderValid = false;
+
+  void _updateNameAndBirthValidity(bool isValid) {
+    setState(() {
+      _isNameAndBirthValid = isValid;
+    });
+  }
+
+  void _updateNicknameValidity(bool isValid) {
+    setState(() {
+      _isNicknameValid = isValid;
+    });
+  }
+
+  void _updateDueAtAndLastPeriodAtValidity(bool isValid) {
+    setState(() {
+      _isDueAtAndLastPeriodAtValid = isValid;
+    });
+  }
+
+  void _updateBabyNameAndGenderValidity(bool isValid) {
+    setState(() {
+      _isBabyNameAndGenderValid = isValid;
+    });
+  }
+
+  void _nextPage() {
+    if ((_currentPage == 0 && _isEmailValid) ||
+        (_currentPage == 1 && _isNameAndBirthValid) ||
+        (_currentPage == 2 && _isNicknameValid) ||
+        (_currentPage == 3 && _isDueAtAndLastPeriodAtValid) ||
+        (_currentPage == 4 && _isFetalInfoValid) ||
+        (_currentPage == 5 && _isBabyNameAndGenderValid)) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +111,15 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
           InkWell(
             onTap: () async {
               if (_currentPage < _totalPage - 1) {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                );
+                ((_currentPage == 0 && _isEmailValid) ||
+                        (_currentPage == 1 && _isNameAndBirthValid) ||
+                        (_currentPage == 2 &&
+                            _isNicknameValid) || // TODO 닉네임 활성화 수정 필요
+                        (_currentPage == 3 && _isDueAtAndLastPeriodAtValid) ||
+                        (_currentPage == 4 && _isFetalInfoValid) ||
+                        (_currentPage == 5 && _isBabyNameAndGenderValid))
+                    ? _nextPage()
+                    : null;
               } else {
                 print('마지막 페이지입니다.');
                 UserInfo userInfo = UserInfo(
@@ -102,21 +152,26 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                           builder: (context) => const MainScreen()),
                     );
                   } else {
-                    DeleteCompleteAlertModal.showDeleteCompleteDialog(
-                        context, '회원가입을 실패했습니다.');
+                    print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
                   }
                 } catch (e) {
                   print('회원가입 중 에러 발생: $e');
-                  DeleteCompleteAlertModal.showDeleteCompleteDialog(
-                      context, '회원가입 중 에러가 발생했습니다.');
                 }
               }
             },
             child: Padding(
               padding: EdgeInsets.only(right: screenWidth / 19),
-              child: const Text('다음',
+              child: Text('다음',
                   style: TextStyle(
-                      color: navOffTextColor, // TODO 텍스트 조건 체크 후, 활성화
+                      color: ((_currentPage == 0 && _isEmailValid) ||
+                              (_currentPage == 1 && _isNameAndBirthValid) ||
+                              (_currentPage == 2 && _isNicknameValid) ||
+                              (_currentPage == 3 &&
+                                  _isDueAtAndLastPeriodAtValid) ||
+                              (_currentPage == 4 && _isFetalInfoValid) ||
+                              (_currentPage == 5 && _isBabyNameAndGenderValid))
+                          ? Colors.black
+                          : navOffTextColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 18)),
             ),
@@ -147,13 +202,16 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                   _currentPage = page;
                 });
               },
-              children: const [
-                MomEmailInputScreen(),
-                MomNameBirthInputScreen(),
-                MomNicknameInputScreen(),
-                BabyDuedateInputScreen(),
-                BabyFetalInfoScreen(),
-                BabyGenderScreen(),
+              children: [
+                const MomEmailInputScreen(),
+                MomNameBirthInputScreen(
+                    updateValidity: _updateNameAndBirthValidity),
+                MomNicknameInputScreen(updateValidity: _updateNicknameValidity),
+                BabyDuedateInputScreen(
+                    updateValidity: _updateDueAtAndLastPeriodAtValidity),
+                const BabyFetalInfoScreen(),
+                BabyGenderScreen(
+                    updateValidity: _updateBabyNameAndGenderValidity),
               ],
             ),
           ),

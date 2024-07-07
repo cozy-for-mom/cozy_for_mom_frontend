@@ -113,7 +113,6 @@ flutter:
     - assets/images/icons/submit_inactive.png
     - assets/images/icons/submit_active.png
     - assets/images/baby.png
-    - assets/images/dark_sky.png
     - assets/images/icons/alert.png
     - assets/images/icons/take_on.png
     - assets/images/icons/take_off.png
@@ -127,7 +126,6 @@ flutter:
     - assets/images/icons/cozylog.png
     - assets/images/icons/diary_cozylog.png
     - assets/images/babyhome_dark.png
-    - assets/images/babyhome_dark_n.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
     - assets/images/icons/comment.png
@@ -150,6 +148,10 @@ flutter:
     - assets/images/icons/logout_agree_active.png
     - assets/images/icons/logout_agree_inactive.png
     - assets/images/icons/babyProfile.png
+    - assets/images/home_morning.png
+    - assets/images/home_afternoon.png
+    - assets/images/home_evening.png
+    - assets/images/baby_illust/
 
     - assets/test_json/supplement.json
     - assets/test_json/weight.json
@@ -164,7 +166,7 @@ flutter:
     - assets/images/login_cozy_image.png
     - assets/images/login_confetti_image.png
     - assets/images/login_group_image.png
-    # - assets/images/icons/diary_inactive.png
+    - assets/images/icons/diary_inactive.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

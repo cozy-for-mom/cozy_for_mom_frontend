@@ -17,21 +17,25 @@ class SupplementCard extends StatefulWidget {
   int realCount;
   List<DateTime> takeTimes;
   List<int> recordIds;
+  final Function(int) onDelete;
 
-  SupplementCard(
-      {super.key,
-      required this.supplementId,
-      required this.name,
-      required this.targetCount,
-      required this.realCount,
-      required this.takeTimes,
-      required this.recordIds});
+  SupplementCard({
+    super.key,
+    required this.supplementId,
+    required this.name,
+    required this.targetCount,
+    required this.realCount,
+    required this.takeTimes,
+    required this.recordIds,
+    required this.onDelete,
+  });
 
   @override
   _SupplementCardState createState() => _SupplementCardState();
 }
 
 class _SupplementCardState extends State<SupplementCard> {
+  final SlidableController _slidableController = SlidableController();
   // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
   double calculateCardHeight(int itemCount) {
     double buttonHeight = 36;
@@ -54,10 +58,12 @@ class _SupplementCardState extends State<SupplementCard> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: Slidable(
+          controller: _slidableController,
           actionPane: const SlidableDrawerActionPane(),
           secondaryActions: [
             IconSlideAction(
               color: Colors.transparent,
+              foregroundColor: Colors.transparent,
               iconWidget: Container(
                 width: 120,
                 decoration: const BoxDecoration(
@@ -75,8 +81,15 @@ class _SupplementCardState extends State<SupplementCard> {
                         return DeleteModal(
                           text: '등록된 영양제를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                           title: '영양제가',
-                          tapFunc: () => supplementApi
-                              .deleteSupplement(widget.supplementId),
+                          tapFunc: () async {
+                            await supplementApi
+                                .deleteSupplement(widget.supplementId);
+                            widget.onDelete(
+                                widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
+                            setState(() {
+                              _slidableController.activeState?.close();
+                            });
+                          },
                         );
                       },
                     );
@@ -103,61 +116,64 @@ class _SupplementCardState extends State<SupplementCard> {
               ),
             ),
           ],
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            width: screenWidth - 40,
-            height: calculateCardHeight(widget.targetCount),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(children: [
-                    Image(
-                        image: AssetImage(
-                          widget.targetCount == widget.realCount
-                              ? 'assets/images/icons/take_on.png'
-                              : 'assets/images/icons/take_off.png',
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              color: contentBoxTwoColor,
+              width: screenWidth - 40,
+              height: calculateCardHeight(widget.targetCount),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      Image(
+                          image: AssetImage(
+                            widget.targetCount == widget.realCount
+                                ? 'assets/images/icons/take_on.png'
+                                : 'assets/images/icons/take_off.png',
+                          ),
+                          width: 20,
+                          height: 20),
+                      const SizedBox(width: 10),
+                      Text(widget.name,
+                          style: const TextStyle(
+                              color: afterInputColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18)),
+                      const SizedBox(width: 7),
+                      Container(
+                        width: 57,
+                        height: 22,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: const Color(0xffFEEEEE),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Text(
+                          '하루 ${widget.targetCount}회',
+                          style: const TextStyle(
+                              color: Color(0xffFF9797),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
                         ),
-                        width: 20,
-                        height: 20),
-                    const SizedBox(width: 10),
-                    Text(widget.name,
-                        style: const TextStyle(
-                            color: afterInputColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18)),
-                    const SizedBox(width: 7),
-                    Container(
-                      width: 57,
-                      height: 22,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffFEEEEE),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Text(
-                        '하루 ${widget.targetCount}회',
-                        style: const TextStyle(
-                            color: Color(0xffFF9797),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12),
-                      ),
-                    )
-                  ]),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        widget.targetCount,
-                        (index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: InkWell(
-                            onTap: widget.realCount > index
-                                ? () {
-                                    int id = widget.recordIds[index];
-                                    showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return SelectBottomModal(
+                      )
+                    ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          widget.targetCount,
+                          (index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: InkWell(
+                              onTap: widget.realCount > index
+                                  ? () {
+                                      int id = widget.recordIds[index];
+                                      showModalBottomSheet(
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return SelectBottomModal(
                                               selec1: '시간 수정하기',
                                               selec2: '기록 삭제하기',
                                               tap1: () {
@@ -169,61 +185,80 @@ class _SupplementCardState extends State<SupplementCard> {
                                                         id: id,
                                                         name: widget.name);
                                                   },
-                                                );
+                                                ).then((_) {
+                                                  setState(() {
+                                                    // 모달이 닫힌 후 상태 업데이트
+                                                  });
+                                                });
                                               },
                                               tap2: () {
                                                 Navigator.pop(context);
                                                 showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return DeleteModal(
-                                                        text:
-                                                            '기록된 시간을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                                                        title: '기록이',
-                                                        tapFunc: () => supplementApi
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return DeleteModal(
+                                                      text:
+                                                          '기록된 시간을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                                      title: '기록이',
+                                                      tapFunc: () async {
+                                                        await supplementApi
                                                             .deleteSupplementIntake(
-                                                                id),
-                                                      );
-                                                    });
-                                              });
-                                        });
-                                  }
-                                : () {
-                                    setState(() {
+                                                                id);
+                                                        setState(() {
+                                                          widget.realCount--;
+                                                          widget.takeTimes
+                                                              .removeAt(index);
+                                                          widget.recordIds
+                                                              .removeAt(index);
+                                                        });
+                                                      },
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          });
+                                    }
+                                  : () async {
                                       currentTime = DateTime.parse(
-                                          '${globalData.selectedDate.toIso8601String().split('T')[0]} ${DateTime.now().toIso8601String().split('T')[1].substring(0, 12)}');
-                                      // TODO 아래 2줄 : 영양제 섭취 기록 시, 화면 리렌더링하는 방법 찾으면 제거해도 되는 코드
-                                      widget.realCount++;
-                                      widget.takeTimes.add(currentTime);
-                                      supplementApi.recordSupplementIntake(
-                                          widget.name, currentTime);
-                                    });
-                                  },
-                            child: Container(
-                              width: 106,
-                              height: 36,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: widget.realCount > index
-                                      ? primaryColor
-                                      : offButtonColor,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                  widget.realCount > index
-                                      ? DateFormat('HH:mm')
-                                          .format(sortedTakeTimes[index])
-                                      : '먹었어요',
-                                  style: TextStyle(
-                                      color: widget.realCount > index
-                                          ? Colors.white
-                                          : offButtonTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16)),
+                                        '${globalData.selectedDate.toIso8601String().split('T')[0]} ${DateTime.now().toIso8601String().split('T')[1].substring(0, 12)}',
+                                      );
+
+                                      int intakeId = await supplementApi
+                                          .recordSupplementIntake(
+                                              widget.name, currentTime);
+                                      setState(() {
+                                        widget.realCount++;
+                                        widget.takeTimes.add(currentTime);
+                                        widget.recordIds.add(intakeId);
+                                      });
+                                    },
+                              child: Container(
+                                width: 106,
+                                height: 36,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: widget.realCount > index
+                                        ? primaryColor
+                                        : offButtonColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                    widget.realCount > index
+                                        ? DateFormat('HH:mm')
+                                            .format(sortedTakeTimes[index])
+                                        : '먹었어요',
+                                    style: TextStyle(
+                                        color: widget.realCount > index
+                                            ? Colors.white
+                                            : offButtonTextColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16)),
+                              ),
                             ),
                           ),
-                        ),
-                      )),
-                ]),
+                        )),
+                  ]),
+            ),
           ),
         ),
       ),

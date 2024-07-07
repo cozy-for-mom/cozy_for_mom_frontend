@@ -23,6 +23,8 @@ class SupplementRecord extends StatefulWidget {
 class _SupplementRecordState extends State<SupplementRecord> {
   late SupplementApiService momSupplementViewModel;
   late List<PregnantSupplement> pregnantSupplements;
+  late List<int> supplementIds;
+  late List<int> supplementIntakes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,25 @@ class _SupplementRecordState extends State<SupplementRecord> {
         Provider.of<SupplementApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    void addSupplement(int id) {
+      setState(() {
+        supplementIds.add(id);
+      });
+    }
+
+    void updateSupplementIntake(int id) {
+      setState(() {
+        supplementIntakes.remove(id);
+        supplementIntakes.add(id);
+      });
+    }
+
+    void deleteSupplement(int id) {
+      setState(() {
+        supplementIds.remove(id);
+      });
+    }
 
     return Scaffold(
         backgroundColor: backgroundColor,
@@ -42,11 +63,15 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   if (snapshot.hasData) {
                     pregnantSupplements =
                         snapshot.data! as List<PregnantSupplement>;
+                    supplementIds = pregnantSupplements
+                        .map((supplement) => supplement.supplementId)
+                        .toList();
                   }
                   if (!snapshot.hasData) {
                     return const Center(
                         child: CircularProgressIndicator(
-                      backgroundColor: Colors.lightBlueAccent, // 로딩화면(circle)
+                      backgroundColor: primaryColor,
+                      color: Colors.white,
                     ));
                   }
                   return Stack(
@@ -83,9 +108,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         icon: const Icon(Icons.expand_more),
                                         onPressed: () {
                                           showModalBottomSheet(
-                                            backgroundColor:
-                                                contentBoxTwoColor.withOpacity(
-                                                    0.0), // 팝업창 자체 색 : 투명
+                                            backgroundColor: Colors.transparent,
+                                            elevation: 0.0,
                                             context: context,
                                             builder: (context) {
                                               return const MonthCalendarModal();
@@ -162,6 +186,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         recordIds: supplement.records
                                             .map((record) => record.id)
                                             .toList(),
+                                        onDelete: deleteSupplement,
                                       ));
                                 }).toList(),
                         ),
@@ -175,7 +200,9 @@ class _SupplementRecordState extends State<SupplementRecord> {
           showDialog(
             context: context,
             builder: (context) {
-              return SupplementRegisterModal();
+              return SupplementRegisterModal(
+                onRegister: addSupplement,
+              );
             },
           );
         }));

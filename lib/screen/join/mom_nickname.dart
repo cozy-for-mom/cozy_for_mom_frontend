@@ -1,24 +1,37 @@
+import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
+import 'dart:async';
 
 class MomNicknameInputScreen extends StatefulWidget {
-  const MomNicknameInputScreen({super.key});
+  final Function(bool) updateValidity;
+  const MomNicknameInputScreen({super.key, required this.updateValidity});
 
   @override
   State<MomNicknameInputScreen> createState() => _MomNicknameInputScreenState();
 }
 
 class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
-  TextEditingController textController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  bool _isNicknameLengthNotExceeded = false;
+  bool _isNicknameNotDuplicated = false;
   bool _isNicknameValid = false;
-  bool _isInputValid = false;
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _nicknameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final joinInputData = Provider.of<JoinInputData>(context);
-    textController.text = joinInputData.nickname;
+    _nicknameController.text = joinInputData.nickname;
     return Stack(
       children: [
         const Positioned(
@@ -51,11 +64,11 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                   color: contentBoxTwoColor,
                   borderRadius: BorderRadius.circular(10)),
               child: TextFormField(
-                controller: textController,
+                controller: _nicknameController,
                 keyboardType: TextInputType.text,
                 textAlign: TextAlign.start,
                 textAlignVertical: TextAlignVertical.center,
-                maxLength: 20,
+                maxLength: 9,
                 cursorColor: primaryColor,
                 cursorHeight: 14,
                 cursorWidth: 1.2,
@@ -72,7 +85,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                       fontWeight: FontWeight.w400,
                       fontSize: 14),
                   counterText: '',
-                  suffixIcon: _isInputValid
+                  suffixIcon: _isNicknameValid
                       ? SizedBox(
                           width: 42,
                           child: Row(
@@ -82,7 +95,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                                 onTap: () {
                                   setState(() {
                                     joinInputData.setNickname('');
-                                    _isInputValid = !_isInputValid;
+                                    _isNicknameValid = !_isNicknameValid;
                                   });
                                 },
                                 child: const Image(
@@ -93,7 +106,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                                 ),
                               ),
                               Image(
-                                image: AssetImage(_isNicknameValid
+                                image: AssetImage(_isNicknameLengthNotExceeded
                                     ? 'assets/images/icons/pass.png'
                                     : 'assets/images/icons/unpass.png'),
                                 width: 18,
@@ -105,28 +118,49 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                       : null,
                 ),
                 onChanged: (value) {
-                  setState(() {
-                    joinInputData.setNickname(value);
-                    _isNicknameValid = value.length <= 8;
-                    _isInputValid = true;
-                    if (value.isEmpty) {
-                      _isInputValid = false;
-                    }
-                  });
+                  joinInputData.setNickname(value);
+                  if (_nicknameController.text.isEmpty) {
+                    setState(() {
+                      _isNicknameValid = false;
+                    });
+                  } else {
+                    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+                    _debounce =
+                        Timer(const Duration(milliseconds: 200), () async {
+                      if (_nicknameController.text.isEmpty) {
+                        return; // 필드가 비어있다면, 더 이상 진행하지 않는다.
+                      }
+
+                      _isNicknameNotDuplicated =
+                          await JoinApiService().nicknameDuplicateCheck(value);
+                      setState(() {
+                        _isNicknameLengthNotExceeded = value.length <= 8;
+                        _isNicknameValid = true;
+                      });
+                    });
+                  }
+                  widget.updateValidity(_isNicknameLengthNotExceeded &
+                      _isNicknameNotDuplicated &
+                      _isNicknameValid);
                 },
               )),
         ),
-        _isInputValid
+        _isNicknameValid
             ? Positioned(
                 top: 239,
                 left: 39,
                 child: Text(
-                  _isNicknameValid
-                      ? '사용 가능한 닉네임입니다.'
-                      : '닉네임은 최대 8자까지 입력이 가능해요.', // TODO 닉네임 중복 체크
+                  _isNicknameNotDuplicated
+                      ? _isNicknameLengthNotExceeded
+                          ? '사용 가능한 닉네임입니다.'
+                          : '닉네임은 최대 8자까지 입력이 가능해요.'
+                      : '이미 사용중인 닉네임입니다.',
                   style: TextStyle(
-                      color:
-                          _isNicknameValid ? primaryColor : deleteButtonColor,
+                      color: !_isNicknameNotDuplicated ||
+                              !_isNicknameLengthNotExceeded
+                          ? deleteButtonColor
+                          : primaryColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 14),
                 ))

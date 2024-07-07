@@ -79,10 +79,7 @@ class _MyCozylogState extends State<MyCozylog> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CozylogMain()));
+                Navigator.of(context).pop();
               },
             ),
             title: const Text(
