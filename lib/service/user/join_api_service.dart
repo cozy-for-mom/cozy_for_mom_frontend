@@ -49,4 +49,19 @@ class JoinApiService extends ChangeNotifier {
       throw Exception('닉네임 중복 확인 실패');
     }
   }
+
+  Future<bool> emailDuplicateCheck(String email) async {
+    final url = Uri.parse('$baseUrl/authenticate/email');
+    final data = {'email': email};
+    final headers = await getHeaders();
+    final Response response =
+        await post(url, headers: headers, body: jsonEncode(data));
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 409) {
+      return false;
+    } else {
+      throw Exception('이메일 중복 확인 실패');
+    }
+  }
 }

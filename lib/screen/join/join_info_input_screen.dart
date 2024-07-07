@@ -31,12 +31,18 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   int _currentPage = 0;
   final int _totalPage = 6;
   final tokenManager = TokenManager.TokenManager();
-  final bool _isEmailValid = true;
+  bool _isEmailValid = false;
   bool _isNameAndBirthValid = false;
   bool _isNicknameValid = false;
   bool _isDueAtAndLastPeriodAtValid = false;
   final bool _isFetalInfoValid = true;
   bool _isBabyNameAndGenderValid = false;
+
+  void _updateEmailValidity(bool isValid) {
+    setState(() {
+      _isEmailValid = isValid;
+    });
+  }
 
   void _updateNameAndBirthValidity(bool isValid) {
     setState(() {
@@ -203,7 +209,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 });
               },
               children: [
-                const MomEmailInputScreen(),
+                MomEmailInputScreen(updateValidity: _updateEmailValidity),
                 MomNameBirthInputScreen(
                     updateValidity: _updateNameAndBirthValidity),
                 MomNicknameInputScreen(updateValidity: _updateNicknameValidity),
