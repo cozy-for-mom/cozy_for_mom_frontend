@@ -7,13 +7,8 @@ import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:cozy_for_mom_frontend/screen/tab/community/image_text_card.dart';
+import 'package:cozy_for_mom_frontend/service/image_api.dart';
 
-void main() {
-  // TODO 네비게이션바 구현 및 연동 후, 삭제
-  runApp(const MaterialApp(
-    home: CozylogRecordPage(),
-  ));
-}
 
 class CozylogRecordPage extends StatefulWidget {
   const CozylogRecordPage({super.key});
@@ -26,12 +21,29 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
   CozyLogApiService cozyLogApiService = CozyLogApiService();
   Color bottomLineColor = mainLineColor;
   TextEditingController titleController = TextEditingController();
+  ScrollController scrollController = ScrollController();
   TextEditingController contentController = TextEditingController();
+  ImageApiService imageApiService = ImageApiService();
+  FocusNode focusNode = FocusNode();
+
   bool isRegisterButtonEnabled() {
     return titleController.text.isNotEmpty || contentController.text.isNotEmpty;
   }
+
   CozyLogModeType mode = CozyLogModeType.public;
   File? selectedImage;
+  List<CozyLogImage> selectedImages = [];
+
+   void _scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -39,10 +51,60 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
     Navigator.of(context).pop();
 
     if (pickedFile != null) {
-      setState(() {
-        selectedImage = File(pickedFile.path);
+      imageApiService.uploadImage(pickedFile).then((value) => {
+         setState(() {
+          selectedImages.add(CozyLogImage(
+            imageId: null, // Set appropriate ID if needed
+            imageUrl: value!, // Use path as URL for simplicity
+            description: "",
+          ));
+        })
       });
     }
+  }
+
+ void _updateDescription(int index, String description) {
+    setState(() {
+      selectedImages[index].description = description;
+    });
+  }
+
+  void _moveUp(int index) {
+    if (index > 0) {
+        final tempImages = selectedImages;
+        final temp = selectedImages[index - 1];
+        tempImages[index - 1] = tempImages[index];
+        tempImages[index] = temp;
+
+      setState(() {
+        selectedImages = tempImages.map((e) => CozyLogImage(imageId: e.imageId, imageUrl: e.imageUrl, description: e.description)).toList();
+      });
+    }
+  }
+
+  void _moveDown(int index) {
+    if (index < selectedImages.length - 1) {
+        final tempImages = selectedImages;
+        final temp = selectedImages[index + 1];
+        tempImages[index + 1] = tempImages[index];
+        tempImages[index] = temp;
+
+      setState(() {
+        selectedImages = tempImages.map((e) => CozyLogImage(imageId: e.imageId, imageUrl: e.imageUrl, description: e.description)).toList();
+      });
+    }
+  }
+
+  void _deleteImage(int index) {
+    setState(() {
+      selectedImages.removeAt(index);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    contentController.addListener(_scrollToBottom);
   }
 
   @override
@@ -52,7 +114,10 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
         child: SizedBox(
             height: screenHeight,
             child: Stack(
@@ -154,11 +219,13 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                           Container(
                             padding: const EdgeInsets.only(bottom: 10),
                             width: screenWidth - 80,
-                            height: (screenHeight - 360 - 40 - 36 - 70) /
-                                2, // TODO 텍스트필드와 이미지 카드 개수 및 배치 논의 후, 수정
+                            height: selectedImages.isNotEmpty  ?  (screenHeight - 360 - 40 - 36 - 70) /
+                                2 : (screenHeight - 360 - 40 - 70 ), // TODO 텍스트필드와 이미지 카드 개수 및 배치 논의 후, 수정
                             child: SingleChildScrollView(
+                              controller: scrollController,
                               scrollDirection: Axis.vertical,
                               child: TextFormField(
+                                focusNode: focusNode,
                                 controller: contentController,
                                 textAlignVertical: TextAlignVertical.top,
                                 textAlign: TextAlign.start,
@@ -189,12 +256,22 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                               ),
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: selectedImage != null
-                                ? ImageTextCard(image: selectedImage)
-                                : null,
-                          ),
+                          ...selectedImages.asMap().entries.map((entry) {
+                              int index = entry.key;
+                              CozyLogImage image = entry.value;
+                              return Column(
+                                children: [
+                                  ImageTextCard(
+                                    image: image,
+                                    onMoveUp: () => _moveUp(index),
+                                    onMoveDown: () => _moveDown(index),
+                                    onDelete: () => _deleteImage(index),
+                                    onDescriptionChanged: (description) => _updateDescription(index, description),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
+                              );
+                            }).toList(),
                           SizedBox(
                             width: 85,
                             child: Row(
@@ -206,13 +283,17 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                       context: context,
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) {
-                                        return SelectBottomModal(
-                                            selec1: '직접 찍기',
-                                            selec2: '앨범에서 선택',
-                                            tap1: () {
-                                              print('카메라 구현'); // TODO 카메라 연동 구현
-                                            },
-                                            tap2: _pickImage);
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                          child: SelectBottomModal(
+                                              selec1: '직접 찍기',
+                                              selec2: '앨범에서 선택',
+                                              tap1: () {
+                                                print('카메라 구현'); // TODO 카메라 연동 구현
+                                              },
+                                              tap2: _pickImage,
+                                            ),
+                                        );
                                       },
                                     );
                                   },
@@ -228,21 +309,24 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                       context: context,
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) {
-                                        return SelectBottomModal(
-                                          selec1: '공개',
-                                          selec2: '비공개',
-                                          tap1: () {
-                                            setState(() {
-                                              mode = CozyLogModeType.public;
-                                            });
-                                            Navigator.pop(context); 
-                                          },
-                                          tap2: () {
-                                            setState(() {
-                                              mode = CozyLogModeType.private;
-                                            });
-                                            Navigator.pop(context);
-                                          },
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                          child: SelectBottomModal(
+                                            selec1: '공개',
+                                            selec2: '비공개',
+                                            tap1: () {
+                                              setState(() {
+                                                mode = CozyLogModeType.public;
+                                              });
+                                              Navigator.pop(context); 
+                                            },
+                                            tap2: () {
+                                              setState(() {
+                                                mode = CozyLogModeType.private;
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                          ),
                                         );
                                       },
                                     );
@@ -264,7 +348,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                   left: 20,
                   child: InkWell(
                     onTap: () {
-                      cozyLogApiService.createCozyLog(titleController.text, contentController.text, [], mode)
+                      cozyLogApiService.createCozyLog(titleController.text, contentController.text, selectedImages, mode)
                        .then(
                                 (value) => {
                                   Navigator.push(

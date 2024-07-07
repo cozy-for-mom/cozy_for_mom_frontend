@@ -65,7 +65,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size(400, 60),
+          preferredSize: const Size(400, 80),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
