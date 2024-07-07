@@ -95,11 +95,15 @@ class CozyLogApiService {
   ) async {
     var urlString = '$baseUrl/cozy-log/search?size=$size';
     final headers = await getHeaders();
+
     if (lastId == null) {
       urlString += '&lastId=0';
     } else {
       urlString += '&lastId=$lastId';
     }
+
+    urlString += '&keyword=$keyword';
+
     var sortTypeString = 'LATELY';
     if (sortType == CozyLogSearchSortType.comment) {
       sortTypeString = 'COMMENT';
@@ -108,6 +112,9 @@ class CozyLogApiService {
     final url = Uri.parse(urlString);
     dynamic response;
     response = await get(url, headers: headers);
+
+    print(response.statusCode);
+    print(response.body);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
