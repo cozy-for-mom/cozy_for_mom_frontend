@@ -26,13 +26,35 @@ class _WeightRecordState extends State<WeightRecord> {
   late List<PregnantWeight> pregnantWeights;
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
-  Color unitTextColor = beforeInputColor;
+  bool _isWeightInitialized = false;
+  DateTime _lastCheckedDate = DateTime.now(); // 마지막으로 데이터를 로드한 날짜
 
-// 메모리 누수 방지 _ 메모리 해제에 사용되는 메서드 (자동호출)
+  // 데이터 로딩 로직을 처리합니다.
+  void _initializeData(DateTime selectedDate) {
+    if (!_isWeightInitialized || _lastCheckedDate != selectedDate) {
+      _lastCheckedDate = selectedDate; // 현재 처리 날짜를 업데이트
+      print('gg $selectedDate . $todayWeight');
+      // 데이터 로드 및 초기화 로직
+      if (todayWeight > 0) {
+        _weightController.text = todayWeight.toString();
+      } else {
+        if (pregnantWeights.isNotEmpty) {
+          _weightController.text = pregnantWeights.first.weight.toString();
+        } else {
+          _weightController.clear();
+        }
+      }
+      _isWeightInitialized = true;
+    }
+  }
+
   @override
-  void dispose() {
-    _weightController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeData(Provider.of<MyDataModel>(context, listen: true)
+          .selectedDate); // 초기 데이터 로드
+    });
   }
 
   @override
@@ -43,7 +65,12 @@ class _WeightRecordState extends State<WeightRecord> {
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
-          _isInitialized = false;
+          Future.delayed(Duration.zero, () {
+            if (_lastCheckedDate != globalData.selectedDate) {
+              _initializeData(globalData.selectedDate);
+            }
+          });
+          print('! ${globalData.selectedDate} . ${_weightController.text}');
           return FutureBuilder(
               future: momWeightViewModel.getWeights(globalData.selectedDate,
                   'daily'), // TODO daily/weekly/monthly 지정
@@ -56,13 +83,14 @@ class _WeightRecordState extends State<WeightRecord> {
                       ? const Duration(days: -1) // TODO default value
                       : DateTime.now()
                           .difference(DateTime.parse(data['lastRecordDate']));
-                  if (!_isInitialized &&
-                      todayWeight > 0 &&
-                      _weightController.text != todayWeight.toString()) {
-                    _weightController.text = todayWeight.toString();
-                    _isInitialized = true;
-                  }
-                  print('wt ${_weightController.text} tw $todayWeight');
+                  _isInitialized = todayWeight > 0 ? true : false;
+                  print('--------------------------------');
+
+                  pregnantWeights.map((data) {
+                    print('${data.dateTime} ${data.weight}');
+                  }).toList();
+                  print('--------------------------------');
+                  print('!! ${_weightController.text}');
                 }
                 if (!snapshot.hasData) {
                   return const Center(
@@ -77,10 +105,8 @@ class _WeightRecordState extends State<WeightRecord> {
                         top: 47,
                         width: screenWidth,
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Consumer<MyDataModel>(
-                              builder: (context, globalData, _) {
-                            return Row(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
@@ -133,9 +159,9 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   )));
                                     })
                               ],
-                            );
-                          }),
-                        )),
+                            )
+                            // }),
+                            )),
                     const Positioned(
                         top: 103,
                         left: 20,
@@ -190,8 +216,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                         controller: _weightController,
                                         keyboardType: TextInputType.number,
                                         cursorColor: primaryColor,
-                                        cursorWidth: 0.8,
-                                        cursorHeight: 26,
+                                        cursorWidth: 1,
+                                        cursorHeight: 28,
                                         decoration: const InputDecoration(
                                             contentPadding:
                                                 EdgeInsets.symmetric(
@@ -208,27 +234,33 @@ class _WeightRecordState extends State<WeightRecord> {
                                           color:
                                               _weightController.text.isNotEmpty
                                                   ? afterInputColor
-                                                  : unitTextColor,
+                                                  : beforeInputColor,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 28,
                                         ),
                                         onChanged: (text) {
                                           setState(() {
                                             if (text.isNotEmpty) {
-                                              unitTextColor = afterInputColor;
-                                            } else {
-                                              unitTextColor = beforeInputColor;
+                                              if (text.length ==
+                                                      5 && // 입력 형식을 따르지 않았을 경우, 디폴트 값 지정
+                                                  !text.contains('.')) {
+                                                _weightController.text =
+                                                    '999.9';
+                                              }
                                             }
                                           });
                                         },
-                                        onFieldSubmitted: (value) {
+                                        onFieldSubmitted: (value) async {
                                           _isInitialized
-                                              ? momWeightViewModel.modifyWeight(
-                                                  globalData.selectedDate,
-                                                  double.parse(value))
-                                              : momWeightViewModel.recordWeight(
-                                                  globalData.selectedDate,
-                                                  double.parse(value));
+                                              ? await momWeightViewModel
+                                                  .modifyWeight(
+                                                      globalData.selectedDate,
+                                                      double.parse(value))
+                                              : await momWeightViewModel
+                                                  .recordWeight(
+                                                      globalData.selectedDate,
+                                                      double.parse(value));
+                                          setState(() {});
                                         },
                                       ),
                                     ),
@@ -237,9 +269,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                       style: TextStyle(
                                           color:
                                               _weightController.text.isNotEmpty
-                                                  // todayWeight.toString()
                                                   ? afterInputColor
-                                                  : unitTextColor,
+                                                  : beforeInputColor,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 28),
                                     ),
