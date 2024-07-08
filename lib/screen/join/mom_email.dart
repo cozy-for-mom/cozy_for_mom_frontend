@@ -130,9 +130,10 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                                 ),
                               ),
                               Image(
-                                image: AssetImage(_isEmailValid
-                                    ? 'assets/images/icons/pass.png'
-                                    : 'assets/images/icons/unpass.png'),
+                                image: AssetImage(
+                                    _isEmailValid && _isEmailNotDuplicated
+                                        ? 'assets/images/icons/pass.png'
+                                        : 'assets/images/icons/unpass.png'),
                                 width: 18,
                                 height: 18,
                               ),

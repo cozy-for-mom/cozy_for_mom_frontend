@@ -106,9 +106,11 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                                 ),
                               ),
                               Image(
-                                image: AssetImage(_isNicknameLengthNotExceeded
-                                    ? 'assets/images/icons/pass.png'
-                                    : 'assets/images/icons/unpass.png'),
+                                image: AssetImage(
+                                    _isNicknameLengthNotExceeded &&
+                                            _isNicknameNotDuplicated
+                                        ? 'assets/images/icons/pass.png'
+                                        : 'assets/images/icons/unpass.png'),
                                 width: 18,
                                 height: 18,
                               ),
@@ -138,8 +140,9 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                       setState(() {
                         _isNicknameLengthNotExceeded = value.length <= 8;
                         _isNicknameValid = true;
-                        widget.updateValidity(
-                            _isNicknameLengthNotExceeded & _isNicknameValid);
+                        widget.updateValidity(_isNicknameLengthNotExceeded &
+                            _isNicknameValid &
+                            _isNicknameNotDuplicated);
                       });
                     });
                   }
