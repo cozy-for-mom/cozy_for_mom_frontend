@@ -4,7 +4,6 @@ import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
-import 'package:cozy_for_mom_frontend/model/baby_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

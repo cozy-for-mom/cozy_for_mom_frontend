@@ -18,6 +18,7 @@ class SupplementCard extends StatefulWidget {
   List<DateTime> takeTimes;
   List<int> recordIds;
   final Function(int) onDelete;
+  final Function(DateTime) onUpdate;
 
   SupplementCard({
     super.key,
@@ -28,6 +29,7 @@ class SupplementCard extends StatefulWidget {
     required this.takeTimes,
     required this.recordIds,
     required this.onDelete,
+    required this.onUpdate,
   });
 
   @override
@@ -182,13 +184,15 @@ class _SupplementCardState extends State<SupplementCard> {
                                                   context: context,
                                                   builder: (context) {
                                                     return SupplementModal(
-                                                        id: id,
-                                                        name: widget.name);
+                                                      id: id,
+                                                      name: widget.name,
+                                                    );
                                                   },
-                                                ).then((_) {
-                                                  setState(() {
-                                                    // 모달이 닫힌 후 상태 업데이트
-                                                  });
+                                                ).then((updatedData) {
+                                                  if (updatedData != null) {
+                                                    widget
+                                                        .onUpdate(updatedData);
+                                                  }
                                                 });
                                               },
                                               tap2: () {

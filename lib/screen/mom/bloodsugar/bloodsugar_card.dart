@@ -7,7 +7,6 @@ import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dar
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
 
 class BloodsugarCard extends StatefulWidget {
   final String time;
@@ -23,10 +22,11 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
   late Map<String, dynamic> data;
   late String type;
   late List<PregnantBloosdugar> pregnantBloodsugars;
-  bool _isChangedValue = false;
+  late int bloodsugarId;
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     BloodsugarApiService momBloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
@@ -51,7 +51,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
               child: Container(
                 padding: const EdgeInsets.only(
                     left: 20, right: 20, top: 20, bottom: 12),
-                width: 350,
+                width: screenWidth - 40,
                 height: 160,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +81,6 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                   bloodsugar.type == '${widget.time} $period')
                               .id
                           : -1;
-                      // globalState.bloodSugarData[widget.time + period] ?? '-';
                       return Column(
                         children: [
                           Row(
@@ -103,9 +102,16 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                 return BloodsugarModal(
                                                   time: widget.time,
                                                   period: period,
+                                                  bloodsugarValue: '',
                                                 );
                                               },
-                                            )
+                                            ).then((updatedData) {
+                                              if (updatedData != null) {
+                                                setState(() {
+                                                  bloodsugarId = updatedData;
+                                                });
+                                              }
+                                            })
                                           : showModalBottomSheet(
                                               backgroundColor:
                                                   Colors.transparent,
@@ -123,9 +129,19 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                             time: widget.time,
                                                             period: period,
                                                             id: id,
+                                                            bloodsugarValue:
+                                                                input,
                                                           );
                                                         },
-                                                      );
+                                                      ).then((updatedData) {
+                                                        if (updatedData !=
+                                                            null) {
+                                                          setState(() {
+                                                            bloodsugarId =
+                                                                updatedData;
+                                                          });
+                                                        }
+                                                      });
                                                     },
                                                     tap2: () {
                                                       Navigator.pop(context);
@@ -136,10 +152,14 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                                 text:
                                                                     '등록된 기록을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                                                                 title: '기록이',
-                                                                tapFunc: () =>
-                                                                    momBloodsugarViewModel
-                                                                        .deleteBloodsugar(
-                                                                            id));
+                                                                tapFunc:
+                                                                    () async {
+                                                                  await momBloodsugarViewModel
+                                                                      .deleteBloodsugar(
+                                                                          id);
+                                                                  setState(
+                                                                      () {});
+                                                                });
                                                           });
                                                     });
                                               });

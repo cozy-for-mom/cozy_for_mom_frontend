@@ -4,7 +4,6 @@ import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
-import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -84,13 +83,13 @@ class _WeightRecordState extends State<WeightRecord> {
                       : DateTime.now()
                           .difference(DateTime.parse(data['lastRecordDate']));
                   _isInitialized = todayWeight > 0 ? true : false;
-                  print('--------------------------------');
+                  // print('--------------------------------');
 
-                  pregnantWeights.map((data) {
-                    print('${data.dateTime} ${data.weight}');
-                  }).toList();
-                  print('--------------------------------');
-                  print('!! ${_weightController.text}');
+                  // pregnantWeights.map((data) {
+                  //   print('${data.dateTime} ${data.weight}');
+                  // }).toList();
+                  // print('--------------------------------');
+                  // print('!! ${_weightController.text}');
                 }
                 if (!snapshot.hasData) {
                   return const Center(
@@ -280,19 +279,11 @@ class _WeightRecordState extends State<WeightRecord> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 331,
                       left: 20,
                       child: TimeLineChart(
                         recordType: RecordType.weight,
-                        dataList: pregnantWeights.isEmpty
-                            ? [LineChartData('00.00', 0)] // 기본 데이터를 넣어서 에러 방지
-                            : pregnantWeights.map((data) {
-                                final formattedDate =
-                                    '${data.dateTime.substring(5, 7)}.${data.dateTime.substring(8)}';
-                                return LineChartData(
-                                    formattedDate, data.weight);
-                              }).toList(),
                       ),
                     ),
                   ],
