@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/tab_indicator_widget.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
 import 'package:flutter/material.dart';
@@ -67,75 +68,77 @@ class _TimeLineChartState extends State<TimeLineChart>
         Provider.of<BloodsugarApiService>(context, listen: true);
     WeightApiService weightPeriodViewModel =
         Provider.of<WeightApiService>(context, listen: true);
-    return FutureBuilder(
-        future: widget.recordType == RecordType.bloodsugar
-            ? bloodsugarPeriodViewModel.getPeriodBloodsugars(
-                DateTime.now(), type)
-            : weightPeriodViewModel.getWeights(DateTime.now(), type),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            data = snapshot.data!;
-            dataPerPeriod = (widget.recordType == RecordType.bloodsugar
-                    ? data['bloodsugars']
-                    : data['weightList']) ??
-                [];
-            dataList = [
-              if (dataPerPeriod.isNotEmpty)
-                ...(dataPerPeriod.map((data) {
-                  return LineChartData(
-                      DateTime.parse(data.endDate),
-                      widget.recordType == RecordType.bloodsugar
-                          ? data.averageLevel
-                          : data.weight);
-                }).toList())
-              else
-                LineChartData(DateTime.now(), 20)
-            ];
-          }
-          if (!snapshot.hasData) {
-            return const Center(
-                child: CircularProgressIndicator(
-              backgroundColor: primaryColor,
-              color: Colors.white,
-            ));
-          }
-          return Container(
-            width: 350,
-            height: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: Colors.white,
-            ),
-            child: DefaultTabController(
-              length: 3,
-              child: Column(
-                children: [
-                  TabBar(
-                      controller: _tabController,
-                      labelColor: Colors.black,
-                      indicatorColor: Colors.red,
-                      labelStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      unselectedLabelStyle: const TextStyle(
-                        fontSize: 16,
-                      ),
-                      tabs: const [
-                        Tab(text: "일간"),
-                        Tab(text: "주간"),
-                        Tab(text: "월간"),
-                      ],
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicator: CustomTabIndicator(color: primaryColor)),
-                  Expanded(
-                    child: _tabBarView(widget, dataList, type),
-                  )
-                ],
+    return Consumer<MyDataModel>(builder: (context, globalData, _) {
+      return FutureBuilder(
+          future: widget.recordType == RecordType.bloodsugar
+              ? bloodsugarPeriodViewModel.getPeriodBloodsugars(
+                  globalData.selectedDate, type)
+              : weightPeriodViewModel.getWeights(globalData.selectedDate, type),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              data = snapshot.data!;
+              dataPerPeriod = (widget.recordType == RecordType.bloodsugar
+                      ? data['bloodsugars']
+                      : data['weightList']) ??
+                  [];
+              dataList = [
+                if (dataPerPeriod.isNotEmpty)
+                  ...(dataPerPeriod.map((data) {
+                    return LineChartData(
+                        DateTime.parse(data.endDate),
+                        widget.recordType == RecordType.bloodsugar
+                            ? data.averageLevel
+                            : data.weight);
+                  }).toList())
+                else
+                  LineChartData(DateTime.now(), 20)
+              ];
+            }
+            if (!snapshot.hasData) {
+              return const Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: primaryColor,
+                color: Colors.white,
+              ));
+            }
+            return Container(
+              width: 350,
+              height: 400,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.white,
               ),
-            ),
-          );
-        });
+              child: DefaultTabController(
+                length: 3,
+                child: Column(
+                  children: [
+                    TabBar(
+                        controller: _tabController,
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.red,
+                        labelStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        tabs: const [
+                          Tab(text: "일간"),
+                          Tab(text: "주간"),
+                          Tab(text: "월간"),
+                        ],
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicator: CustomTabIndicator(color: primaryColor)),
+                    Expanded(
+                      child: _tabBarView(widget, dataList, type),
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+    });
   }
 }
 
