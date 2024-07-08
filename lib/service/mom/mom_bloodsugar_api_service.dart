@@ -42,8 +42,6 @@ class BloodsugarApiService extends ChangeNotifier {
       final url = Uri.parse(
           '$baseUrl/bloodsugar/period?date=$formattedDate&type=$type');
       Response res = await get(url, headers: headers);
-      // String jsonString = await rootBundle
-      //     .loadString('assets/test_json/bloodsugar_period.json');
 
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -58,6 +56,27 @@ class BloodsugarApiService extends ChangeNotifier {
           'type': periodType,
           'bloodsugars': bloodsugars,
         };
+      } else {
+        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+      }
+    } catch (e) {
+      // 에러 처리
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<double> getAvgBloodsugar(DateTime date) async {
+    try {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      final headers = await getHeaders();
+      final url =
+          Uri.parse('$baseUrl/bloodsugar/avg/postprandial?date=$formattedDate');
+      Response res = await get(url, headers: headers);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+        double avgBloodsugar = body['data']['avgBloodSugar'];
+        return avgBloodsugar;
       } else {
         throw Exception('HTTP 요청 실패: ${res.statusCode}');
       }
@@ -110,7 +129,6 @@ class BloodsugarApiService extends ChangeNotifier {
     }
   }
 
-  // TODO 영양제 섭취 기록 삭제 api 연동
   Future<void> deleteBloodsugar(int id) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     final headers = await getHeaders();
