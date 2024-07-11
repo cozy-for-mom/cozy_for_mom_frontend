@@ -20,24 +20,23 @@ class WeightRecord extends StatefulWidget {
 class _WeightRecordState extends State<WeightRecord> {
   late WeightApiService momWeightViewModel;
   late Map<String, dynamic> data;
-  late double todayWeight;
+  late double todayWeight = 0;
   late Duration lastRecordDate;
-  late List<PregnantWeight> pregnantWeights;
+  late List<PregnantWeight> pregnantWeights = [];
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
   bool _isWeightInitialized = false;
   DateTime _lastCheckedDate = DateTime.now(); // 마지막으로 데이터를 로드한 날짜
 
-  // 데이터 로딩 로직을 처리합니다.
-  void _initializeData(DateTime selectedDate) {
+  Future<void> _initializeData(DateTime selectedDate) async {
     if (!_isWeightInitialized || _lastCheckedDate != selectedDate) {
       _lastCheckedDate = selectedDate; // 현재 처리 날짜를 업데이트
-      print('gg $selectedDate . $todayWeight');
-      // 데이터 로드 및 초기화 로직
       if (todayWeight > 0) {
+        // 체중 기록 있는 경우
         _weightController.text = todayWeight.toString();
       } else {
         if (pregnantWeights.isNotEmpty) {
+          // 현재 날짜에 대한 기록 없지만 이전 날짜 기록 있는 경우
           _weightController.text = pregnantWeights.first.weight.toString();
         } else {
           _weightController.clear();
@@ -48,48 +47,30 @@ class _WeightRecordState extends State<WeightRecord> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeData(Provider.of<MyDataModel>(context, listen: true)
-          .selectedDate); // 초기 데이터 로드
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     WeightApiService momWeightViewModel =
-        Provider.of<WeightApiService>(context, listen: true);
+        Provider.of<WeightApiService>(context, listen: false);
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
-          Future.delayed(Duration.zero, () {
-            if (_lastCheckedDate != globalData.selectedDate) {
-              _initializeData(globalData.selectedDate);
-            }
-          });
-          print('! ${globalData.selectedDate} . ${_weightController.text}');
           return FutureBuilder(
               future: momWeightViewModel.getWeights(globalData.selectedDate,
-                  'daily'), // TODO daily/weekly/monthly 지정
+                  'daily'), // 조회 그래프가 아닌 선택한 날짜의 체중값을 위헤 호출하는 것이므로 daily로 픽스한다.
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  data = snapshot.data!;
-                  todayWeight = data['todayWeight'];
-                  pregnantWeights = data['weights'] ?? [];
-                  lastRecordDate = data['lastRecordDate'] == ''
-                      ? const Duration(days: -1) // TODO default value
-                      : DateTime.now()
-                          .difference(DateTime.parse(data['lastRecordDate']));
-                  _isInitialized = todayWeight > 0 ? true : false;
-                  // print('--------------------------------');
-
-                  // pregnantWeights.map((data) {
-                  //   print('${data.dateTime} ${data.weight}');
-                  // }).toList();
-                  // print('--------------------------------');
-                  // print('!! ${_weightController.text}');
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // 비동기 작업이 완전히 완료되었는지 확인하는 조건
+                  if (snapshot.hasData) {
+                    data = snapshot.data!;
+                    todayWeight = data['todayWeight'];
+                    pregnantWeights = data['weightList'] ?? [];
+                    lastRecordDate = data['lastRecordDate'] == ''
+                        ? const Duration(days: -1) // TODO default value
+                        : DateTime.now()
+                            .difference(DateTime.parse(data['lastRecordDate']));
+                    _isInitialized = todayWeight > 0 ? true : false;
+                    _initializeData(globalData.selectedDate);
+                  }
                 }
                 if (!snapshot.hasData) {
                   return const Center(
@@ -259,7 +240,6 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   .recordWeight(
                                                       globalData.selectedDate,
                                                       double.parse(value));
-                                          setState(() {});
                                         },
                                       ),
                                     ),
