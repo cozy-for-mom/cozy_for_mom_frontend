@@ -37,38 +37,6 @@ class _MealScreenState extends State<MealScreen> {
     final globalData = Provider.of<MyDataModel>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    Future<dynamic> showSelectModal(int id, String mealType) {
-      return showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (BuildContext context) {
-            return SelectBottomModal(
-              selec1: '수정하기',
-              selec2: '사진 삭제하기',
-              tap1: () async {
-                Navigator.pop(context);
-                final selectedImage =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (selectedImage != null) {
-                  final imageUrl =
-                      await imageApiService.uploadImage(selectedImage);
-                  await momMealViewModel.modifyMeals(id, globalData.selectedDay,
-                      mealType.substring(0, 2), imageUrl);
-                  setState(() {});
-                } else {
-                  print('No image selected.');
-                }
-              },
-              tap2: () async {
-                Navigator.pop(context);
-                // 삭제 작업 수행
-                await momMealViewModel.deleteWeight(id);
-                // 상태 업데이트
-                setState(() {});
-              },
-            );
-          });
-    }
 
     Future<XFile?> showImageSelectModal() async {
       XFile? selectedImage;
@@ -98,6 +66,40 @@ class _MealScreenState extends State<MealScreen> {
       }
 
       return selectedImage;
+    }
+
+    Future<dynamic> showSelectModal(int id, String mealType) {
+      return showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (BuildContext context) {
+            return SelectBottomModal(
+              selec1: '수정하기',
+              selec2: '사진 삭제하기',
+              tap1: () async {
+                Navigator.pop(context);
+                final selectedImage = await showImageSelectModal();
+                if (selectedImage != null) {
+                  final imageUrl =
+                      await imageApiService.uploadImage(selectedImage);
+                  await momMealViewModel.modifyMeals(id, globalData.selectedDay,
+                      mealType.substring(0, 2), imageUrl);
+                  setState(() {
+                    breakfastImageUrl = imageUrl;
+                  });
+                } else {
+                  print('No image selected.');
+                }
+              },
+              tap2: () async {
+                Navigator.pop(context);
+                // 삭제 작업 수행
+                await momMealViewModel.deleteWeight(id);
+                // 상태 업데이트
+                setState(() {});
+              },
+            );
+          });
     }
 
     return Scaffold(
