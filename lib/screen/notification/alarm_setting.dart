@@ -1,8 +1,8 @@
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/supplement_alarm.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/bloodsugar_alarm.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/supplement_alarm.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 
 enum CardType { bloodsugar, supplement }

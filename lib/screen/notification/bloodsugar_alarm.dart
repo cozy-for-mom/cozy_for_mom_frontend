@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_card.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/alarm_card.dart';
 
 class BloodsugarAlarm extends StatelessWidget {
   const BloodsugarAlarm({super.key});

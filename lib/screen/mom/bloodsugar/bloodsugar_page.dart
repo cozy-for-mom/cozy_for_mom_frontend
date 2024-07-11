@@ -4,7 +4,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_view.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 
 import 'package:provider/provider.dart';
