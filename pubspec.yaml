@@ -167,6 +167,7 @@ flutter:
     - assets/images/login_confetti_image.png
     - assets/images/login_group_image.png
     - assets/images/icons/diary_inactive.png
+    - assets/images/icons/notification_off.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
