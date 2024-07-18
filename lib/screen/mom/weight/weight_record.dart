@@ -70,6 +70,7 @@ class _WeightRecordState extends State<WeightRecord> {
                             .difference(DateTime.parse(data['lastRecordDate']));
                     _isInitialized = todayWeight > 0 ? true : false;
                     _initializeData(globalData.selectedDate);
+                    print(lastRecordDate.inDays);
                   }
                 }
                 if (!snapshot.hasData) {
@@ -240,6 +241,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   .recordWeight(
                                                       globalData.selectedDate,
                                                       double.parse(value));
+                                          setState(() {});
                                         },
                                       ),
                                     ),
