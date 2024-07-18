@@ -1,10 +1,12 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:time_picker_spinner/time_picker_spinner.dart';
 
 class NotificationSettingCard extends StatefulWidget {
-  const NotificationSettingCard({super.key});
+  final String? initialTime;
+  final Function(String) targetTimeAt;
+  const NotificationSettingCard(
+      {super.key, required this.targetTimeAt, this.initialTime});
 
   @override
   State<NotificationSettingCard> createState() =>
@@ -21,21 +23,13 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
   late Color amColor;
   late Color pmColor;
 
-  @override
-  void initState() {
-    super.initState();
-    xAlign = amAlign;
-    amColor = selectedColor;
-    pmColor = normalColor;
-  }
-
   // 텍스트 입력 필드의 내용을 제어하고 관리
   final TextEditingController textEditingController = TextEditingController();
-  bool isBeforeButtonEnabled = false;
-  bool isAfterButtonEnabled = true;
-  // 포커스 관리 (사용자가 특정 위젯에 포커스를 주거나 포커스를 뺄 때 이벤트를 처리)
   final FocusNode hourFocusNode = FocusNode();
   final FocusNode minuteFocusNode = FocusNode();
+
+  bool isBeforeButtonEnabled = false;
+  bool isAfterButtonEnabled = false;
   String formatTime(String value) {
     if (value.length >= 3) {
       // HH:mm 형식으로 포맷팅
@@ -44,9 +38,61 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
     return value;
   }
 
+  // 24시간 기준으로 표현
+  String convert24Time(List<String> timeParts) {
+    int hourValue = int.tryParse(timeParts[0]) ?? 0;
+    int minuteValue = int.tryParse(timeParts[1]) ?? 0;
+
+    if (!isAfterButtonEnabled && hourValue == 12) {
+      hourValue = 0; // 오전 12시는 00시로 표현
+    } else if (isAfterButtonEnabled && hourValue == 12) {
+      hourValue = 12; // 오후 12시는 12로 표현
+    } else if (isAfterButtonEnabled && hourValue != 12) {
+      hourValue = (hourValue + 12) % 24; // 오후 시간을 24시간 형식으로 변환
+    }
+    return '${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}';
+  }
+
+  // 오후 시간 포맷팅
+  String formatPmTime(String value) {
+    int hour = int.parse(value.substring(0, 2));
+    String minute =
+        value.substring(3).padLeft(2, '0'); // 분이 한 자릿수일 경우 앞에 '0' 추가
+
+    if (hour >= 12) {
+      isAfterButtonEnabled = true;
+      if (hour == 12) {
+        return '${hour.toString().padLeft(2, '0')} : $minute';
+      } else {
+        return '${(hour - 12).toString().padLeft(2, '0')} : $minute';
+      }
+    } else {
+      isBeforeButtonEnabled = true;
+      if (hour == 0) {
+        return '${(hour + 12).toString().padLeft(2, '0')} : $minute';
+      } else {
+        return '${hour.toString().padLeft(2, '0')} : $minute';
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    xAlign = amAlign;
+    amColor = selectedColor;
+    pmColor = normalColor;
+    if (widget.initialTime != null) {
+      textEditingController.text = formatPmTime(widget.initialTime!);
+    } else {
+      isBeforeButtonEnabled = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    List<String> timeParts = textEditingController.text.split(':');
 
     return Container(
       height: 78,
@@ -83,6 +129,9 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                               setState(() {
                                 isBeforeButtonEnabled = true;
                                 isAfterButtonEnabled = false;
+                                if (widget.initialTime != null) {
+                                  widget.targetTimeAt(convert24Time(timeParts));
+                                }
                               });
                             },
                             child: Container(
@@ -109,6 +158,9 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                               setState(() {
                                 isBeforeButtonEnabled = false;
                                 isAfterButtonEnabled = true;
+                                if (widget.initialTime != null) {
+                                  widget.targetTimeAt(convert24Time(timeParts));
+                                }
                               });
                             },
                             child: Container(
@@ -119,7 +171,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: isAfterButtonEnabled
                                         ? primaryColor
-                                        : contentBoxTwoColor),
+                                        : offButtonColor),
                                 child: Text('오후',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -142,7 +194,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                           textAlign: TextAlign.center,
                           maxLength: 7,
                           showCursor: false,
-                          keyboardType: TextInputType.datetime,
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(4),
@@ -168,9 +220,16 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                 selection: TextSelection.collapsed(
                                     offset: formatTime(value).length),
                               );
-                              // isButtonEnabled.value = true;
-                            } else {
-                              // isButtonEnabled.value = false;
+                              String time;
+                              timeParts = textEditingController.text.split(':');
+
+                              if (timeParts[0].length + timeParts[1].length ==
+                                  6) {
+                                // 각각 공백 포함 3글자
+                                time = convert24Time(
+                                    timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
+                                widget.targetTimeAt(time);
+                              }
                             }
                           },
                         ),

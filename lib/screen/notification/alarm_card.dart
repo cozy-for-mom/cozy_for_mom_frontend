@@ -1,67 +1,101 @@
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
+import 'package:cozy_for_mom_frontend/model/notification_model.dart';
+import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
-enum CardType { bloodsugar, supplement }
+import 'package:provider/provider.dart';
 
 class AlarmSettingCard extends StatefulWidget {
-  final String text;
-  final CardType type;
-  const AlarmSettingCard({super.key, required this.text, required this.type});
+  final NotificationModel notification;
+  final Function() onActiveChanged;
+  final Function(int) onDelete;
+
+  const AlarmSettingCard(
+      {super.key,
+      required this.notification,
+      required this.onActiveChanged,
+      required this.onDelete});
 
   @override
   State<AlarmSettingCard> createState() => _AlarmSettingCardState();
 }
 
 class _AlarmSettingCardState extends State<AlarmSettingCard> {
-  bool isAlarmOn = false; // 초기 알람 상태
-  final List<String> timeList = [
-    '매일 오전 12:00',
-    '매일 오후 8:00',
-    '30분 전 알림',
-    '1시간 전 알림'
-  ];
+  late NotificationApiService notificationViewModel;
+
+  final SlidableController _slidableController = SlidableController();
+  // 요일을 숫자로 매핑하는 맵
+  final Map<String, int> dayOrder = {
+    'mon': 1,
+    'tue': 2,
+    'wed': 3,
+    'thu': 4,
+    'fri': 5,
+    'sat': 6,
+    'sun': 7
+  };
+  final Map<String, String> weekDayNames = {
+    "mon": "월",
+    "tue": "화",
+    "wed": "수",
+    "thu": "목",
+    "fri": "금",
+    "sat": "토",
+    "sun": "일",
+    "all": "매일"
+  };
+  final Map<String, String> timeNames = {
+    "one hour ago": "1시간 전",
+    "thirty minutes ago": "30분 전",
+    "on time": "정시",
+  };
+  // 오후 시간 포맷팅
+  String formatPmTime(String value) {
+    // 12:~ 경우에는 12를 빼지 않는다.
+    if (int.parse(value.substring(0, 2)) == 12) {
+      return '${int.parse(value.substring(0, 2))}${value.substring(2)}';
+    } else {
+      return '${int.parse(value.substring(0, 2)) - 12}${value.substring(2)}';
+    }
+  }
+
+  // 오전 시간 포맷팅
+  String formatAmTime(String value) {
+    // 12:~ 경우에는 12를 더한다.
+    if (int.parse(value.substring(0, 2)) == 0) {
+      return '${int.parse(value.substring(0, 2)) + 12}${value.substring(2)}';
+    } else {
+      return '${int.parse(value.substring(0, 2))}${value.substring(2)}';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Widget childWiget;
+    final screenWidth = MediaQuery.of(context).size.width;
+    NotificationApiService notificationViewModel =
+        Provider.of<NotificationApiService>(context, listen: false);
+    // 월화수목금토일 순으로 정렬
+    widget.notification.daysOfWeek
+        .sort((a, b) => dayOrder[a]!.compareTo(dayOrder[b]!));
+    //  targetTimeAt을 시간 순으로 정렬 (시간 -> 분)
+    widget.notification.targetTimeAt.sort((a, b) {
+      int hourA = int.parse(a.replaceAll(' ', '').substring(0, 2));
+      int minuteA = int.parse(a.replaceAll(' ', '').substring(3));
+      int hourB = int.parse(b.replaceAll(' ', '').substring(0, 2));
+      int minuteB = int.parse(b.replaceAll(' ', '').substring(3));
 
-    switch (widget.type) {
-      case CardType.bloodsugar:
-        childWiget = Text(widget.text,
-            style: const TextStyle(
-                color: mainTextColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 18));
-        break;
-      case CardType.supplement:
-        childWiget = Row(children: [
-          Text(widget.text,
-              style: const TextStyle(
-                  color: afterInputColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18)),
-          const SizedBox(width: 7),
-          Container(
-            width: 57,
-            height: 22,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: const Color(0xffFEEEEE),
-                borderRadius: BorderRadius.circular(8)),
-            child: const Text(
-              '하루 -회',
-              style: TextStyle(
-                  color: Color(0xffFF9797),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12),
-            ),
-          )
-        ]);
-        break;
-    }
+      if (hourA == hourB) {
+        return minuteA.compareTo(minuteB);
+      }
+      return hourA.compareTo(hourB);
+    });
     return Padding(
       padding: const EdgeInsets.only(bottom: 5),
       child: Card(
@@ -69,6 +103,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: Slidable(
+          controller: _slidableController,
           actionPane: const SlidableDrawerActionPane(),
           secondaryActions: [
             IconSlideAction(
@@ -87,9 +122,17 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                     showDialog(
                       context: context,
                       builder: (BuildContext buildContext) {
-                        return const DeleteModal(
+                        return DeleteModal(
                           text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                           title: '알림이',
+                          tapFunc: () async {
+                            await notificationViewModel
+                                .deleteNotification(widget.notification.id);
+                            widget.onDelete(widget.notification.id);
+                            setState(() {
+                              _slidableController.activeState?.close();
+                            });
+                          },
                         );
                       },
                     );
@@ -114,9 +157,6 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                       ]),
                 ),
               ),
-              onTap: () {
-                print('"${widget.text}" 알람 삭제'); // TODO 알람 삭제 기능 구현
-              },
             ),
           ],
           child: Container(
@@ -124,7 +164,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
                 borderRadius: BorderRadius.circular(20.0)),
-            width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+            width: screenWidth - 40,
             height: 164,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,12 +173,60 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        childWiget,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.6),
+                          child: Row(children: [
+                            Expanded(
+                              child: Text(widget.notification.title,
+                                  style: const TextStyle(
+                                      color: afterInputColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              height: 22,
+                              alignment: Alignment.center,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: widget.notification.isActive
+                                      ? const Color(0xffFEEEEE)
+                                      : offButtonColor,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Row(
+                                children: widget.notification.daysOfWeek
+                                    .map((day) {
+                                      return Text(
+                                        weekDayNames[day]!,
+                                        style: TextStyle(
+                                            color: widget.notification.isActive
+                                                ? const Color(0xffFF9797)
+                                                : offButtonTextColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12),
+                                      );
+                                    })
+                                    .expand((widget) =>
+                                        [widget, const SizedBox(width: 8)])
+                                    .toList()
+                                  ..removeLast(),
+                              ),
+                            ),
+                          ]),
+                        ),
                         CupertinoSwitch(
-                          value: isAlarmOn,
+                          value: widget.notification.isActive,
                           onChanged: (value) {
-                            setState(() {
-                              isAlarmOn = value;
+                            setState(() async {
+                              await notificationViewModel
+                                  .modifyNotificationActive(
+                                      widget.notification.id, value);
+                              widget.onActiveChanged();
                             });
                           },
                           activeColor: primaryColor,
@@ -150,24 +238,26 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
                           fontSize: 12)),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+                  SizedBox(
+                    width: 312,
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: timeList.map((time) {
-                        return Container(
-                          padding: const EdgeInsets.only(top: 5, right: 15),
+                      children: [
+                        Flexible(
                           child: Text(
-                            time,
+                            '${widget.notification.targetTimeAt.map((time) => int.parse(time.substring(0, 2)) > 11 ? '오후 ${formatPmTime(time)}' : '오전 ${formatAmTime(time)}').join('\t\t\t\t')}\t\t\t\t${widget.notification.notifyAt.map((notify) => timeNames[notify] == "정시" ? '' : '${timeNames[notify]} 알림').join('\t\t\t\t')}', // 알림 시간들을 추가
                             style: TextStyle(
-                              color:
-                                  isAlarmOn ? primaryColor : offButtonTextColor,
+                              color: widget.notification.isActive
+                                  ? primaryColor
+                                  : offButtonTextColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        );
-                      }).toList(),
+                        ),
+                      ],
                     ),
                   ),
                 ]),
