@@ -86,7 +86,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const AlarmSettingPage(
-                                          type: CardType.supplement,
+                                          type: CardType.bloodsugar,
                                         )));
                           })
                     ],

@@ -135,7 +135,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const AlarmSettingPage(
-                                                    type: CardType.supplement,
+                                                    type: CardType.bloodsugar,
                                                   )));
                                     })
                               ],
