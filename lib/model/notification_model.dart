@@ -3,7 +3,7 @@ class NotificationModel {
   final bool isActive;
   final String type;
   final String title;
-  final List<String> notifyAt;
+  final String notifyAt;
   final List<String> targetTimeAt;
   final List<String> daysOfWeek;
 
@@ -24,7 +24,7 @@ class NotificationModel {
       isActive: json['isActive'],
       type: type,
       title: json['title'],
-      notifyAt: List<String>.from(json['notifyAt']),
+      notifyAt: json['notifyAt'],
       targetTimeAt: List<String>.from(json['targetTimeAt']),
       daysOfWeek: List<String>.from(json['daysOfWeek']),
     );
