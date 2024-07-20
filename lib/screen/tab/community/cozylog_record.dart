@@ -92,6 +92,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                     width: screenWidth - 40,
                     height: 52,
                     child: TextFormField(
+                      keyboardType: TextInputType.text,
                       controller: titleController,
                       textAlign: TextAlign.start,
                       style: const TextStyle(
@@ -155,6 +156,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: TextFormField(
+                                keyboardType: TextInputType.multiline,
                                 controller: contentController,
                                 textAlignVertical: TextAlignVertical.top,
                                 textAlign: TextAlign.start,

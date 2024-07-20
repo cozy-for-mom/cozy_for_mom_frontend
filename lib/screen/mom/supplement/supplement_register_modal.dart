@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
+import 'package:flutter/services.dart';
 
 class SupplementRegisterModal extends StatefulWidget {
   final void Function(int) onRegister;
@@ -147,6 +148,10 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                     maxLength: 2,
                                     cursorHeight: 16,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(2),
+                                    ],
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         counterText: '',

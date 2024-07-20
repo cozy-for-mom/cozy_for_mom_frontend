@@ -120,7 +120,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: TextFormField(
                                   controller: birthNameControllers[index],
-                                  keyboardType: TextInputType.datetime,
+                                  keyboardType: TextInputType.text,
                                   textAlign: TextAlign.start,
                                   textAlignVertical: TextAlignVertical.center,
                                   maxLength: 10,

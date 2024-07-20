@@ -253,50 +253,49 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               fontWeight: FontWeight.w600,
                               fontSize: 14),
                         ),
-                        Container(
-                          child: TextFormField(
-                            controller: introduceController,
-                            textAlign: TextAlign.start,
-                            cursorColor: primaryColor,
-                            cursorHeight: 17,
-                            cursorWidth: 1.5,
-                            maxLength: 30,
-                            style: const TextStyle(
-                                color: mainTextColor,
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: introduceController,
+                          textAlign: TextAlign.start,
+                          cursorColor: primaryColor,
+                          cursorHeight: 17,
+                          cursorWidth: 1.5,
+                          maxLength: 30,
+                          style: const TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                          decoration: InputDecoration(
+                            counterText: '',
+                            counterStyle: const TextStyle(
+                                color: offButtonTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
+                            border: InputBorder.none,
+                            hintText: "자기소개를 입력해주세요",
+                            hintStyle: const TextStyle(
+                                color: beforeInputColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
-                            decoration: InputDecoration(
-                              counterText: '',
-                              counterStyle: const TextStyle(
-                                  color: offButtonTextColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14),
-                              border: InputBorder.none,
-                              hintText: "자기소개를 입력해주세요",
-                              hintStyle: const TextStyle(
-                                  color: beforeInputColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
-                              suffixIcon: introduceController.text.isNotEmpty &&
-                                      _isSuffixVisible
-                                  ? IconButton(
-                                      icon: Image.asset(
-                                        'assets/images/icons/text_delete.png',
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                      onPressed: () {
-                                        introduceController.clear();
-                                      },
-                                    )
-                                  : null,
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _isSuffixVisible = true;
-                              });
-                            },
+                            suffixIcon: introduceController.text.isNotEmpty &&
+                                    _isSuffixVisible
+                                ? IconButton(
+                                    icon: Image.asset(
+                                      'assets/images/icons/text_delete.png',
+                                      width: 16,
+                                      height: 16,
+                                    ),
+                                    onPressed: () {
+                                      introduceController.clear();
+                                    },
+                                  )
+                                : null,
                           ),
+                          onTap: () {
+                            setState(() {
+                              _isSuffixVisible = true;
+                            });
+                          },
                         ),
                         Container(
                           width: screenWidth - 40,

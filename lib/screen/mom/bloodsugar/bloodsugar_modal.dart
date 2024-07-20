@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 
@@ -118,6 +119,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             cursorWidth: 0.8,
                             cursorHeight: 15,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                            ],
                             decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,

@@ -443,6 +443,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             color: const Color(0xffF7F7FA),
                           ),
                           child: TextField(
+                            keyboardType: TextInputType.multiline,
                             controller: textController,
                             onChanged: (text) {
                               if (text != '') {

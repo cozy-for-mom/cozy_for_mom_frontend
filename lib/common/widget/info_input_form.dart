@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter/services.dart';
 
 class InfoInputForm extends StatefulWidget {
   final String title;
@@ -25,9 +26,10 @@ class _InfoInputFormState extends State<InfoInputForm> {
 
   @override
   Widget build(BuildContext context) {
-    // print('Controller for ${widget.controller}');
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return SizedBox(
-      width: 350,
+      width: screenWidth - 40,
       height: 83,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,12 +41,16 @@ class _InfoInputFormState extends State<InfoInputForm> {
                   fontSize: 14)),
           const SizedBox(height: 14),
           Container(
-              width: 350,
+              width: screenWidth - 40,
               height: 48,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 controller: widget.controller,
                 textAlign: TextAlign.start,
                 cursorColor: primaryColor,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -65,6 +66,9 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   child: TextFormField(
                     controller: dueDateController,
                     keyboardType: TextInputType.datetime,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.center,
                     maxLength: 10,
@@ -128,6 +132,9 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   child: TextFormField(
                     controller: lastMensesController,
                     keyboardType: TextInputType.datetime,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.center,
                     maxLength: 10,

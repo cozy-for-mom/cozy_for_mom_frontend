@@ -166,6 +166,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                       horizontal: 10,
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.text,
                       cursorColor: primaryColor,
                       decoration: const InputDecoration(
                         fillColor: Colors.white,

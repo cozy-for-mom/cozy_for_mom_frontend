@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
@@ -66,9 +67,13 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
               child: TextFormField(
                 controller: _nicknameController,
                 keyboardType: TextInputType.text,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(8),
+                ],
                 textAlign: TextAlign.start,
                 textAlignVertical: TextAlignVertical.center,
-                maxLength: 9,
+                maxLength:
+                    9, // TODO LengthLimitingTextInputFormatter 적용 결과 보고 지우기
                 cursorColor: primaryColor,
                 cursorHeight: 14,
                 cursorWidth: 1.2,

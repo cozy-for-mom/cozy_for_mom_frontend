@@ -147,7 +147,7 @@ class _SupplementModalState extends State<SupplementModal> {
                               textAlign: TextAlign.center,
                               maxLength: 7,
                               showCursor: false,
-                              keyboardType: TextInputType.datetime,
+                              keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(4),

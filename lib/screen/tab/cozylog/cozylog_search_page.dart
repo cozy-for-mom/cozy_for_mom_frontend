@@ -87,6 +87,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                       ),
                       Expanded(
                         child: TextField(
+                          keyboardType: TextInputType.text,
                           cursorColor: primaryColor,
                           cursorHeight: 15,
                           decoration: const InputDecoration(

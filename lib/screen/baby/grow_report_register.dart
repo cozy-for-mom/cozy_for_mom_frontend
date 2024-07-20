@@ -179,6 +179,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: 52,
                 child: TextFormField(
+                  keyboardType: TextInputType.text,
                   controller: titleController,
                   textAlign: TextAlign.start,
                   style: const TextStyle(
@@ -266,6 +267,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 width: screenWidth,
                 height: _textFieldHeight,
                 child: TextFormField(
+                  keyboardType: TextInputType.multiline,
                   controller: diaryController,
                   textAlignVertical: TextAlignVertical.top,
                   textAlign: TextAlign.start,

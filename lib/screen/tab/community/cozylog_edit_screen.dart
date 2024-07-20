@@ -117,6 +117,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         width: screenWidth - 40,
                         height: 52,
                         child: TextFormField(
+                          keyboardType: TextInputType.text,
                           controller: titleController,
                           textAlign: TextAlign.start,
                           style: const TextStyle(
@@ -180,6 +181,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.multiline,
                                     controller: contentController,
                                     textAlignVertical: TextAlignVertical.top,
                                     textAlign: TextAlign.start,

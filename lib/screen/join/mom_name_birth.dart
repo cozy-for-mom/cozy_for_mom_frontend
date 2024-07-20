@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -119,6 +120,9 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                   child: TextFormField(
                     controller: birthController,
                     keyboardType: TextInputType.datetime,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.center,
                     maxLength: 10,

@@ -84,6 +84,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                   width: screenWidth - 80 - 70 - 15,
                   height: 60,
                   child: TextFormField(
+                    keyboardType: TextInputType.multiline,
                     textAlignVertical: TextAlignVertical.top,
                     textAlign: TextAlign.start,
                     maxLines: 3,
