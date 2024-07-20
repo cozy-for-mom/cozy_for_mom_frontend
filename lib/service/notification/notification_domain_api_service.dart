@@ -31,6 +31,27 @@ class NotificationApiService extends ChangeNotifier {
     }
   }
 
+  Future<Map<String, dynamic>> getUpcomingNotification() async {
+    try {
+      final url = Uri.parse('$baseUrl/notification/record/upcoming');
+
+      final headers = await getHeaders();
+      Response res = await get(url, headers: headers);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> upcomingNotification =
+            jsonDecode(utf8.decode(res.bodyBytes));
+
+        return upcomingNotification;
+      } else {
+        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+      }
+    } catch (e) {
+      // 에러 처리
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<int> recordNotification(NotificationModel notification) async {
     final url = Uri.parse('$baseUrl/notification/record');
     final headers = await getHeaders();

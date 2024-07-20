@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
+import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
@@ -21,11 +22,16 @@ class HomeFragment extends StatefulWidget {
 class _HomeFragmentState extends State<HomeFragment> {
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
+  late Map<String, dynamic> upcomingNotification;
+  late NotificationApiService notificationViewModel;
 
   @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    notificationViewModel =
+        Provider.of<NotificationApiService>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     DateTime now = DateTime.now();
     int nowHour = int.parse(DateFormat('HH').format(now));
     int nowMonth = int.parse(DateFormat('M').format(now));
@@ -33,17 +39,26 @@ class _HomeFragmentState extends State<HomeFragment> {
     String nowWeekDay = DateFormat.EEEE('ko').format(now);
 
     return FutureBuilder(
-        future: userViewModel.getUserInfo(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            pregnantInfo = snapshot.data!;
-          }
-          if (!snapshot.hasData) {
+        future: Future.wait([
+          userViewModel.getUserInfo(),
+          notificationViewModel.getUpcomingNotification()
+        ]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
                 child: CircularProgressIndicator(
               backgroundColor: primaryColor,
               color: Colors.white,
             ));
+          }
+
+          if (snapshot.hasData) {
+            pregnantInfo = snapshot.data![0];
+            upcomingNotification = snapshot.data![1];
+          }
+
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
           }
 
           return Scaffold(
@@ -127,8 +142,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
-                    height: 600, // TODO 화면 높이에 맞춘 height로 수정해야함
+                    width: screenWidth,
+                    height: screenHeight * 0.5,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
@@ -141,7 +156,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 61,
+                          height: 54,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -206,76 +221,90 @@ class _HomeFragmentState extends State<HomeFragment> {
                           ],
                         ),
                         const SizedBox(
-                          height: 44,
+                          height: 38,
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SupplementRecord(),
-                              ),
-                            );
+                            // TODO 페이지 이동 구현
                           },
-                          child: Container(
-                            width: 350,
-                            height: 123,
-                            decoration: const BoxDecoration(
-                              color: Color(0xffEDF0FA),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(9)),
-                            ),
-                            child: const Row(
-                              children: [
-                                SizedBox(
-                                  width: 19,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('잊지 말고 기록하세요',
+                                  style: TextStyle(
+                                      color: mainTextColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18)),
+                              const SizedBox(height: 18),
+                              Container(
+                                width: screenWidth - 40,
+                                height: 100,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFA2A0F4),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "잊지 말고 기록하세요",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  upcomingNotification[
+                                                          'targetTimeAt'] ??
+                                                      '13:00',
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14)),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                  upcomingNotification[
+                                                          'title'] ??
+                                                      '철분제 챙겨먹기',
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 18)),
+                                            ]),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 11.34,
-                                    ),
-                                    Text(
-                                      "철분제는 챙겨드셨나요?",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                    const Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Image(
+                                          image: AssetImage(
+                                            "assets/images/icons/icon_supplement.png",
+                                          ),
+                                          height: 48,
+                                          width: 30,
+                                        ),
+                                        Image(
+                                          image: AssetImage(
+                                            "assets/images/icons/icon_clock.png",
+                                          ),
+                                          height: 66,
+                                          width: 66,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 49,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/icon_supplement.png",
-                                      ),
-                                      height: 43,
-                                      width: 19,
-                                    ),
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/icon_clock.png",
-                                      ),
-                                      height: 66,
-                                      width: 66,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

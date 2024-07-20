@@ -24,6 +24,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
   @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+
     DateTime now = DateTime.now(); // 현재 날짜
     int nowHour = int.parse(DateFormat('HH').format(now));
 
@@ -230,11 +232,11 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 fontSize: 18)),
                         const SizedBox(height: 18),
                         Container(
-                          width: 350,
+                          width: screenWidth - 40,
                           height: 100,
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
-                              color: babyNightBar,
+                              color: const Color(0xFFA2A0F4),
                               borderRadius: BorderRadius.circular(10)),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
