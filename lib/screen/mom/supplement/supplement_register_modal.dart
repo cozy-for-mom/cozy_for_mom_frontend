@@ -188,11 +188,13 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
                     onTap: () async {
-                      int id = await supplementApi.registerSupplement(
-                          nameController.text,
-                          int.parse(targetCountController.text));
-                      Navigator.of(context).pop();
-                      widget.onRegister(id);
+                      if (isEnabled) {
+                        int id = await supplementApi.registerSupplement(
+                            nameController.text,
+                            int.parse(targetCountController.text));
+                        Navigator.of(context).pop();
+                        widget.onRegister(id);
+                      }
                     },
                     child: const Text(
                       '등록하기',

@@ -435,26 +435,28 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
             ),
             InkWell(
               onTap: () async {
-                var notification = NotificationModel(
-                  isActive: isActive,
-                  type: widget.type.name,
-                  title: title,
-                  notifyAt: notifyAt,
-                  targetTimeAt: targetTimeAt,
-                  daysOfWeek: daysOfWeek,
-                );
-                if (widget.notification != null) {
-                  int responseId = await notificationViewModel
-                      .modifyNotification(id, notification);
-                  print('modify');
-                  widget.onModify!(responseId);
-                } else {
-                  int responseId = await notificationViewModel
-                      .recordNotification(notification);
-                  print('register');
-                  widget.onRegister!(responseId);
+                if (isRegisterButtonEnabled()) {
+                  var notification = NotificationModel(
+                    isActive: isActive,
+                    type: widget.type.name,
+                    title: title,
+                    notifyAt: notifyAt,
+                    targetTimeAt: targetTimeAt,
+                    daysOfWeek: daysOfWeek,
+                  );
+                  if (widget.notification != null) {
+                    int responseId = await notificationViewModel
+                        .modifyNotification(id, notification);
+                    print('modify');
+                    widget.onModify!(responseId);
+                  } else {
+                    int responseId = await notificationViewModel
+                        .recordNotification(notification);
+                    print('register');
+                    widget.onRegister!(responseId);
+                  }
+                  Navigator.pop(context);
                 }
-                Navigator.pop(context);
               },
               child: Container(
                 width: screenWidth - 40,

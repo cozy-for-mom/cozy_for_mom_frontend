@@ -27,7 +27,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   late TextEditingController contentController;
 
   bool isRegisterButtonEnabled() {
-    return titleController.text.isNotEmpty || contentController.text.isNotEmpty;
+    return titleController.text.isNotEmpty && contentController.text.isNotEmpty;
   }
 
   File? selectedImage;
@@ -288,25 +288,28 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                       left: 20,
                       child: InkWell(
                         onTap: () {
-                          final cozyLogId = CozyLogApiService()
-                              .updateCozyLog(
-                                cozyLog.cozyLogId!,
-                                titleController.text,
-                                contentController.text,
-                                mode,
-                              )
-                              .then(
-                                (value) => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CozyLogDetailScreen(
-                                        id: value,
+                          if (isRegisterButtonEnabled()) {
+                            final cozyLogId = CozyLogApiService()
+                                .updateCozyLog(
+                                  cozyLog.cozyLogId!,
+                                  titleController.text,
+                                  contentController.text,
+                                  mode,
+                                )
+                                .then(
+                                  (value) => {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CozyLogDetailScreen(
+                                          id: value,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                },
-                              );
+                                    )
+                                  },
+                                );
+                          }
                         },
                         child: Container(
                           width: screenWidth - 40,

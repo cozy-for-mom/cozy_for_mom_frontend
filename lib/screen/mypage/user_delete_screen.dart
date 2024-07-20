@@ -22,6 +22,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -91,6 +93,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         border: selectedIndex == index
                             ? Border.all(
                                 color: primaryColor,
+                                width: 2,
                               )
                             : null,
                       ),
@@ -109,7 +112,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20),
                             child: Row(
                               children: [
                                 Icon(
@@ -144,15 +148,17 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
             ),
             InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext buildContext) {
-                    return const UserDeleteModal();
-                  },
-                );
+                if (selectedIndex != null) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext buildContext) {
+                      return const UserDeleteModal();
+                    },
+                  );
+                }
               },
               child: Container(
-                width: 350, // TODO
+                width: screenWidth - 40,
                 height: 56,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -170,6 +176,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),

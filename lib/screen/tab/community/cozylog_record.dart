@@ -24,7 +24,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
   bool isRegisterButtonEnabled() {
-    return titleController.text.isNotEmpty || contentController.text.isNotEmpty;
+    return titleController.text.isNotEmpty && contentController.text.isNotEmpty;
   }
 
   File? selectedImage;
@@ -252,7 +252,9 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                   left: 20,
                   child: InkWell(
                     onTap: () {
-                      print("작성 완료 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
+                      if (isRegisterButtonEnabled()) {
+                        print("작성 완료 버튼 클릭"); // TODO 등록 버튼 클릭 시 실행문 구현
+                      }
                     },
                     child: Container(
                       width: screenWidth - 40,

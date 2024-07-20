@@ -115,10 +115,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     final babyGrowthApiService = BabyGrowthApiService();
 
     bool isRegisterButtonEnabled() {
-      return titleController.text.isNotEmpty ||
-          diaryController.text.isNotEmpty ||
-          infoControllersByBabies.values.any(
-              (element) => element.any((element) => element.text.isNotEmpty));
+      return titleController.text.isNotEmpty &&
+          diaryController.text.isNotEmpty &&
+          infoControllersByBabies.values.every(
+              (element) => element.every((element) => element.text.isNotEmpty));
     }
 
     return Scaffold(
@@ -344,47 +344,54 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
               child: InkWell(
                 onTap: () async {
-                  final reportId = await babyGrowthApiService
-                      .registerBabyProfileGrowth(BabyProfileGrowth(
-                        id: widget.babyProfileGrowth?.id,
-                        babyProfileId: babyProfileId!,
-                        date: DateTime.now(),
-                        growthImageUrl: growthImageUrl,
-                        diary: diaryController.text,
-                        title: titleController.text,
-                        babies: babies
-                            .map(
-                              (baby) => BabyGrowth(
-                                id: null,
-                                name: "dd",
-                                babyId: baby.id,
-                                babyGrowthInfo: BabyGrowthInfo(
-                                  weight: parseDouble(
-                                      infoControllersByBabies[baby]?[0].text ??
-                                          '0'),
-                                  headDiameter: parseDouble(
-                                      infoControllersByBabies[baby]?[1].text ??
-                                          '0'),
-                                  headCircum: parseDouble(
-                                      infoControllersByBabies[baby]?[2].text ??
-                                          '0'),
-                                  abdomenCircum: parseDouble(
-                                      infoControllersByBabies[baby]?[3].text ??
-                                          '0'),
-                                  thighLength: parseDouble(
-                                      infoControllersByBabies[baby]?[4].text ??
-                                          '0'),
+                  if (isRegisterButtonEnabled()) {
+                    final reportId = await babyGrowthApiService
+                        .registerBabyProfileGrowth(BabyProfileGrowth(
+                          id: widget.babyProfileGrowth?.id,
+                          babyProfileId: babyProfileId!,
+                          date: DateTime.now(),
+                          growthImageUrl: growthImageUrl,
+                          diary: diaryController.text,
+                          title: titleController.text,
+                          babies: babies
+                              .map(
+                                (baby) => BabyGrowth(
+                                  id: null,
+                                  name: "dd",
+                                  babyId: baby.id,
+                                  babyGrowthInfo: BabyGrowthInfo(
+                                    weight: parseDouble(
+                                        infoControllersByBabies[baby]?[0]
+                                                .text ??
+                                            '0'),
+                                    headDiameter: parseDouble(
+                                        infoControllersByBabies[baby]?[1]
+                                                .text ??
+                                            '0'),
+                                    headCircum: parseDouble(
+                                        infoControllersByBabies[baby]?[2]
+                                                .text ??
+                                            '0'),
+                                    abdomenCircum: parseDouble(
+                                        infoControllersByBabies[baby]?[3]
+                                                .text ??
+                                            '0'),
+                                    thighLength: parseDouble(
+                                        infoControllersByBabies[baby]?[4]
+                                                .text ??
+                                            '0'),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                      ))
-                      .then((value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BabyGrowthReportDetailScreen(
-                                      babyProfileGrowthId: value))));
+                              )
+                              .toList(),
+                        ))
+                        .then((value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BabyGrowthReportDetailScreen(
+                                        babyProfileGrowthId: value))));
+                  }
                 },
                 child: Container(
                   width: screenWidth,

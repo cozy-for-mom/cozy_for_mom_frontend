@@ -197,31 +197,33 @@ class _SupplementModalState extends State<SupplementModal> {
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
                     onTap: () async {
-                      String time;
-                      currentTime = DateFormat('yyyy-MM-dd')
-                          .format(globalData.selectedDate); // TODO 캘린더 연동
-                      List<String> timeParts = textController.text.split(':');
-                      int hourValue = int.tryParse(timeParts[0]) ?? 0;
-                      int minuteValue = int.tryParse(timeParts[1]) ?? 0;
+                      if (isEnabled) {
+                        String time;
+                        currentTime = DateFormat('yyyy-MM-dd')
+                            .format(globalData.selectedDate);
+                        List<String> timeParts = textController.text.split(':');
+                        int hourValue = int.tryParse(timeParts[0]) ?? 0;
+                        int minuteValue = int.tryParse(timeParts[1]) ?? 0;
 
-                      if (!isAfterButtonEnabled && hourValue == 12) {
-                        hourValue = 0; // 오전 12시는 00시로 표현
-                      } else if (isAfterButtonEnabled && hourValue == 12) {
-                        hourValue = 12; // 오후 12시는 12로 표현
-                      } else if (isAfterButtonEnabled && hourValue != 12) {
-                        hourValue =
-                            (hourValue + 12) % 24; // 오후 시간을 24시간 형식으로 변환
+                        if (!isAfterButtonEnabled && hourValue == 12) {
+                          hourValue = 0; // 오전 12시는 00시로 표현
+                        } else if (isAfterButtonEnabled && hourValue == 12) {
+                          hourValue = 12; // 오후 12시는 12로 표현
+                        } else if (isAfterButtonEnabled && hourValue != 12) {
+                          hourValue =
+                              (hourValue + 12) % 24; // 오후 시간을 24시간 형식으로 변환
+                        }
+
+                        time =
+                            '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
+
+                        await supplementApi.modifySupplementIntake(
+                            widget.id, widget.name, time);
+
+                        setState(() {
+                          Navigator.pop(context, DateTime.parse(time));
+                        });
                       }
-
-                      time =
-                          '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
-
-                      await supplementApi.modifySupplementIntake(
-                          widget.id, widget.name, time);
-
-                      setState(() {
-                        Navigator.pop(context, DateTime.parse(time));
-                      });
                     },
                     child: const Text(
                       '등록하기',

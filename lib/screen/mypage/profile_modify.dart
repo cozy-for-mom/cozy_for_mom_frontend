@@ -160,9 +160,6 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         ),
                       ),
                       onTap: () {
-                        print('수정 완료');
-                        print(
-                            '${controllers['이름']!.text}.${controllers['닉네임']!.text}.${controllers['이메일']!.text}.${sendFormatUsingRegex(controllers['생년월일']!.text)}.${introduceController.text}');
                         userViewModel.modifyUserProfile(
                             controllers['이름']!.text,
                             controllers['닉네임']!.text,
@@ -179,12 +176,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     height: 140,
                     child: Stack(
                       children: [
-                        Positioned(
+                        const Positioned(
                             top: 10,
                             left: 145,
                             child:
                                 // imageUrl == Future.value(null) ?
-                                const Image(
+                                Image(
                                     image: AssetImage(
                                         "assets/images/icons/momProfile.png"),
                                     width: 100,
@@ -345,55 +342,58 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     child: Stack(
                       children: [
                         Positioned(
-                          top: 820,
                           left: 0,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext buildContext) {
-                                      return const LogoutModal();
-                                    },
-                                  );
-                                },
-                                child: const Text(
-                                  '로그아웃',
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 1,
-                                height: 11,
-                                color: primaryColor,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  print('회원탈퇴 버튼 클릭');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => UserDeleteScreen(),
+                          child: SizedBox(
+                            width: 130,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext buildContext) {
+                                        return const LogoutModal();
+                                      },
+                                    );
+                                  },
+                                  child: const Text(
+                                    '로그아웃',
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
                                     ),
-                                  );
-                                },
-                                child: const Text(
-                                  '회원탈퇴',
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  width: 1,
+                                  height: 11,
+                                  color: primaryColor,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    print('회원탈퇴 버튼 클릭');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            UserDeleteScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    '회원탈퇴',
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

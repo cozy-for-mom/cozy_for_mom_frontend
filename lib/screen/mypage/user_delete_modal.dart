@@ -12,13 +12,15 @@ class UserDeleteModal extends StatefulWidget {
 class UserDeleteModalState extends State<UserDeleteModal> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Dialog(
       child: Container(
-        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
+        width: screenWidth - 40,
         height: 220,
         decoration: BoxDecoration(
           color: contentBoxTwoColor,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
           padding: const EdgeInsets.only(

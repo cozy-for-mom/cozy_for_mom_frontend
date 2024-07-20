@@ -166,26 +166,26 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
-                    onTap: isEnabled
-                        ? () async {
-                            late int bloodsugarId;
-                            widget.id > 0
-                                ? bloodsugarId =
-                                    await bloodsugarApi.modifyBloodsugar(
-                                        widget.id,
-                                        globalData.selectedDate,
-                                        '${widget.time} ${widget.period}',
-                                        int.parse(textController.text))
-                                : bloodsugarId =
-                                    await bloodsugarApi.recordBloodsugar(
-                                        globalData.selectedDate,
-                                        '${widget.time} ${widget.period}',
-                                        int.parse(textController.text));
-                            setState(() {
-                              Navigator.pop(context, bloodsugarId);
-                            });
-                          }
-                        : () {},
+                    onTap: () async {
+                      if (isEnabled) {
+                        late int bloodsugarId;
+                        widget.id > 0
+                            ? bloodsugarId =
+                                await bloodsugarApi.modifyBloodsugar(
+                                    widget.id,
+                                    globalData.selectedDate,
+                                    '${widget.time} ${widget.period}',
+                                    int.parse(textController.text))
+                            : bloodsugarId =
+                                await bloodsugarApi.recordBloodsugar(
+                                    globalData.selectedDate,
+                                    '${widget.time} ${widget.period}',
+                                    int.parse(textController.text));
+                        setState(() {
+                          Navigator.pop(context, bloodsugarId);
+                        });
+                      }
+                    },
                     child: const Text(
                       '등록하기',
                       style: TextStyle(

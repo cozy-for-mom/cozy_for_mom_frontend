@@ -13,6 +13,7 @@ class _LogoutModalState extends State<LogoutModal> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.transparent,
       child: Container(
         height: 300,
         decoration: BoxDecoration(
