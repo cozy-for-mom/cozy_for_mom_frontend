@@ -87,4 +87,35 @@ class BabyGrowthApiService {
       throw Exception('성장 보고서 조회 실패 - id: $id');
     }
   }
+
+  Future<void> registerNotificationExaminationDate(
+    String examinationAt,
+     List<String> notificationOptions,
+  ) async {
+   UserLocalStorageService userStorageService = await UserLocalStorageService.getInstance();
+   final babyProfileId = await userStorageService.getBabyProfileId();
+    var urlString = '$baseUrl/notification/examination';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    print({
+        'babyProfileId': babyProfileId,
+        'examinationAt': examinationAt,
+        'notifyAt': notificationOptions,
+      });
+    response = await post(url, headers: headers,       
+    body: jsonEncode({
+        'babyProfileId': babyProfileId,
+        'examinationAt': examinationAt,
+        'notifyAt': notificationOptions,
+      }));
+
+    print('response.statusCode');
+    print(response.statusCode);
+
+    if (response.statusCode == 201) {
+    } else {
+      throw Exception('다음검진일 설정 실패');
+    }
+  }
 }
