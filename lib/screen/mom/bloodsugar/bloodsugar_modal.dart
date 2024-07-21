@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -8,9 +9,14 @@ class BloodsugarModal extends StatefulWidget {
   final String time;
   final String period;
   final int id;
+  final String bloodsugarValue;
 
   BloodsugarModal(
-      {super.key, required this.time, required this.period, this.id = 0});
+      {super.key,
+      required this.time,
+      required this.period,
+      this.id = 0,
+      required this.bloodsugarValue});
 
   @override
   State<BloodsugarModal> createState() => _BloodsugarModalState();
@@ -18,16 +24,43 @@ class BloodsugarModal extends StatefulWidget {
 
 class _BloodsugarModalState extends State<BloodsugarModal> {
   bool _isHintVisible = true;
+  late List<PregnantBloosdugar> pregnantBloodsugars;
+  TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController textController = TextEditingController();
-    final globalData = Provider.of<MyDataModel>(context, listen: false);
-    textController.text =
-        (globalData.getBloodSugarData(widget.time + widget.period) ?? '');
-    ValueNotifier<bool> isButtonEnabled = ValueNotifier<bool>(false);
+    textController.text = widget.bloodsugarValue;
+    // BloodsugarApiService momBloodsugarViewModel =
+    //     Provider.of<BloodsugarApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final globalData = Provider.of<MyDataModel>(context,
+        listen: false); // record -> false 초기화, modify -> true 초기화
+    ValueNotifier<bool> isButtonEnabled =
+        ValueNotifier<bool>(widget.bloodsugarValue != '');
     BloodsugarApiService bloodsugarApi = BloodsugarApiService();
-
+    // return Consumer<MyDataModel>(builder: (context, globalData, _) {
+    //   return FutureBuilder(
+    //       future:
+    //           momBloodsugarViewModel.getBloodsugars(globalData.selectedDate),
+    //       builder: (context, snapshot) {
+    //         if (snapshot.hasData) {
+    //           pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;
+    //           textController.text = pregnantBloodsugars.any((bloodsugar) =>
+    //                   bloodsugar.type == '${widget.time} ${widget.period}')
+    //               ? pregnantBloodsugars
+    //                   .firstWhere((bloodsugar) =>
+    //                       bloodsugar.type == '${widget.time} ${widget.period}')
+    //                   .level
+    //                   .toString()
+    //               : '';
+    //         }
+    //         if (!snapshot.hasData) {
+    //           return const Center(
+    //               child: CircularProgressIndicator(
+    //             backgroundColor: primaryColor,
+    //             color: Colors.white,
+    //           ));
+    //         }
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
@@ -35,7 +68,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 350, // TODO 팝업창 너비 조정되도록 수정해야 함
+            width: screenWidth - 40,
             height: 207,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
@@ -75,12 +108,8 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             controller: textController,
                             onChanged: (text) {
                               if (text.isEmpty) {
-                                globalData.setBloodSugarData(
-                                    widget.time + widget.period, '-');
                                 isButtonEnabled.value = false; // 입력값이 없을 때
                               } else {
-                                globalData.setBloodSugarData(
-                                    widget.time + widget.period, text);
                                 isButtonEnabled.value = true; // 입력값이 있을 때
                               }
                             },
@@ -132,19 +161,26 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
-                    onTap: () {
-                      widget.id > 0
-                          ? bloodsugarApi.modifyBloodsugar(
-                              widget.id,
-                              globalData.selectedDate,
-                              '${widget.time} ${widget.period}',
-                              int.parse(textController.text))
-                          : bloodsugarApi.recordBloodsugar(
-                              globalData.selectedDate,
-                              '${widget.time} ${widget.period}',
-                              int.parse(textController.text));
-                      Navigator.of(context).pop();
-                    },
+                    onTap: isEnabled
+                        ? () async {
+                            late int bloodsugarId;
+                            widget.id > 0
+                                ? bloodsugarId =
+                                    await bloodsugarApi.modifyBloodsugar(
+                                        widget.id,
+                                        globalData.selectedDate,
+                                        '${widget.time} ${widget.period}',
+                                        int.parse(textController.text))
+                                : bloodsugarId =
+                                    await bloodsugarApi.recordBloodsugar(
+                                        globalData.selectedDate,
+                                        '${widget.time} ${widget.period}',
+                                        int.parse(textController.text));
+                            setState(() {
+                              Navigator.pop(context, bloodsugarId);
+                            });
+                          }
+                        : () {},
                     child: const Text(
                       '등록하기',
                       style: TextStyle(
@@ -159,5 +195,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
         ],
       ),
     );
+    //       });
+    // });
   }
 }

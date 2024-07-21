@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 const Color activeColor = Color(0xff5CA6F8);
@@ -7,16 +8,17 @@ const Color thickLineColor = Color(0xffCDCED5);
 const Color defaultLineColor = Color(0xffF0F0F5);
 
 class LineChart extends StatefulWidget {
-  const LineChart({
-    super.key,
-    required this.dataList,
-    required this.baseValue,
-    required this.unit,
-  });
+  const LineChart(
+      {super.key,
+      required this.dataList,
+      required this.baseValue,
+      required this.unit,
+      required this.timeType});
 
   final List<LineChartData> dataList;
   final double baseValue;
   final String unit;
+  final String timeType;
 
   @override
   State<LineChart> createState() => _LineChartState();
@@ -34,6 +36,25 @@ class _LineChartState extends State<LineChart> {
     super.initState();
   }
 
+  findMonday(DateTime date) {
+    // `date.weekday`: 1(월요일)부터 7(일요일)까지의 값
+    // 월요일로부터 몇 일 떨어져 있는지 계산
+    int daysFromMonday = date.weekday - DateTime.monday;
+
+    // 계산된 일수를 현재 날짜에서 빼서 해당 주의 월요일을 구한다.
+    DateTime monday = date.subtract(Duration(days: daysFromMonday));
+    return monday;
+  }
+
+  DateTime findSunday(DateTime date) {
+    DateTime sunday = date.add(const Duration(days: 7));
+    return sunday;
+  }
+
+  String dateToString(DateTime date) {
+    return DateFormat('MM.dd').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
@@ -42,7 +63,11 @@ class _LineChartState extends State<LineChart> {
       series: <ChartSeries>[
         LineSeries<LineChartData, String>(
           dataSource: widget.dataList.reversed.toList(),
-          xValueMapper: (LineChartData data, _) => data.xValue,
+          xValueMapper: (LineChartData data, _) => widget.timeType == 'daily'
+              ? dateToString(data.xValue)
+              : widget.timeType == 'weekly'
+                  ? '${dateToString(data.xValue).substring(0, 3)}${DateFormat('dd').format(findMonday(data.xValue))} - ${DateFormat('dd').format(findSunday(findMonday(data.xValue)))}'
+                  : '${dateToString(data.xValue)[1]}월',
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
           width: 3,
@@ -126,35 +151,16 @@ class _LineChartState extends State<LineChart> {
         minorGridLines: const MinorGridLines(
           width: 1,
         ),
-        // minimum: double.parse((widget.baseValue - 15).toStringAsFixed(0)),
         minimum: widget.unit == "kg"
-            ? (widget.baseValue - 10)
+            ? ((widget.baseValue - 10) / 10).roundToDouble() * 10
             : ((widget.baseValue - 15) / 10).roundToDouble() * 10,
-        // plotBands: <PlotBand>[
-        //   PlotBand(
-        //     borderColor: thickLineColor,
-        //     color: thickLineColor,
-        //     isVisible: true,
-        //     borderWidth: 1.7,
-        //     start: widget.baseValue,
-        //     end: widget.baseValue,
-        //   ),
-        //   PlotBand(
-        //     borderColor: thickLineColor,
-        //     color: thickLineColor,
-        //     isVisible: true,
-        //     borderWidth: 2.5,
-        //     start: widget.baseValue + 15, // TODO 어떻게 지정해야할지 고민 필요
-        //     end: widget.baseValue + 15,
-        //   ),
-        // ],
       ),
     );
   }
 }
 
 class LineChartData {
-  final String xValue;
+  final DateTime xValue;
   final double yValue;
 
   LineChartData(this.xValue, this.yValue);

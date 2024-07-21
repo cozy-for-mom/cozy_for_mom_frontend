@@ -16,6 +16,7 @@ class WeightApiService extends ChangeNotifier {
       Response res = await get(url, headers: headers);
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+        print(body);
         List<dynamic> weightsData = body['data']['weightList'];
         List<PregnantWeight> weights = weightsData.map((weight) {
           return PregnantWeight.fromJson(weight);
@@ -25,7 +26,7 @@ class WeightApiService extends ChangeNotifier {
 
         return {
           'todayWeight': todayWeight,
-          'weights': weights,
+          'weightList': weights,
           'lastRecordDate': lastRecordDate
         };
       } else {

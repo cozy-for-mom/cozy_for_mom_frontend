@@ -5,15 +5,15 @@ class PregnantWeights {
 }
 
 class PregnantWeight {
-  String dateTime;
+  String endDate;
   double weight;
 
-  PregnantWeight({required this.dateTime, required this.weight});
+  PregnantWeight({required this.endDate, required this.weight});
 
   factory PregnantWeight.fromJson(Map<String, dynamic> json) {
     return PregnantWeight(
+      endDate: json['endDate'] as String,
       weight: json['weight'] as double,
-      dateTime: json['endDate'] as String,
     );
   }
 }
