@@ -38,6 +38,7 @@ class _MyPageState extends State<MyPage> {
             pregnantInfo = snapshot.data!;
             daysPassed = totalDays - (pregnantInfo['dDay'] as int);
             percentage = daysPassed / totalDays;
+            if (percentage < 0) percentage = 1; // TODO 방어로직.
             selectedProfile = pregnantInfo['recentBabyProfile'];
             print(selectedProfile!.babies.first.babyId);
           }
@@ -82,12 +83,20 @@ class _MyPageState extends State<MyPage> {
                   left: 0,
                   right: 0,
                   child: Column(children: [
+                    pregnantInfo['imageUrl'] == null ?
                     Image.asset(
                       'assets/images/icons/momProfile.png',
-                      fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
+                      fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
                       width: 100,
                       height: 100,
                       alignment: Alignment.center,
+                    ) : ClipOval(
+                      child: Image.network(
+                        pregnantInfo['imageUrl'],
+                         fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(

@@ -67,7 +67,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                 elevation: 0.0,
                                 context: context,
                                 builder: (context) {
-                                  return const MonthCalendarModal();
+                                  return MonthCalendarModal(limitToday: true);
                                 },
                               );
                             },

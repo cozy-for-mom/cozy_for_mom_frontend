@@ -57,6 +57,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
               imageCount = 3;
             }
             percentage = passedDay / totalDays;
+            if (percentage < 0) percentage = 1; // TODO 방어로직
             babies = pregnantInfo['recentBabyProfile'].babies;
             babyNames = babies.map((baby) => baby.babyName as String).toList();
           }
@@ -220,39 +221,47 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                 Positioned(
                     top: 613.52,
                     left: 20,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('성장일지를 기록해요',
-                            style: TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18)),
-                        const SizedBox(height: 18),
-                        Container(
-                          width: 350,
-                          height: 100,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              color: babyNightBar,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('오늘은 얼마나 자랐을까?',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
-                              Image(
-                                  image: AssetImage(
-                                      "assets/images/icons/diary_cozylog.png"),
-                                  width: 78.44,
-                                  height: 53.27),
-                            ],
-                          ),
-                        )
-                      ],
+                    child: InkWell(
+                      onTap: () {
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BabyGrowthReportListScreen()));
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('성장일지를 기록해요',
+                              style: TextStyle(
+                                  color: mainTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18)),
+                          const SizedBox(height: 18),
+                          Container(
+                            width: 350,
+                            height: 100,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                                color: babyNightBar,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('오늘은 얼마나 자랐을까?',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16)),
+                                Image(
+                                    image: AssetImage(
+                                        "assets/images/icons/diary_cozylog.png"),
+                                    width: 78.44,
+                                    height: 53.27),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ))
               ],
             ),
