@@ -39,11 +39,15 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
   late int id;
   late String type = widget.type.name;
   late String title = '';
-  late List<String> notifyAt = ["one hour ago"];
+  late String notifyAt = "one hour ago";
   late List<String> targetTimeAt = [];
   late List<String> daysOfWeek = List.empty(growable: true);
 
   List<Widget> targetTimeWidgets = [];
+  List<String> allDays = NotificationDayType.values
+      .where((type) => type != NotificationDayType.all)
+      .map((type) => type.englishName)
+      .toList(); // '매일'을 제외한 모든 요일의 리스트
 
   @override
   void initState() {
@@ -55,13 +59,12 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
       titleController.text = widget.notification!.title;
       title = titleController.text;
       isActive = widget.notification!.isActive;
-      notifyAt = List.from(widget.notification!.notifyAt);
-      if (notifyAt[0] == 'one hour ago') {
-        // TODO 리스트가 아닌 String 타입으로 변경되면 수정하기
+      notifyAt = widget.notification!.notifyAt;
+      if (notifyAt == 'one hour ago') {
         selectedOneHourAgo = true;
         selectedThirtyMinutesAgo = false;
         selectedOnTime = false;
-      } else if (notifyAt[0] == 'thirty minutes ago') {
+      } else if (notifyAt == 'thirty minutes ago') {
         selectedOneHourAgo = false;
         selectedThirtyMinutesAgo = true;
         selectedOnTime = false;
@@ -246,10 +249,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                               if (selectedOneHourAgo) {
                                 selectedThirtyMinutesAgo = false;
                                 selectedOnTime = false;
-                                notifyAt.clear();
-                                notifyAt.add("one hour ago");
-                              } else {
-                                notifyAt.remove("one hour ago");
+                                notifyAt = "one hour ago";
                               }
                             });
                           },
@@ -286,10 +286,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                               if (selectedThirtyMinutesAgo) {
                                 selectedOneHourAgo = false;
                                 selectedOnTime = false;
-                                notifyAt.clear();
-                                notifyAt.add("thirty minutes ago");
-                              } else {
-                                notifyAt.remove("thirty minutes ago");
+                                notifyAt = "thirty minutes ago";
                               }
                             });
                           },
@@ -325,10 +322,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                               if (selectedOnTime) {
                                 selectedThirtyMinutesAgo = false;
                                 selectedOneHourAgo = false;
-                                notifyAt.clear();
-                                notifyAt.add("on time");
-                              } else {
-                                notifyAt.remove("on time");
+                                notifyAt = "on time";
                               }
                             });
                           },
@@ -382,23 +376,27 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  daysOfWeek.contains(dayType.englishName)
-                                      ? daysOfWeek.remove(dayType.englishName)
-                                      : dayType.englishName ==
-                                              'all' // 매일과 요일을 중복으로 선택 못하도록 방지
-                                          ? {
-                                              daysOfWeek = [],
-                                              daysOfWeek
-                                                  .add(dayType.englishName)
-                                            }
-                                          : {
-                                              if (daysOfWeek.contains('all'))
-                                                {
-                                                  daysOfWeek.remove('all'),
-                                                },
-                                              daysOfWeek
-                                                  .add(dayType.englishName)
-                                            };
+                                  if (daysOfWeek
+                                      .contains(dayType.englishName)) {
+                                    daysOfWeek.remove(dayType.englishName);
+                                  } else {
+                                    if (dayType.englishName == 'all') {
+                                      // 매일과 요일을 중복으로 선택 못하도록 방지
+                                      daysOfWeek.clear();
+                                      daysOfWeek.add(dayType.englishName);
+                                    } else {
+                                      if (daysOfWeek.contains('all')) {
+                                        daysOfWeek.remove('all');
+                                      }
+                                      daysOfWeek.add(dayType.englishName);
+                                    }
+                                    if (allDays.every(
+                                        (day) => daysOfWeek.contains(day))) {
+                                      daysOfWeek = [
+                                        NotificationDayType.all.englishName
+                                      ]; // 모든 요일을 'all'로 대체
+                                    }
+                                  }
                                 });
                               },
                               child: Container(

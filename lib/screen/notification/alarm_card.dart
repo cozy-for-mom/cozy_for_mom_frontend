@@ -174,60 +174,61 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.6),
-                          child: Row(children: [
-                            Expanded(
-                              child: Text(widget.notification.title,
-                                  style: const TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              height: 22,
-                              alignment: Alignment.center,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: BoxDecoration(
-                                  color: widget.notification.isActive
-                                      ? const Color(0xffFEEEEE)
-                                      : offButtonColor,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Row(
-                                children: widget.notification.daysOfWeek
-                                    .map((day) {
-                                      return Text(
-                                        weekDayNames[day]!,
-                                        style: TextStyle(
-                                            color: widget.notification.isActive
-                                                ? const Color(0xffFF9797)
-                                                : offButtonTextColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                      );
-                                    })
-                                    .expand((widget) =>
-                                        [widget, const SizedBox(width: 8)])
-                                    .toList()
-                                  ..removeLast(),
-                              ),
-                            ),
-                          ]),
+                          constraints:
+                              BoxConstraints(maxWidth: screenWidth * 0.6),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(widget.notification.title,
+                                      style: const TextStyle(
+                                          color: afterInputColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18),
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  height: 22,
+                                  alignment: Alignment.center,
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(
+                                      color: widget.notification.isActive
+                                          ? const Color(0xffFEEEEE)
+                                          : offButtonColor,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Wrap(
+                                    children: widget.notification.daysOfWeek
+                                        .map((day) {
+                                          return Text(
+                                            weekDayNames[day]!,
+                                            style: TextStyle(
+                                                color: widget
+                                                        .notification.isActive
+                                                    ? const Color(0xffFF9797)
+                                                    : offButtonTextColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12),
+                                          );
+                                        })
+                                        .expand((widget) =>
+                                            [widget, const SizedBox(width: 8)])
+                                        .toList()
+                                      ..removeLast(),
+                                  ),
+                                ),
+                              ]),
                         ),
                         CupertinoSwitch(
                           value: widget.notification.isActive,
-                          onChanged: (value) {
-                            setState(() async {
-                              await notificationViewModel
-                                  .modifyNotificationActive(
-                                      widget.notification.id, value);
-                              widget.onActiveChanged();
-                            });
+                          onChanged: (value) async {
+                            await notificationViewModel
+                                .modifyNotificationActive(
+                                    widget.notification.id, value);
+                            widget.onActiveChanged();
                           },
                           activeColor: primaryColor,
                         ),
@@ -246,7 +247,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                       children: [
                         Flexible(
                           child: Text(
-                            '${widget.notification.targetTimeAt.map((time) => int.parse(time.substring(0, 2)) > 11 ? '오후 ${formatPmTime(time)}' : '오전 ${formatAmTime(time)}').join('\t\t\t\t')}\t\t\t\t${widget.notification.notifyAt.map((notify) => timeNames[notify] == "정시" ? '' : '${timeNames[notify]} 알림').join('\t\t\t\t')}', // 알림 시간들을 추가
+                            '${widget.notification.targetTimeAt.map((time) => int.parse(time.substring(0, 2)) > 11 ? '오후 ${formatPmTime(time)}' : '오전 ${formatAmTime(time)}').join('\t\t\t\t')}\t\t\t\t${timeNames[widget.notification.notifyAt] == "정시" ? '' : '${timeNames[widget.notification.notifyAt]} 알림'}',
                             style: TextStyle(
                               color: widget.notification.isActive
                                   ? primaryColor

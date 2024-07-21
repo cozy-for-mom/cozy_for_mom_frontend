@@ -117,7 +117,9 @@ class _WeightRecordState extends State<WeightRecord> {
                                           elevation: 0.0,
                                           context: context,
                                           builder: (context) {
-                                            return const MonthCalendarModal();
+                                            return MonthCalendarModal(
+                                              limitToday: true,
+                                            );
                                           },
                                         );
                                       },
@@ -241,6 +243,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   .recordWeight(
                                                       globalData.selectedDate,
                                                       double.parse(value));
+                                          setState(() {});
                                         },
                                       ),
                                     ),

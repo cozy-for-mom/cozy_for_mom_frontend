@@ -95,11 +95,15 @@ class CozyLogApiService {
   ) async {
     var urlString = '$baseUrl/cozy-log/search?size=$size';
     final headers = await getHeaders();
+
     if (lastId == null) {
       urlString += '&lastId=0';
     } else {
       urlString += '&lastId=$lastId';
     }
+
+    urlString += '&keyword=$keyword';
+
     var sortTypeString = 'LATELY';
     if (sortType == CozyLogSearchSortType.comment) {
       sortTypeString = 'COMMENT';
@@ -108,6 +112,9 @@ class CozyLogApiService {
     final url = Uri.parse(urlString);
     dynamic response;
     response = await get(url, headers: headers);
+
+    print(response.statusCode);
+    print(response.body);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -143,10 +150,50 @@ class CozyLogApiService {
     }
   }
 
+  Future<int> createCozyLog(
+    String title,
+    String content,
+    List<CozyLogImage> images,
+    CozyLogModeType mode,
+  ) async {
+    var urlString = '$baseUrl/cozy-log';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'title': title,
+          'content': content,
+          'mode': switch (mode) {
+            CozyLogModeType.private => 'PRIVATE',
+            CozyLogModeType.public => 'PUBLIC',
+          },
+          'imageList': images.map((e) => {
+            "imageId": e.imageId,
+            "imageUrl": e.imageUrl,
+            "description": e.description,
+          }).toList(), 
+        },
+      ),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> data = body['data'];
+      return data['cozyLogId'] as int;
+    } else {
+      throw Exception('코지로그 작성 실패');
+    }
+  }
+
   Future<int> updateCozyLog(
     int id,
     String title,
     String content,
+    List<CozyLogImage> images,
     CozyLogModeType mode,
   ) async {
     var urlString = '$baseUrl/cozy-log?userId=1';
@@ -165,7 +212,11 @@ class CozyLogApiService {
             CozyLogModeType.private => 'PRIVATE',
             CozyLogModeType.public => 'PUBLIC',
           },
-          'imageList': [],
+          'imageList': images.map((e) => {
+            "imageId": e.imageId,
+            "imageUrl": e.imageUrl,
+            "description": e.description,
+          }).toList(), 
         },
       ),
     );
@@ -247,6 +298,58 @@ class CozyLogApiService {
       throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
+
+
+Future<void> bulkDeleteCozyLog(
+    List<int> cozyLogIds,
+  ) async {
+    var urlString = '$baseUrl/me/cozy-log';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await delete(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogIds': cozyLogIds,
+        },
+      ),
+    );
+
+    print(response.body);
+    if (response.statusCode == 204) {
+      print("삭제왼료");
+      return;
+    } else {
+      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+    }
+  }
+
+Future<void> bulkAllDeleteCozyLog(
+    List<int> cozyLogIds,
+  ) async {
+    var urlString = '$baseUrl/me/cozy-log/all';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'cozyLogIds': cozyLogIds,
+        },
+      ),
+    );
+
+    if (response.statusCode == 204) {
+      return;
+    } else {
+      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+    }
+  }
+
 
   Future<void> bulkUnscrapCozyLog(
     List<int> cozyLogIds,

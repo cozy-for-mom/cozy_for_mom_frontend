@@ -8,33 +8,35 @@ import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.da
 import 'package:http/http.dart';
 
 class BabyGrowthApiService {
-  Future<int> registerBabyProfileGrowth(BabyProfileGrowth growth) async {
+  Future<int> registerBabyProfileGrowth(
+      BabyProfileGrowth growth) async {
     final headers = await getHeaders();
     if (growth.id != null) {
-      final url = Uri.parse("$baseUrl/growth/${growth.id}");
-      final response = await put(
-        url,
-        headers: headers,
-        body: jsonEncode(growth.toJson()),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
-      } else {
-        throw Exception('성장 보고서 저장 실패');
-      }
+    final url = Uri.parse("$baseUrl/growth/${growth.id}");
+  final response = await put(
+      url,
+      headers: headers,
+      body: jsonEncode(growth.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
     } else {
-      final url = Uri.parse("$baseUrl/growth");
-      final response = await post(
-        url,
-        headers: headers,
-        body: jsonEncode(growth.toJson()),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
-      } else {
-        throw Exception('성장 보고서 저장 실패');
-      }
+      throw Exception('성장 보고서 저장 실패');
     }
+    } else {
+    final url = Uri.parse("$baseUrl/growth");
+      final response = await post(
+      url,
+      headers: headers,
+      body: jsonEncode(growth.toJson()),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)['data']['growthReportId'];
+    } else {
+      throw Exception('성장 보고서 저장 실패');
+    }
+    }
+    
   }
 
   Future<Pair<List<BabyProfileGrowth>, DateTime>> getBabyProfileGrowths(
@@ -86,6 +88,37 @@ class BabyGrowthApiService {
       return growth;
     } else {
       throw Exception('성장 보고서 조회 실패 - id: $id');
+    }
+  }
+
+  Future<void> registerNotificationExaminationDate(
+    String examinationAt,
+     List<String> notificationOptions,
+  ) async {
+   UserLocalStorageService userStorageService = await UserLocalStorageService.getInstance();
+   final babyProfileId = await userStorageService.getBabyProfileId();
+    var urlString = '$baseUrl/notification/examination';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic response;
+    print({
+        'babyProfileId': babyProfileId,
+        'examinationAt': examinationAt,
+        'notifyAt': notificationOptions,
+      });
+    response = await post(url, headers: headers,       
+    body: jsonEncode({
+        'babyProfileId': babyProfileId,
+        'examinationAt': examinationAt,
+        'notifyAt': notificationOptions,
+      }));
+
+    print('response.statusCode');
+    print(response.statusCode);
+
+    if (response.statusCode == 201) {
+    } else {
+      throw Exception('다음검진일 설정 실패');
     }
   }
 }

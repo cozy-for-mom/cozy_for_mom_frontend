@@ -59,6 +59,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
               imageCount = 3;
             }
             percentage = passedDay / totalDays;
+            if (percentage < 0) percentage = 1; // TODO 방어로직
             babies = pregnantInfo['recentBabyProfile'].babies;
             babyNames = babies.map((baby) => baby.babyName as String).toList();
           }
@@ -149,7 +150,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
-                          Text(' D-${dDay}', // TODO 밤/낮 따라 색상 바꿔줘야 함
+                          Text(' D-${dDay}',
                               style: TextStyle(
                                   color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
                                       nowHour >= 8 && nowHour < 18
@@ -173,7 +174,9 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                           child: Container(
                             height: 20,
                             decoration: BoxDecoration(
-                              color: babyNightBar, // TODO 밤/낮 따라 색상 바꿔줘야 함
+                              color: nowHour >= 8 && nowHour < 18
+                                  ? const Color(0xffFE8282)
+                                  : const Color(0xff9D8DFF),
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
@@ -222,39 +225,48 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                 Positioned(
                     top: 613.52,
                     left: 20,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('성장일지를 기록해요',
-                            style: TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18)),
-                        const SizedBox(height: 18),
-                        Container(
-                          width: screenWidth - 40,
-                          height: 100,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFA2A0F4),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('오늘은 얼마나 자랐을까?',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
-                              Image(
-                                  image: AssetImage(
-                                      "assets/images/icons/diary_cozylog.png"),
-                                  width: 78.44,
-                                  height: 53.27),
-                            ],
-                          ),
-                        )
-                      ],
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BabyGrowthReportListScreen()));
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('성장일지를 기록해요',
+                              style: TextStyle(
+                                  color: mainTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18)),
+                          const SizedBox(height: 18),
+                          Container(
+                            width: 350,
+                            height: 100,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                                color: babyNightBar,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('오늘은 얼마나 자랐을까?',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16)),
+                                Image(
+                                    image: AssetImage(
+                                        "assets/images/icons/diary_cozylog.png"),
+                                    width: 78.44,
+                                    height: 53.27),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ))
               ],
             ),
