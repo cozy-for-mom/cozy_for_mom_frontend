@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
@@ -26,7 +27,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
   bool _isSuffixVisible = false;
   Map<String, TextEditingController> controllers = {};
-  late Future<String?> imageUrl = Future(() => null);
+  String? imageUrl;
   CameraController? cameraController;
   ImageApiService imageApiService = ImageApiService();
 
@@ -101,6 +102,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
         if (snapshot.hasData) {
           pregnantInfo = snapshot.data!;
           introduceController.text = pregnantInfo['introduce'];
+          imageUrl = imageUrl ?? pregnantInfo['imageUrl'];
           Map<String, TextEditingController> controllers = {
             '이름': TextEditingController(text: pregnantInfo['name']),
             '닉네임': TextEditingController(text: pregnantInfo['nickname']),
@@ -143,10 +145,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   actions: [
                     InkWell(
                       child: Container(
-                        margin: const EdgeInsets.only(right: 20, bottom: 10),
+                        margin: const EdgeInsets.only(right: 20, bottom: 23),
                         alignment: Alignment.center,
-                        width: 53,
-                        height: 29,
+                        width: 60,
+                        height: 20,
                         decoration: BoxDecoration(
                           color: primaryColor,
                           borderRadius: BorderRadius.circular(33),
@@ -160,9 +162,6 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         ),
                       ),
                       onTap: () {
-                        print('수정 완료');
-                        print(
-                            '${controllers['이름']!.text}.${controllers['닉네임']!.text}.${controllers['이메일']!.text}.${sendFormatUsingRegex(controllers['생년월일']!.text)}.${introduceController.text}');
                         userViewModel.modifyUserProfile(
                             controllers['이름']!.text,
                             controllers['닉네임']!.text,
@@ -170,6 +169,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             imageUrl,
                             sendFormatUsingRegex(controllers['생년월일']!.text),
                             controllers['이메일']!.text);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyPage()
+                            ),
+                          );
                       },
                     ),
                   ],
@@ -183,16 +188,20 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             top: 10,
                             left: 145,
                             child:
-                                // imageUrl == Future.value(null) ?
+                                imageUrl == null ?
                                 const Image(
                                     image: AssetImage(
                                         "assets/images/icons/momProfile.png"),
                                     width: 100,
                                     height: 100)
-                            // : Image.network(
-                            //               imageUrl,
-                            //               fit: BoxFit.cover,
-                            //             ),
+                            : ClipOval( // 원형
+                              child: Image.network(
+                                            imageUrl!,
+                                            fit: BoxFit.cover,
+                                            width: 100,
+                                            height: 100,
+                                          ),
+                            ),
                             ),
                         Positioned(
                           top: 181 - 109,
@@ -203,28 +212,32 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                   backgroundColor: Colors.transparent,
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return SelectBottomModal(
-                                      selec1: '직접 찍기',
-                                      selec2: '앨범에서 선택',
-                                      tap1: () {
-                                        takePhoto;
-                                      },
-                                      tap2: () async {
-                                        Navigator.pop(context);
-                                        final selectedImage =
-                                            await ImagePicker().pickImage(
-                                                source: ImageSource.gallery);
-                                        setState(() {
-                                          if (selectedImage != null) {
-                                            imageUrl = imageApiService
-                                                .uploadImage(selectedImage);
-                                          } else {
-                                            print('No image selected.');
-                                          }
-                                        });
-                                      },
-                                    );
-                                  });
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                      child: SelectBottomModal(
+                                        selec1: '직접 찍기',
+                                        selec2: '앨범에서 선택',
+                                        tap1: () {
+                                          takePhoto;
+                                        },
+                                        tap2: () async {
+                                          Navigator.pop(context);
+                                          final selectedImage =
+                                              await ImagePicker().pickImage(
+                                                  source: ImageSource.gallery);
+                                            if (selectedImage != null) {
+
+                                            final selectedImageUrl = await imageApiService
+                                                    .uploadImage(selectedImage);
+                                              setState(() {
+                                                imageUrl =  selectedImageUrl; 
+                                            }); 
+                                            }  else {
+                                              print('No image selected.');
+                                            }
+                                          }));
+                                        },
+                                  );
                             },
                             child: const Image(
                               image: AssetImage(
