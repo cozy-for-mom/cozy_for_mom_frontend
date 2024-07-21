@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
@@ -53,14 +54,14 @@ class UserApiService extends ChangeNotifier {
   }
 
   Future<void> modifyUserProfile(String name, String nickname, String introduce,
-      Future<String?> imageUrl, String birth, String email) async {
+      String? imageUrl, String birth, String email) async {
     final headers = await getHeaders();
     final url = Uri.parse('$baseUrl/me');
     Map data = {
       'name': name,
       'nickname': nickname,
       'introduce': introduce,
-      'imageUrl': await imageUrl,
+      'image': imageUrl,
       'birth': birth,
       'email': email
     };
@@ -86,4 +87,28 @@ class UserApiService extends ChangeNotifier {
       throw Exception('$id 메인 태아 프로필 변경을 실패하였습니다.');
     }
   }
+
+  Future<void> addBabies(String dueAt, String? profileImageUrl, List<BabyForRegister> babies) async {
+    final url = Uri.parse('$baseUrl/baby');
+    final headers = await getHeaders();
+    final Response response =
+        await post(url, headers: headers,     body: jsonEncode({
+      'dueAt': dueAt,
+      'profileImageUrl': profileImageUrl,
+      'babies': babies.map((e) => e.toJson()).toList(),
+    }));
+
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw Exception('태아 추가를 실패하였습니다.');
+    }
+  }
+}
+
+class Baby {
+  final String name;
+  final String gender;
+
+  Baby({required this.name, required this.gender});
 }
