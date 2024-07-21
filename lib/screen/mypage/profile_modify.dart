@@ -358,57 +358,53 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     height: 21,
                     child: Stack(
                       children: [
-                        Positioned(
-                          top: 820,
-                          left: 0,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext buildContext) {
-                                      return const LogoutModal();
-                                    },
-                                  );
-                                },
-                                child: const Text(
-                                  '로그아웃',
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext buildContext) {
+                                    return const LogoutModal();
+                                  },
+                                );
+                              },
+                              child: const Text(
+                                '로그아웃',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
                                 ),
                               ),
-                              Container(
-                                width: 1,
-                                height: 11,
-                                color: primaryColor,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  print('회원탈퇴 버튼 클릭');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => UserDeleteScreen(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  '회원탈퇴',
-                                  style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                            ),
+                            SizedBox(width: 10,),
+                            Container(
+                              width: 1,
+                              height: 11,
+                              color: primaryColor,
+                            ),
+                            SizedBox(width: 10,),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserDeleteScreen(),
                                   ),
+                                );
+                              },
+                              child: const Text(
+                                '회원탈퇴',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

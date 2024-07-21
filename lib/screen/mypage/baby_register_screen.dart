@@ -298,7 +298,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                       onTap: _addBabyField,
                       child: const Center(
                         child: Text(
-                          '+ 다태아 추가하기',
+                          '+ 태아 추가하기',
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
