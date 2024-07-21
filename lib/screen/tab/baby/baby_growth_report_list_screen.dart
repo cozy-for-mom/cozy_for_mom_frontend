@@ -187,15 +187,13 @@ class _BabyGrowthReportListScreenState
                                           ),
                                           const SizedBox(height: 30),
                                           InkWell(
-                                            onTap: () async {
-                                              await BabyGrowthApiService().registerNotificationExaminationDate(
+                                            onTap: () {
+                                               BabyGrowthApiService().registerNotificationExaminationDate(
                                                   dateFormatForString.format(globalData.selectedDate), 
                                                   selectedNotifications
                                               );
-                                               setState(() {
-                                                data = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
-                                              });
-                                              Navigator.pop(context);
+
+                                              Navigator.pop(context, true);
                                             },
                                             child: Container(
                                               width: 350,
@@ -222,8 +220,13 @@ class _BabyGrowthReportListScreenState
                                   },
                                 );
                               },
-                            );
-                           
+                            ).then((value) {
+                              if (value == true) {
+                                setState(() {
+                                  data = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
+                                });
+                              }
+                            });
                           },
                           child: Row(
                             children: [
@@ -254,6 +257,7 @@ class _BabyGrowthReportListScreenState
                         InkWell(
                           onTap: () {
                             showModalBottomSheet(
+                              
                               backgroundColor: Colors.transparent,
                               elevation: 0.0,
                               context: context,
