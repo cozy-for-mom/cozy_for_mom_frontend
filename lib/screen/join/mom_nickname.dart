@@ -106,9 +106,11 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                                 ),
                               ),
                               Image(
-                                image: AssetImage(_isNicknameLengthNotExceeded
-                                    ? 'assets/images/icons/pass.png'
-                                    : 'assets/images/icons/unpass.png'),
+                                image: AssetImage(
+                                    _isNicknameLengthNotExceeded &&
+                                            _isNicknameNotDuplicated
+                                        ? 'assets/images/icons/pass.png'
+                                        : 'assets/images/icons/unpass.png'),
                                 width: 18,
                                 height: 18,
                               ),
@@ -122,6 +124,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                   if (_nicknameController.text.isEmpty) {
                     setState(() {
                       _isNicknameValid = false;
+                      widget.updateValidity(false);
                     });
                   } else {
                     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -137,6 +140,9 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                       setState(() {
                         _isNicknameLengthNotExceeded = value.length <= 8;
                         _isNicknameValid = true;
+                        widget.updateValidity(_isNicknameLengthNotExceeded &
+                            _isNicknameValid &
+                            _isNicknameNotDuplicated);
                       });
                     });
                   }

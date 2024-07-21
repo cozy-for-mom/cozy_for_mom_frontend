@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
@@ -8,12 +9,6 @@ import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
-
-void main() {
-  runApp(const MaterialApp(
-    home: BabyMainScreen(),
-  ));
-}
 
 class BabyMainScreen extends StatefulWidget {
   const BabyMainScreen({super.key});
@@ -61,8 +56,6 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
             } else if (weeksWithThreeImages.contains(week)) {
               imageCount = 3;
             }
-            print(
-                "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png");
             percentage = passedDay / totalDays;
             babies = pregnantInfo['recentBabyProfile'].babies;
             babyNames = babies.map((baby) => baby.babyName as String).toList();
