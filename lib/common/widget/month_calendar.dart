@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class MonthCalendar extends StatefulWidget {
-  const MonthCalendar({super.key});
+  MonthCalendar({super.key, required this.limitToday});
+  bool limitToday;
 
   @override
   State<MonthCalendar> createState() => _MonthCalendarState();
@@ -24,7 +25,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
           child: TableCalendar(
             focusedDay: globalDate.selectedDay,
             firstDay: DateTime(2020),
-            lastDay: DateTime.now(),
+            lastDay: widget.limitToday ? DateTime.now() : DateTime(2050),//DateTime.now().add(Duration(days: 1825)),
             selectedDayPredicate: (date) {
               return isSameDay(date, globalDate.selectedDay);
             },
@@ -100,7 +101,8 @@ class _MonthCalendarState extends State<MonthCalendar> {
 }
 
 class MonthCalendarModal extends StatelessWidget {
-  const MonthCalendarModal({super.key});
+  MonthCalendarModal({super.key, this.limitToday = false});
+  bool limitToday;
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +134,12 @@ class MonthCalendarModal extends StatelessWidget {
               alignment: Alignment.topCenter,
               color: Colors.white,
               padding: const EdgeInsets.only(
-                  top: 20, bottom: 40, left: 20, right: 20),
+                  top: 20, bottom: 20, left: 20, right: 20),
               width: screenWidth,
-              height: screenHeight * (0.7),
+              height: screenHeight * (0.5),
               child: ChangeNotifierProvider.value(
                 value: globalDate,
-                child: const MonthCalendar(),
+                child: MonthCalendar(limitToday: limitToday),
               ),
             ),
           )
