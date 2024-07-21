@@ -138,6 +138,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 );
                 List<Baby> babies =
                     List.generate(joinInputData.birthNames.length, (index) {
+                  print(
+                      '${joinInputData.birthNames[index]}. ${joinInputData.genders[index]}');
                   return Baby(
                       name: joinInputData.birthNames[index],
                       gender: joinInputData.genders[index]);
@@ -149,20 +151,20 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                         joinInputData.laseMensesDate.replaceAll('.', '-'),
                     babies: babies);
 
-                try {
-                  final response =
-                      await joinApiService.signUp(userInfo, babyInfo);
-                  if (response['status'] == 201) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
-                    );
-                  } else {
-                    print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
-                  }
-                } catch (e) {
-                  print('회원가입 중 에러 발생: $e');
-                }
+                // try {
+                //   final response =
+                //       await joinApiService.signUp(userInfo, babyInfo);
+                //   if (response['status'] == 201) {
+                //     Navigator.of(context).pushReplacement(
+                //       MaterialPageRoute(
+                //           builder: (context) => const MainScreen()),
+                //     );
+                //   } else {
+                //     print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
+                //   }
+                // } catch (e) {
+                //   print('회원가입 중 에러 발생: $e');
+                // }
               }
             },
             child: Padding(
