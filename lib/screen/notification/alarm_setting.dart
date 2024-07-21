@@ -1,8 +1,8 @@
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/bloodsugar_alarm.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/supplement_alarm.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/bloodsugar_alarm.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/supplement_alarm.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 
 enum CardType { bloodsugar, supplement }
@@ -16,8 +16,20 @@ class AlarmSettingPage extends StatefulWidget {
 }
 
 class _AlarmSettingPageState extends State<AlarmSettingPage> {
+  late CardType type = widget.type;
+
+  List<int> notificationIds = [];
   bool isBloodSugarButtonEnabled = false;
   bool isSupplementButtonEnabled = false;
+  String keyForUpdate = DateTime.now().toString(); // 갱신을 위한 키
+
+  void registerNotification(int id) {
+    setState(() {
+      notificationIds.add(id);
+      keyForUpdate = DateTime.now().toString();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +46,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -58,7 +71,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
               top: 10,
               left: 20,
               child: Container(
-                width: 351, // TODO 화면 너비에 맞춘 width로 수정해야함
+                width: screenWidth - 40,
                 height: 53,
                 decoration: BoxDecoration(
                     color: offButtonColor,
@@ -69,14 +82,13 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                     InkWell(
                       onTap: () {
                         setState(() {
+                          type = CardType.bloodsugar;
                           isBloodSugarButtonEnabled = true;
                           isSupplementButtonEnabled = false;
                         });
                       },
                       child: Container(
-                          width: isBloodSugarButtonEnabled
-                              ? 173
-                              : 153, // 이렇게 해야 위젯끼리 안 겹침
+                          width: isBloodSugarButtonEnabled ? 173 : 153,
                           height: 41,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -97,6 +109,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                     InkWell(
                       onTap: () {
                         setState(() {
+                          type = CardType.supplement;
                           isBloodSugarButtonEnabled = false;
                           isSupplementButtonEnabled = true;
                         });
@@ -124,8 +137,8 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                 ),
               )),
           isBloodSugarButtonEnabled
-              ? const BloodsugarAlarm()
-              : const SupplementAlarm(),
+              ? BloodsugarAlarm(key: ValueKey(keyForUpdate))
+              : SupplementAlarm(key: ValueKey(keyForUpdate)),
         ],
       ),
       floatingActionButton: CustomFloatingButton(
@@ -133,7 +146,10 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NotificationSettingScreen(),
+              builder: (context) => NotificationSettingScreen(
+                type: type,
+                onRegister: registerNotification,
+              ),
             ),
           );
         },

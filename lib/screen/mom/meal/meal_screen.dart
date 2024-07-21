@@ -3,7 +3,7 @@ import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
-import 'package:cozy_for_mom_frontend/screen/mom/alarm/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';

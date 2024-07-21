@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dar
 import 'package:cozy_for_mom_frontend/service/mom/mom_meal_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
@@ -37,7 +38,8 @@ void main() async {
           ChangeNotifierProvider(create: (context) => WeightApiService()),
           ChangeNotifierProvider(create: (context) => MealApiService()),
           ChangeNotifierProvider(create: (context) => BloodsugarApiService()),
-          ChangeNotifierProvider(create: (context) => UserApiService())
+          ChangeNotifierProvider(create: (context) => UserApiService()),
+          ChangeNotifierProvider(create: (context) => NotificationApiService())
         ],
         child: const App(),
       ),
