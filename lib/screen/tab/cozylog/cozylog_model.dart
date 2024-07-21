@@ -117,9 +117,9 @@ class CozyLogForList {
 enum CozyLogModeType { public, private }
 
 class CozyLogImage {
-  final int imageId;
+  final int? imageId;
   final String imageUrl;
-  final String description;
+  String description;
 
   CozyLogImage({
     required this.imageId,

@@ -10,7 +10,7 @@ class CozyLogSearchPage extends StatefulWidget {
   State<CozyLogSearchPage> createState() => _CozyLogSearchPageState();
 }
 
-class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
+class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindingObserver {
   List<String> recentSearches = [];
   late CozyLogLocalStorageService storageService;
   final TextEditingController _controller = TextEditingController();
@@ -20,12 +20,28 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     initializeStorageService(); // 서비스 초기화
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      initializeStorageService();
+    }
+  }
+
 
   Future<void> initializeStorageService() async {
     storageService =
         await CozyLogLocalStorageService.getInstance(); // 인스턴스 가져오기
+    
     storageService.getAutoSave().then((value) => autoSave = value);
     await loadRecentSearches(); // 최근 검색어 로드
   }
@@ -102,7 +118,6 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                           ),
                           onSubmitted: (String value) {
                             addSearch(value);
-
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -119,7 +134,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.pop(context);
                   },
                   child: const Center(
                     child: Text("취소"),
@@ -231,10 +246,22 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> {
                           ),
                           child: Row(
                             children: [
-                              Text(
-                                recentSearches[index],
-                                style: const TextStyle(
-                                  fontSize: 14,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CozyLogSearchResultPage(
+                                  searchKeyword: recentSearches[index],
+                                ),
+                              ),
+                            );
+                                },
+                                child: Text(
+                                  recentSearches[index],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),

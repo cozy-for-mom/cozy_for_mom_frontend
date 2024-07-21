@@ -9,6 +9,8 @@ import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_comment_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 
 class CozyLogDetailScreen extends StatefulWidget {
   final int id;
@@ -29,6 +31,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   int? commentIdToUpdate;
   DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
   String commentInput = '';
+  final tokenManager = TokenManager.TokenManager();
+  bool isEditMode = false;
+
 
   Image submitIcon = const Image(
       image: AssetImage(
@@ -42,9 +47,17 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
     super.initState();
     futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
     futureCozyLog.then((value) =>
-        isMyCozyLog = value.writer.id == 3); // TODO user id 판단 로직 가져오기
+      setIsMyCozyLog(value));
 
     futureComments = CozyLogCommentApiService().getCozyLogComments(widget.id);
+    
+  }
+
+    void setIsMyCozyLog(CozyLog cozyLog) async {
+    final userId = await tokenManager.getUserId();
+      if (cozyLog.writer.id == userId) {
+        isMyCozyLog = true;
+      }
   }
 
   @override
@@ -52,7 +65,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size(400, 60),
+          preferredSize: const Size(400, 80),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
