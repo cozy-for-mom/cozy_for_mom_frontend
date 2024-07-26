@@ -42,11 +42,13 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
   void initEmail(String text) async {
     _isEmailValid = _validateEmail(text);
     _isEmailNotDuplicated = await JoinApiService().emailDuplicateCheck(text);
-    setState(() {
-      _isInputValid = text.isNotEmpty;
-      widget.updateValidity(
-          _isEmailValid && _isEmailNotDuplicated && _isInputValid);
-    });
+    if (mounted) {
+      setState(() {
+        _isInputValid = text.isNotEmpty;
+        widget.updateValidity(
+            _isEmailValid && _isEmailNotDuplicated && _isInputValid);
+      });
+    }
   }
 
   @override
@@ -115,12 +117,14 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    joinInputData.setEmail('');
-                                    textController.clear();
-                                    _isInputValid = !_isInputValid;
-                                    widget.updateValidity(_isInputValid);
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      joinInputData.setEmail('');
+                                      textController.clear();
+                                      _isInputValid = !_isInputValid;
+                                      widget.updateValidity(_isInputValid);
+                                    });
+                                  }
                                 },
                                 child: const Image(
                                   image: AssetImage(
@@ -143,30 +147,32 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                       : null,
                 ),
                 onChanged: (value) {
-                  setState(() {
-                    joinInputData.setEmail(value);
-                    if (textController.text.isEmpty) {
-                      setState(() {
-                        _isInputValid = false;
-                        widget.updateValidity(false);
-                      });
-                    } else {
-                      if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-                      _debounce =
-                          Timer(const Duration(milliseconds: 200), () async {
-                        _isEmailNotDuplicated =
-                            await JoinApiService().emailDuplicateCheck(value);
+                  if (mounted) {
+                    setState(() {
+                      joinInputData.setEmail(value);
+                      if (textController.text.isEmpty) {
                         setState(() {
-                          _isEmailValid = _validateEmail(value);
-                          _isInputValid = true;
-                          widget.updateValidity(_isEmailValid &
-                              _isEmailNotDuplicated &
-                              _isInputValid);
+                          _isInputValid = false;
+                          widget.updateValidity(false);
                         });
-                      });
-                    }
-                  });
+                      } else {
+                        if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+                        _debounce =
+                            Timer(const Duration(milliseconds: 200), () async {
+                          _isEmailNotDuplicated =
+                              await JoinApiService().emailDuplicateCheck(value);
+                          setState(() {
+                            _isEmailValid = _validateEmail(value);
+                            _isInputValid = true;
+                            widget.updateValidity(_isEmailValid &
+                                _isEmailNotDuplicated &
+                                _isInputValid);
+                          });
+                        });
+                      }
+                    });
+                  }
                 },
               )),
         ),

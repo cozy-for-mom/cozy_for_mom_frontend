@@ -87,9 +87,11 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                       counterText: '',
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        joinInputData.setName(value);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          joinInputData.setName(value);
+                        });
+                      }
                       widget.updateValidity(nameController.text.isNotEmpty &
                           birthController.text.isNotEmpty);
                     },
@@ -144,18 +146,20 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                       counterText: '',
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        String parsedDate;
-                        if (value.length == 8 && _isNumeric(value)) {
-                          parsedDate = DateFormat('yyyy.MM.dd')
-                              .format(DateTime.parse(value));
-                        } else {
-                          parsedDate = value;
-                        }
-                        joinInputData.birth = parsedDate;
-                        widget.updateValidity(nameController.text.isNotEmpty &
-                            birthController.text.isNotEmpty);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          String parsedDate;
+                          if (value.length == 8 && _isNumeric(value)) {
+                            parsedDate = DateFormat('yyyy.MM.dd')
+                                .format(DateTime.parse(value));
+                          } else {
+                            parsedDate = value;
+                          }
+                          joinInputData.birth = parsedDate;
+                          widget.updateValidity(nameController.text.isNotEmpty &
+                              birthController.text.isNotEmpty);
+                        });
+                      }
                     },
                   )),
             ],

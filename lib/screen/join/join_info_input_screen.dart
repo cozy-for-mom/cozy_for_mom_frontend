@@ -39,33 +39,43 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   bool _isBabyNameAndGenderValid = false;
 
   void _updateEmailValidity(bool isValid) {
-    setState(() {
-      _isEmailValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isEmailValid = isValid;
+      });
+    }
   }
 
   void _updateNameAndBirthValidity(bool isValid) {
-    setState(() {
-      _isNameAndBirthValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isNameAndBirthValid = isValid;
+      });
+    }
   }
 
   void _updateNicknameValidity(bool isValid) {
-    setState(() {
-      _isNicknameValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isNicknameValid = isValid;
+      });
+    }
   }
 
   void _updateDueAtAndLastPeriodAtValidity(bool isValid) {
-    setState(() {
-      _isDueAtAndLastPeriodAtValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isDueAtAndLastPeriodAtValid = isValid;
+      });
+    }
   }
 
   void _updateBabyNameAndGenderValidity(bool isValid) {
-    setState(() {
-      _isBabyNameAndGenderValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isBabyNameAndGenderValid = isValid;
+      });
+    }
   }
 
   void _nextPage() {
@@ -138,33 +148,29 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 );
                 List<Baby> babies =
                     List.generate(joinInputData.birthNames.length, (index) {
-                  print(
-                      '${joinInputData.birthNames[index]}. ${joinInputData.genders[index]}');
                   return Baby(
                       name: joinInputData.birthNames[index],
                       gender: joinInputData.genders[index]);
                 });
-
                 BabyInfo babyInfo = BabyInfo(
                     dueAt: joinInputData.dueDate.replaceAll('.', '-'),
                     lastPeriodAt:
                         joinInputData.laseMensesDate.replaceAll('.', '-'),
                     babies: babies);
-
-                // try {
-                //   final response =
-                //       await joinApiService.signUp(userInfo, babyInfo);
-                //   if (response['status'] == 201) {
-                //     Navigator.of(context).pushReplacement(
-                //       MaterialPageRoute(
-                //           builder: (context) => const MainScreen()),
-                //     );
-                //   } else {
-                //     print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
-                //   }
-                // } catch (e) {
-                //   print('회원가입 중 에러 발생: $e');
-                // }
+                try {
+                  final response =
+                      await joinApiService.signUp(userInfo, babyInfo);
+                  if (response['status'] == 201) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
+                    );
+                  } else {
+                    print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
+                  }
+                } catch (e) {
+                  print('회원가입 중 에러 발생: $e');
+                }
               }
             },
             child: Padding(
@@ -206,9 +212,11 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             child: PageView(
               controller: _pageController,
               onPageChanged: (int page) {
-                setState(() {
-                  _currentPage = page;
-                });
+                if (mounted) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                }
               },
               children: [
                 MomEmailInputScreen(updateValidity: _updateEmailValidity),

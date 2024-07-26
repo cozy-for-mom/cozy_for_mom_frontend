@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
 class BabyGenderScreen extends StatefulWidget {
@@ -16,9 +15,8 @@ class BabyGenderScreen extends StatefulWidget {
 class _BabyGenderScreenState extends State<BabyGenderScreen> {
   final List<String> genderItems = ['남아', '여아', '아직 모르겠어요'];
   List<TextEditingController> birthNameControllers = [];
-  List<TextEditingController> GenderControllers = [];
+  List<TextEditingController> genderControllers = [];
 
-  List<String> genders = [];
   int currentGenderIndex = -1;
   bool isGenderModal = false;
   int babyCount = 1;
@@ -35,7 +33,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
           babyCount,
           (index) =>
               TextEditingController(text: joinInputData.birthNames[index]));
-      GenderControllers = List.generate(babyCount,
+      genderControllers = List.generate(babyCount,
           (index) => TextEditingController(text: joinInputData.genders[index]));
       currentGenderIndex = babyCount - 1;
       // 성별 불러오기 다시 확인 (뒤로가기했다가 돌아왔을때)
@@ -47,7 +45,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
   void addBaby() {
     setState(() {
       birthNameControllers.add(TextEditingController());
-      GenderControllers.add(TextEditingController());
+      genderControllers.add(TextEditingController());
     });
   }
 
@@ -55,7 +53,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
     bool allFieldsValid = true;
     for (int i = 0; i < birthNameControllers.length; i++) {
       if (birthNameControllers[i].text.isEmpty ||
-          GenderControllers[i].text.isEmpty) {
+          genderControllers[i].text.isEmpty) {
         allFieldsValid = false;
         break;
       }
@@ -67,20 +65,23 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final joinInputData = Provider.of<JoinInputData>(context, listen: false);
-
-    if (joinInputData.fetalInfoChanged) {
-      _resetData();
-      joinInputData.resetFetalInfoChange();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (joinInputData.fetalInfoChanged) {
+        _resetData();
+        joinInputData.resetFetalInfoChange();
+      }
+    });
   }
 
   void _resetData() {
-    setState(() {
-      babyCount = 1;
-      birthNameControllers = [TextEditingController()]; // 새 컨트롤러 초기화
-      GenderControllers = [TextEditingController()]; // 성별 데이터 초기화
-      isOpenGenderModal = [false];
-    });
+    if (mounted) {
+      setState(() {
+        babyCount = 1;
+        birthNameControllers = [TextEditingController()]; // 새 컨트롤러 초기화
+        genderControllers = [TextEditingController()]; // 성별 데이터 초기화
+        isOpenGenderModal = [false];
+      });
+    }
   }
 
   @override
@@ -88,7 +89,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
     birthNameControllers.forEach((controller) {
       controller.dispose();
     });
-    GenderControllers.forEach((controller) {
+    genderControllers.forEach((controller) {
       controller.dispose();
     });
     super.dispose();
@@ -132,8 +133,8 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                 if (index >= birthNameControllers.length) {
                   birthNameControllers.add(TextEditingController());
                 }
-                if (index >= GenderControllers.length) {
-                  GenderControllers.add(TextEditingController());
+                if (index >= genderControllers.length) {
+                  genderControllers.add(TextEditingController());
                 }
                 return Padding(
                   padding: const EdgeInsets.only(left: 20),
@@ -184,10 +185,13 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                     counterText: '',
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      joinInputData.setBirthname(index, value);
-                                      _validateFields();
-                                    });
+                                    if (mounted) {
+                                      setState(() {
+                                        joinInputData.setBirthname(
+                                            index, value);
+                                        _validateFields();
+                                      });
+                                    }
                                   },
                                 )),
                             const SizedBox(height: 25),
@@ -199,10 +203,12 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                             const SizedBox(height: 10),
                             InkWell(
                               onTap: () {
-                                setState(() {
-                                  isOpenGenderModal[index] =
-                                      !isOpenGenderModal[index];
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    isOpenGenderModal[index] =
+                                        !isOpenGenderModal[index];
+                                  });
+                                }
                               },
                               child: Container(
                                 width: screenWidth - 40,
@@ -212,7 +218,7 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                 padding: const EdgeInsets.only(left: 20),
                                 child: IgnorePointer(
                                   child: TextFormField(
-                                    controller: GenderControllers[index],
+                                    controller: genderControllers[index],
                                     readOnly: true,
                                     decoration: InputDecoration(
                                       contentPadding:
@@ -256,15 +262,18 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
                                           .map<Widget>((String item) {
                                         return InkWell(
                                           onTap: () {
-                                            // 텍스트를 클릭했을 때 실행할 로직
-                                            setState(() {
-                                              joinInputData.setGender(
-                                                  index, item);
-                                              _validateFields();
-
-                                              isOpenGenderModal[index] =
-                                                  !isOpenGenderModal[index];
-                                            });
+                                            if (mounted) {
+                                              setState(() {
+                                                joinInputData.setGender(
+                                                    index, item);
+                                                genderControllers[index] =
+                                                    (TextEditingController(
+                                                        text: item));
+                                                _validateFields();
+                                                isOpenGenderModal[index] =
+                                                    !isOpenGenderModal[index];
+                                              });
+                                            }
                                           },
                                           child: Align(
                                             alignment: Alignment.center,
@@ -308,10 +317,12 @@ class _BabyGenderScreenState extends State<BabyGenderScreen> {
             child: joinInputData.fetalInfo == '다태아'
                 ? InkWell(
                     onTap: () {
-                      setState(() {
-                        babyCount += 1;
-                        isOpenGenderModal.add(false);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          babyCount += 1;
+                          isOpenGenderModal.add(false);
+                        });
+                      }
                     },
                     child: const Padding(
                         padding: EdgeInsets.only(top: 10),

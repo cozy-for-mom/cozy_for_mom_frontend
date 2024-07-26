@@ -90,20 +90,22 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                       counterText: '',
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
-                        String parsedDate;
-                        if (value.length == 8 && _isNumeric(value)) {
-                          parsedDate = DateFormat('yyyy.MM.dd')
-                              .format(DateTime.parse(value));
-                        } else {
-                          parsedDate = value;
-                        }
-                        joinInputData.dueDate = parsedDate;
-                        widget.updateValidity(
-                            dueDateController.text.isNotEmpty &
-                                lastMensesController.text.isNotEmpty);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
+                          String parsedDate;
+                          if (value.length == 8 && _isNumeric(value)) {
+                            parsedDate = DateFormat('yyyy.MM.dd')
+                                .format(DateTime.parse(value));
+                          } else {
+                            parsedDate = value;
+                          }
+                          joinInputData.dueDate = parsedDate;
+                          widget.updateValidity(
+                              dueDateController.text.isNotEmpty &
+                                  lastMensesController.text.isNotEmpty);
+                        });
+                      }
                     },
                   )),
             ],
@@ -156,19 +158,21 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                       counterText: '',
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        String parsedDate;
-                        if (value.length == 8 && _isNumeric(value)) {
-                          parsedDate = DateFormat('yyyy.MM.dd')
-                              .format(DateTime.parse(value));
-                        } else {
-                          parsedDate = value;
-                        }
-                        joinInputData.laseMensesDate = parsedDate;
-                        widget.updateValidity(
-                            dueDateController.text.isNotEmpty &
-                                lastMensesController.text.isNotEmpty);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          String parsedDate;
+                          if (value.length == 8 && _isNumeric(value)) {
+                            parsedDate = DateFormat('yyyy.MM.dd')
+                                .format(DateTime.parse(value));
+                          } else {
+                            parsedDate = value;
+                          }
+                          joinInputData.laseMensesDate = parsedDate;
+                          widget.updateValidity(
+                              dueDateController.text.isNotEmpty &
+                                  lastMensesController.text.isNotEmpty);
+                        });
+                      }
                     },
                   )),
             ],

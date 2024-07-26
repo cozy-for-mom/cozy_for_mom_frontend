@@ -98,10 +98,12 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    joinInputData.setNickname('');
-                                    _isNicknameValid = !_isNicknameValid;
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      joinInputData.setNickname('');
+                                      _isNicknameValid = !_isNicknameValid;
+                                    });
+                                  }
                                 },
                                 child: const Image(
                                   image: AssetImage(
@@ -127,10 +129,12 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 onChanged: (value) {
                   joinInputData.setNickname(value);
                   if (_nicknameController.text.isEmpty) {
-                    setState(() {
-                      _isNicknameValid = false;
-                      widget.updateValidity(false);
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isNicknameValid = false;
+                        widget.updateValidity(false);
+                      });
+                    }
                   } else {
                     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
@@ -142,13 +146,15 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
 
                       _isNicknameNotDuplicated =
                           await JoinApiService().nicknameDuplicateCheck(value);
-                      setState(() {
-                        _isNicknameLengthNotExceeded = value.length <= 8;
-                        _isNicknameValid = true;
-                        widget.updateValidity(_isNicknameLengthNotExceeded &
-                            _isNicknameValid &
-                            _isNicknameNotDuplicated);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _isNicknameLengthNotExceeded = value.length <= 8;
+                          _isNicknameValid = true;
+                          widget.updateValidity(_isNicknameLengthNotExceeded &
+                              _isNicknameValid &
+                              _isNicknameNotDuplicated);
+                        });
+                      }
                     });
                   }
                   widget.updateValidity(_isNicknameLengthNotExceeded &

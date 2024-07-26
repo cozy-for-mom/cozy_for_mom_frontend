@@ -33,11 +33,13 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: () {
-        setState(() {
-          if (widget.radioButtonType == RadioType.fetalInfo) {
-            joinInputData.setFetalInfo(widget.value);
-          }
-        });
+        if (mounted) {
+          setState(() {
+            if (widget.radioButtonType == RadioType.fetalInfo) {
+              joinInputData.setFetalInfo(widget.value);
+            }
+          });
+        }
       },
       child: Container(
         height: 48,
