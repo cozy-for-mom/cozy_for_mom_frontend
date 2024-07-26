@@ -4,10 +4,14 @@ import 'package:cozy_for_mom_frontend/model/user_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class UserApiService extends ChangeNotifier {
+  final tokenManager = TokenManager.TokenManager();
+
   Future<Map<String, dynamic>> getUserInfo() async {
     try {
       final headers = await getHeaders();
@@ -85,20 +89,36 @@ class UserApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> addBabies(String dueAt, String? profileImageUrl, List<BabyForRegister> babies) async {
+  Future<void> addBabies(String dueAt, String? profileImageUrl,
+      List<BabyForRegister> babies) async {
     final url = Uri.parse('$baseUrl/baby');
     final headers = await getHeaders();
-    final Response response =
-        await post(url, headers: headers,     body: jsonEncode({
-      'dueAt': dueAt,
-      'profileImageUrl': profileImageUrl,
-      'babies': babies.map((e) => e.toJson()).toList(),
-    }));
+    final Response response = await post(url,
+        headers: headers,
+        body: jsonEncode({
+          'dueAt': dueAt,
+          'profileImageUrl': profileImageUrl,
+          'babies': babies.map((e) => e.toJson()).toList(),
+        }));
 
     if (response.statusCode == 201) {
       return;
     } else {
       throw Exception('태아 추가를 실패하였습니다.');
+    }
+  }
+
+  Future<void> logOut() async {
+    final url = Uri.parse('$baseUrl/user/logout');
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
+    Map<String, dynamic> responseData = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      await tokenManager.deleteToken();
+      final id = responseData['data']['userId'];
+      print('user $id 회원이 로그아웃되었습니다.');
+    } else {
+      throw '로그아웃을 실패하였습니다.';
     }
   }
 }
