@@ -22,6 +22,15 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
   late Map<String, dynamic> pregnantInfo;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MyDataModel>(context, listen: false)
+          .updateSelectedDay(DateTime.now());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;

@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
@@ -24,6 +25,15 @@ class _HomeFragmentState extends State<HomeFragment> {
   late Map<String, dynamic> pregnantInfo;
   late Map<String, dynamic> upcomingNotification;
   late NotificationApiService notificationViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MyDataModel>(context, listen: false)
+          .updateSelectedDay(DateTime.now());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
