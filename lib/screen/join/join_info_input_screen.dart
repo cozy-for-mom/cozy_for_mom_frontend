@@ -226,7 +226,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 BabyDuedateInputScreen(
                     updateValidity: _updateDueAtAndLastPeriodAtValidity),
                 const BabyFetalInfoScreen(),
-                BabyGenderScreen(
+                BabyGenderBirthNameScreen(
                     updateValidity: _updateBabyNameAndGenderValidity),
               ],
             ),

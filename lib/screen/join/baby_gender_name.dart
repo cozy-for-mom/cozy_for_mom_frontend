@@ -4,15 +4,16 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:provider/provider.dart';
 
-class BabyGenderScreen extends StatefulWidget {
+class BabyGenderBirthNameScreen extends StatefulWidget {
   final Function(bool) updateValidity;
-  const BabyGenderScreen({super.key, required this.updateValidity});
+  const BabyGenderBirthNameScreen({super.key, required this.updateValidity});
 
   @override
-  State<BabyGenderScreen> createState() => _BabyGenderScreenState();
+  State<BabyGenderBirthNameScreen> createState() =>
+      _BabyGenderBirthNameScreenState();
 }
 
-class _BabyGenderScreenState extends State<BabyGenderScreen> {
+class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
   final List<String> genderItems = ['남아', '여아', '아직 모르겠어요'];
   List<TextEditingController> birthNameControllers = [];
   List<TextEditingController> genderControllers = [];
