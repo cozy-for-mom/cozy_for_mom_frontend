@@ -29,6 +29,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: Container(),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -59,18 +60,21 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
             const Text(
               "탈퇴 사유를 알려주세요.",
               style: TextStyle(
-                fontSize: 26,
+                color: Colors.black,
                 fontWeight: FontWeight.w600,
+                fontSize: 26,
               ),
             ),
             const SizedBox(
-              height: 18,
+              height: 10,
             ),
             const Text(
               "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
               style: TextStyle(
                 color: Color(0xff8C909E),
                 height: 1.3,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
               ),
             ),
             const SizedBox(
@@ -134,6 +138,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                                     color: selectedIndex == index
                                         ? Colors.black
                                         : const Color(0xff858998),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
@@ -152,7 +158,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                   showDialog(
                     context: context,
                     builder: (BuildContext buildContext) {
-                      return const UserDeleteModal();
+                      return UserDeleteModal(
+                          reason: deletedReasons[selectedIndex!]);
                     },
                   );
                 }

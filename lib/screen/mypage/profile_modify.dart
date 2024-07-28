@@ -1,4 +1,3 @@
-import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -11,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:camera/camera.dart';
-import 'package:intl/intl.dart';
 
 class MomProfileModify extends StatefulWidget {
   const MomProfileModify({super.key});
@@ -24,7 +22,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
   late TextEditingController introduceController;
+
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
+
   bool _isSuffixVisible = false;
   Map<String, TextEditingController> controllers = {};
   String? imageUrl;
@@ -144,21 +144,23 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   leading: Container(),
                   actions: [
                     InkWell(
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 20, bottom: 23),
-                        alignment: Alignment.center,
-                        width: 60,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(33),
-                        ),
-                        child: const Text(
-                          '완료',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 20, bottom: 13),
+                          alignment: Alignment.center,
+                          width: 53,
+                          height: 29,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(33),
+                          ),
+                          child: const Text(
+                            '완료',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
+                          ),
                         ),
                       ),
                       onTap: () {
@@ -171,7 +173,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             controllers['이메일']!.text);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const MyPage()),
                         );
                       },
                     ),
@@ -327,16 +330,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                       String hint = '';
                       if (type == '이름') {
                         hint = '이름을 입력해주세요.';
-                        // controllers[type]!.text = pregnantInfo['name'];
                       } else if (type == '닉네임') {
                         hint = '8자 이내로 입력해주세요.';
-                        // controllers[type]!.text = pregnantInfo['nickname'];
                       } else if (type == '이메일') {
                         hint = 'cozy@cozy.com';
-                        // controllers[type]!.text = pregnantInfo['email'];
                       } else {
                         hint = 'YYYY.MM.DD';
-                        // controllers[type]!.text = pregnantInfo['birth'];
                       }
                       return Column(
                         children: [
@@ -379,7 +378,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Container(
@@ -387,7 +386,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               height: 11,
                               color: primaryColor,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             InkWell(
@@ -395,7 +394,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserDeleteScreen(),
+                                    builder: (context) =>
+                                        const UserDeleteScreen(),
                                   ),
                                 );
                               },
