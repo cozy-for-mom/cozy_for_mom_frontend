@@ -25,7 +25,10 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
   void initState() {
     super.initState();
     final joinInputData = Provider.of<JoinInputData>(context, listen: false);
-    textController.text = joinInputData.email;
+    // 이메일 가리기 안한 경우에만 초기화
+    if (!joinInputData.email.endsWith('@privaterelay.appleid.com')) {
+      textController.text = joinInputData.email;
+    }
     // 소셜로그인에서 받아온 이메일이 있을 경우
     if (textController.text.isNotEmpty) {
       initEmail(textController.text);
@@ -159,9 +162,16 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                         if (_debounce?.isActive ?? false) _debounce?.cancel();
 
                         _debounce =
-                            Timer(const Duration(milliseconds: 200), () async {
-                          _isEmailNotDuplicated =
-                              await JoinApiService().emailDuplicateCheck(value);
+                            Timer(const Duration(milliseconds: 400), () async {
+                          final atIndex = value.indexOf('@');
+                          if (atIndex != -1) {
+                            final dotIndex = value.indexOf('.', atIndex);
+                            if (dotIndex != -1 &&
+                                dotIndex + 3 <= value.length) {
+                              _isEmailNotDuplicated = await JoinApiService()
+                                  .emailDuplicateCheck(value);
+                            }
+                          }
                           setState(() {
                             _isEmailValid = _validateEmail(value);
                             _isInputValid = true;
@@ -181,11 +191,11 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                 top: 239,
                 left: 39,
                 child: Text(
-                  _isEmailNotDuplicated
-                      ? _isEmailValid
+                  _isEmailValid
+                      ? _isEmailNotDuplicated
                           ? '사용 가능한 이메일입니다.'
-                          : '사용 불가능한 형식의 이메일입니다.'
-                      : '이미 사용중인 이메일입니다.',
+                          : '이미 사용중인 이메일입니다.'
+                      : '사용 불가능한 형식의 이메일입니다.',
                   style: TextStyle(
                       color: !_isEmailNotDuplicated || !_isEmailValid
                           ? deleteButtonColor
