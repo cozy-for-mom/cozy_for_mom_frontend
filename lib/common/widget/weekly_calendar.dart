@@ -12,11 +12,12 @@ class WeeklyCalendar extends StatefulWidget {
 }
 
 class _WeeklyCalendarState extends State<WeeklyCalendar> {
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _focusedDay;
 
   @override
   Widget build(BuildContext context) {
     final globalDate = Provider.of<MyDataModel>(context, listen: true);
+    _focusedDay = globalDate.selectedDate;
 
     return TableCalendar(
       focusedDay: _focusedDay,
@@ -27,7 +28,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       daysOfWeekHeight: 20,
       locale: 'ko_KR',
       selectedDayPredicate: (date) {
-        return isSameDay(date, globalDate.selectedDay);
+        return isSameDay(globalDate.selectedDay, date);
       },
       calendarStyle: const CalendarStyle(
         weekendTextStyle: TextStyle(
