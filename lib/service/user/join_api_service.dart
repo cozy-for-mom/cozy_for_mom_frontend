@@ -23,6 +23,7 @@ class JoinApiService extends ChangeNotifier {
     };
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
+    print(utf8.decode(response.bodyBytes));
     if (response.statusCode == 201) {
       final accessToken =
           (response.headers['authorization'] as String).split(' ')[1];
@@ -38,7 +39,7 @@ class JoinApiService extends ChangeNotifier {
   Future<bool> nicknameDuplicateCheck(String nickname) async {
     final url = Uri.parse('$baseUrl/authenticate/nickname');
     final data = {'nickname': nickname};
-    final headers = await getHeaders();
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
     if (response.statusCode == 200) {
@@ -53,15 +54,31 @@ class JoinApiService extends ChangeNotifier {
   Future<bool> emailDuplicateCheck(String email) async {
     final url = Uri.parse('$baseUrl/authenticate/email');
     final data = {'email': email};
-    final headers = await getHeaders();
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     final Response response =
         await post(url, headers: headers, body: jsonEncode(data));
+    print('요청 바디: ${jsonEncode(data)}');
+    print(headers);
+    print(response.body);
     if (response.statusCode == 200) {
       return true;
     } else if (response.statusCode == 409) {
       return false;
     } else {
       throw Exception('이메일 중복 확인 실패');
+    }
+  }
+
+  Future<void> signOut(String reason) async {
+    final url = Uri.parse('$baseUrl/user/signout');
+    final data = {'reason': reason};
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers, body: jsonEncode(data));
+    if (res.statusCode == 204) {
+      await tokenManager.deleteToken();
+      print('회원탈퇴가 완료되었습니다.');
+    } else {
+      throw '회원탈퇴를 실패하였습니다.';
     }
   }
 }

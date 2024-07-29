@@ -1,9 +1,11 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
+import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:flutter/material.dart';
 
 class UserDeleteModal extends StatefulWidget {
-  const UserDeleteModal({super.key});
+  final String reason;
+  const UserDeleteModal({super.key, required this.reason});
 
   @override
   State<UserDeleteModal> createState() => UserDeleteModalState();
@@ -48,6 +50,7 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                 style: TextStyle(
                   height: 1.5,
                   color: Color(0xff9397A4),
+                  fontWeight: FontWeight.w500,
                   fontSize: 13,
                 ),
               ),
@@ -89,14 +92,16 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                         color: const Color(0xffD9D9D9),
                       ),
                       InkWell(
-                        onTap: () {
-                          print('탈퇴 api call?');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
-                            ),
-                          );
+                        onTap: () async {
+                          await JoinApiService().signOut(widget.reason);
+                          if (context.mounted) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                              (Route<dynamic> route) => false, // 모든 이전 화면을 제거
+                            );
+                          }
                         },
                         child: Container(
                           width: 56,
