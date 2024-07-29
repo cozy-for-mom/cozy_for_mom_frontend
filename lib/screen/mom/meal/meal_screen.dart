@@ -94,7 +94,7 @@ class _MealScreenState extends State<MealScreen> {
               tap2: () async {
                 Navigator.pop(context);
                 // 삭제 작업 수행
-                await momMealViewModel.deleteWeight(id);
+                await momMealViewModel.deleteMeal(id);
                 // 상태 업데이트
                 setState(() {});
               },

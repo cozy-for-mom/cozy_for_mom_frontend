@@ -24,7 +24,7 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
       width: screenWidth - 40,
       height: 56,
       child: InkWell(
-        onTap: widget.tapped,
+        onTap: widget.isActivated ? widget.tapped : null,
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(

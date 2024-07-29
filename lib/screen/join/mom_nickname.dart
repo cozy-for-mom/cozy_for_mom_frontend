@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
@@ -66,9 +67,13 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
               child: TextFormField(
                 controller: _nicknameController,
                 keyboardType: TextInputType.text,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(8),
+                ],
                 textAlign: TextAlign.start,
                 textAlignVertical: TextAlignVertical.center,
-                maxLength: 9,
+                maxLength:
+                    9, // TODO LengthLimitingTextInputFormatter 적용 결과 보고 지우기
                 cursorColor: primaryColor,
                 cursorHeight: 14,
                 cursorWidth: 1.2,
@@ -93,10 +98,12 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    joinInputData.setNickname('');
-                                    _isNicknameValid = !_isNicknameValid;
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      joinInputData.setNickname('');
+                                      _isNicknameValid = !_isNicknameValid;
+                                    });
+                                  }
                                 },
                                 child: const Image(
                                   image: AssetImage(
@@ -122,10 +129,12 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 onChanged: (value) {
                   joinInputData.setNickname(value);
                   if (_nicknameController.text.isEmpty) {
-                    setState(() {
-                      _isNicknameValid = false;
-                      widget.updateValidity(false);
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isNicknameValid = false;
+                        widget.updateValidity(false);
+                      });
+                    }
                   } else {
                     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
@@ -137,13 +146,15 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
 
                       _isNicknameNotDuplicated =
                           await JoinApiService().nicknameDuplicateCheck(value);
-                      setState(() {
-                        _isNicknameLengthNotExceeded = value.length <= 8;
-                        _isNicknameValid = true;
-                        widget.updateValidity(_isNicknameLengthNotExceeded &
-                            _isNicknameValid &
-                            _isNicknameNotDuplicated);
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _isNicknameLengthNotExceeded = value.length <= 8;
+                          _isNicknameValid = true;
+                          widget.updateValidity(_isNicknameLengthNotExceeded &
+                              _isNicknameValid &
+                              _isNicknameNotDuplicated);
+                        });
+                      }
                     });
                   }
                   widget.updateValidity(_isNicknameLengthNotExceeded &

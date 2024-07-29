@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,9 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             height: 30,
             thickness: 1,
             color: Color(0xffE1E1E7),
-          ) else  SizedBox(height: 30),
+          )
+        else
+          SizedBox(height: 30),
         const Text(
           "태명",
           style: TextStyle(
@@ -180,16 +183,15 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                   Stack(
                     children: [
                       Center(
-                        
                         child: ClipOval(
                           child: Image.asset(
-                            image?.path ?? 'assets/images/icons/babyProfile.png',
+                            image?.path ??
+                                'assets/images/icons/babyProfile.png',
                             fit: BoxFit.cover,
                             width: 100,
                             height: 100,
                             alignment: Alignment.center,
                           ),
-
                         ),
                       ),
                       Positioned(
@@ -197,17 +199,17 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         top: 72,
                         child: GestureDetector(
                           onTap: () async {
-                          final selectedImage = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          setState(() async {
-                            if (selectedImage != null) {
-                              imageUrl = await ImageApiService()
-                                  .uploadImage(selectedImage);
-                              setState(() {});
-                            } else {
-                              print('No image selected.');
-                            }
-                          });
+                            final selectedImage = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() async {
+                              if (selectedImage != null) {
+                                imageUrl = await ImageApiService()
+                                    .uploadImage(selectedImage);
+                                setState(() {});
+                              } else {
+                                print('No image selected.');
+                              }
+                            });
                           },
                           child: Container(
                             width: 24,
@@ -232,7 +234,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                           },
                           child: Image.asset(
                             'assets/images/icons/pen.png',
-                            fit: BoxFit.contain,
+                            fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
                             width: 14,
                             height: 14,
                             color: Colors.white,
@@ -264,28 +266,64 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         horizontal: 10,
                       ),
                       child: TextFormField(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
+                            context: context,
+                            builder: (context) {
+                              return MonthCalendarModal(
+                                limitToday: false,
+                              );
+                            },
+                          );
+                        },
+                        readOnly: true,
                         cursorColor: primaryColor,
                         decoration: const InputDecoration(
                           fillColor: Colors.white,
-                          hintText: "YYYY-MM-DD",
+                          hintText: "YYYY.MM.DD",
                           hintStyle: TextStyle(
                             color: Color(0xffE1E1E7),
                           ),
                           hoverColor: Colors.white,
                           border: InputBorder.none,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            String parsedDate;
-                            if (value.length == 8) {
-                              parsedDate = DateFormat('yyyy-MM-dd')
-                                  .format(DateTime.parse(value));
-                            } else {
-                              parsedDate = value;
-                            }
-                            dueDate = parsedDate;
-                          });
-                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    "태명",
+                    style: TextStyle(
+                      color: labelTextColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      child: TextFormField(
+                        cursorColor: primaryColor,
+                        decoration: const InputDecoration(
+                          fillColor: Colors.white,
+                          hintText: "태명을 입력해주세요",
+                          hintStyle: TextStyle(
+                            color: Color(0xffE1E1E7),
+                          ),
+                          hoverColor: Colors.white,
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                   ),
@@ -343,14 +381,13 @@ class BabyForRegister {
   String name;
   String gender;
 
-  BabyForRegister(
-      {
-      required this.name,
-      required this.gender,
-      });
+  BabyForRegister({
+    required this.name,
+    required this.gender,
+  });
 
-    Map<String, dynamic> toJson() => {
-    'name': name,
-    'gender': gender,
-  };
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'gender': gender,
+      };
 }

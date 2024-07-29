@@ -83,21 +83,22 @@ class _MyPageState extends State<MyPage> {
                   left: 0,
                   right: 0,
                   child: Column(children: [
-                    pregnantInfo['imageUrl'] == null ?
-                    Image.asset(
-                      'assets/images/icons/momProfile.png',
-                      fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                      width: 100,
-                      height: 100,
-                      alignment: Alignment.center,
-                    ) : ClipOval(
-                      child: Image.network(
-                        pregnantInfo['imageUrl'],
-                         fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                      ),
-                    ),
+                    pregnantInfo['imageUrl'] == null
+                        ? Image.asset(
+                            'assets/images/icons/momProfile.png',
+                            fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
+                            width: 100,
+                            height: 100,
+                            alignment: Alignment.center,
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              pregnantInfo['imageUrl'],
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
                     const SizedBox(height: 8),
                     Text(
                       "${pregnantInfo['nickname']} 산모님",
@@ -152,9 +153,9 @@ class _MyPageState extends State<MyPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "${pregnantInfo['recentBabyProfile'].babies[0].babyName}와 만나는 날",
-                                style: const TextStyle(
+                              const Text(
+                                "아기와 만나기까지",
+                                style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16),

@@ -23,12 +23,13 @@ class ImageTextCard extends StatefulWidget {
 }
 
 class _ImageTextCardState extends State<ImageTextCard> {
-    late TextEditingController _descriptionController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
-    _descriptionController = TextEditingController(text: widget.image.description);
+    _descriptionController =
+        TextEditingController(text: widget.image.description);
     _descriptionController.addListener(_onDescriptionChanged);
   }
 
@@ -42,7 +43,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
   void _onDescriptionChanged() {
     widget.onDescriptionChanged(_descriptionController.text);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -76,8 +77,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                         child: const Image(
                           width: 10,
                           height: 10,
-                          image: AssetImage(
-                              'assets/images/icons/image_up.png'),
+                          image: AssetImage('assets/images/icons/image_up.png'),
                         ),
                       ),
                       InkWell(
@@ -85,8 +85,8 @@ class _ImageTextCardState extends State<ImageTextCard> {
                         child: const Image(
                           width: 10,
                           height: 10,
-                          image: AssetImage(
-                              'assets/images/icons/image_down.png'),
+                          image:
+                              AssetImage('assets/images/icons/image_down.png'),
                         ),
                       ),
                       InkWell(

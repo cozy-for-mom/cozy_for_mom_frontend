@@ -221,14 +221,17 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                     offset: formatTime(value).length),
                               );
                               String time;
-                              timeParts = textEditingController.text.split(':');
+                              if (timeParts.contains(':')) {
+                                timeParts =
+                                    textEditingController.text.split(':');
 
-                              if (timeParts[0].length + timeParts[1].length ==
-                                  6) {
-                                // 각각 공백 포함 3글자
-                                time = convert24Time(
-                                    timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
-                                widget.targetTimeAt(time);
+                                if (timeParts[0].length + timeParts[1].length ==
+                                    6) {
+                                  // 각각 공백 포함 3글자
+                                  time = convert24Time(
+                                      timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
+                                  widget.targetTimeAt(time);
+                                }
                               }
                             }
                           },

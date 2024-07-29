@@ -32,7 +32,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   FocusNode focusNode = FocusNode();
 
   bool isRegisterButtonEnabled() {
-    return titleController.text.isNotEmpty || contentController.text.isNotEmpty;
+    return titleController.text.isNotEmpty && contentController.text.isNotEmpty;
   }
 
   File? selectedImage;
@@ -87,6 +87,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
       selectedImages[index].description = description;
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -157,6 +158,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                       width: screenWidth - 40,
                       height: 52,
                       child: TextFormField(
+                        keyboardType: TextInputType.text,
                         controller: titleController,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
@@ -220,6 +222,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: TextFormField(
+                                  keyboardType: TextInputType.multiline,
                                   controller: contentController,
                                   textAlignVertical: TextAlignVertical.top,
                                   textAlign: TextAlign.start,
@@ -260,7 +263,8 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                     onMoveUp: () => _moveUp(index),
                                     onMoveDown: () => _moveDown(index),
                                     onDelete: () => _deleteImage(index),
-                                    onDescriptionChanged: (description) => _updateDescription(index, description),
+                                    onDescriptionChanged: (description) =>
+                                        _updateDescription(index, description),
                                   ),
                                   const SizedBox(height: 10),
                                 ],
@@ -319,10 +323,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                       );
                                     },
                                     child: Image(
-                                      image: AssetImage(
-                                        mode == CozyLogModeType.private ? 'assets/images/icons/cozylog_private.png' : 'assets/images/icons/cozylog_public.png'
-                                        ),
-                                    width: 36,
+                                      image: AssetImage(mode ==
+                                              CozyLogModeType.private
+                                          ? 'assets/images/icons/cozylog_private.png'
+                                          : 'assets/images/icons/cozylog_public.png'),
+                                      width: 36,
                                       height: 36,
                                     ),
                                   )
@@ -337,26 +342,28 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     left: 20,
                     child: InkWell(
                       onTap: () {
-                        final cozyLogId = CozyLogApiService()
-                            .updateCozyLog(
-                              cozyLog.cozyLogId!,
-                              titleController.text,
-                              contentController.text,
-                              [],
-                              mode,
-                            )
-                            .then(
-                              (value) => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CozyLogDetailScreen(
-                                      id: value,
+                        if (isRegisterButtonEnabled()) {
+                          final cozyLogId = CozyLogApiService()
+                              .updateCozyLog(
+                                cozyLog.cozyLogId!,
+                                titleController.text,
+                                contentController.text,
+                                [],
+                                mode,
+                              )
+                              .then(
+                                (value) => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CozyLogDetailScreen(
+                                        id: value,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              },
-                            );
+                                  )
+                                },
+                              );
+                        }
                       },
                       child: Container(
                         width: screenWidth - 40,

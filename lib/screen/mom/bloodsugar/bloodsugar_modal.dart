@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 
@@ -118,6 +119,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             cursorWidth: 0.8,
                             cursorHeight: 15,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                            ],
                             decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -161,26 +166,26 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
-                    onTap: isEnabled
-                        ? () async {
-                            late int bloodsugarId;
-                            widget.id > 0
-                                ? bloodsugarId =
-                                    await bloodsugarApi.modifyBloodsugar(
-                                        widget.id,
-                                        globalData.selectedDate,
-                                        '${widget.time} ${widget.period}',
-                                        int.parse(textController.text))
-                                : bloodsugarId =
-                                    await bloodsugarApi.recordBloodsugar(
-                                        globalData.selectedDate,
-                                        '${widget.time} ${widget.period}',
-                                        int.parse(textController.text));
-                            setState(() {
-                              Navigator.pop(context, bloodsugarId);
-                            });
-                          }
-                        : () {},
+                    onTap: () async {
+                      if (isEnabled) {
+                        late int bloodsugarId;
+                        widget.id > 0
+                            ? bloodsugarId =
+                                await bloodsugarApi.modifyBloodsugar(
+                                    widget.id,
+                                    globalData.selectedDate,
+                                    '${widget.time} ${widget.period}',
+                                    int.parse(textController.text))
+                            : bloodsugarId =
+                                await bloodsugarApi.recordBloodsugar(
+                                    globalData.selectedDate,
+                                    '${widget.time} ${widget.period}',
+                                    int.parse(textController.text));
+                        setState(() {
+                          Navigator.pop(context, bloodsugarId);
+                        });
+                      }
+                    },
                     child: const Text(
                       '등록하기',
                       style: TextStyle(

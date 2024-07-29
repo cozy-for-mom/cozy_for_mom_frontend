@@ -75,7 +75,7 @@ class MealApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteWeight(int id) async {
+  Future<void> deleteMeal(int id) async {
     final url = Uri.parse('$baseUrl/meal/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);

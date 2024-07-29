@@ -44,6 +44,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
+                keyboardType: TextInputType.text,
                 controller: widget.controller,
                 textAlign: TextAlign.start,
                 cursorColor: primaryColor,
@@ -116,13 +117,12 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                     } else {
                       _isSuffixVisible = true;
                     }
-                    print(widget.controller!.text);
                   });
                 },
               )),
           (widget.title == '닉네임' || widget.title == '이메일') && _isSuffixVisible
               ? Padding(
-                  padding: EdgeInsets.only(top: 5, left: 10),
+                  padding: const EdgeInsets.only(top: 5, left: 10),
                   child: Text(
                     (widget.title == '닉네임' &&
                                 checkNicknameLength(widget.controller!.text)) ||

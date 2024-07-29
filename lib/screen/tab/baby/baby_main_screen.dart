@@ -22,8 +22,19 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
   late Map<String, dynamic> pregnantInfo;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MyDataModel>(context, listen: false)
+          .updateSelectedDay(DateTime.now());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+
     DateTime now = DateTime.now(); // 현재 날짜
     int nowHour = int.parse(DateFormat('HH').format(now));
 
@@ -172,7 +183,9 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                           child: Container(
                             height: 20,
                             decoration: BoxDecoration(
-                              color: babyNightBar, // TODO 밤/낮 따라 색상 바꿔줘야 함
+                              color: nowHour >= 8 && nowHour < 18
+                                  ? const Color(0xffFE8282)
+                                  : const Color(0xff9D8DFF),
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
@@ -223,10 +236,11 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     left: 20,
                     child: InkWell(
                       onTap: () {
-                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BabyGrowthReportListScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BabyGrowthReportListScreen()));
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

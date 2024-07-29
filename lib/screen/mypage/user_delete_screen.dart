@@ -22,11 +22,14 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: Container(),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,18 +60,21 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
             const Text(
               "탈퇴 사유를 알려주세요.",
               style: TextStyle(
-                fontSize: 26,
+                color: Colors.black,
                 fontWeight: FontWeight.w600,
+                fontSize: 26,
               ),
             ),
             const SizedBox(
-              height: 18,
+              height: 10,
             ),
             const Text(
               "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
               style: TextStyle(
                 color: Color(0xff8C909E),
                 height: 1.3,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
               ),
             ),
             const SizedBox(
@@ -91,6 +97,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         border: selectedIndex == index
                             ? Border.all(
                                 color: primaryColor,
+                                width: 2,
                               )
                             : null,
                       ),
@@ -109,7 +116,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20),
                             child: Row(
                               children: [
                                 Icon(
@@ -130,6 +138,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                                     color: selectedIndex == index
                                         ? Colors.black
                                         : const Color(0xff858998),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
@@ -144,15 +154,18 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
             ),
             InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext buildContext) {
-                    return const UserDeleteModal();
-                  },
-                );
+                if (selectedIndex != null) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext buildContext) {
+                      return UserDeleteModal(
+                          reason: deletedReasons[selectedIndex!]);
+                    },
+                  );
+                }
               },
               child: Container(
-                width: 350, // TODO
+                width: screenWidth - 40,
                 height: 56,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -170,6 +183,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),

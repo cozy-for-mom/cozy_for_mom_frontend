@@ -278,9 +278,9 @@ class _MyCozylogState extends State<MyCozylog> {
                       ListModifyState cozylogListModifyState =
                           context.watch<ListModifyState>();
                       int selectedCount = cozylogListModifyState.selectedCount;
-                
+
                       bool isAnySelected = selectedCount > 0;
-                
+
                       return BottomButtonWidget(
                         isActivated: isAnySelected,
                         text: '코지로그 삭제',
@@ -294,11 +294,14 @@ class _MyCozylogState extends State<MyCozylog> {
                                 tapFunc: () {
                                   CozyLogApiService().bulkDeleteCozyLog(
                                       cozylogListModifyState.selectedIds);
-                                Navigator.pushReplacement(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const MyCozylog()),
+                                        builder: (context) =>
+                                            const MyCozylog()),
                                   );
+
+                                  return Future(() {});
                                 },
                               );
                             },

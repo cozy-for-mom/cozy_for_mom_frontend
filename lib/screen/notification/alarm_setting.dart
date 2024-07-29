@@ -61,7 +61,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
           color: Colors.black,
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ),

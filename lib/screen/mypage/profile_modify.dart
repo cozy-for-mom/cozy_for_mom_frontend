@@ -1,4 +1,3 @@
-import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -11,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:camera/camera.dart';
-import 'package:intl/intl.dart';
 
 class MomProfileModify extends StatefulWidget {
   const MomProfileModify({super.key});
@@ -24,7 +22,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
   late TextEditingController introduceController;
+
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
+
   bool _isSuffixVisible = false;
   Map<String, TextEditingController> controllers = {};
   String? imageUrl;
@@ -144,21 +144,23 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   leading: Container(),
                   actions: [
                     InkWell(
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 20, bottom: 23),
-                        alignment: Alignment.center,
-                        width: 60,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(33),
-                        ),
-                        child: const Text(
-                          '완료',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 20, bottom: 13),
+                          alignment: Alignment.center,
+                          width: 53,
+                          height: 29,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(33),
+                          ),
+                          child: const Text(
+                            '완료',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
+                          ),
                         ),
                       ),
                       onTap: () {
@@ -169,12 +171,11 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             imageUrl,
                             sendFormatUsingRegex(controllers['생년월일']!.text),
                             controllers['이메일']!.text);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyPage()
-                            ),
-                          );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyPage()),
+                        );
                       },
                     ),
                   ],
@@ -185,59 +186,62 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     child: Stack(
                       children: [
                         Positioned(
-                            top: 10,
-                            left: 145,
-                            child:
-                                imageUrl == null ?
-                                const Image(
-                                    image: AssetImage(
-                                        "assets/images/icons/momProfile.png"),
+                          top: 10,
+                          left: 145,
+                          child: imageUrl == null
+                              ? const Image(
+                                  image: AssetImage(
+                                      "assets/images/icons/momProfile.png"),
+                                  width: 100,
+                                  height: 100)
+                              : ClipOval(
+                                  // 원형
+                                  child: Image.network(
+                                    imageUrl!,
+                                    fit: BoxFit.cover,
                                     width: 100,
-                                    height: 100)
-                            : ClipOval( // 원형
-                              child: Image.network(
-                                            imageUrl!,
-                                            fit: BoxFit.cover,
-                                            width: 100,
-                                            height: 100,
-                                          ),
-                            ),
-                            ),
+                                    height: 100,
+                                  ),
+                                ),
+                        ),
                         Positioned(
                           top: 181 - 109,
                           left: 229,
                           child: InkWell(
                             onTap: () async {
                               showModalBottomSheet(
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 18.0),
                                       child: SelectBottomModal(
-                                        selec1: '직접 찍기',
-                                        selec2: '앨범에서 선택',
-                                        tap1: () {
-                                          takePhoto;
-                                        },
-                                        tap2: () async {
-                                          Navigator.pop(context);
-                                          final selectedImage =
-                                              await ImagePicker().pickImage(
-                                                  source: ImageSource.gallery);
+                                          selec1: '직접 찍기',
+                                          selec2: '앨범에서 선택',
+                                          tap1: () {
+                                            takePhoto;
+                                          },
+                                          tap2: () async {
+                                            Navigator.pop(context);
+                                            final selectedImage =
+                                                await ImagePicker().pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
                                             if (selectedImage != null) {
-
-                                            final selectedImageUrl = await imageApiService
-                                                    .uploadImage(selectedImage);
+                                              final selectedImageUrl =
+                                                  await imageApiService
+                                                      .uploadImage(
+                                                          selectedImage);
                                               setState(() {
-                                                imageUrl =  selectedImageUrl; 
-                                            }); 
-                                            }  else {
+                                                imageUrl = selectedImageUrl;
+                                              });
+                                            } else {
                                               print('No image selected.');
                                             }
                                           }));
-                                        },
-                                  );
+                                },
+                              );
                             },
                             child: const Image(
                               image: AssetImage(
@@ -266,50 +270,49 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               fontWeight: FontWeight.w600,
                               fontSize: 14),
                         ),
-                        Container(
-                          child: TextFormField(
-                            controller: introduceController,
-                            textAlign: TextAlign.start,
-                            cursorColor: primaryColor,
-                            cursorHeight: 17,
-                            cursorWidth: 1.5,
-                            maxLength: 30,
-                            style: const TextStyle(
-                                color: mainTextColor,
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: introduceController,
+                          textAlign: TextAlign.start,
+                          cursorColor: primaryColor,
+                          cursorHeight: 17,
+                          cursorWidth: 1.5,
+                          maxLength: 30,
+                          style: const TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                          decoration: InputDecoration(
+                            counterText: '',
+                            counterStyle: const TextStyle(
+                                color: offButtonTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
+                            border: InputBorder.none,
+                            hintText: "자기소개를 입력해주세요",
+                            hintStyle: const TextStyle(
+                                color: beforeInputColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
-                            decoration: InputDecoration(
-                              counterText: '',
-                              counterStyle: const TextStyle(
-                                  color: offButtonTextColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14),
-                              border: InputBorder.none,
-                              hintText: "자기소개를 입력해주세요",
-                              hintStyle: const TextStyle(
-                                  color: beforeInputColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
-                              suffixIcon: introduceController.text.isNotEmpty &&
-                                      _isSuffixVisible
-                                  ? IconButton(
-                                      icon: Image.asset(
-                                        'assets/images/icons/text_delete.png',
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                      onPressed: () {
-                                        introduceController.clear();
-                                      },
-                                    )
-                                  : null,
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _isSuffixVisible = true;
-                              });
-                            },
+                            suffixIcon: introduceController.text.isNotEmpty &&
+                                    _isSuffixVisible
+                                ? IconButton(
+                                    icon: Image.asset(
+                                      'assets/images/icons/text_delete.png',
+                                      width: 16,
+                                      height: 16,
+                                    ),
+                                    onPressed: () {
+                                      introduceController.clear();
+                                    },
+                                  )
+                                : null,
                           ),
+                          onTap: () {
+                            setState(() {
+                              _isSuffixVisible = true;
+                            });
+                          },
                         ),
                         Container(
                           width: screenWidth - 40,
@@ -327,16 +330,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                       String hint = '';
                       if (type == '이름') {
                         hint = '이름을 입력해주세요.';
-                        // controllers[type]!.text = pregnantInfo['name'];
                       } else if (type == '닉네임') {
                         hint = '8자 이내로 입력해주세요.';
-                        // controllers[type]!.text = pregnantInfo['nickname'];
                       } else if (type == '이메일') {
                         hint = 'cozy@cozy.com';
-                        // controllers[type]!.text = pregnantInfo['email'];
                       } else {
                         hint = 'YYYY.MM.DD';
-                        // controllers[type]!.text = pregnantInfo['birth'];
                       }
                       return Column(
                         children: [
@@ -379,19 +378,24 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             Container(
                               width: 1,
                               height: 11,
                               color: primaryColor,
                             ),
-                            SizedBox(width: 10,),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserDeleteScreen(),
+                                    builder: (context) =>
+                                        const UserDeleteScreen(),
                                   ),
                                 );
                               },

@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/model/weight_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -25,6 +26,8 @@ class _WeightRecordState extends State<WeightRecord> {
   late List<PregnantWeight> pregnantWeights = [];
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
+  String _previousInput = '';
+
   bool _isWeightInitialized = false;
   DateTime _lastCheckedDate = DateTime.now(); // 마지막으로 데이터를 로드한 날짜
 
@@ -70,7 +73,6 @@ class _WeightRecordState extends State<WeightRecord> {
                             .difference(DateTime.parse(data['lastRecordDate']));
                     _isInitialized = todayWeight > 0 ? true : false;
                     _initializeData(globalData.selectedDate);
-                    print(lastRecordDate.inDays);
                   }
                 }
                 if (!snapshot.hasData) {
@@ -117,7 +119,9 @@ class _WeightRecordState extends State<WeightRecord> {
                                           elevation: 0.0,
                                           context: context,
                                           builder: (context) {
-                                            return MonthCalendarModal(limitToday: true,);
+                                            return MonthCalendarModal(
+                                              limitToday: true,
+                                            );
                                           },
                                         );
                                       },
@@ -195,7 +199,14 @@ class _WeightRecordState extends State<WeightRecord> {
                                         textAlign: TextAlign.end,
                                         maxLength: 5,
                                         controller: _weightController,
-                                        keyboardType: TextInputType.number,
+                                        // keyboardType: const TextInputType
+                                        //     .numberWithOptions(decimal: true), // TODO 완료 버튼 따로 추가하면 바꾸기
+                                        keyboardType: TextInputType.datetime,
+                                        onTapOutside: (event) {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                        },
+                                        textInputAction: TextInputAction.done,
                                         cursorColor: primaryColor,
                                         cursorWidth: 1,
                                         cursorHeight: 28,
@@ -228,9 +239,20 @@ class _WeightRecordState extends State<WeightRecord> {
                                                 _weightController.text =
                                                     '999.9';
                                               }
+                                              if ((text.contains('.') &&
+                                                      text.indexOf('.') !=
+                                                          text.lastIndexOf(
+                                                              '.')) ||
+                                                  (!RegExp(r'^\d*\.?\d*$')
+                                                      .hasMatch(text))) {
+                                                _weightController.text =
+                                                    text.substring(
+                                                        0, text.length - 1);
+                                              }
                                             }
                                           });
                                         },
+
                                         onFieldSubmitted: (value) async {
                                           _isInitialized
                                               ? await momWeightViewModel
