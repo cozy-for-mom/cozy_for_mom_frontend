@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
 import 'package:flutter/material.dart';
@@ -233,21 +234,35 @@ class _HomeFragmentState extends State<HomeFragment> {
                         const SizedBox(
                           height: 38,
                         ),
-                        InkWell(
-                          onTap: () {
-                            // TODO 페이지 이동 구현
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('잊지 말고 기록하세요',
-                                  style: TextStyle(
-                                      color: mainTextColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18)),
-                              const SizedBox(height: 18),
-                              Container(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('잊지 말고 기록하세요',
+                                style: TextStyle(
+                                    color: mainTextColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18)),
+                            const SizedBox(height: 18),
+                            InkWell(
+                              onTap: () async {
+                                final type = upcomingNotification['type'] ==
+                                        CardType.bloodsugar.name
+                                    ? CardType.bloodsugar
+                                    : CardType.supplement;
+
+                                final shouldRefresh = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AlarmSettingPage(type: type)),
+                                );
+
+                                if (mounted && shouldRefresh == true) {
+                                  setState(() {});
+                                }
+                              },
+                              child: Container(
                                 width: screenWidth - 40,
                                 height: 100,
                                 padding:
@@ -268,41 +283,59 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  upcomingNotification[
-                                                          'targetTimeAt'] ??
-                                                      '13:00',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 14)),
-                                              const SizedBox(height: 6),
-                                              Text(
-                                                  upcomingNotification[
-                                                          'title'] ??
-                                                      '철분제 챙겨먹기',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 18)),
-                                            ]),
+                                            children: upcomingNotification[
+                                                        'targetTimeAt'] ==
+                                                    null
+                                                ? [
+                                                    const Text('영양제와 혈당 알림을',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14)),
+                                                    const Text('등록해보세요!',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14))
+                                                  ]
+                                                : [
+                                                    Text(
+                                                        upcomingNotification[
+                                                            'targetTimeAt'],
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 14)),
+                                                    const SizedBox(height: 6),
+                                                    Text(
+                                                        upcomingNotification[
+                                                            'title'],
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 18)),
+                                                  ]),
                                       ],
                                     ),
-                                    const Row(
+                                    Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
                                         Image(
                                           image: AssetImage(
-                                            "assets/images/icons/icon_supplement.png",
+                                            upcomingNotification['type'] ==
+                                                    CardType.bloodsugar.name
+                                                ? "assets/images/icons/icon_bloodsugar.png"
+                                                : "assets/images/icons/icon_supplement.png",
                                           ),
                                           height: 48,
                                           width: 30,
                                         ),
-                                        Image(
+                                        const Image(
                                           image: AssetImage(
                                             "assets/images/icons/icon_clock.png",
                                           ),
@@ -314,8 +347,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

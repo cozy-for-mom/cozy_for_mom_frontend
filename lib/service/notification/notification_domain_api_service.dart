@@ -40,8 +40,7 @@ class NotificationApiService extends ChangeNotifier {
       if (res.statusCode == 200) {
         Map<String, dynamic> upcomingNotification =
             jsonDecode(utf8.decode(res.bodyBytes));
-
-        return upcomingNotification;
+        return upcomingNotification['data'];
       } else {
         throw Exception('HTTP 요청 실패: ${res.statusCode}');
       }
