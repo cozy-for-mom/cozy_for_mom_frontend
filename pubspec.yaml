@@ -54,6 +54,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   sign_in_with_apple: ^4.0.0
   dropdown_button2: ^2.3.8
+  flutter_native_splash: ^2.3.10
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -168,6 +169,7 @@ flutter:
     - assets/images/login_group_image.png
     - assets/images/icons/diary_inactive.png
     - assets/images/icons/notification_off.png
+    - assets/images/splash.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
