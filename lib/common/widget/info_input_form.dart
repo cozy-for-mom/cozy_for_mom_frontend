@@ -47,10 +47,8 @@ class _InfoInputFormState extends State<InfoInputForm> {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 controller: widget.controller,
                 textAlign: TextAlign.start,
                 cursorColor: primaryColor,
