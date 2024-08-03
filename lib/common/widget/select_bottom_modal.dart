@@ -18,7 +18,7 @@ class SelectBottomModal extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: screenWidth - 40,
-      height: 250,
+      height: 220,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

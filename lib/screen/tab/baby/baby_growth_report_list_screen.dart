@@ -6,9 +6,7 @@ import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
-import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:provider/provider.dart';
@@ -44,12 +42,13 @@ class _BabyGrowthReportListScreenState
         title: const Text(
           "성장 보고서",
           style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
+            color: mainTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
           ),
         ),
         leading: IconButton(
-          color: Colors.black,
+          color: mainTextColor,
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.of(context).pop();
@@ -61,13 +60,14 @@ class _BabyGrowthReportListScreenState
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GrowReportRegister(babyProfileGrowth: null),
+              builder: (context) =>
+                  const GrowReportRegister(babyProfileGrowth: null),
             ),
           );
         },
       ),
       body: Consumer<MyDataModel>(builder: (context, globalData, _) {
-        return  Padding(
+        return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             children: [
@@ -80,8 +80,8 @@ class _BabyGrowthReportListScreenState
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -104,38 +104,49 @@ class _BabyGrowthReportListScreenState
 
                                 return StatefulBuilder(
                                   builder: (context, setState) {
-                                  void toggleOffNotification(String notification) {
+                                    void toggleOffNotification(
+                                        String notification) {
                                       setState(() {
-                                        if (selectedNotifications.contains(notification)) {
-                                          selectedNotifications.remove(notification);
+                                        if (selectedNotifications
+                                            .contains(notification)) {
+                                          selectedNotifications
+                                              .remove(notification);
                                         }
                                       });
                                     }
-                                    void toggleNotification(String notification) {
+
+                                    void toggleNotification(
+                                        String notification) {
                                       setState(() {
-                                        if (selectedNotifications.contains(notification)) {
-                                          selectedNotifications.remove(notification);
+                                        if (selectedNotifications
+                                            .contains(notification)) {
+                                          selectedNotifications
+                                              .remove(notification);
                                         } else {
-                                          selectedNotifications.add(notification);
+                                          selectedNotifications
+                                              .add(notification);
                                           if (notification != 'none') {
-                                              toggleOffNotification("none");
+                                            toggleOffNotification("none");
                                           } else {
-                                              toggleOffNotification("on day");
-                                              toggleOffNotification("one day ago");
-                                              toggleOffNotification("two day ago");
-                                              toggleOffNotification("one week ago");
+                                            toggleOffNotification("on day");
+                                            toggleOffNotification(
+                                                "one day ago");
+                                            toggleOffNotification(
+                                                "two day ago");
+                                            toggleOffNotification(
+                                                "one week ago");
                                           }
                                         }
                                       });
                                     }
-                                 
+
                                     return SingleChildScrollView(
                                       child: Column(
                                         children: [
                                           MonthCalendarModal(),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: const Divider(
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Divider(
                                               height: 20,
                                               thickness: 1,
                                               color: Color(0xffE2E2E2),
@@ -150,37 +161,59 @@ class _BabyGrowthReportListScreenState
                                           ),
                                           const SizedBox(height: 10),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
                                               children: [
                                                 NotificationOption(
-                                                  title: '당일 정오',
-                                                  isSelected: selectedNotifications.contains("on day"),
-                                                  onTap: () => {
-                                                    toggleNotification("on day")
-                                                  }
-                                                ),
+                                                    title: '당일 정오',
+                                                    isSelected:
+                                                        selectedNotifications
+                                                            .contains("on day"),
+                                                    onTap: () => {
+                                                          toggleNotification(
+                                                              "on day")
+                                                        }),
                                                 NotificationOption(
                                                   title: '하루 전',
-                                                  isSelected: selectedNotifications.contains("one day ago"),
-                                                  onTap: () => toggleNotification("one day ago"),
+                                                  isSelected:
+                                                      selectedNotifications
+                                                          .contains(
+                                                              "one day ago"),
+                                                  onTap: () =>
+                                                      toggleNotification(
+                                                          "one day ago"),
                                                 ),
-                                              
                                                 NotificationOption(
                                                   title: '이틀 전',
-                                                  isSelected: selectedNotifications.contains("two day ago"),
-                                                  onTap: () => toggleNotification("two day ago"),
+                                                  isSelected:
+                                                      selectedNotifications
+                                                          .contains(
+                                                              "two day ago"),
+                                                  onTap: () =>
+                                                      toggleNotification(
+                                                          "two day ago"),
                                                 ),
                                                 NotificationOption(
                                                   title: '일주일 전',
-                                                  isSelected: selectedNotifications.contains("one week ago"),
-                                                  onTap: () => toggleNotification("one week ago"),
+                                                  isSelected:
+                                                      selectedNotifications
+                                                          .contains(
+                                                              "one week ago"),
+                                                  onTap: () =>
+                                                      toggleNotification(
+                                                          "one week ago"),
                                                 ),
                                                 NotificationOption(
                                                   title: '설정 안 함',
-                                                  isSelected: selectedNotifications.contains("none"),
-                                                  onTap: () => toggleNotification("none"),
+                                                  isSelected:
+                                                      selectedNotifications
+                                                          .contains("none"),
+                                                  onTap: () =>
+                                                      toggleNotification(
+                                                          "none"),
                                                 ),
                                               ],
                                             ),
@@ -188,10 +221,12 @@ class _BabyGrowthReportListScreenState
                                           const SizedBox(height: 30),
                                           InkWell(
                                             onTap: () {
-                                               BabyGrowthApiService().registerNotificationExaminationDate(
-                                                  dateFormatForString.format(globalData.selectedDate), 
-                                                  selectedNotifications
-                                              );
+                                              BabyGrowthApiService()
+                                                  .registerNotificationExaminationDate(
+                                                      dateFormatForString
+                                                          .format(globalData
+                                                              .selectedDate),
+                                                      selectedNotifications);
 
                                               Navigator.pop(context, true);
                                             },
@@ -199,7 +234,8 @@ class _BabyGrowthReportListScreenState
                                               width: 350,
                                               height: 56,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                                 color: primaryColor,
                                               ),
                                               child: const Center(
@@ -223,7 +259,8 @@ class _BabyGrowthReportListScreenState
                             ).then((value) {
                               if (value == true) {
                                 setState(() {
-                                  data = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
+                                  data = BabyGrowthApiService()
+                                      .getBabyProfileGrowths(null, 10);
                                 });
                               }
                             });
@@ -240,12 +277,11 @@ class _BabyGrowthReportListScreenState
                                     } else {
                                       return Container();
                                     }
-                                  },
-                              ),
-                              SizedBox(
+                                  }),
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_forward_ios,
                                 size: 13,
                                 color: Color(0xff858998),
@@ -257,7 +293,6 @@ class _BabyGrowthReportListScreenState
                         InkWell(
                           onTap: () {
                             showModalBottomSheet(
-                              
                               backgroundColor: Colors.transparent,
                               elevation: 0.0,
                               context: context,
@@ -320,7 +355,7 @@ class _BabyGrowthReportListScreenState
                                     ),
                                   );
                                 },
-                                child: Container(
+                                child: SizedBox(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 27.0, vertical: 5.0),
@@ -340,7 +375,8 @@ class _BabyGrowthReportListScreenState
                                                     report.title,
                                                     style: const TextStyle(
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       color: Color(0xff2B2D35),
                                                     ),
                                                   ),
@@ -379,7 +415,8 @@ class _BabyGrowthReportListScreenState
                                                   clipBehavior: Clip.hardEdge,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                   child: Image.network(
                                                     report.growthImageUrl,
@@ -441,12 +478,10 @@ class _BabyGrowthReportListScreenState
             ],
           ),
         );
-        },
-      ),
+      }),
     );
   }
 }
-
 
 class NotificationOption extends StatelessWidget {
   final String title;
@@ -469,7 +504,7 @@ class NotificationOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
-            color: isSelected ? primaryColor : Color(0xffF0F0F5),
+            color: isSelected ? primaryColor : const Color(0xffF0F0F5),
           ),
           child: Center(
             child: Text(
