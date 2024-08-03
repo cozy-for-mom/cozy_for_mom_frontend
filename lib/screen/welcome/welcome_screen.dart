@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/welcome/notification_check_modal.dart';
 import 'package:flutter/material.dart';
 
@@ -122,12 +123,16 @@ class WelcomeScreen extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext buildContext) {
-                    return const NotificationCheckModal();
-                  },
-                );
+                // showDialog(
+                //   context: context,
+                //   builder: (BuildContext buildContext) {
+                //     return const NotificationCheckModal();
+                //   },
+                // );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MainScreen()));
               },
               child: const Text(
                 '시작하기',

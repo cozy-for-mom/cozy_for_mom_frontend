@@ -285,7 +285,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 CrossAxisAlignment.start,
                                             children: upcomingNotification[
                                                         'targetTimeAt'] ==
-                                                    null
+                                                    ''
                                                 ? [
                                                     const Text('영양제와 혈당 알림을',
                                                         style: TextStyle(

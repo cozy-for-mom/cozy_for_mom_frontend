@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/welcome/welcome_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
@@ -160,10 +161,10 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 try {
                   final response =
                       await joinApiService.signUp(userInfo, babyInfo);
-                  if (response['status'] == 201) {
+                  if (mounted && response['status'] == 201) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+                          builder: (context) => const WelcomeScreen()),
                     );
                   } else {
                     print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
