@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 
 class DeviceTokenManager {
   static final DeviceTokenManager _instance = DeviceTokenManager._internal();
-  static const MethodChannel _channel = MethodChannel('com.cozyformom.deviceTokenChannel');
+  static const MethodChannel _channel =
+      MethodChannel('com.cozyformom.deviceTokenChannel');
 
   String? _deviceToken;
 
@@ -18,6 +19,7 @@ class DeviceTokenManager {
 
   Future<String?> _getDeviceTokenFromNative() async {
     try {
+      if (deviceToken == null) return deviceToken;
       final String? token = await _channel.invokeMethod('getDeviceToken');
       print(token);
       return token;
