@@ -139,7 +139,7 @@ class _BabyGrowthReportDetailScreenState
                                         height: 5,
                                       ),
                                       Text(
-                                        "${DateFormat("yyyy. MM. dd HH:mm").format(snapshot.data!.date)} 작성",
+                                        "${DateFormat("yyyy. MM. dd HH:mm").format(data.date)} 작성",
                                         style: const TextStyle(
                                           color: Color(0xffAAAAAA),
                                           fontWeight: FontWeight.w500,

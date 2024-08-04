@@ -46,13 +46,15 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
     Navigator.of(context).pop();
 
     if (pickedFile != null) {
-      setState(() {
-        selectedImages.add(CozyLogImage(
-          imageId: null, // Set appropriate ID if needed
-          imageUrl: pickedFile.path, // Use path as URL for simplicity
-          description: "",
-        ));
-      });
+      imageApiService.uploadImage(pickedFile).then((value) => {
+            setState(() {
+              selectedImages.add(CozyLogImage(
+                imageId: null, // Set appropriate ID if needed
+                imageUrl: value!, // Use path as URL for simplicity
+                description: "",
+              ));
+            })
+          });
     }
   }
 
@@ -256,6 +258,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             ...selectedImages.asMap().entries.map((entry) {
                               int index = entry.key;
                               CozyLogImage image = entry.value;
+                              print(image.imageUrl);
                               return Column(
                                 children: [
                                   ImageTextCard(

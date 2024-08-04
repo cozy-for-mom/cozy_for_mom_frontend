@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
@@ -7,6 +8,7 @@ import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -76,6 +78,7 @@ class JoinApiService extends ChangeNotifier {
     Response res = await delete(url, headers: headers, body: jsonEncode(data));
     if (res.statusCode == 204) {
       await tokenManager.deleteToken();
+      JoinInputData().resetData();
       print('회원탈퇴가 완료되었습니다.');
     } else {
       throw '회원탈퇴를 실패하였습니다.';

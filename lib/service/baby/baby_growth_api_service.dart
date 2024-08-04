@@ -37,28 +37,31 @@ class BabyGrowthApiService {
     }
   }
 
-  Future<Pair<List<BabyProfileGrowth>, DateTime>> getBabyProfileGrowths(
+  Future<Pair<List<BabyProfileGrowth>, DateTime?>> getBabyProfileGrowths(
     int? lastId,
     int size,
   ) async {
     UserLocalStorageService userStorageService =
         await UserLocalStorageService.getInstance();
     final babyProfileId = await userStorageService.getBabyProfileId();
+    print(babyProfileId);
     var urlString = '$baseUrl/growth/$babyProfileId/board?size=$size';
     final headers = await getHeaders();
     if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
     dynamic response;
     response = await get(url, headers: headers);
-    print(utf8.decode(response.bodyBytes));
+    // print(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       List<dynamic> data = body['data']['list'];
-      DateTime nextExaminationDate =
-          DateTime.parse(body['data']['nextExaminationDate']);
+      DateTime? nextExaminationDate = body['data']['nextExaminationDate'] == ""
+          ? null
+          : DateTime.parse(body['data']['nextExaminationDate']);
 
       List<BabyProfileGrowth> growths = data.map((growth) {
+        print(growth);
         return BabyProfileGrowth.fromJson(growth, babyProfileId!);
       }).toList();
       return Pair(growths, nextExaminationDate);
@@ -78,6 +81,7 @@ class BabyGrowthApiService {
     final url = Uri.parse(urlString);
     dynamic response;
     response = await get(url, headers: headers);
+    print(utf8.decode(response.bodyBytes));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));

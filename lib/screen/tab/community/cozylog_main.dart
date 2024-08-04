@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_screeen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
@@ -242,23 +243,64 @@ class _CozylogMainState extends State<CozylogMain> {
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 393.4,
                     left: 21,
-                    child: Text(
-                      '최신 코지로그',
-                      style: TextStyle(
-                        color: mainTextColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                    child: SizedBox(
+                      width: screenWidth - 40,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            '최신 코지로그',
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CozyLogListScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffA9ABB7),
+                                  borderRadius: BorderRadius.circular(
+                                    21,
+                                  )),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                child: Text(
+                                  "더보기",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 427,
+                    top: 430,
                     left: 20,
                     child: Container(
                       width: screenWidth - 40,
+                      // height: screenHeight * 0.34,
                       height: 540,
                       padding: const EdgeInsets.only(
                         top: 6,

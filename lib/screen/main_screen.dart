@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int selectedIndex;
+  const MainScreen({super.key, this.selectedIndex = 1});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 1; // 선택된 페이지의 인덱스 넘버 초기화
-
+  int selectedIndex = 1;
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30,
       fontWeight: FontWeight.bold); // 텍스트 스타일 지정이므로 해당 부분은 제거해도 된다.
@@ -23,10 +23,17 @@ class _MainScreenState extends State<MainScreen> {
     const HomeFragment(),
     const CozylogMain(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.selectedIndex; // 선택된 페이지의 인덱스 넘버 초기화
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: _widgetOptions.elementAt(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -35,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
               width: 40,
               height: 40,
               color:
-                  _selectedIndex == 0 ? primaryColor : const Color(0xffBCC0C7),
+                  selectedIndex == 0 ? primaryColor : const Color(0xffBCC0C7),
             ),
             label: '태아',
           ),
@@ -70,16 +77,16 @@ class _MainScreenState extends State<MainScreen> {
               width: 40,
               height: 40,
               color:
-                  _selectedIndex == 2 ? primaryColor : const Color(0xffBCC0C7),
+                  selectedIndex == 2 ? primaryColor : const Color(0xffBCC0C7),
             ),
             label: '커뮤니티',
           ),
         ],
-        currentIndex: _selectedIndex, // 지정 인덱스로 이동
+        currentIndex: selectedIndex, // 지정 인덱스로 이동
         selectedItemColor: primaryColor,
         onTap: (value) {
           setState(() {
-            _selectedIndex = value;
+            selectedIndex = value;
           });
         },
       ),

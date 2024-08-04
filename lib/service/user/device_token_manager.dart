@@ -19,9 +19,8 @@ class DeviceTokenManager {
 
   Future<String?> _getDeviceTokenFromNative() async {
     try {
-      if (deviceToken == null) return deviceToken;
+      if (deviceToken != null) return deviceToken;
       final String? token = await _channel.invokeMethod('getDeviceToken');
-      print(token);
       return token;
     } on PlatformException catch (e) {
       print("Failed to get device token: '${e.message}'.");

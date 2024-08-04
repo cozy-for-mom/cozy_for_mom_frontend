@@ -34,12 +34,12 @@ class OauthApiService {
         },
       ),
     );
-
+    print(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       final accessToken =
           (response.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
-      print(accessToken);
+      print('at $accessToken');
       final decoded = JwtDecoder.decode(accessToken);
       return UserType.findByString(decoded['info']['role']);
     } else {

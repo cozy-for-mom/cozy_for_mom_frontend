@@ -61,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void handleUserType(BuildContext context) async {
     final userType = await tokenManager.getUserType();
+    print(userType);
     if (userType == UserType.guest) {
       // UserType이 guest이면 회원가입 페이지로 이동
       Navigator.of(context).pushReplacement(
@@ -86,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Positioned(
-          top: 100,
+          top: 120,
           child: Column(
             children: [
               Image(
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: screenWidth,
               ),
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
               InkWell(
                 onTap: () async {
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Container(
                   height: 60,
-                  width: 350,
+                  width: screenWidth - 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xffFEE500),
@@ -125,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       "카카오로 시작하기",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -164,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -173,41 +174,49 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 25,
               ),
-              const Text(
-                "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
-                style: TextStyle(
-                  color: Color(0xff858998),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              const Row(
-                children: [
-                  Text(
-                    "개인정보처리방침",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    "이용약관",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                    ),
-                  ),
-                ],
-              )
+              // const Text(
+              //   "가입 후 코지포맘을 자유롭게 이용해보세요!",
+              //   style: TextStyle(
+              //     color: Color(0xff858998),
+              //     fontSize: 12,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              // ),
+              // const Text(
+              //   "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
+              //   style: TextStyle(
+              //     color: Color(0xff858998),
+              //     fontSize: 12,
+              //     fontWeight: FontWeight.w500,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 8,
+              // ),
+              // const Row(
+              //   children: [
+              //     Text(
+              //       "개인정보처리방침",
+              //       style: TextStyle(
+              //         decoration: TextDecoration.underline,
+              //         fontSize: 12,
+              //         color: Color(0xff858998),
+              //         fontWeight: FontWeight.w300,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 30,
+              //     ),
+              //     Text(
+              //       "이용약관",
+              //       style: TextStyle(
+              //         decoration: TextDecoration.underline,
+              //         fontSize: 12,
+              //         color: Color(0xff858998),
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),

@@ -19,6 +19,10 @@ class JoinInputData extends ChangeNotifier {
 
   final _storage = FlutterSecureStorage();
 
+  void resetData() {
+    _storage.deleteAll();
+  }
+
   void setEmail(String value) {
     email = value;
     notifyListeners();

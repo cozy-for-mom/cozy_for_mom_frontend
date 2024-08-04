@@ -7,7 +7,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cozy For Mom',
+      title: '코지포맘',
       home: const SplashScreen(),
       theme: ThemeData(
         colorScheme: const ColorScheme.light(), // 필요한 테마 설정

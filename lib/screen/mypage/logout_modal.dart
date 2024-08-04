@@ -94,6 +94,7 @@ class _LogoutModalState extends State<LogoutModal> {
                   ),
                   InkWell(
                     onTap: () async {
+                      Navigator.pop(context);
                       await userViewModel.logOut();
                       if (context.mounted) {
                         Navigator.pushAndRemoveUntil(

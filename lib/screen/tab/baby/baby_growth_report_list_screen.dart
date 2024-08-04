@@ -4,7 +4,9 @@ import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
+import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,7 @@ class BabyGrowthReportListScreen extends StatefulWidget {
 class _BabyGrowthReportListScreenState
     extends State<BabyGrowthReportListScreen> {
   DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
-  late Future<Pair<List<BabyProfileGrowth>, DateTime>> data;
+  late Future<Pair<List<BabyProfileGrowth>, DateTime?>> data;
   DateFormat dateFormatForString = DateFormat('yyyy-MM-dd');
 
   @override
@@ -51,7 +53,11 @@ class _BabyGrowthReportListScreenState
           color: mainTextColor,
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const MainScreen(selectedIndex: 0)),
+              (Route<dynamic> route) => false,
+            );
           },
         ),
       ),
@@ -92,7 +98,7 @@ class _BabyGrowthReportListScreenState
                           color: primaryColor,
                         ),
                       ),
-                      if (nextCheckUpDate != null)
+                      if (nextCheckUpDate != "")
                         InkWell(
                           onTap: () {
                             showModalBottomSheet(
@@ -220,15 +226,17 @@ class _BabyGrowthReportListScreenState
                                           ),
                                           const SizedBox(height: 30),
                                           InkWell(
-                                            onTap: () {
-                                              BabyGrowthApiService()
+                                            onTap: () async {
+                                              await BabyGrowthApiService()
                                                   .registerNotificationExaminationDate(
                                                       dateFormatForString
                                                           .format(globalData
                                                               .selectedDate),
                                                       selectedNotifications);
-
-                                              Navigator.pop(context, true);
+                                              if (mounted) {
+                                                // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
+                                                Navigator.pop(context, true);
+                                              }
                                             },
                                             child: Container(
                                               width: 350,
@@ -272,8 +280,12 @@ class _BabyGrowthReportListScreenState
                                   builder: (BuildContext context,
                                       AsyncSnapshot snapshot) {
                                     if (snapshot.hasData) {
-                                      return Text(dateFormat
-                                          .format(snapshot.data.second));
+                                      if (snapshot.data.second != null) {
+                                        return Text(dateFormat
+                                            .format(snapshot.data.second));
+                                      } else {
+                                        return Container();
+                                      }
                                     } else {
                                       return Container();
                                     }
@@ -289,7 +301,7 @@ class _BabyGrowthReportListScreenState
                             ],
                           ),
                         ),
-                      if (nextCheckUpDate == null)
+                      if (nextCheckUpDate == "")
                         InkWell(
                           onTap: () {
                             showModalBottomSheet(
