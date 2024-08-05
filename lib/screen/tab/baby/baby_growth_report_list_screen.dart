@@ -36,6 +36,7 @@ class _BabyGrowthReportListScreenState
   @override
   Widget build(BuildContext context) {
     DateTime? nextCheckUpDate = DateTime.now();
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +103,8 @@ class _BabyGrowthReportListScreenState
                         InkWell(
                           onTap: () {
                             showModalBottomSheet(
-                              backgroundColor: Colors.white,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
                               elevation: 0.0,
                               context: context,
                               builder: (context) {
@@ -150,114 +152,136 @@ class _BabyGrowthReportListScreenState
                                       child: Column(
                                         children: [
                                           MonthCalendarModal(),
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Divider(
-                                              height: 20,
-                                              thickness: 1,
-                                              color: Color(0xffE2E2E2),
-                                            ),
-                                          ),
-                                          const Text(
-                                            "알림",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                                          Container(
+                                            color: Colors.white,
+                                            child: Column(
                                               children: [
-                                                NotificationOption(
-                                                    title: '당일 정오',
-                                                    isSelected:
-                                                        selectedNotifications
-                                                            .contains("on day"),
-                                                    onTap: () => {
-                                                          toggleNotification(
-                                                              "on day")
-                                                        }),
-                                                NotificationOption(
-                                                  title: '하루 전',
-                                                  isSelected:
-                                                      selectedNotifications
-                                                          .contains(
-                                                              "one day ago"),
-                                                  onTap: () =>
-                                                      toggleNotification(
-                                                          "one day ago"),
+                                                const Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Divider(
+                                                    height: 30,
+                                                    thickness: 1,
+                                                    color: Color(0xffE2E2E2),
+                                                  ),
                                                 ),
-                                                NotificationOption(
-                                                  title: '이틀 전',
-                                                  isSelected:
-                                                      selectedNotifications
-                                                          .contains(
-                                                              "two day ago"),
-                                                  onTap: () =>
-                                                      toggleNotification(
-                                                          "two day ago"),
-                                                ),
-                                                NotificationOption(
-                                                  title: '일주일 전',
-                                                  isSelected:
-                                                      selectedNotifications
-                                                          .contains(
-                                                              "one week ago"),
-                                                  onTap: () =>
-                                                      toggleNotification(
-                                                          "one week ago"),
-                                                ),
-                                                NotificationOption(
-                                                  title: '설정 안 함',
-                                                  isSelected:
-                                                      selectedNotifications
-                                                          .contains("none"),
-                                                  onTap: () =>
-                                                      toggleNotification(
-                                                          "none"),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 30),
-                                          InkWell(
-                                            onTap: () async {
-                                              await BabyGrowthApiService()
-                                                  .registerNotificationExaminationDate(
-                                                      dateFormatForString
-                                                          .format(globalData
-                                                              .selectedDate),
-                                                      selectedNotifications);
-                                              if (mounted) {
-                                                // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
-                                                Navigator.pop(context, true);
-                                              }
-                                            },
-                                            child: Container(
-                                              width: 350,
-                                              height: 56,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                color: primaryColor,
-                                              ),
-                                              child: const Center(
-                                                child: Text(
-                                                  "등록하기",
+                                                const Text(
+                                                  "알림",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                              ),
+                                                const SizedBox(height: 20),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      NotificationOption(
+                                                          title: '당일 정오',
+                                                          isSelected:
+                                                              selectedNotifications
+                                                                  .contains(
+                                                                      "on day"),
+                                                          onTap: () => {
+                                                                toggleNotification(
+                                                                    "on day")
+                                                              }),
+                                                      NotificationOption(
+                                                        title: '하루 전',
+                                                        isSelected:
+                                                            selectedNotifications
+                                                                .contains(
+                                                                    "one day ago"),
+                                                        onTap: () =>
+                                                            toggleNotification(
+                                                                "one day ago"),
+                                                      ),
+                                                      NotificationOption(
+                                                        title: '이틀 전',
+                                                        isSelected:
+                                                            selectedNotifications
+                                                                .contains(
+                                                                    "two day ago"),
+                                                        onTap: () =>
+                                                            toggleNotification(
+                                                                "two day ago"),
+                                                      ),
+                                                      NotificationOption(
+                                                        title: '일주일 전',
+                                                        isSelected:
+                                                            selectedNotifications
+                                                                .contains(
+                                                                    "one week ago"),
+                                                        onTap: () =>
+                                                            toggleNotification(
+                                                                "one week ago"),
+                                                      ),
+                                                      NotificationOption(
+                                                        title: '설정 안 함',
+                                                        isSelected:
+                                                            selectedNotifications
+                                                                .contains(
+                                                                    "none"),
+                                                        onTap: () =>
+                                                            toggleNotification(
+                                                                "none"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 30),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    if (selectedNotifications
+                                                        .isNotEmpty) {
+                                                      await BabyGrowthApiService()
+                                                          .registerNotificationExaminationDate(
+                                                              dateFormatForString
+                                                                  .format(globalData
+                                                                      .selectedDate),
+                                                              selectedNotifications);
+                                                      if (mounted) {
+                                                        // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
+                                                        Navigator.pop(
+                                                            context, true);
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    width: screenWidth - 40,
+                                                    height: 56,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      color:
+                                                          selectedNotifications
+                                                                  .isNotEmpty
+                                                              ? primaryColor
+                                                              : const Color(
+                                                                  0xffC9DFF9),
+                                                    ),
+                                                    child: const Center(
+                                                      child: Text(
+                                                        "등록하기",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 20),
+                                              ],
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
                                         ],
                                       ),
                                     );
