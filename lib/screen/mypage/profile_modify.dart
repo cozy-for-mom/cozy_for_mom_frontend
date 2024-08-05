@@ -58,29 +58,6 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     super.dispose();
   }
 
-  Future<void> takePhoto() async {
-    // TODO 카메라 연동
-    // if (cameraController == null || !cameraController!.value.isInitialized) {
-    //   print('Camera is not initialized');
-    //   return;
-    // }
-    // // 카메라 프리뷰가 실행 중인지 확인
-    // if (cameraController!.value.isTakingPicture) {
-    //   // 이미 촬영 중인 경우
-    //   return;
-    // }
-    // try {
-    //   // 사진을 찍습니다.
-    //   final image = await cameraController!.takePicture();
-    //   Navigator.pop(context);
-    //   setState(() {
-    //     imageUrl = imageApiService.uploadImage(XFile(image.path));
-    //   });
-    // } catch (e) {
-    //   print('Failed to take a picture: $e');
-    // }
-  }
-
   String sendFormatUsingRegex(String date) {
     return date.replaceAll(RegExp(r'\.'), '-');
   }
@@ -219,8 +196,23 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                       child: SelectBottomModal(
                                           selec1: '직접 찍기',
                                           selec2: '앨범에서 선택',
-                                          tap1: () {
-                                            takePhoto;
+                                          tap1: () async {
+                                            Navigator.pop(
+                                                context); // TODO 이미지 업로드 방식 조건문으로 고치기(코드 중복 줄이기 위해)
+                                            final selectedImage =
+                                                await ImagePicker().pickImage(
+                                                    source: ImageSource.camera);
+                                            if (selectedImage != null) {
+                                              final selectedImageUrl =
+                                                  await imageApiService
+                                                      .uploadImage(
+                                                          selectedImage);
+                                              setState(() {
+                                                imageUrl = selectedImageUrl;
+                                              });
+                                            } else {
+                                              print('No image selected.');
+                                            }
                                           },
                                           tap2: () async {
                                             Navigator.pop(context);
