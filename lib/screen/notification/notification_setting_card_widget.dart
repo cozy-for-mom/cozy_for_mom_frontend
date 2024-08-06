@@ -221,7 +221,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                     offset: formatTime(value).length),
                               );
                               String time;
-                              if (timeParts.contains(':')) {
+                              if (textEditingController.text.contains(':')) {
                                 timeParts =
                                     textEditingController.text.split(':');
 
