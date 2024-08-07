@@ -362,152 +362,163 @@ class _BabyGrowthReportListScreenState
                 future: data,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    return Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0,
-                            left: 3,
-                            right: 3,
+                    if (snapshot.data.first.isNotEmpty) {
+                      return Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
                           ),
-                          child: ListView.builder(
-                            itemCount: snapshot.data.first.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final report = snapshot.data.first[index];
-                              final dateTime = report.date;
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BabyGrowthReportDetailScreen(
-                                        babyProfileGrowthId: report.id,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 5.0,
+                              left: 3,
+                              right: 3,
+                            ),
+                            child: ListView.builder(
+                              itemCount: snapshot.data.first.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final report = snapshot.data.first[index];
+                                final dateTime = report.date;
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BabyGrowthReportDetailScreen(
+                                          babyProfileGrowthId: report.id,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 27.0, vertical: 5.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Flexible(
-                                              flex: 7,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    report.title,
-                                                    style: const TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Color(0xff2B2D35),
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 27.0, vertical: 5.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                flex: 7,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      report.title,
+                                                      style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Color(0xff2B2D35),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
-                                                    style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color(0xffAAAAAA),
+                                                    const SizedBox(
+                                                      height: 5,
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    report.diary,
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xff858998),
+                                                    Text(
+                                                      "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color:
+                                                            Color(0xffAAAAAA),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      report.diary,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xff858998),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Flexible(
-                                              flex: 3,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3.0),
-                                                child: Container(
-                                                  clipBehavior: Clip.hardEdge,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: Image.network(
-                                                    report.growthImageUrl,
-                                                    width: 79,
-                                                    height: 79,
-                                                    fit: BoxFit.cover,
+                                              Flexible(
+                                                flex: 3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(3.0),
+                                                  child: Container(
+                                                    clipBehavior: Clip.hardEdge,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Image.network(
+                                                      report.growthImageUrl,
+                                                      width: 79,
+                                                      height: 79,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        const Divider(
-                                          color: Color(0xffE1E1E7),
-                                          thickness: 1.0,
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          const Divider(
+                                            color: Color(0xffE1E1E7),
+                                            thickness: 1.0,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage(
-                                "assets/images/icons/diary_inactive.png"),
-                            width: 45.31,
-                            height: 44.35,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            "태아의 검진기록을 입력해보세요!",
-                            style: TextStyle(
-                              color: Color(0xff9397A4),
+                                );
+                              },
                             ),
                           ),
-                          SizedBox(
-                            height: 140,
-                          ),
-                        ],
-                      ),
-                    );
+                        ),
+                      );
+                    } else {
+                      return const Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                  "assets/images/icons/diary_inactive.png"),
+                              width: 45.31,
+                              height: 44.35,
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              "태아의 검진기록을 입력해보세요!",
+                              style: TextStyle(
+                                color: Color(0xff9397A4),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 140,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      backgroundColor: primaryColor,
+                      color: Colors.white,
+                    ));
                   }
                 },
               ),

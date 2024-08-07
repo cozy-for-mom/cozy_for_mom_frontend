@@ -249,7 +249,11 @@ class _MyCozylogState extends State<MyCozylog> {
                           ],
                         );
                 } else {
-                  return const Text("코지로그를 작성해보세요"); // TODO
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: primaryColor,
+                    color: Colors.white,
+                  ));
                 }
               },
             ),
