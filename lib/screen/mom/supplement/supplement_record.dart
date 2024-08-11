@@ -112,7 +112,9 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                             elevation: 0.0,
                                             context: context,
                                             builder: (context) {
-                                              return MonthCalendarModal(limitToday: true,);
+                                              return MonthCalendarModal(
+                                                limitToday: true,
+                                              );
                                             },
                                           );
                                         },
@@ -149,49 +151,107 @@ class _SupplementRecordState extends State<SupplementRecord> {
                         top: 203,
                         left: 0,
                         right: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: pregnantSupplements.isEmpty
-                              ? [
-                                  SizedBox(
-                                      height: screenHeight * (0.55),
-                                      child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image(
-                                                image: AssetImage(
-                                                    'assets/images/icons/supplement_off.png'),
-                                                width: 28,
-                                                height: 67.2),
-                                            Text('영양제를 등록해 보세요!',
-                                                style: TextStyle(
-                                                    color: Color(0xff9397A4),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14)),
-                                          ])),
-                                ]
-                              : pregnantSupplements.map((supplement) {
-                                  return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: SupplementCard(
-                                        supplementId: supplement.supplementId,
-                                        name: supplement.supplementName,
-                                        targetCount: supplement.targetCount,
-                                        realCount: supplement.realCount,
-                                        takeTimes: supplement.records
-                                            .map((record) => record.datetime)
-                                            .toList(),
-                                        recordIds: supplement.records
-                                            .map((record) => record.id)
-                                            .toList(),
-                                        onDelete: deleteSupplement,
-                                        onUpdate: (updatedData) =>
-                                            updateSupplementIntake(updatedData),
-                                      ));
-                                }).toList(),
-                        ),
+                        child:
+                            // Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children:
+                            pregnantSupplements.isEmpty
+                                ? SizedBox(
+                                    height: screenHeight * (0.55),
+                                    child: const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image(
+                                              image: AssetImage(
+                                                  'assets/images/icons/supplement_off.png'),
+                                              width: 28,
+                                              height: 67.2),
+                                          Text('영양제를 등록해 보세요!',
+                                              style: TextStyle(
+                                                  color: Color(0xff9397A4),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14)),
+                                        ]))
+                                //           : Container(
+                                //               // margin:
+                                //               //     EdgeInsets.symmetric(horizontal: 20),
+                                //               padding:
+                                //                   EdgeInsets.symmetric(horizontal: 15),
+                                //               height:
+                                //                   screenHeight * 0.75, // 스크롤 영역의 높이 설정
+                                //               child: ListView.builder(
+                                //                 shrinkWrap: true,
+                                //                 physics: ClampingScrollPhysics(),
+                                //                 itemCount: pregnantSupplements.length,
+                                //                 itemBuilder: (context, index) {
+                                //                   final supplement =
+                                //                       pregnantSupplements[index];
+                                //                   return Padding(
+                                //                     padding:
+                                //                         const EdgeInsets.only(bottom: 10),
+                                //                     child: SupplementCard(
+                                //                       supplementId:
+                                //                           supplement.supplementId,
+                                //                       name: supplement.supplementName,
+                                //                       targetCount: supplement.targetCount,
+                                //                       realCount: supplement.realCount,
+                                //                       takeTimes: supplement.records
+                                //                           .map(
+                                //                               (record) => record.datetime)
+                                //                           .toList(),
+                                //                       recordIds: supplement.records
+                                //                           .map((record) => record.id)
+                                //                           .toList(),
+                                //                       onDelete: deleteSupplement,
+                                //                       onUpdate: updateSupplementIntake,
+                                //                     ),
+                                //                   );
+                                //                 },
+                                //               ),
+                                //             ),
+                                // ),
+
+                                : SizedBox(
+                                    height: screenHeight - 200,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: screenHeight * (1 / 8)),
+                                        child: Column(
+                                          children: pregnantSupplements
+                                              .map((supplement) {
+                                            return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 10),
+                                                child: SupplementCard(
+                                                  supplementId:
+                                                      supplement.supplementId,
+                                                  name:
+                                                      supplement.supplementName,
+                                                  targetCount:
+                                                      supplement.targetCount,
+                                                  realCount:
+                                                      supplement.realCount,
+                                                  takeTimes: supplement.records
+                                                      .map((record) =>
+                                                          record.datetime)
+                                                      .toList(),
+                                                  recordIds: supplement.records
+                                                      .map(
+                                                          (record) => record.id)
+                                                      .toList(),
+                                                  onDelete: deleteSupplement,
+                                                  onUpdate: (updatedData) =>
+                                                      updateSupplementIntake(
+                                                          updatedData),
+                                                ));
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                       ),
                     ],
                   );
