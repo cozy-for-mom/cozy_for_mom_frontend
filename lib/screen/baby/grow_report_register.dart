@@ -212,7 +212,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor,
+        scrolledUnderElevation: 0,
         elevation: 0,
         title: const Text(
           "성장 보고서",

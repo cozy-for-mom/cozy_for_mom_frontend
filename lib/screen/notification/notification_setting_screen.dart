@@ -128,6 +128,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F7FA),
+        scrolledUnderElevation: 0,
         elevation: 0,
         title: const Text(
           "알림 설정",

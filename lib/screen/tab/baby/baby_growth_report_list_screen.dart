@@ -41,6 +41,7 @@ class _BabyGrowthReportListScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         elevation: 0,
         title: const Text(
           "성장 보고서",

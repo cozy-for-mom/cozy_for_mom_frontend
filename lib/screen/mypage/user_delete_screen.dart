@@ -28,6 +28,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         elevation: 0,
         leading: Container(),
         actions: [

@@ -96,6 +96,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   pinned: true,
                   elevation: 0,
                   backgroundColor: backgroundColor,
+                  scrolledUnderElevation: 0,
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: EdgeInsets.zero,
                     title: Padding(
