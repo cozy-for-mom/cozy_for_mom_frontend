@@ -65,9 +65,11 @@ class _DeleteModalState extends State<DeleteModal> {
                 InkWell(
                   onTap: () async {
                     await widget.tapFunc!();
-                    Navigator.of(context).pop();
-                    DeleteCompleteAlertModal.showDeleteCompleteDialog(
-                        context, widget.title);
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                      DeleteCompleteAlertModal.showDeleteCompleteDialog(
+                          context, widget.title);
+                    }
                   },
                   child: Container(
                     width: 56,

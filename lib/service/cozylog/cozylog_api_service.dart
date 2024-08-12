@@ -46,7 +46,6 @@ class CozyLogApiService {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
-
       int totalCount = body['data']['totalCount'];
       List<CozyLogForList> cozyLogs =
           (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
@@ -111,12 +110,8 @@ class CozyLogApiService {
     }
     urlString += '&sort=$sortTypeString';
     final url = Uri.parse(urlString);
-    print(urlString);
     dynamic response;
     response = await get(url, headers: headers);
-
-    print(response.statusCode);
-    print(response.body);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -321,8 +316,6 @@ class CozyLogApiService {
         },
       ),
     );
-
-    print(response.body);
     if (response.statusCode == 204) {
       print("삭제왼료");
       return;

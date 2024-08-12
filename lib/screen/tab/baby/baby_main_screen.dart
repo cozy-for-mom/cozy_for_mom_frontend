@@ -221,7 +221,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const MyCozylog(),
+                                    builder: (context) =>
+                                        const MyCozylog(ispop: true),
                                   ),
                                 );
                               },

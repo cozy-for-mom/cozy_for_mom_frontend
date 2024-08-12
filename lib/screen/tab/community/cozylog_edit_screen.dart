@@ -40,9 +40,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
 
   List<CozyLogImage> selectedImages = [];
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: source);
     Navigator.of(context).pop();
 
     if (pickedFile != null) {
@@ -212,67 +212,91 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
                             borderRadius: BorderRadius.circular(20)),
+
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              width: screenWidth - 80,
-                              height: (screenHeight - 360 - 40 - 36 - 70) /
-                                  2, // TODO 텍스트필드와 이미지 카드 개수 및 배치 논의 후, 수정
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.multiline,
-                                  controller: contentController,
-                                  textAlignVertical: TextAlignVertical.top,
-                                  textAlign: TextAlign.start,
-                                  maxLines: null,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    height: 1.5,
+                            SizedBox(
+                              height: screenHeight * 0.48,
+                              child: Scrollbar(
+                                // 스크롤바 표현
+                                trackVisibility: true,
+                                thickness: 5.0,
+                                radius: const Radius.circular(10),
+
+                                child: SingleChildScrollView(
+                                  controller: scrollController,
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        width: screenWidth - 80,
+                                        child: TextFormField(
+                                          focusNode: focusNode,
+                                          keyboardType: TextInputType.multiline,
+                                          controller: contentController,
+                                          textAlignVertical:
+                                              TextAlignVertical.top,
+                                          textAlign: TextAlign.start,
+                                          maxLines: null,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            height: 1.5,
+                                          ),
+                                          cursorColor: primaryColor,
+                                          cursorHeight: 15,
+                                          cursorWidth: 1.5,
+                                          decoration: const InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.zero,
+                                            border: InputBorder.none,
+                                            hintText: "오늘 하루는 어땠나요?",
+                                            hintStyle: TextStyle(
+                                              color: offButtonTextColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          onChanged: (text) {
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                      ...selectedImages
+                                          .asMap()
+                                          .entries
+                                          .map((entry) {
+                                        int index = entry.key;
+                                        CozyLogImage image = entry.value;
+                                        return Column(
+                                          children: [
+                                            ImageTextCard(
+                                              key: ValueKey(image.imageUrl),
+                                              image: image,
+                                              onMoveUp: () => _moveUp(index),
+                                              onMoveDown: () =>
+                                                  _moveDown(index),
+                                              onDelete: () =>
+                                                  _deleteImage(index),
+                                              onDescriptionChanged:
+                                                  (description) =>
+                                                      _updateDescription(
+                                                          index, description),
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ],
                                   ),
-                                  cursorColor: primaryColor,
-                                  cursorHeight: 15,
-                                  cursorWidth: 1.5,
-                                  decoration: const InputDecoration(
-                                    isDense: true,
-                                    contentPadding: EdgeInsets.zero,
-                                    border: InputBorder.none,
-                                    hintText: "오늘 하루는 어땠나요?",
-                                    hintStyle: TextStyle(
-                                      color: offButtonTextColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    setState(() {});
-                                  },
                                 ),
                               ),
                             ),
-                            ...selectedImages.asMap().entries.map((entry) {
-                              int index = entry.key;
-                              CozyLogImage image = entry.value;
-                              print(image.imageUrl);
-                              return Column(
-                                children: [
-                                  ImageTextCard(
-                                    image: image,
-                                    onMoveUp: () => _moveUp(index),
-                                    onMoveDown: () => _moveDown(index),
-                                    onDelete: () => _deleteImage(index),
-                                    onDescriptionChanged: (description) =>
-                                        _updateDescription(index, description),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
-                              );
-                            }).toList(),
                             SizedBox(
                               width: 85,
                               child: Row(
@@ -285,15 +309,20 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         context: context,
                                         backgroundColor: Colors.transparent,
                                         builder: (BuildContext context) {
-                                          return SelectBottomModal(
-                                            selec1: '직접 찍기',
-                                            selec2: '앨범에서 선택',
-                                            tap1: () {
-                                              print(
-                                                '카메라 구현',
-                                              ); // TODO 카메라 연동 구현
-                                            },
-                                            tap2: _pickImage,
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 18.0),
+                                            child: SelectBottomModal(
+                                                selec1: '직접 찍기',
+                                                selec2: '앨범에서 선택',
+                                                tap1: () {
+                                                  _pickImage(
+                                                      ImageSource.camera);
+                                                },
+                                                tap2: () {
+                                                  _pickImage(
+                                                      ImageSource.gallery);
+                                                }),
                                           );
                                         },
                                       );
@@ -310,35 +339,45 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         context: context,
                                         backgroundColor: Colors.transparent,
                                         builder: (BuildContext context) {
-                                          return SelectBottomModal(
-                                            selec1: '공개',
-                                            selec2: '비공개',
-                                            tap1: () {
-                                              mode = CozyLogModeType.public;
-                                              Navigator.pop(context);
-                                            },
-                                            tap2: () {
-                                              mode = CozyLogModeType.private;
-                                              Navigator.pop(context);
-                                            },
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 18.0),
+                                            child: SelectBottomModal(
+                                              selec1: '공개',
+                                              selec2: '비공개',
+                                              tap1: () {
+                                                setState(() {
+                                                  mode = CozyLogModeType.public;
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              tap2: () {
+                                                setState(() {
+                                                  mode =
+                                                      CozyLogModeType.private;
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                            ),
                                           );
                                         },
                                       );
                                     },
                                     child: Image(
-                                      image: AssetImage(mode ==
-                                              CozyLogModeType.private
-                                          ? 'assets/images/icons/cozylog_private.png'
-                                          : 'assets/images/icons/cozylog_public.png'),
-                                      width: 36,
-                                      height: 36,
-                                    ),
+                                        image: AssetImage(
+                                          mode == CozyLogModeType.private
+                                              ? 'assets/images/icons/cozylog_private.png'
+                                              : 'assets/images/icons/cozylog_public.png',
+                                        ),
+                                        width: 36,
+                                        height: 36),
                                   )
                                 ],
                               ),
                             ),
                           ],
                         ),
+                        // ),
                       )),
                   Positioned(
                     top: 755,
@@ -346,12 +385,12 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     child: InkWell(
                       onTap: () {
                         if (isRegisterButtonEnabled()) {
-                          final cozyLogId = CozyLogApiService()
+                          CozyLogApiService()
                               .updateCozyLog(
                                 cozyLog.cozyLogId!,
                                 titleController.text,
                                 contentController.text,
-                                [],
+                                selectedImages,
                                 mode,
                               )
                               .then(
@@ -392,7 +431,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
               ),
             );
           } else {
-            return const Text("없는 게시물입니다"); // TODO 핸들링
+            return const Center(
+                child: CircularProgressIndicator(
+              backgroundColor: primaryColor,
+              color: Colors.white,
+            ));
           }
         },
       ),

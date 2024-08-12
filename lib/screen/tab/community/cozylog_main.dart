@@ -3,7 +3,6 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_screeen.
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -138,14 +137,26 @@ class _CozylogMainState extends State<CozylogMain> {
                           ],
                         )),
                   ),
-                  const Positioned(
-                      top: 138,
-                      left: 30,
-                      child: Image(
-                        image: AssetImage('assets/images/icons/momProfile.png'),
-                        width: 90,
-                        height: 90,
-                      )),
+                  Positioned(
+                    top: 138,
+                    left: 30,
+                    child: pregnantInfo['imageUrl'] == null
+                        ? Image.asset(
+                            'assets/images/icons/momProfile.png',
+                            fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
+                            width: 90,
+                            height: 90,
+                            alignment: Alignment.center,
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              pregnantInfo['imageUrl'],
+                              fit: BoxFit.cover,
+                              width: 90,
+                              height: 90,
+                            ),
+                          ),
+                  ),
                   Positioned(
                     top: 174,
                     left: 135,
@@ -300,8 +311,7 @@ class _CozylogMainState extends State<CozylogMain> {
                     left: 20,
                     child: Container(
                       width: screenWidth - 40,
-                      // height: screenHeight * 0.34,
-                      height: 540,
+                      height: screenHeight * 0.34,
                       padding: const EdgeInsets.only(
                         top: 6,
                         bottom: 30,
@@ -316,18 +326,31 @@ class _CozylogMainState extends State<CozylogMain> {
                         future: cozyLogs,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return SingleChildScrollView(
-                              child: Column(
-                                children: snapshot.data!
-                                    .map((cozylog) => CozylogViewWidget(
-                                          cozylog: cozylog,
-                                          isMyCozyLog: false,
-                                        ))
-                                    .toList(),
-                              ),
-                            );
+                            if (snapshot.data == null) {
+                              return const Center(
+                                  child: Text("최근 작성된 글이 없습니다.",
+                                      style: TextStyle(
+                                          color: Color(0xff9397A4),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16)));
+                            } else {
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: snapshot.data!
+                                      .map((cozylog) => CozylogViewWidget(
+                                            cozylog: cozylog,
+                                            isMyCozyLog: false,
+                                          ))
+                                      .toList(),
+                                ),
+                              );
+                            }
                           } else {
-                            return const Text("최근 작성된 글이 없습니다.");
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              backgroundColor: primaryColor,
+                              color: Colors.white,
+                            ));
                           }
                         },
                       ),

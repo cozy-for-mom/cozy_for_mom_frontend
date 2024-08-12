@@ -67,7 +67,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                               Text(
                                 comment.writerNickname,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
                                 ),
                               ),
                               const SizedBox(
@@ -76,7 +78,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                               Text(
                                 comment.content,
                                 style: const TextStyle(
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w400,
+                                  fontSize: 14,
                                 ),
                               ),
                               const SizedBox(
@@ -88,6 +92,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                     dateFormat.format(comment.createdAt),
                                     style: const TextStyle(
                                       color: Color(0xffAAAAAA),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
                                     ),
                                   ),
                                   const SizedBox(
@@ -99,6 +105,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                       "답글쓰기",
                                       style: TextStyle(
                                         color: Color(0xffAAAAAA),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -207,7 +215,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                     ListTile(
                                                       title: const Center(
                                                           child: Text(
-                                                        '삭제하기',
+                                                        '댓글 삭제하기',
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -328,7 +336,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                             Text(
                                               subComment.writerNickname,
                                               style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
                                               ),
                                             ),
                                             const SizedBox(
@@ -337,7 +347,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                             Text(
                                               subComment.content,
                                               style: const TextStyle(
+                                                color: Colors.black,
                                                 fontWeight: FontWeight.w400,
+                                                fontSize: 14,
                                               ),
                                             ),
                                             const SizedBox(
@@ -347,9 +359,11 @@ class CozyLogCommentComponent extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   dateFormat.format(
-                                                      subComment.createdAt),
+                                                      comment.createdAt),
                                                   style: const TextStyle(
                                                     color: Color(0xffAAAAAA),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
                                                   ),
                                                 ),
                                                 const SizedBox(

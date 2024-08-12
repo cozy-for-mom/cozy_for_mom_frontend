@@ -44,6 +44,15 @@ class _ImageTextCardState extends State<ImageTextCard> {
     widget.onDescriptionChanged(_descriptionController.text);
   }
 
+  // 이미지 description도 이미지따라 함께 이동하도록 실행하는 메서드
+  @override
+  void didUpdateWidget(covariant ImageTextCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.image.description != oldWidget.image.description) {
+      _descriptionController.text = widget.image.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

@@ -20,6 +20,7 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
+      color: Colors.transparent,
       margin: const EdgeInsets.only(bottom: 34),
       width: screenWidth - 40,
       height: 56,
