@@ -170,6 +170,8 @@ flutter:
     - assets/images/icons/diary_inactive.png
     - assets/images/icons/notification_off.png
     - assets/images/splash.png
+    - assets/images/icons/baby_remove.png
+    - assets/images/icons/babyprofile_modify_pen.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
