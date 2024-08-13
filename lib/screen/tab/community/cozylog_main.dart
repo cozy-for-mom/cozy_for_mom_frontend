@@ -176,12 +176,15 @@ class _CozylogMainState extends State<CozylogMain> {
                                 padding:
                                     const EdgeInsets.only(left: 8, bottom: 4),
                                 child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
+                                    onTap: () async {
+                                      final res = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const MomProfileModify()));
+                                      if (res == true) {
+                                        setState(() {});
+                                      }
                                     },
                                     child: const Image(
                                         image: AssetImage(
