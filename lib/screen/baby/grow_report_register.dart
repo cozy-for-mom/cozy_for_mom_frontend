@@ -189,6 +189,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               tap2: () {
                 Navigator.pop(context);
                 showDialog(
+                  barrierDismissible: false,
                   context: context,
                   builder: (BuildContext buildContext) {
                     return DeleteModal(

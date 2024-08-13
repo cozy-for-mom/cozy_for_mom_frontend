@@ -146,6 +146,8 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                     tap2: () {
                                                       Navigator.pop(context);
                                                       showDialog(
+                                                          barrierDismissible:
+                                                              false,
                                                           context: context,
                                                           builder: (context) {
                                                             return DeleteModal(

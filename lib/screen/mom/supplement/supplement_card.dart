@@ -78,6 +78,7 @@ class _SupplementCardState extends State<SupplementCard> {
                 child: InkWell(
                   onTap: () {
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext buildContext) {
                         return DeleteModal(
@@ -198,6 +199,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                               tap2: () {
                                                 Navigator.pop(context);
                                                 showDialog(
+                                                  barrierDismissible: false,
                                                   context: context,
                                                   builder: (context) {
                                                     return DeleteModal(

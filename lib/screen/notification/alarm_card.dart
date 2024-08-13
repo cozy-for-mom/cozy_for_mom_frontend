@@ -120,6 +120,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                 child: InkWell(
                   onTap: () {
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext buildContext) {
                         return DeleteModal(

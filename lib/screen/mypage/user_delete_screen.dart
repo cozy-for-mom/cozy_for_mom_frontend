@@ -157,6 +157,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
               onTap: () {
                 if (selectedIndex != null) {
                   showDialog(
+                    barrierDismissible: false,
                     context: context,
                     builder: (BuildContext buildContext) {
                       return UserDeleteModal(
