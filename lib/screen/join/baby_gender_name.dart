@@ -147,11 +147,42 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('태명',
-                                style: TextStyle(
-                                    color: mainTextColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                            SizedBox(
+                              width: screenWidth - 40,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('태명',
+                                      style: TextStyle(
+                                          color: mainTextColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14)),
+                                  IconButton(
+                                      icon: const Image(
+                                          image: AssetImage(
+                                              'assets/images/icons/baby_remove.png'),
+                                          height: 15,
+                                          width: 14),
+                                      onPressed: () {
+                                        print('$index 태아 삭제');
+                                        if (mounted && babyCount > 1) {
+                                          setState(() {
+                                            babyCount -= 1;
+                                            birthNameControllers
+                                                .removeAt(index);
+                                            genderControllers.removeAt(index);
+                                            joinInputData.birthNames
+                                                .removeAt(index);
+                                            joinInputData.genders
+                                                .removeAt(index);
+                                            isOpenGenderModal.add(false);
+                                          });
+                                        }
+                                      }),
+                                ],
+                              ),
+                            ),
                             const SizedBox(height: 10),
                             Container(
                                 width: screenWidth - 40,
