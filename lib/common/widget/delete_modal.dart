@@ -66,9 +66,9 @@ class _DeleteModalState extends State<DeleteModal> {
                   onTap: () async {
                     await widget.tapFunc!();
                     if (mounted) {
-                      Navigator.of(context).pop();
-                      DeleteCompleteAlertModal.showDeleteCompleteDialog(
-                          context, widget.title);
+                      Navigator.of(context).pop(true);
+                      await CompleteAlertModal.showDeleteCompleteDialog(
+                          context, widget.title, '삭제');
                     }
                   },
                   child: Container(

@@ -24,6 +24,8 @@ class _MyPageState extends State<MyPage> {
   late double percentage;
   late BabyProfile? selectedProfile;
 
+  bool isEditMode = false;
+
   @override
   Widget build(BuildContext context) {
     // 디데이 그래프 계산
@@ -36,11 +38,11 @@ class _MyPageState extends State<MyPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;
+
             daysPassed = totalDays - (pregnantInfo['dDay'] as int);
             percentage = daysPassed / totalDays;
             if (percentage < 0) percentage = 1; // TODO 방어로직.
             selectedProfile = pregnantInfo['recentBabyProfile'];
-            print(selectedProfile!.babies.first.babyId);
           }
           if (!snapshot.hasData) {
             return const Center(
@@ -75,7 +77,7 @@ class _MyPageState extends State<MyPage> {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop(); // 현재 화면을 닫음
+                        Navigator.pop(context);
                       }),
                 ),
                 Positioned(
@@ -134,7 +136,6 @@ class _MyPageState extends State<MyPage> {
                     ),
                   ]),
                 ),
-                // const SizedBox(height: 20),
                 Positioned(
                   top: 303,
                   left: 11,
@@ -282,15 +283,17 @@ class _MyPageState extends State<MyPage> {
                                         ),
                                         child: TextButton(
                                           onPressed: () {
-                                            print("편집 클릭");
+                                            setState(() {
+                                              isEditMode = !isEditMode;
+                                            });
                                           },
                                           style: ButtonStyle(
                                             padding: MaterialStateProperty.all<
                                                     EdgeInsetsGeometry>(
                                                 EdgeInsets.zero), // 패딩을 없애는 부분
                                           ),
-                                          child: const Text("편집",
-                                              style: TextStyle(
+                                          child: Text(isEditMode ? "완료" : "편집",
+                                              style: const TextStyle(
                                                   color: offButtonTextColor,
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 12)),
@@ -313,85 +316,93 @@ class _MyPageState extends State<MyPage> {
                                                   .length) {
                                             // 추가 버튼 항목
                                             return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const BabyRegisterScreen(),
-                                                    ),
-                                                  );
-                                                });
+                                              onTap: () async {
+                                                final res =
+                                                    await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const BabyRegisterScreen(),
+                                                  ),
+                                                );
+                                                if (res == true) {
+                                                  setState(() {});
+                                                }
                                               },
-                                              child: InkWell(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(
-                                                          10, 0, 10, 10),
-                                                      child: Image.asset(
-                                                        'assets/images/icons/plusDotted.png',
-                                                        width: 80,
-                                                        height: 80,
-                                                        alignment:
-                                                            Alignment.center,
-                                                      ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(
+                                                        10, 0, 10, 10),
+                                                    child: Image.asset(
+                                                      'assets/images/icons/plusDotted.png',
+                                                      width: 80,
+                                                      height: 80,
+                                                      alignment:
+                                                          Alignment.center,
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             );
                                           } else {
                                             return CustomProfileButton(
-                                              text: pregnantInfo['babyProfiles']
-                                                      [index]
-                                                  .babies
-                                                  .map((baby) => baby.babyName)
-                                                  .join('/'),
-                                              imagePath:
-                                                  pregnantInfo['babyProfiles']
-                                                          [index]
-                                                      .babyProfileImageUrl,
-                                              offBackColor:
-                                                  const Color(0xffF8F8FA),
-                                              onPressed: () async {
-                                                try {
-                                                  await userViewModel
-                                                      .modifyMainBaby(pregnantInfo[
-                                                                  'babyProfiles']
-                                                              [index]
-                                                          .babyProfileId);
-                                                  setState(() {
-                                                    selectedProfile =
+                                                text: pregnantInfo['babyProfiles']
+                                                        [index]
+                                                    .babies
+                                                    .map(
+                                                        (baby) => baby.babyName)
+                                                    .join('/'),
+                                                imagePath:
+                                                    pregnantInfo['babyProfiles']
+                                                            [index]
+                                                        .babyProfileImageUrl,
+                                                offBackColor:
+                                                    const Color(0xffF8F8FA),
+                                                onPressed: () async {
+                                                  if (!isEditMode) {
+                                                    try {
+                                                      await userViewModel
+                                                          .modifyMainBaby(
+                                                              pregnantInfo[
+                                                                          'babyProfiles']
+                                                                      [index]
+                                                                  .babyProfileId);
+                                                      setState(() {
+                                                        selectedProfile =
+                                                            pregnantInfo[
+                                                                    'babyProfiles']
+                                                                [index];
                                                         pregnantInfo[
-                                                                'babyProfiles']
-                                                            [index];
-                                                    pregnantInfo[
-                                                            'recentBabyProfile'] =
-                                                        pregnantInfo[
-                                                                'babyProfiles']
-                                                            [index];
-                                                  });
-                                                  print(
-                                                      'id:${selectedProfile!.babyProfileId} ${selectedProfile!.babies.map((baby) => baby.babyName)} 태아로 변경되었습니다.');
-                                                } catch (e) {
-                                                  // 에러 처리
-                                                  print('프로필 변경 실패: $e');
-                                                }
-                                              },
-                                              isSelected: pregnantInfo[
-                                                          'recentBabyProfile'] !=
-                                                      null &&
-                                                  pregnantInfo[
-                                                              'recentBabyProfile']
-                                                          .babyProfileId ==
-                                                      pregnantInfo[
-                                                                  'babyProfiles']
-                                                              [index]
-                                                          .babyProfileId,
-                                            );
+                                                                'recentBabyProfile'] =
+                                                            pregnantInfo[
+                                                                    'babyProfiles']
+                                                                [index];
+                                                      });
+                                                      print(
+                                                          'id:${selectedProfile!.babyProfileId} ${selectedProfile!.babies.map((baby) => baby.babyName)} 태아로 변경되었습니다.');
+                                                    } catch (e) {
+                                                      // 에러 처리
+                                                      print('프로필 변경 실패: $e');
+                                                    }
+                                                  }
+                                                },
+                                                isSelected: pregnantInfo['recentBabyProfile'] !=
+                                                        null &&
+                                                    pregnantInfo['recentBabyProfile']
+                                                            .babyProfileId ==
+                                                        pregnantInfo['babyProfiles']
+                                                                [index]
+                                                            .babyProfileId,
+                                                isEditMode: isEditMode,
+                                                babyProfileId:
+                                                    pregnantInfo['babyProfiles']
+                                                            [index]
+                                                        .babyProfileId,
+                                                onProfileUpdated: () {
+                                                  setState(() {});
+                                                });
                                           }
                                         },
                                       )),

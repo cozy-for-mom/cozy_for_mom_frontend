@@ -222,10 +222,11 @@ class _BabyGrowthReportDetailScreenState
 
                                                               setState(() {
                                                                 if (mounted) {
-                                                                  DeleteCompleteAlertModal
+                                                                  CompleteAlertModal
                                                                       .showDeleteCompleteDialog(
                                                                           context,
-                                                                          '성장 보고서가');
+                                                                          '성장 보고서가',
+                                                                          '삭제');
                                                                 }
                                                               });
                                                             },

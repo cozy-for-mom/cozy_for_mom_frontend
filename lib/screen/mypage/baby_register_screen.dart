@@ -1,4 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
+import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
@@ -10,7 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class BabyRegisterScreen extends StatefulWidget {
-  const BabyRegisterScreen({super.key});
+  final int? babyProfileId;
+  const BabyRegisterScreen({super.key, this.babyProfileId = -1});
 
   @override
   State<BabyRegisterScreen> createState() => _BabyRegisterScreenState();
@@ -25,22 +29,53 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   List<TextEditingController> birthNameControllers = [];
   List<TextEditingController> genderControllers = [];
   XFile? image;
-  String? imageUrl;
+  String? babyProfileImageUrl;
   var dueDate = '';
-  final List<BabyForRegister> babies = [];
+  List<BabyForRegister> babies = [];
+  ImageApiService imageApiService = ImageApiService();
+  late UserApiService userApiService = UserApiService();
 
   bool isGenderModal = false;
-  int babyCount = 1;
+  int babyCount = 0;
   List<bool> isOpenGenderModal = [false];
 
   @override
   void initState() {
     super.initState();
-    addBaby();
+    if (widget.babyProfileId! > -1) {
+      _loadInitialData();
+    } else {
+      addBaby();
+    }
+  }
+
+  Future<void> _loadInitialData() async {
+    try {
+      var babyProfileData =
+          await userApiService.getBabyProfile(widget.babyProfileId!);
+      setState(() {
+        dueDateController.text = babyProfileData['dueAt'].replaceAll('-', '.');
+        dueDate = dueDateController.text;
+        babyProfileImageUrl = babyProfileData['profileImageUrl'];
+        babies = babyProfileData['babies'];
+        for (var baby in babies) {
+          babyCount += 1;
+          TextEditingController birthNameController =
+              TextEditingController(text: baby.name);
+          TextEditingController genderController =
+              TextEditingController(text: baby.gender);
+          birthNameControllers.add(birthNameController);
+          genderControllers.add(genderController);
+        }
+      });
+    } catch (e) {
+      print('Error loading initial data: $e');
+    }
   }
 
   void addBaby() {
     setState(() {
+      babyCount += 1;
       birthNameControllers.add(TextEditingController());
       genderControllers.add(TextEditingController());
     });
@@ -69,6 +104,79 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
     super.dispose();
   }
 
+  Future<XFile?> showImageSelectModal() async {
+    XFile? selectedImage;
+
+    String? choice = await showModalBottomSheet<String>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return SelectBottomModal(
+            selec1: '직접 찍기',
+            selec2: '앨범에서 선택',
+            tap1: () {
+              Navigator.pop(context, 'camera');
+            },
+            tap2: () {
+              Navigator.pop(context, 'gallery');
+            },
+          );
+        });
+
+    if (choice != null) {
+      ImageSource source =
+          choice == 'camera' ? ImageSource.camera : ImageSource.gallery;
+      selectedImage = await ImagePicker().pickImage(source: source);
+    }
+
+    return selectedImage;
+  }
+
+  Future<dynamic> showSelectModal() {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return SelectBottomModal(
+            selec1: '수정하기',
+            selec2: '사진 삭제하기',
+            tap1: () async {
+              Navigator.pop(context);
+              final selectedImage = await showImageSelectModal();
+              if (selectedImage != null) {
+                final imageUrl =
+                    await imageApiService.uploadImage(selectedImage);
+                setState(() {
+                  babyProfileImageUrl = imageUrl;
+                });
+              } else {
+                print('No image selected.');
+              }
+            },
+            tap2: () {
+              Navigator.pop(context);
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext buildContext) {
+                  return DeleteModal(
+                    text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                    title: '사진이',
+                    tapFunc: () {
+                      setState(() {
+                        babyProfileImageUrl = null;
+                      });
+
+                      return Future.value();
+                    },
+                  );
+                },
+              );
+            },
+          );
+        });
+  }
+
   Widget _buildBabyField(int index) {
     if (index >= birthNameControllers.length) {
       birthNameControllers.add(TextEditingController());
@@ -87,10 +195,40 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 30),
-        const Text(
-          "태명",
-          style: TextStyle(
-              color: labelTextColor, fontWeight: FontWeight.w600, fontSize: 14),
+        SizedBox(
+          width: screenWidth - 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "태명",
+                style: TextStyle(
+                    color: labelTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14),
+              ),
+              widget.babyProfileId! > -1
+                  ? Container()
+                  : IconButton(
+                      icon: const Image(
+                          image:
+                              AssetImage('assets/images/icons/baby_remove.png'),
+                          height: 15,
+                          width: 14),
+                      onPressed: () {
+                        print('$index 태아 삭제');
+                        if (mounted && babyCount > 1) {
+                          setState(() {
+                            babyCount -= 1;
+                            birthNameControllers.removeAt(index);
+                            genderControllers.removeAt(index);
+                            babies.removeAt(index);
+                            isOpenGenderModal.add(false);
+                          });
+                        }
+                      }),
+            ],
+          ),
         ),
         const SizedBox(
           height: 14,
@@ -249,6 +387,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
           backgroundColor: backgroundColor,
+          scrolledUnderElevation: 0,
           elevation: 0,
           leading: Container(),
           actions: [
@@ -278,62 +417,48 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         Stack(
                           children: [
                             Center(
-                              child: ClipOval(
-                                child: Image.asset(
-                                  image?.path ??
-                                      'assets/images/icons/babyProfile.png',
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                  alignment: Alignment.center,
-                                ),
-                              ),
+                              child: babyProfileImageUrl == null
+                                  ? const Image(
+                                      image: AssetImage(
+                                          "assets/images/icons/babyProfile.png"),
+                                      width: 100,
+                                      height: 100)
+                                  : ClipOval(
+                                      // 원형
+                                      child: Image.network(
+                                        babyProfileImageUrl!,
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                                    ),
                             ),
                             Positioned(
                               left: 206,
                               top: 72,
-                              child: GestureDetector(
+                              child: InkWell(
                                 onTap: () async {
-                                  final selectedImage = await ImagePicker()
-                                      .pickImage(source: ImageSource.gallery);
-                                  setState(() async {
+                                  if (babyProfileImageUrl == null) {
+                                    final selectedImage =
+                                        await showImageSelectModal();
                                     if (selectedImage != null) {
-                                      imageUrl = await ImageApiService()
+                                      final imageUrl = await imageApiService
                                           .uploadImage(selectedImage);
-                                      setState(() {});
+                                      setState(() {
+                                        babyProfileImageUrl = imageUrl;
+                                      });
                                     } else {
                                       print('No image selected.');
                                     }
-                                  });
+                                  } else {
+                                    showSelectModal();
+                                  }
                                 },
-                                child: Container(
+                                child: const Image(
+                                  image: AssetImage(
+                                      "assets/images/icons/circle_pen.png"),
                                   width: 24,
                                   height: 24,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color(0xffA9ABB7),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 210,
-                              top: 76,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final selectedImage = await ImagePicker()
-                                      .pickImage(source: ImageSource.gallery);
-                                  setState(() {
-                                    image = selectedImage;
-                                  });
-                                },
-                                child: Image.asset(
-                                  'assets/images/icons/pen.png',
-                                  fit: BoxFit.contain, // 이미지를 화면에 맞게 조절
-                                  width: 14,
-                                  height: 14,
-                                  color: Colors.white,
-                                  alignment: Alignment.center,
                                 ),
                               ),
                             ),
@@ -410,25 +535,60 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         })),
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 60),
-                          child: InkWell(
-                            onTap: () {
-                              if (mounted) {
-                                setState(() {
-                                  babyCount += 1;
-                                  isOpenGenderModal.add(false);
-                                });
-                              }
-                            },
-                            child: const Center(
-                              child: Text(
-                                '+ 다태아 추가하기',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
+                          child: widget.babyProfileId! > -1
+                              ? InkWell(
+                                  onTap: () {
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (BuildContext buildContext) {
+                                        return DeleteModal(
+                                          text:
+                                              '등록된 데이터는 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
+                                          title: '프로필이',
+                                          tapFunc: () async {
+                                            await UserApiService()
+                                                .deleteBabyProfile(
+                                                    widget.babyProfileId!);
+                                            if (mounted) {
+                                              Navigator.of(context).pop(true);
+                                            }
+
+                                            return Future.value();
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const Center(
+                                    child: Text(
+                                      '프로필 삭제하기',
+                                      style: TextStyle(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    if (mounted) {
+                                      setState(() {
+                                        babyCount += 1;
+                                        isOpenGenderModal.add(false);
+                                      });
+                                    }
+                                  },
+                                  child: const Center(
+                                    child: Text(
+                                      '+ 다태아 추가하기',
+                                      style: TextStyle(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -438,11 +598,29 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             ),
           ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               if (_validateFields()) {
-                UserApiService()
-                    .addBabies(dueDate.replaceAll('.', '-'), imageUrl, babies);
-                Navigator.pop(context);
+                if (widget.babyProfileId! > -1) {
+                  await UserApiService().modifyBabyProfile(
+                      widget.babyProfileId!,
+                      dueDate.replaceAll('.', '-'),
+                      babyProfileImageUrl,
+                      babies);
+                  if (mounted) {
+                    await CompleteAlertModal.showDeleteCompleteDialog(
+                        context, '프로필이', '변경');
+                    Navigator.pop(context, true);
+                  }
+                } else {
+                  await UserApiService().addBabyProfile(
+                      dueDate.replaceAll('.', '-'),
+                      babyProfileImageUrl,
+                      babies);
+                }
+
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
               }
             },
             child: Container(
@@ -454,10 +632,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                 color:
                     _validateFields() ? primaryColor : const Color(0xffC9DFF9),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  "등록하기",
-                  style: TextStyle(
+                  widget.babyProfileId! > -1 ? "수정하기" : "등록하기",
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
