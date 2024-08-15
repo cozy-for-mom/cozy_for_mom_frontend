@@ -34,28 +34,30 @@ class _MyPageState extends State<MyPage> {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return FutureBuilder(
-        future: userViewModel.getUserInfo(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            pregnantInfo = snapshot.data!;
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: FutureBuilder(
+          future: userViewModel.getUserInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              pregnantInfo = snapshot.data!;
 
-            daysPassed = totalDays - (pregnantInfo['dDay'] as int);
-            percentage = daysPassed / totalDays;
-            if (percentage < 0) percentage = 1; // TODO 방어로직.
-            selectedProfile = pregnantInfo['recentBabyProfile'];
-          }
-          if (!snapshot.hasData) {
-            return const Center(
-                child: CircularProgressIndicator(
-              backgroundColor: primaryColor,
-              color: Colors.white,
-            ));
-          }
+              daysPassed = totalDays - (pregnantInfo['dDay'] as int);
+              percentage = daysPassed / totalDays;
+              if (percentage < 0) percentage = 1; // TODO 방어로직.
+              selectedProfile = pregnantInfo['recentBabyProfile'];
+            }
+            if (!snapshot.hasData) {
+              return const Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: primaryColor,
+                color: Colors.white,
+              ));
+            }
 
-          return Scaffold(
-            backgroundColor: backgroundColor,
-            body: Stack(
+            // return Scaffold(
+            //   backgroundColor: backgroundColor,
+            return Stack(
               children: [
                 Positioned(
                   top: 0,
@@ -426,8 +428,8 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ],
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

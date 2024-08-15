@@ -122,11 +122,16 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(babyNames.join(''),
-                              style: const TextStyle(
-                                  color: mainTextColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 26)),
+                          SizedBox(
+                            width: AppUtils.scaleSize(context, 225),
+                            child: Text(babyNames.join(''),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: mainTextColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 26)),
+                          ),
                           SizedBox(height: AppUtils.scaleSize(context, 5)),
                           Text('임신 ${week}주차 ${day}일째',
                               style: TextStyle(

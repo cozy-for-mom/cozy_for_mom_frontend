@@ -197,12 +197,16 @@ class _CozylogMainState extends State<CozylogMain> {
                             ],
                           ),
                           SizedBox(height: AppUtils.scaleSize(context, 5)),
-                          Text(
-                            pregnantInfo['introduce'],
-                            style: const TextStyle(
-                                color: Color(0xff8A8A8A),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
+                          SizedBox(
+                            width: AppUtils.scaleSize(context, 230),
+                            child: Text(
+                              pregnantInfo['introduce'],
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Color(0xff8A8A8A),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                            ),
                           ),
                         ]),
                   ),
