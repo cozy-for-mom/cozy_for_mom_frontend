@@ -19,8 +19,16 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   await dotenv.load(fileName: 'assets/configs/.env'); // 이 코드를 추가한다.
 
-  DeviceTokenManager().initialize();
-
+  DeviceTokenManager manager = DeviceTokenManager();
+  print('kkkkk');
+  try {
+    print('try, before initialize');
+    await manager.initialize();
+    print("Device token initialized successfully.");
+  } catch (e) {
+    print("Failed to initialize device token: $e");
+  }
+  print('try 밖');
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
     nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
