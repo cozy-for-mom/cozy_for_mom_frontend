@@ -15,7 +15,6 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
     with WidgetsBindingObserver {
   List<String> recentSearches = [];
   late CozyLogLocalStorageService storageService;
-  final TextEditingController _controller = TextEditingController();
   late final Future<List<String>> futureRecentFutureKeywords;
   bool autoSave = false;
 
@@ -70,248 +69,258 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
-        child: Column(
-          children: [
-            SizedBox(
-              height: AppUtils.scaleSize(context, 70),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: AppUtils.scaleSize(context, 37),
-                  width: AppUtils.scaleSize(context, 316),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.white,
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: AppUtils.scaleSize(context, 17),
-                      ),
-                      Image(
-                        image: const AssetImage(
-                            "assets/images/icons/icon_search.png"),
-                        width: AppUtils.scaleSize(context, 15),
-                        height: AppUtils.scaleSize(context, 15),
-                      ),
-                      SizedBox(
-                        width: AppUtils.scaleSize(context, 10),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          keyboardType: TextInputType.text,
-                          cursorColor: primaryColor,
-                          cursorHeight: AppUtils.scaleSize(context, 15),
-                          decoration: InputDecoration(
-                            focusColor: primaryColor,
-                            fillColor: primaryColor,
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: const Color(0xff858998),
-                              fontSize: AppUtils.scaleSize(context, 14),
-                              height: 19 / 14,
+    return GestureDetector(
+      onTap: () {
+        // 키보드가 활성화 상태인지 체크하고 키보드를 내립니다.
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: AppUtils.scaleSize(context, 70),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: AppUtils.scaleSize(context, 37),
+                    width: AppUtils.scaleSize(context, 316),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: AppUtils.scaleSize(context, 17),
+                        ),
+                        Image(
+                          image: const AssetImage(
+                              "assets/images/icons/icon_search.png"),
+                          width: AppUtils.scaleSize(context, 15),
+                          height: AppUtils.scaleSize(context, 15),
+                        ),
+                        SizedBox(
+                          width: AppUtils.scaleSize(context, 10),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.text,
+                            cursorColor: primaryColor,
+                            cursorHeight: AppUtils.scaleSize(context, 15),
+                            decoration: InputDecoration(
+                              focusColor: primaryColor,
+                              fillColor: primaryColor,
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: const Color(0xff858998),
+                                fontSize: AppUtils.scaleSize(context, 14),
+                                height: 19 / 14,
+                              ),
+                              hintText: "검색어를 입력해주세요",
                             ),
-                            hintText: "검색어를 입력해주세요",
+                            onSubmitted: (String value) {
+                              addSearch(value);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CozyLogSearchResultPage(
+                                    searchKeyword: value,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                          onSubmitted: (String value) {
-                            addSearch(value);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CozyLogSearchResultPage(
-                                  searchKeyword: value,
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Center(
+                      child: Text("취소"),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 25),
+              ),
+              // 최근 검색
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "최근 검색",
+                    style: TextStyle(
+                      fontSize: AppUtils.scaleSize(context, 18),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: AppUtils.scaleSize(context, 100),
+                  ),
+                  Row(
+                    children: [
+                      InkWell(
+                        child: Text(
+                          "전체 삭제",
+                          style: TextStyle(
+                            color: recentSearches.isNotEmpty
+                                ? const Color(0xff858998)
+                                : const Color(0xffD8DAE2),
+                            fontSize: AppUtils.scaleSize(context, 12),
+                          ),
+                        ),
+                        onTap: () {
+                          storageService.clearRecentSearches();
+                          setState(() {
+                            recentSearches = [];
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 20),
+                      ),
+                      autoSave
+                          ? InkWell(
+                              child: Text(
+                                "자동저장 끄기",
+                                style: TextStyle(
+                                  color: const Color(0xff858998),
+                                  fontSize: AppUtils.scaleSize(context, 12),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                              onTap: () {
+                                storageService.setAutoSave(false);
+                                setState(() {
+                                  autoSave = false;
+                                });
+                              },
+                            )
+                          : InkWell(
+                              child: Text(
+                                "자동저장 켜기",
+                                style: TextStyle(
+                                  color: const Color(0xff858998),
+                                  fontSize: AppUtils.scaleSize(context, 12),
+                                ),
+                              ),
+                              onTap: () {
+                                storageService.setAutoSave(true);
+                                setState(() {
+                                  autoSave = true;
+                                });
+                              },
+                            ),
                     ],
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Center(
-                    child: Text("취소"),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 25),
-            ),
-            // 최근 검색
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "최근 검색",
-                  style: TextStyle(
-                    fontSize: AppUtils.scaleSize(context, 18),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: AppUtils.scaleSize(context, 100),
-                ),
-                Row(
-                  children: [
-                    InkWell(
-                      child: Text(
-                        "전체 삭제",
-                        style: TextStyle(
-                          color: recentSearches.isNotEmpty
-                              ? const Color(0xff858998)
-                              : const Color(0xffD8DAE2),
-                          fontSize: AppUtils.scaleSize(context, 12),
-                        ),
-                      ),
-                      onTap: () {
-                        storageService.clearRecentSearches();
-                        setState(() {
-                          recentSearches = [];
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: AppUtils.scaleSize(context, 20),
-                    ),
-                    autoSave
-                        ? InkWell(
-                            child: Text(
-                              "자동저장 끄기",
-                              style: TextStyle(
-                                color: const Color(0xff858998),
-                                fontSize: AppUtils.scaleSize(context, 12),
-                              ),
-                            ),
-                            onTap: () {
-                              storageService.setAutoSave(false);
-                              setState(() {
-                                autoSave = false;
-                              });
-                            },
-                          )
-                        : InkWell(
-                            child: Text(
-                              "자동저장 켜기",
-                              style: TextStyle(
-                                color: const Color(0xff858998),
-                                fontSize: AppUtils.scaleSize(context, 12),
-                              ),
-                            ),
-                            onTap: () {
-                              storageService.setAutoSave(true);
-                              setState(() {
-                                autoSave = true;
-                              });
-                            },
-                          ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 10),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 8),
+                ],
               ),
-              child: SizedBox(
-                height: AppUtils.scaleSize(context, 50),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recentSearches.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppUtils.scaleSize(context, 5),
-                        vertical: AppUtils.scaleSize(context, 10),
-                      ),
-                      child: Container(
-                        height: AppUtils.scaleSize(context, 30),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Color(0xffF0F0F5),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 10),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 8),
+                ),
+                child: SizedBox(
+                  height: AppUtils.scaleSize(context, 50),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recentSearches.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppUtils.scaleSize(context, 5),
+                          vertical: AppUtils.scaleSize(context, 10),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 12),
+                        child: Container(
+                          height: AppUtils.scaleSize(context, 30),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color(0xffF0F0F5),
                           ),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CozyLogSearchResultPage(
-                                        searchKeyword: recentSearches[index],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  recentSearches[index],
-                                  style: TextStyle(
-                                    fontSize: AppUtils.scaleSize(context, 14),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: AppUtils.scaleSize(context, 12)),
-                              SizedBox(
-                                height: AppUtils.scaleSize(context, 8),
-                                width: AppUtils.scaleSize(context, 8),
-                                child: InkWell(
-                                  child: Image(
-                                    image: const AssetImage(
-                                        "assets/images/icons/icon_close.png"),
-                                    width: AppUtils.scaleSize(context, 8),
-                                    height: AppUtils.scaleSize(context, 8),
-                                  ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 12),
+                            ),
+                            child: Row(
+                              children: [
+                                InkWell(
                                   onTap: () {
-                                    deleteSearch(recentSearches[index]);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CozyLogSearchResultPage(
+                                          searchKeyword: recentSearches[index],
+                                        ),
+                                      ),
+                                    );
                                   },
+                                  child: Text(
+                                    recentSearches[index],
+                                    style: TextStyle(
+                                      fontSize: AppUtils.scaleSize(context, 14),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                    width: AppUtils.scaleSize(context, 12)),
+                                SizedBox(
+                                  height: AppUtils.scaleSize(context, 8),
+                                  width: AppUtils.scaleSize(context, 8),
+                                  child: InkWell(
+                                    child: Image(
+                                      image: const AssetImage(
+                                          "assets/images/icons/icon_close.png"),
+                                      width: AppUtils.scaleSize(context, 8),
+                                      height: AppUtils.scaleSize(context, 8),
+                                    ),
+                                    onTap: () {
+                                      deleteSearch(recentSearches[index]);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 180),
-            ),
-            Image(
-              image: const AssetImage("assets/images/icons/icon_search.png"),
-              width: AppUtils.scaleSize(context, 44),
-              height: AppUtils.scaleSize(context, 44),
-              color: const Color(0xffCBCBD3),
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 17),
-            ),
-            const Text(
-              "검색어를 입력해보세요!",
-              style: TextStyle(
-                color: Color(0xff9397A4),
-                fontWeight: FontWeight.w500,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 180),
               ),
-            )
-          ],
+              Image(
+                image: const AssetImage("assets/images/icons/icon_search.png"),
+                width: AppUtils.scaleSize(context, 44),
+                height: AppUtils.scaleSize(context, 44),
+                color: const Color(0xffCBCBD3),
+              ),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 17),
+              ),
+              const Text(
+                "검색어를 입력해보세요!",
+                style: TextStyle(
+                  color: Color(0xff9397A4),
+                  fontWeight: FontWeight.w500,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
