@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
@@ -67,7 +68,7 @@ class _SupplementCardState extends State<SupplementCard> {
               color: Colors.transparent,
               foregroundColor: Colors.transparent,
               iconWidget: Container(
-                width: 120,
+                width: AppUtils.scaleSize(context, 120),
                 decoration: const BoxDecoration(
                   color: deleteButtonColor,
                   borderRadius: BorderRadius.only(
@@ -78,6 +79,7 @@ class _SupplementCardState extends State<SupplementCard> {
                 child: InkWell(
                   onTap: () {
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext buildContext) {
                         return DeleteModal(
@@ -96,21 +98,22 @@ class _SupplementCardState extends State<SupplementCard> {
                       },
                     );
                   },
-                  child: const Column(
+                  child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
-                          image: AssetImage('assets/images/icons/delete.png'),
-                          width: 17.5,
-                          height: 18,
+                          image: const AssetImage(
+                              'assets/images/icons/delete.png'),
+                          width: AppUtils.scaleSize(context, 17.5),
+                          height: AppUtils.scaleSize(context, 18),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: AppUtils.scaleSize(context, 5)),
                         Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: AppUtils.scaleSize(context, 14),
                           ),
                         ),
                       ]),
@@ -121,9 +124,11 @@ class _SupplementCardState extends State<SupplementCard> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 24),
+                  vertical: AppUtils.scaleSize(context, 20)),
               color: contentBoxTwoColor,
-              width: screenWidth - 40,
+              width: screenWidth - AppUtils.scaleSize(context, 40),
               height: calculateCardHeight(widget.targetCount),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,28 +141,28 @@ class _SupplementCardState extends State<SupplementCard> {
                                 ? 'assets/images/icons/take_on.png'
                                 : 'assets/images/icons/take_off.png',
                           ),
-                          width: 20,
-                          height: 20),
-                      const SizedBox(width: 10),
+                          width: AppUtils.scaleSize(context, 20),
+                          height: AppUtils.scaleSize(context, 20)),
+                      SizedBox(width: AppUtils.scaleSize(context, 10)),
                       Text(widget.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: afterInputColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18)),
-                      const SizedBox(width: 7),
+                              fontSize: AppUtils.scaleSize(context, 18))),
+                      SizedBox(width: AppUtils.scaleSize(context, 7)),
                       Container(
-                        width: 57,
-                        height: 22,
+                        width: AppUtils.scaleSize(context, 57),
+                        height: AppUtils.scaleSize(context, 22),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: const Color(0xffFEEEEE),
                             borderRadius: BorderRadius.circular(8)),
                         child: Text(
                           '하루 ${widget.targetCount}회',
-                          style: const TextStyle(
-                              color: Color(0xffFF9797),
+                          style: TextStyle(
+                              color: const Color(0xffFF9797),
                               fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                              fontSize: AppUtils.scaleSize(context, 12)),
                         ),
                       )
                     ]),
@@ -166,7 +171,8 @@ class _SupplementCardState extends State<SupplementCard> {
                         children: List.generate(
                           widget.targetCount,
                           (index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppUtils.scaleSize(context, 4)),
                             child: InkWell(
                               onTap: widget.realCount > index
                                   ? () {
@@ -198,6 +204,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                               tap2: () {
                                                 Navigator.pop(context);
                                                 showDialog(
+                                                  barrierDismissible: false,
                                                   context: context,
                                                   builder: (context) {
                                                     return DeleteModal(
@@ -238,8 +245,8 @@ class _SupplementCardState extends State<SupplementCard> {
                                       });
                                     },
                               child: Container(
-                                width: 106,
-                                height: 36,
+                                width: AppUtils.scaleSize(context, 106),
+                                height: AppUtils.scaleSize(context, 36),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: widget.realCount > index
@@ -256,7 +263,8 @@ class _SupplementCardState extends State<SupplementCard> {
                                             ? Colors.white
                                             : offButtonTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16))),
                               ),
                             ),
                           ),

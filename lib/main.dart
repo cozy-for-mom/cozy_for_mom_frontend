@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/service/mom/mom_meal_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
@@ -18,8 +19,16 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   await dotenv.load(fileName: 'assets/configs/.env'); // 이 코드를 추가한다.
 
-  await DeviceTokenManager().initialize();
-
+  DeviceTokenManager manager = DeviceTokenManager();
+  print('kkkkk');
+  try {
+    print('try, before initialize');
+    await manager.initialize();
+    print("Device token initialized successfully.");
+  } catch (e) {
+    print("Failed to initialize device token: $e");
+  }
+  print('try 밖');
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
     nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
@@ -34,6 +43,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => MyDataModel()),
           ChangeNotifierProvider(create: (context) => ListModifyState()),
           ChangeNotifierProvider(create: (context) => JoinInputData()),
+          ChangeNotifierProvider(create: (context) => JoinApiService()),
           ChangeNotifierProvider(create: (context) => SupplementApiService()),
           ChangeNotifierProvider(create: (context) => WeightApiService()),
           ChangeNotifierProvider(create: (context) => MealApiService()),

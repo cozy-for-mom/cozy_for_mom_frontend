@@ -1,6 +1,8 @@
 import 'package:cozy_for_mom_frontend/model/weight_model.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -25,6 +27,8 @@ class _WeightRecordState extends State<WeightRecord> {
   late List<PregnantWeight> pregnantWeights = [];
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
+  String _previousInput = '';
+
   bool _isWeightInitialized = false;
   DateTime _lastCheckedDate = DateTime.now(); // 마지막으로 데이터를 로드한 날짜
 
@@ -70,7 +74,6 @@ class _WeightRecordState extends State<WeightRecord> {
                             .difference(DateTime.parse(data['lastRecordDate']));
                     _isInitialized = todayWeight > 0 ? true : false;
                     _initializeData(globalData.selectedDate);
-                    print(lastRecordDate.inDays);
                   }
                 }
                 if (!snapshot.hasData) {
@@ -83,10 +86,11 @@ class _WeightRecordState extends State<WeightRecord> {
                 return Stack(
                   children: [
                     Positioned(
-                        top: 47,
+                        top: AppUtils.scaleSize(context, 47),
                         width: screenWidth,
                         child: Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding:
+                                EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -101,10 +105,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                     Text(
                                       DateFormat('M.d E', 'ko_KR')
                                           .format(globalData.selectedDate),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 18,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 18),
                                       ),
                                     ),
                                     IconButton(
@@ -117,7 +122,9 @@ class _WeightRecordState extends State<WeightRecord> {
                                           elevation: 0.0,
                                           context: context,
                                           builder: (context) {
-                                            return MonthCalendarModal(limitToday: true,);
+                                            return MonthCalendarModal(
+                                              limitToday: true,
+                                            );
                                           },
                                         );
                                       },
@@ -125,11 +132,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                   ],
                                 ),
                                 IconButton(
-                                    icon: const Image(
-                                        image: AssetImage(
+                                    icon: Image(
+                                        image: const AssetImage(
                                             'assets/images/icons/alert.png'),
-                                        height: 32,
-                                        width: 32),
+                                        height: AppUtils.scaleSize(context, 32),
+                                        width: AppUtils.scaleSize(context, 32)),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -143,25 +150,26 @@ class _WeightRecordState extends State<WeightRecord> {
                             )
                             // }),
                             )),
-                    const Positioned(
-                        top: 103,
-                        left: 20,
+                    Positioned(
+                        top: AppUtils.scaleSize(context, 103),
+                        left: AppUtils.scaleSize(context, 20),
                         child: SizedBox(
-                          height: 100,
-                          width: 350,
-                          child: WeeklyCalendar(),
+                          height: AppUtils.scaleSize(context, 100),
+                          width: screenWidth - AppUtils.scaleSize(context, 40),
+                          child: const WeeklyCalendar(),
                         )),
                     Positioned(
-                      top: 205,
-                      left: 20,
+                      top: AppUtils.scaleSize(context, 205),
+                      left: AppUtils.scaleSize(context, 20),
                       child: Container(
-                        width: screenWidth - 40,
-                        height: 86,
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: AppUtils.scaleSize(context, 86),
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 20)),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,35 +189,48 @@ class _WeightRecordState extends State<WeightRecord> {
                                                 const Duration(days: -1)
                                             ? '측정 기록이 없어요'
                                             : '마지막 측정 ${lastRecordDate.inDays}일전',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: primaryColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 12)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 12))),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 105,
+                                      width: AppUtils.scaleSize(context, 105),
                                       child: TextFormField(
                                         textAlign: TextAlign.end,
                                         maxLength: 5,
                                         controller: _weightController,
-                                        keyboardType: TextInputType.number,
+                                        // keyboardType: const TextInputType
+                                        //     .numberWithOptions(decimal: true), // TODO 완료 버튼 따로 추가하면 바꾸기
+                                        keyboardType: TextInputType.datetime,
+                                        onTapOutside: (event) {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                        },
+                                        textInputAction: TextInputAction.done,
                                         cursorColor: primaryColor,
-                                        cursorWidth: 1,
-                                        cursorHeight: 28,
-                                        decoration: const InputDecoration(
+                                        cursorWidth:
+                                            AppUtils.scaleSize(context, 1),
+                                        cursorHeight:
+                                            AppUtils.scaleSize(context, 28),
+                                        decoration: InputDecoration(
                                             contentPadding:
                                                 EdgeInsets.symmetric(
-                                                    vertical: 7),
+                                                    vertical:
+                                                        AppUtils.scaleSize(
+                                                            context, 7)),
                                             border: InputBorder.none,
                                             counterText: '',
                                             hintText: '00.00',
                                             hintStyle: TextStyle(
                                               color: beforeInputColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: 28,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 28),
                                             )),
                                         style: TextStyle(
                                           color:
@@ -217,7 +238,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 28,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 28),
                                         ),
                                         onChanged: (text) {
                                           setState(() {
@@ -228,9 +250,20 @@ class _WeightRecordState extends State<WeightRecord> {
                                                 _weightController.text =
                                                     '999.9';
                                               }
+                                              if ((text.contains('.') &&
+                                                      text.indexOf('.') !=
+                                                          text.lastIndexOf(
+                                                              '.')) ||
+                                                  (!RegExp(r'^\d*\.?\d*$')
+                                                      .hasMatch(text))) {
+                                                _weightController.text =
+                                                    text.substring(
+                                                        0, text.length - 1);
+                                              }
                                             }
                                           });
                                         },
+
                                         onFieldSubmitted: (value) async {
                                           _isInitialized
                                               ? await momWeightViewModel
@@ -253,7 +286,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 28),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 28)),
                                     ),
                                   ],
                                 ),
@@ -261,10 +295,10 @@ class _WeightRecordState extends State<WeightRecord> {
                         ),
                       ),
                     ),
-                    const Positioned(
-                      top: 331,
-                      left: 20,
-                      child: TimeLineChart(
+                    Positioned(
+                      top: AppUtils.scaleSize(context, 331),
+                      left: AppUtils.scaleSize(context, 20),
+                      child: const TimeLineChart(
                         recordType: RecordType.weight,
                       ),
                     ),

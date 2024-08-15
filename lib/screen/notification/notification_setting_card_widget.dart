@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,29 +96,26 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
     List<String> timeParts = textEditingController.text.split(':');
 
     return Container(
-      height: 78,
+      height: AppUtils.scaleSize(context, 78),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
+      padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-              width: screenWidth - 80,
+              width: screenWidth - AppUtils.scaleSize(context, 80),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 96,
-                      height: 35,
+                      width: AppUtils.scaleSize(context, 96),
+                      height: AppUtils.scaleSize(context, 35),
                       decoration: BoxDecoration(
                           color: offButtonColor,
                           borderRadius: BorderRadius.circular(20)),
@@ -135,9 +133,10 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                               });
                             },
                             child: Container(
-                                width: 45,
-                                height: 29,
-                                padding: const EdgeInsets.all(4),
+                                width: AppUtils.scaleSize(context, 45),
+                                height: AppUtils.scaleSize(context, 29),
+                                padding: EdgeInsets.all(
+                                    AppUtils.scaleSize(context, 4)),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: isBeforeButtonEnabled
@@ -150,7 +149,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                           ? Colors.white
                                           : offButtonTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 14,
+                                      fontSize: AppUtils.scaleSize(context, 14),
                                     ))),
                           ),
                           InkWell(
@@ -164,9 +163,10 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                               });
                             },
                             child: Container(
-                                width: 45,
-                                height: 29,
-                                padding: const EdgeInsets.all(4),
+                                width: AppUtils.scaleSize(context, 45),
+                                height: AppUtils.scaleSize(context, 29),
+                                padding: EdgeInsets.all(
+                                    AppUtils.scaleSize(context, 4)),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: isAfterButtonEnabled
@@ -179,14 +179,14 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                           ? Colors.white
                                           : offButtonTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 14,
+                                      fontSize: AppUtils.scaleSize(context, 14),
                                     ))),
                           ),
                         ],
                       ),
                     ),
                     SizedBox(
-                      width: 90,
+                      width: AppUtils.scaleSize(context, 90),
                       child: Center(
                         child: TextFormField(
                           autocorrect: true,
@@ -199,19 +199,20 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(4),
                           ],
-                          decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 4),
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: AppUtils.scaleSize(context, 4)),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '00 : 00',
                               hintStyle: TextStyle(
                                   color: offButtonTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 24)),
-                          style: const TextStyle(
+                                  fontSize: AppUtils.scaleSize(context, 24))),
+                          style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 24),
+                              fontSize: AppUtils.scaleSize(context, 24)),
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               textEditingController.value =
@@ -221,14 +222,17 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                     offset: formatTime(value).length),
                               );
                               String time;
-                              timeParts = textEditingController.text.split(':');
+                              if (textEditingController.text.contains(':')) {
+                                timeParts =
+                                    textEditingController.text.split(':');
 
-                              if (timeParts[0].length + timeParts[1].length ==
-                                  6) {
-                                // 각각 공백 포함 3글자
-                                time = convert24Time(
-                                    timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
-                                widget.targetTimeAt(time);
+                                if (timeParts[0].length + timeParts[1].length ==
+                                    6) {
+                                  // 각각 공백 포함 3글자
+                                  time = convert24Time(
+                                      timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
+                                  widget.targetTimeAt(time);
+                                }
                               }
                             }
                           },

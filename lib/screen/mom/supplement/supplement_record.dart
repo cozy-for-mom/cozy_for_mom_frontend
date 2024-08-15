@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_register_modal.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
@@ -77,10 +78,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   return Stack(
                     children: [
                       Positioned(
-                          top: 47,
+                          top: AppUtils.scaleSize(context, 47),
                           width: screenWidth,
                           child: Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: EdgeInsets.all(
+                                  AppUtils.scaleSize(context, 10)),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -96,10 +98,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       Text(
                                         DateFormat('M.d E', 'ko_KR')
                                             .format(globalData.selectedDate),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 18),
                                         ),
                                       ),
                                       IconButton(
@@ -112,7 +115,9 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                             elevation: 0.0,
                                             context: context,
                                             builder: (context) {
-                                              return MonthCalendarModal(limitToday: true,);
+                                              return MonthCalendarModal(
+                                                limitToday: true,
+                                              );
                                             },
                                           );
                                         },
@@ -120,11 +125,13 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                     ],
                                   ),
                                   IconButton(
-                                      icon: const Image(
-                                          image: AssetImage(
+                                      icon: Image(
+                                          image: const AssetImage(
                                               'assets/images/icons/alert.png'),
-                                          height: 32,
-                                          width: 32),
+                                          height:
+                                              AppUtils.scaleSize(context, 32),
+                                          width:
+                                              AppUtils.scaleSize(context, 32)),
                                       onPressed: () {
                                         Navigator.push(
                                             context,
@@ -136,62 +143,78 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       })
                                 ],
                               ))),
-                      const Positioned(
-                        top: 120,
-                        left: 20,
+                      Positioned(
+                        top: AppUtils.scaleSize(context, 120),
+                        left: AppUtils.scaleSize(context, 20),
                         child: SizedBox(
-                          height: 100,
-                          width: 350,
-                          child: WeeklyCalendar(),
+                          height: AppUtils.scaleSize(context, 100),
+                          width: screenWidth - AppUtils.scaleSize(context, 40),
+                          child: const WeeklyCalendar(),
                         ),
                       ),
                       Positioned(
-                        top: 203,
+                        top: AppUtils.scaleSize(context, 203),
                         left: 0,
                         right: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: pregnantSupplements.isEmpty
-                              ? [
-                                  SizedBox(
-                                      height: screenHeight * (0.55),
-                                      child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image(
-                                                image: AssetImage(
-                                                    'assets/images/icons/supplement_off.png'),
-                                                width: 28,
-                                                height: 67.2),
-                                            Text('영양제를 등록해 보세요!',
-                                                style: TextStyle(
-                                                    color: Color(0xff9397A4),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14)),
-                                          ])),
-                                ]
-                              : pregnantSupplements.map((supplement) {
-                                  return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: SupplementCard(
-                                        supplementId: supplement.supplementId,
-                                        name: supplement.supplementName,
-                                        targetCount: supplement.targetCount,
-                                        realCount: supplement.realCount,
-                                        takeTimes: supplement.records
-                                            .map((record) => record.datetime)
-                                            .toList(),
-                                        recordIds: supplement.records
-                                            .map((record) => record.id)
-                                            .toList(),
-                                        onDelete: deleteSupplement,
-                                        onUpdate: (updatedData) =>
-                                            updateSupplementIntake(updatedData),
-                                      ));
-                                }).toList(),
-                        ),
+                        child: pregnantSupplements.isEmpty
+                            ? SizedBox(
+                                height: screenHeight * (0.55),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/supplement_off.png'),
+                                          width:
+                                              AppUtils.scaleSize(context, 28),
+                                          height: AppUtils.scaleSize(
+                                              context, 67.2)),
+                                      Text('영양제를 등록해 보세요!',
+                                          style: TextStyle(
+                                              color: const Color(0xff9397A4),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14))),
+                                    ]))
+                            : SizedBox(
+                                height: screenHeight -
+                                    AppUtils.scaleSize(context, 200),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: screenHeight * (1 / 8)),
+                                    child: Column(
+                                      children:
+                                          pregnantSupplements.map((supplement) {
+                                        return Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: AppUtils.scaleSize(
+                                                    context, 10)),
+                                            child: SupplementCard(
+                                              supplementId:
+                                                  supplement.supplementId,
+                                              name: supplement.supplementName,
+                                              targetCount:
+                                                  supplement.targetCount,
+                                              realCount: supplement.realCount,
+                                              takeTimes: supplement.records
+                                                  .map((record) =>
+                                                      record.datetime)
+                                                  .toList(),
+                                              recordIds: supplement.records
+                                                  .map((record) => record.id)
+                                                  .toList(),
+                                              onDelete: deleteSupplement,
+                                              onUpdate: (updatedData) =>
+                                                  updateSupplementIntake(
+                                                      updatedData),
+                                            ));
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ),
                     ],
                   );

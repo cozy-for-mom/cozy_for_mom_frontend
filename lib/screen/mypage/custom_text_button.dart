@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 // 아이콘 + 텍스트 버튼 (커스텀버튼 위젯)
@@ -25,7 +26,7 @@ class CustomTextButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -34,11 +35,13 @@ class CustomTextButton extends StatelessWidget {
               width: imageWidth,
               height: imageHeight,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: AppUtils.scaleSize(context, 10)),
             Text(
               text,
               style: TextStyle(
-                  color: textColor, fontWeight: textWeight, fontSize: 14),
+                  color: textColor,
+                  fontWeight: textWeight,
+                  fontSize: AppUtils.scaleSize(context, 14)),
             ),
           ],
         ),

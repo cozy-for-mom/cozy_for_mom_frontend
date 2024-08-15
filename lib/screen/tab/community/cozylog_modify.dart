@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,9 @@ class _CozylogListModifyState extends State<CozylogListModify> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ListModifyState>(context, listen: false).clearSelection();
+    });
     cozyLogWrapper = CozyLogApiService().getMyCozyLogs(null, 10);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
@@ -57,18 +61,33 @@ class _CozylogListModifyState extends State<CozylogListModify> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    // 코지로그 개수가 달라졌을 때(= 삭제했을 때), 리스트를 바로 업데이트할 수 있도록 구현한 코드(위젯의 구성이 변경될 때마다 호출)
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.cozyLogs != widget.cozyLogs) {
+      pagingController.refresh();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
+    final totalHeight = boxHeight * widget.cozyLogs.length + 20;
+
     ListModifyState cozylogListModifyState = context.watch<ListModifyState>();
+
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding:
+              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            width: screenWidth - 40,
-            height: 53,
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 24)),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 53),
             decoration: BoxDecoration(
                 color: const Color(0xffF0F0F5),
                 borderRadius: BorderRadius.circular(30)),
@@ -76,19 +95,20 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    const Image(
-                        image: AssetImage('assets/images/icons/cozylog.png'),
-                        width: 25.02,
-                        height: 23.32),
-                    const SizedBox(width: 8),
+                    Image(
+                        image:
+                            const AssetImage('assets/images/icons/cozylog.png'),
+                        width: AppUtils.scaleSize(context, 25.02),
+                        height: AppUtils.scaleSize(context, 23.32)),
+                    SizedBox(width: AppUtils.scaleSize(context, 8)),
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
                           '${cozylogListModifyState.selectedCount}/${widget.totalCount}',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14),
+                              fontSize: AppUtils.scaleSize(context, 14)),
                         );
                       },
                     ),
@@ -97,7 +117,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                     children: [
                       InkWell(
                         onTap: () {
-                          isAllSelected
+                          cozylogListModifyState.selectedCount > 0
                               ? cozylogListModifyState.clearSelection()
                               : cozylogListModifyState
                                   .setAllSelected(widget.cozyLogs);
@@ -105,44 +125,52 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                             isAllSelected = !isAllSelected;
                           });
                         },
-                        child: Text(isAllSelected ? '전체해제' : '전체선택',
-                            style: const TextStyle(
+                        child: Text(
+                            cozylogListModifyState.selectedCount > 0
+                                ? '전체해제'
+                                : '전체선택',
+                            style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14)),
+                                fontSize: AppUtils.scaleSize(context, 14))),
                       ),
-                      const SizedBox(width: 24),
+                      SizedBox(width: AppUtils.scaleSize(context, 24)),
                       InkWell(
                         onTap: () {
-                          cozylogListModifyState.clearSelection();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const MyCozylog()));
                         },
-                        child: const Text('편집완료',
+                        child: Text('편집완료',
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14)),
+                                fontSize: AppUtils.scaleSize(context, 14))),
                       ),
                     ],
                   ),
                 ]),
           ),
         ),
-        const SizedBox(height: 22),
+        SizedBox(height: AppUtils.scaleSize(context, 22)),
         Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
+          padding: EdgeInsets.only(
+              left: AppUtils.scaleSize(context, 20),
+              right: AppUtils.scaleSize(context, 20),
+              bottom: AppUtils.scaleSize(context, 60)),
           child: Container(
-            width: screenWidth - 40,
-            height: boxHeight * widget.cozyLogs.length + 20,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+            height: screenHeight * (0.7),
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 20)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: contentBoxTwoColor),
             child: PagedListView<int, CozyLogForList>(
-              padding: EdgeInsets.zero,
+              // physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.only(bottom: screenHeight * 0.35),
               pagingController: pagingController,
               builderDelegate: PagedChildBuilderDelegate<CozyLogForList>(
                 itemBuilder: (context, item, index) => CozylogViewWidget(
@@ -150,28 +178,15 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                   isEditMode: true,
                   isMyCozyLog: true,
                   listModifyState: cozylogListModifyState,
-                  onSelectedChanged: (isSelected) {
+                  onSelectedChanged: (isAllSelected) {
                     cozylogListModifyState.toggleSelected(item.cozyLogId);
                     setState(() {});
                   },
                 ),
               ),
             ),
-            // child: Column(
-            //   children: widget.cozyLogs
-            //       .map((cozylog) => CozylogViewWidget(
-            //           cozylog: cozylog,
-            //           isEditMode: true,
-            //           listModifyState: cozylogListModifyState,
-            //           onSelectedChanged: (isSelected) {
-            //             cozylogListModifyState
-            //                 .toggleSelected(cozylog.cozyLogId);
-            //             setState(() {});
-            //           }))
-            //       .toList(),
-            // ),
           ),
-        )
+        ),
       ],
     );
   }

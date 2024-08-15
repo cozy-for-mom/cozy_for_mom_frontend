@@ -1,4 +1,3 @@
-import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
@@ -6,6 +5,8 @@ import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/slpsh_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -36,33 +37,32 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
-    print(deviceToken);
+    print('dt $deviceToken');
 
     return Scaffold(
-        body: FutureBuilder<String?>(
-            future: accessToken,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: Colors.white,
-                ));
-              } else if (snapshot.hasData) {
-                handleUserType(context);
-                return const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: Colors.white,
-                )); // 결과 대기 중 표시
-              } else {
-                return buildLoginScreen(screenWidth, screenHeight);
-              }
-            }));
+      body: FutureBuilder<String?>(
+        future: accessToken,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: SplashScreen());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData && snapshot.data != null) {
+              handleUserType(context);
+              return const Center(child: SplashScreen()); // 결과 대기 중 표시
+            } else {
+              return buildLoginScreen(screenWidth, screenHeight);
+            }
+          } else {
+            return const Center(child: SplashScreen()); // 로딩 중인 경우
+          }
+        },
+      ),
+    );
   }
 
   void handleUserType(BuildContext context) async {
     final userType = await tokenManager.getUserType();
+    print(userType);
     if (userType == UserType.guest) {
       // UserType이 guest이면 회원가입 페이지로 이동
       Navigator.of(context).pushReplacement(
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Stack(
       children: [
         Positioned(
-          top: -230,
+          top: AppUtils.scaleSize(context, -230),
           child: Image(
             image: const AssetImage('assets/images/login_confetti_image.png'),
             width: screenWidth,
@@ -88,15 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Positioned(
-          top: 100,
+          top: AppUtils.scaleSize(context, 120),
           child: Column(
             children: [
               Image(
                 image: const AssetImage('assets/images/login_cozy_image.png'),
                 width: screenWidth,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 20),
               ),
               InkWell(
                 onTap: () async {
@@ -116,25 +116,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: 350,
+                  height: AppUtils.scaleSize(context, 60),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xffFEE500),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "카카오로 시작하기",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 13,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 13),
               ),
               InkWell(
                 onTap: () async {
@@ -154,69 +154,77 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: 350,
+                  height: AppUtils.scaleSize(context, 60),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xff393939),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "Apple로 시작하기",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 25),
               ),
-              const Text(
-                "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
-                style: TextStyle(
-                  color: Color(0xff858998),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              const Row(
-                children: [
-                  Text(
-                    "개인정보처리방침",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    "이용약관",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                    ),
-                  ),
-                ],
-              )
+              // const Text(
+              //   "가입 후 코지포맘을 자유롭게 이용해보세요!",
+              //   style: TextStyle(
+              //     color: Color(0xff858998),
+              //     fontSize: 12,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              // ),
+              // const Text(
+              //   "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
+              //   style: TextStyle(
+              //     color: Color(0xff858998),
+              //     fontSize: 12,
+              //     fontWeight: FontWeight.w500,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 8,
+              // ),
+              // const Row(
+              //   children: [
+              //     Text(
+              //       "개인정보처리방침",
+              //       style: TextStyle(
+              //         decoration: TextDecoration.underline,
+              //         fontSize: 12,
+              //         color: Color(0xff858998),
+              //         fontWeight: FontWeight.w300,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 30,
+              //     ),
+              //     Text(
+              //       "이용약관",
+              //       style: TextStyle(
+              //         decoration: TextDecoration.underline,
+              //         fontSize: 12,
+              //         color: Color(0xff858998),
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),
         Positioned(
           // top: 700,
-          bottom: -135,
-          left: -170,
+          bottom: AppUtils.scaleSize(context, -135),
+          left: AppUtils.scaleSize(context, -170),
           child: Image(
             image: const AssetImage('assets/images/login_group_image.png'),
             width: screenWidth + 250,

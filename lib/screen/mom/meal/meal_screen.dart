@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -94,7 +95,7 @@ class _MealScreenState extends State<MealScreen> {
               tap2: () async {
                 Navigator.pop(context);
                 // 삭제 작업 수행
-                await momMealViewModel.deleteWeight(id);
+                await momMealViewModel.deleteMeal(id);
                 // 상태 업데이트
                 setState(() {});
               },
@@ -107,11 +108,11 @@ class _MealScreenState extends State<MealScreen> {
         appBar: PreferredSize(
           preferredSize: const Size(400, 60),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 50,
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 50),
                 ),
                 Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
@@ -128,10 +129,10 @@ class _MealScreenState extends State<MealScreen> {
                           Text(
                             DateFormat('M.d E', 'ko_KR')
                                 .format(globalData.selectedDate),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: AppUtils.scaleSize(context, 18),
                             ),
                           ),
                           IconButton(
@@ -151,11 +152,11 @@ class _MealScreenState extends State<MealScreen> {
                         ],
                       ),
                       IconButton(
-                          icon: const Image(
-                              image:
-                                  AssetImage('assets/images/icons/alert.png'),
-                              height: 32,
-                              width: 32),
+                          icon: Image(
+                              image: const AssetImage(
+                                  'assets/images/icons/alert.png'),
+                              height: AppUtils.scaleSize(context, 32),
+                              width: AppUtils.scaleSize(context, 32)),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -241,8 +242,8 @@ class _MealScreenState extends State<MealScreen> {
                       Column(
                         children: [
                           const WeeklyCalendar(),
-                          const SizedBox(
-                            height: 20,
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 20),
                           ),
                           containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
                               ? InkWell(
@@ -253,8 +254,10 @@ class _MealScreenState extends State<MealScreen> {
                                   child: Stack(
                                     children: [
                                       SizedBox(
-                                        width: screenWidth - 40,
-                                        height: 216,
+                                        width: screenWidth -
+                                            AppUtils.scaleSize(context, 40),
+                                        height:
+                                            AppUtils.scaleSize(context, 216),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -265,11 +268,13 @@ class _MealScreenState extends State<MealScreen> {
                                         ),
                                       ),
                                       Positioned(
-                                        top: 20,
-                                        left: 20,
+                                        top: AppUtils.scaleSize(context, 20),
+                                        left: AppUtils.scaleSize(context, 20),
                                         child: Container(
-                                          width: 58,
-                                          height: 23,
+                                          width:
+                                              AppUtils.scaleSize(context, 58),
+                                          height:
+                                              AppUtils.scaleSize(context, 23),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -278,9 +283,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.breakfast.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -324,8 +330,10 @@ class _MealScreenState extends State<MealScreen> {
                                     child: Stack(
                                       children: [
                                         SizedBox(
-                                          width: screenWidth - 40,
-                                          height: 216,
+                                          width: screenWidth -
+                                              AppUtils.scaleSize(context, 40),
+                                          height:
+                                              AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -343,30 +351,40 @@ class _MealScreenState extends State<MealScreen> {
                                                         ))
                                                       ]
                                                     : [
-                                                        const Image(
-                                                          image: AssetImage(
+                                                        Image(
+                                                          image:
+                                                              const AssetImage(
                                                             "assets/images/icons/default_meal.png",
                                                           ),
-                                                          height: 43,
-                                                          width: 19,
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 43),
+                                                          width: AppUtils
+                                                              .scaleSize(
+                                                                  context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
                                               )),
                                         ),
                                         Positioned(
-                                          top: 20,
-                                          left: 20,
+                                          top: AppUtils.scaleSize(context, 20),
+                                          left: AppUtils.scaleSize(context, 20),
                                           child: Container(
-                                            width: 58,
-                                            height: 23,
+                                            width:
+                                                AppUtils.scaleSize(context, 58),
+                                            height:
+                                                AppUtils.scaleSize(context, 23),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -375,10 +393,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.breakfast.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),
@@ -388,8 +408,8 @@ class _MealScreenState extends State<MealScreen> {
                                     ),
                                   ),
                                 ),
-                          const SizedBox(
-                            height: 20,
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 20),
                           ),
                           containsLunch
                               ? InkWell(
@@ -400,8 +420,10 @@ class _MealScreenState extends State<MealScreen> {
                                   child: Stack(
                                     children: [
                                       SizedBox(
-                                        width: screenWidth - 40,
-                                        height: 216,
+                                        width: screenWidth -
+                                            AppUtils.scaleSize(context, 40),
+                                        height:
+                                            AppUtils.scaleSize(context, 216),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -412,11 +434,13 @@ class _MealScreenState extends State<MealScreen> {
                                         ),
                                       ),
                                       Positioned(
-                                        top: 20,
-                                        left: 20,
+                                        top: AppUtils.scaleSize(context, 20),
+                                        left: AppUtils.scaleSize(context, 20),
                                         child: Container(
-                                          width: 58,
-                                          height: 23,
+                                          width:
+                                              AppUtils.scaleSize(context, 58),
+                                          height:
+                                              AppUtils.scaleSize(context, 23),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -425,9 +449,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.lunch.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -470,8 +495,10 @@ class _MealScreenState extends State<MealScreen> {
                                     child: Stack(
                                       children: [
                                         SizedBox(
-                                          width: screenWidth - 40,
-                                          height: 216,
+                                          width: screenWidth -
+                                              AppUtils.scaleSize(context, 40),
+                                          height:
+                                              AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -489,30 +516,40 @@ class _MealScreenState extends State<MealScreen> {
                                                         ))
                                                       ]
                                                     : [
-                                                        const Image(
-                                                          image: AssetImage(
+                                                        Image(
+                                                          image:
+                                                              const AssetImage(
                                                             "assets/images/icons/default_meal.png",
                                                           ),
-                                                          height: 43,
-                                                          width: 19,
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 43),
+                                                          width: AppUtils
+                                                              .scaleSize(
+                                                                  context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
                                               )),
                                         ),
                                         Positioned(
-                                          top: 20,
-                                          left: 20,
+                                          top: AppUtils.scaleSize(context, 20),
+                                          left: AppUtils.scaleSize(context, 20),
                                           child: Container(
-                                            width: 58,
-                                            height: 23,
+                                            width:
+                                                AppUtils.scaleSize(context, 58),
+                                            height:
+                                                AppUtils.scaleSize(context, 23),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -521,10 +558,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.lunch.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),
@@ -534,8 +573,8 @@ class _MealScreenState extends State<MealScreen> {
                                     ),
                                   ),
                                 ),
-                          const SizedBox(
-                            height: 20,
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 20),
                           ),
                           containsDinner
                               ? InkWell(
@@ -546,8 +585,10 @@ class _MealScreenState extends State<MealScreen> {
                                   child: Stack(
                                     children: [
                                       SizedBox(
-                                        width: screenWidth - 40,
-                                        height: 216,
+                                        width: screenWidth -
+                                            AppUtils.scaleSize(context, 40),
+                                        height:
+                                            AppUtils.scaleSize(context, 216),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -558,11 +599,13 @@ class _MealScreenState extends State<MealScreen> {
                                         ),
                                       ),
                                       Positioned(
-                                        top: 20,
-                                        left: 20,
+                                        top: AppUtils.scaleSize(context, 20),
+                                        left: AppUtils.scaleSize(context, 20),
                                         child: Container(
-                                          width: 58,
-                                          height: 23,
+                                          width:
+                                              AppUtils.scaleSize(context, 58),
+                                          height:
+                                              AppUtils.scaleSize(context, 23),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -571,9 +614,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.dinner.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -616,8 +660,10 @@ class _MealScreenState extends State<MealScreen> {
                                     child: Stack(
                                       children: [
                                         SizedBox(
-                                          width: screenWidth - 40,
-                                          height: 216,
+                                          width: screenWidth -
+                                              AppUtils.scaleSize(context, 40),
+                                          height:
+                                              AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -635,30 +681,40 @@ class _MealScreenState extends State<MealScreen> {
                                                         ))
                                                       ]
                                                     : [
-                                                        const Image(
-                                                          image: AssetImage(
+                                                        Image(
+                                                          image:
+                                                              const AssetImage(
                                                             "assets/images/icons/default_meal.png",
                                                           ),
-                                                          height: 43,
-                                                          width: 19,
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 43),
+                                                          width: AppUtils
+                                                              .scaleSize(
+                                                                  context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
                                               )),
                                         ),
                                         Positioned(
-                                          top: 20,
-                                          left: 20,
+                                          top: AppUtils.scaleSize(context, 20),
+                                          left: AppUtils.scaleSize(context, 20),
                                           child: Container(
-                                            width: 58,
-                                            height: 23,
+                                            width:
+                                                AppUtils.scaleSize(context, 58),
+                                            height:
+                                                AppUtils.scaleSize(context, 23),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -667,10 +723,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.dinner.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),

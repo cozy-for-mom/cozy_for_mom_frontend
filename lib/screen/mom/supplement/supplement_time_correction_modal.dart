@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/services.dart';
@@ -46,9 +47,11 @@ class _SupplementModalState extends State<SupplementModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth - 40, // TODO 팝업창 너비 조정되도록 수정해야 함
-            height: 207,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: screenWidth -
+                AppUtils.scaleSize(context, 40), // TODO 팝업창 너비 조정되도록 수정해야 함
+            height: AppUtils.scaleSize(context, 207),
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 20)),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
               borderRadius: BorderRadius.circular(20.0),
@@ -56,15 +59,17 @@ class _SupplementModalState extends State<SupplementModal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('영양제 기록',
+                Text('영양제 기록',
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 20)),
+                        fontSize: AppUtils.scaleSize(context, 20))),
                 Container(
-                    width: 312,
-                    height: 80,
-                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    width: AppUtils.scaleSize(context, 312),
+                    height: AppUtils.scaleSize(context, 80),
+                    padding: EdgeInsets.only(
+                        left: AppUtils.scaleSize(context, 16),
+                        right: AppUtils.scaleSize(context, 16)),
                     decoration: BoxDecoration(
                       color: backgroundColor,
                       borderRadius: BorderRadius.circular(12),
@@ -74,8 +79,8 @@ class _SupplementModalState extends State<SupplementModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 84,
-                            height: 32,
+                            width: AppUtils.scaleSize(context, 84),
+                            height: AppUtils.scaleSize(context, 32),
                             decoration: BoxDecoration(
                                 color: contentBoxTwoColor,
                                 borderRadius: BorderRadius.circular(20)),
@@ -90,9 +95,10 @@ class _SupplementModalState extends State<SupplementModal> {
                                     });
                                   },
                                   child: Container(
-                                      width: 38,
-                                      height: 26,
-                                      padding: const EdgeInsets.all(4),
+                                      width: AppUtils.scaleSize(context, 38),
+                                      height: AppUtils.scaleSize(context, 26),
+                                      padding: EdgeInsets.all(
+                                          AppUtils.scaleSize(context, 4)),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -106,7 +112,8 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12,
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                           ))),
                                 ),
                                 InkWell(
@@ -117,9 +124,10 @@ class _SupplementModalState extends State<SupplementModal> {
                                     });
                                   },
                                   child: Container(
-                                      width: 38,
-                                      height: 26,
-                                      padding: const EdgeInsets.all(4),
+                                      width: AppUtils.scaleSize(context, 38),
+                                      height: AppUtils.scaleSize(context, 26),
+                                      padding: EdgeInsets.all(
+                                          AppUtils.scaleSize(context, 4)),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -133,37 +141,39 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12,
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                           ))),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(
-                            width: 90,
+                            width: AppUtils.scaleSize(context, 90),
                             child: TextFormField(
                               autocorrect: true,
                               controller: textController,
                               textAlign: TextAlign.center,
                               maxLength: 7,
                               showCursor: false,
-                              keyboardType: TextInputType.datetime,
+                              keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(4),
                               ],
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                   border: InputBorder.none,
                                   counterText: '',
                                   hintText: '00 : 00',
                                   hintStyle: TextStyle(
                                       color: offButtonTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 24)),
-                              style: const TextStyle(
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 24))),
+                              style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 24),
+                                  fontSize: AppUtils.scaleSize(context, 24)),
                               onChanged: (value) {
                                 if (value.isNotEmpty) {
                                   textController.value =
@@ -183,52 +193,55 @@ class _SupplementModalState extends State<SupplementModal> {
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: AppUtils.scaleSize(context, 18)),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: screenWidth - 40,
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
                   height: 56,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 50),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppUtils.scaleSize(context, 18),
+                      horizontal: AppUtils.scaleSize(context, 50)),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),
                   child: InkWell(
                     onTap: () async {
-                      String time;
-                      currentTime = DateFormat('yyyy-MM-dd')
-                          .format(globalData.selectedDate); // TODO 캘린더 연동
-                      List<String> timeParts = textController.text.split(':');
-                      int hourValue = int.tryParse(timeParts[0]) ?? 0;
-                      int minuteValue = int.tryParse(timeParts[1]) ?? 0;
+                      if (isEnabled) {
+                        String time;
+                        currentTime = DateFormat('yyyy-MM-dd')
+                            .format(globalData.selectedDate);
+                        List<String> timeParts = textController.text.split(':');
+                        int hourValue = int.tryParse(timeParts[0]) ?? 0;
+                        int minuteValue = int.tryParse(timeParts[1]) ?? 0;
 
-                      if (!isAfterButtonEnabled && hourValue == 12) {
-                        hourValue = 0; // 오전 12시는 00시로 표현
-                      } else if (isAfterButtonEnabled && hourValue == 12) {
-                        hourValue = 12; // 오후 12시는 12로 표현
-                      } else if (isAfterButtonEnabled && hourValue != 12) {
-                        hourValue =
-                            (hourValue + 12) % 24; // 오후 시간을 24시간 형식으로 변환
+                        if (!isAfterButtonEnabled && hourValue == 12) {
+                          hourValue = 0; // 오전 12시는 00시로 표현
+                        } else if (isAfterButtonEnabled && hourValue == 12) {
+                          hourValue = 12; // 오후 12시는 12로 표현
+                        } else if (isAfterButtonEnabled && hourValue != 12) {
+                          hourValue =
+                              (hourValue + 12) % 24; // 오후 시간을 24시간 형식으로 변환
+                        }
+
+                        time =
+                            '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
+
+                        await supplementApi.modifySupplementIntake(
+                            widget.id, widget.name, time);
+
+                        setState(() {
+                          Navigator.pop(context, DateTime.parse(time));
+                        });
                       }
-
-                      time =
-                          '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
-
-                      await supplementApi.modifySupplementIntake(
-                          widget.id, widget.name, time);
-
-                      setState(() {
-                        Navigator.pop(context, DateTime.parse(time));
-                      });
                     },
-                    child: const Text(
+                    child: Text(
                       '등록하기',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: AppUtils.scaleSize(context, 16)),
                       textAlign: TextAlign.center,
                     ),
                   ),

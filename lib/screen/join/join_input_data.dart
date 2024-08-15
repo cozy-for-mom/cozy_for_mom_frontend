@@ -15,8 +15,13 @@ class JoinInputData extends ChangeNotifier {
   List<String> genders = [];
   List<Baby> babies = [];
   OauthType oauthType = OauthType.none;
+  bool fetalInfoChanged = false;
 
   final _storage = FlutterSecureStorage();
+
+  void resetData() {
+    _storage.deleteAll();
+  }
 
   void setEmail(String value) {
     email = value;
@@ -55,10 +60,20 @@ class JoinInputData extends ChangeNotifier {
   }
 
   void setFetalInfo(String? value) {
-    if (value != null) {
+    if (value != null && value != fetalInfo) {
       fetalInfo = value;
+      genders.clear();
+      birthNames.clear();
       _saveToStorage('fetalInfo', value);
+      _saveListToStorage('genders', genders);
+      _saveListToStorage('birthNames', birthNames);
+      fetalInfoChanged = true;
+      notifyListeners();
     }
+  }
+
+  void resetFetalInfoChange() {
+    fetalInfoChanged = false;
     notifyListeners();
   }
 

@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_card_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -128,11 +129,14 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F7FA),
+        scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "알림 설정",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: AppUtils.scaleSize(context, 18)),
         ),
         leading: IconButton(
           color: Colors.black,
@@ -143,7 +147,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding:
+            EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,29 +159,29 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 30),
                     ),
                     TextField(
                       cursorColor: primaryColor,
                       controller: titleController,
                       keyboardType: TextInputType.text,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 20,
+                        fontSize: AppUtils.scaleSize(context, 20),
                       ),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
                         labelStyle: TextStyle(
-                          color: Color(0xff2B2D35),
-                          fontSize: 20,
+                          color: const Color(0xff2B2D35),
+                          fontSize: AppUtils.scaleSize(context, 20),
                         ),
                         hintText: "일정의 제목을 입력해주세요",
                         hintStyle: TextStyle(
-                          color: Color(0xff858998),
+                          color: const Color(0xff858998),
                           fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                          fontSize: AppUtils.scaleSize(context, 20),
                         ),
                       ),
                       onChanged: (text) {
@@ -187,57 +192,59 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     ),
                     Container(
                       width: screenWidth,
-                      height: 1.5,
+                      height: AppUtils.scaleSize(context, 1.5),
                       color: titleController.text.isNotEmpty
                           ? primaryColor
                           : mainLineColor,
                     ),
-                    const SizedBox(
-                      height: 50,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 50),
                     ),
                     Text(
                       type == CardType.bloodsugar.name ? "측정 시간" : "복용 시간",
-                      style: const TextStyle(
-                        color: Color(0xff2B2D35),
+                      style: TextStyle(
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 10),
                     ),
                     ...targetTimeWidgets
-                        .expand(
-                            (widget) => [widget, const SizedBox(height: 10)])
+                        .expand((widget) => [
+                              widget,
+                              SizedBox(height: AppUtils.scaleSize(context, 10))
+                            ])
                         .toList(),
-                    const SizedBox(height: 10),
+                    SizedBox(height: AppUtils.scaleSize(context, 10)),
                     type == CardType.bloodsugar.name
                         ? Container()
                         : GestureDetector(
                             onTap: _addNotificationCard,
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 "+ 알림 받을 시간 추가하기",
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14),
+                                    fontSize: AppUtils.scaleSize(context, 14)),
                               ),
                             ),
                           ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 20),
                     ),
-                    const Text(
+                    Text(
                       "알림",
                       style: TextStyle(
-                        color: Color(0xff2B2D35),
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 20),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -254,7 +261,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             });
                           },
                           child: Container(
-                            width: 100,
+                            width: AppUtils.scaleSize(context, 100),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: selectedOneHourAgo
@@ -262,8 +269,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   : unselectedBackgroundColor,
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20),
+                                  vertical: AppUtils.scaleSize(context, 15)),
                               child: Center(
                                 child: Text(
                                   "1시간 전",
@@ -272,7 +280,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -291,7 +300,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             });
                           },
                           child: Container(
-                            width: 100,
+                            width: AppUtils.scaleSize(context, 100),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: selectedThirtyMinutesAgo
@@ -299,8 +308,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   : unselectedBackgroundColor,
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20),
+                                  vertical: AppUtils.scaleSize(context, 15)),
                               child: Center(
                                 child: Text(
                                   "30분 전",
@@ -309,7 +319,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -327,7 +338,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             });
                           },
                           child: Container(
-                            width: 100,
+                            width: AppUtils.scaleSize(context, 100),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: selectedOnTime
@@ -335,8 +346,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   : unselectedBackgroundColor,
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20),
+                                  vertical: AppUtils.scaleSize(context, 15)),
                               child: Center(
                                 child: Text(
                                   "정시",
@@ -345,7 +357,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -353,22 +366,22 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 40,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 40),
                     ),
-                    const Text(
+                    Text(
                       "알림 받을 요일",
                       style: TextStyle(
-                        color: Color(0xff2B2D35),
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 20),
                     ),
                     SizedBox(
-                      width: screenWidth - 40,
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -400,8 +413,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                 });
                               },
                               child: Container(
-                                width: 38,
-                                height: 45,
+                                width: AppUtils.scaleSize(context, 38),
+                                height: AppUtils.scaleSize(context, 45),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   color:
@@ -418,7 +431,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                             ? selectedTextColor
                                             : unselectedTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16)),
                                   ),
                                 ),
                               ),
@@ -426,38 +440,41 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 70),
+                    SizedBox(height: AppUtils.scaleSize(context, 70)),
                   ],
                 ),
               ),
             ),
             InkWell(
               onTap: () async {
-                var notification = NotificationModel(
-                  isActive: isActive,
-                  type: widget.type.name,
-                  title: title,
-                  notifyAt: notifyAt,
-                  targetTimeAt: targetTimeAt,
-                  daysOfWeek: daysOfWeek,
-                );
-                if (widget.notification != null) {
-                  int responseId = await notificationViewModel
-                      .modifyNotification(id, notification);
-                  print('modify');
-                  widget.onModify!(responseId);
-                } else {
-                  int responseId = await notificationViewModel
-                      .recordNotification(notification);
-                  print('register');
-                  widget.onRegister!(responseId);
+                if (isRegisterButtonEnabled()) {
+                  var notification = NotificationModel(
+                    isActive: isActive,
+                    type: widget.type.name,
+                    title: title,
+                    notifyAt: notifyAt,
+                    targetTimeAt: targetTimeAt,
+                    daysOfWeek: daysOfWeek,
+                  );
+                  if (widget.notification != null) {
+                    int responseId = await notificationViewModel
+                        .modifyNotification(id, notification);
+                    widget.onModify!(responseId);
+                  } else {
+                    int responseId = await notificationViewModel
+                        .recordNotification(notification);
+                    widget.onRegister!(responseId);
+                  }
+                  if (mounted) {
+                    Navigator.pop(context);
+                  }
                 }
-                Navigator.pop(context);
               },
               child: Container(
-                width: screenWidth - 40,
-                height: 56,
-                margin: const EdgeInsets.only(bottom: 35),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                height: AppUtils.scaleSize(context, 56),
+                margin:
+                    EdgeInsets.only(bottom: AppUtils.scaleSize(context, 20)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: isRegisterButtonEnabled()

@@ -1,9 +1,10 @@
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_screeen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -68,14 +69,15 @@ class _CozylogMainState extends State<CozylogMain> {
                     top: 0,
                     left: 0,
                     child: Image(
-                        width: screenWidth + 20,
+                        width: screenWidth + AppUtils.scaleSize(context, 20),
                         fit: BoxFit.cover,
                         image: const AssetImage("assets/images/subtract2.png")),
                   ),
                   Positioned(
-                    top: 47,
+                    top: AppUtils.scaleSize(context, 47),
                     child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding:
+                            EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -89,15 +91,13 @@ class _CozylogMainState extends State<CozylogMain> {
                                             const MainScreen())); // TODO depth가 복잡해져서 커뮤니티에서는 뒤로가기하면 메인페이지로 가도록 픽스
                               },
                             ),
-                            const SizedBox(
-                                width: 110), // TODO 화면 너비에 맞춘 width로 수정해야함
-                            const Text('커뮤니티',
+                            SizedBox(width: AppUtils.scaleSize(context, 110)),
+                            Text('커뮤니티',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 18)),
-                            const SizedBox(
-                                width: 90), // TODO 화면 너비에 맞춘 width로 수정해야함
+                                    fontSize: AppUtils.scaleSize(context, 18))),
+                            SizedBox(width: AppUtils.scaleSize(context, 90)),
                             Row(
                               children: [
                                 InkWell(
@@ -110,17 +110,17 @@ class _CozylogMainState extends State<CozylogMain> {
                                       ),
                                     );
                                   },
-                                  child: const Image(
-                                      width: 20,
-                                      height: 20,
-                                      image: AssetImage(
+                                  child: Image(
+                                      width: AppUtils.scaleSize(context, 20),
+                                      height: AppUtils.scaleSize(context, 20),
+                                      image: const AssetImage(
                                           "assets/images/icons/icon_search.png")),
                                 ),
                                 IconButton(
-                                  icon: const Image(
-                                    width: 24,
-                                    height: 24,
-                                    image: AssetImage(
+                                  icon: Image(
+                                    width: AppUtils.scaleSize(context, 24),
+                                    height: AppUtils.scaleSize(context, 24),
+                                    image: const AssetImage(
                                       "assets/images/icons/mypage.png",
                                     ),
                                   ),
@@ -137,17 +137,29 @@ class _CozylogMainState extends State<CozylogMain> {
                           ],
                         )),
                   ),
-                  const Positioned(
-                      top: 138,
-                      left: 30,
-                      child: Image(
-                        image: AssetImage('assets/images/icons/momProfile.png'),
-                        width: 90,
-                        height: 90,
-                      )),
                   Positioned(
-                    top: 174,
-                    left: 135,
+                    top: AppUtils.scaleSize(context, 138),
+                    left: AppUtils.scaleSize(context, 30),
+                    child: pregnantInfo['imageUrl'] == null
+                        ? Image.asset(
+                            'assets/images/icons/momProfile.png',
+                            fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
+                            width: AppUtils.scaleSize(context, 90),
+                            height: AppUtils.scaleSize(context, 90),
+                            alignment: Alignment.center,
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              pregnantInfo['imageUrl'],
+                              fit: BoxFit.cover,
+                              width: AppUtils.scaleSize(context, 90),
+                              height: AppUtils.scaleSize(context, 90),
+                            ),
+                          ),
+                  ),
+                  Positioned(
+                    top: AppUtils.scaleSize(context, 174),
+                    left: AppUtils.scaleSize(context, 135),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,51 +168,61 @@ class _CozylogMainState extends State<CozylogMain> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(pregnantInfo['nickname'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 18)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 18))),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, bottom: 4),
+                                padding: EdgeInsets.only(
+                                    left: AppUtils.scaleSize(context, 8),
+                                    bottom: AppUtils.scaleSize(context, 4)),
                                 child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
+                                    onTap: () async {
+                                      final res = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const MomProfileModify()));
+                                      if (res == true) {
+                                        setState(() {});
+                                      }
                                     },
-                                    child: const Image(
-                                        image: AssetImage(
+                                    child: Image(
+                                        image: const AssetImage(
                                             'assets/images/icons/pen.png'),
-                                        width: 14,
-                                        height: 14)),
+                                        width: AppUtils.scaleSize(context, 14),
+                                        height:
+                                            AppUtils.scaleSize(context, 14))),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            pregnantInfo['introduce'],
-                            style: const TextStyle(
-                                color: Color(0xff8A8A8A),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
+                          SizedBox(height: AppUtils.scaleSize(context, 5)),
+                          SizedBox(
+                            width: AppUtils.scaleSize(context, 230),
+                            child: Text(
+                              pregnantInfo['introduce'],
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Color(0xff8A8A8A),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: AppUtils.scaleSize(context, 14)),
+                            ),
                           ),
                         ]),
                   ),
                   Positioned(
-                    top: 255,
-                    left: 10,
+                    top: AppUtils.scaleSize(context, 255),
+                    left: AppUtils.scaleSize(context, 10),
                     child: Card(
                       elevation: 0.0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
-                      margin: const EdgeInsets.all(10),
+                      margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                       color: contentBoxTwoColor,
                       child: SizedBox(
-                        width: screenWidth - 40,
-                        height: 102,
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: AppUtils.scaleSize(context, 102),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -220,7 +242,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                 }),
                             Container(
                               width: 1,
-                              height: 42,
+                              height: AppUtils.scaleSize(context, 42),
                               color: const Color(0xffE8E8ED),
                             ),
                             CustomTextButton(
@@ -242,29 +264,69 @@ class _CozylogMainState extends State<CozylogMain> {
                       ),
                     ),
                   ),
-                  const Positioned(
-                    top: 393.4,
-                    left: 21,
-                    child: Text(
-                      '최신 코지로그',
-                      style: TextStyle(
-                        color: mainTextColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                  Positioned(
+                    top: AppUtils.scaleSize(context, 393.4),
+                    left: AppUtils.scaleSize(context, 21),
+                    child: SizedBox(
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '최신 코지로그',
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: AppUtils.scaleSize(context, 18),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CozyLogListScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffA9ABB7),
+                                  borderRadius: BorderRadius.circular(
+                                    21,
+                                  )),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 8),
+                                  vertical: AppUtils.scaleSize(context, 2),
+                                ),
+                                child: Text(
+                                  "더보기",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: AppUtils.scaleSize(context, 12),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 427,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 430),
+                    left: AppUtils.scaleSize(context, 20),
                     child: Container(
-                      width: screenWidth - 40,
-                      height: 540,
-                      padding: const EdgeInsets.only(
-                        top: 6,
-                        bottom: 30,
-                        left: 22,
-                        right: 22,
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: screenHeight * 0.34,
+                      padding: EdgeInsets.only(
+                        top: AppUtils.scaleSize(context, 6),
+                        bottom: AppUtils.scaleSize(context, 30),
+                        left: AppUtils.scaleSize(context, 22),
+                        right: AppUtils.scaleSize(context, 22),
                       ),
                       decoration: BoxDecoration(
                         color: contentBoxTwoColor,
@@ -274,18 +336,32 @@ class _CozylogMainState extends State<CozylogMain> {
                         future: cozyLogs,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return SingleChildScrollView(
-                              child: Column(
-                                children: snapshot.data!
-                                    .map((cozylog) => CozylogViewWidget(
-                                          cozylog: cozylog,
-                                          isMyCozyLog: false,
-                                        ))
-                                    .toList(),
-                              ),
-                            );
+                            if (snapshot.data == null) {
+                              return Center(
+                                  child: Text("최근 작성된 글이 없습니다.",
+                                      style: TextStyle(
+                                          color: const Color(0xff9397A4),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: AppUtils.scaleSize(
+                                              context, 16))));
+                            } else {
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: snapshot.data!
+                                      .map((cozylog) => CozylogViewWidget(
+                                            cozylog: cozylog,
+                                            isMyCozyLog: false,
+                                          ))
+                                      .toList(),
+                                ),
+                              );
+                            }
                           } else {
-                            return const Text("최근 작성된 글이 없습니다.");
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              backgroundColor: primaryColor,
+                              color: Colors.white,
+                            ));
                           }
                         },
                       ),

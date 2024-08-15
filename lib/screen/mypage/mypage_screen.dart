@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
@@ -24,6 +25,8 @@ class _MyPageState extends State<MyPage> {
   late double percentage;
   late BabyProfile? selectedProfile;
 
+  bool isEditMode = false;
+
   @override
   Widget build(BuildContext context) {
     // 디데이 그래프 계산
@@ -31,35 +34,37 @@ class _MyPageState extends State<MyPage> {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return FutureBuilder(
-        future: userViewModel.getUserInfo(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            pregnantInfo = snapshot.data!;
-            daysPassed = totalDays - (pregnantInfo['dDay'] as int);
-            percentage = daysPassed / totalDays;
-            if (percentage < 0) percentage = 1; // TODO 방어로직.
-            selectedProfile = pregnantInfo['recentBabyProfile'];
-            print(selectedProfile!.babies.first.babyId);
-          }
-          if (!snapshot.hasData) {
-            return const Center(
-                child: CircularProgressIndicator(
-              backgroundColor: primaryColor,
-              color: Colors.white,
-            ));
-          }
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: FutureBuilder(
+          future: userViewModel.getUserInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              pregnantInfo = snapshot.data!;
 
-          return Scaffold(
-            backgroundColor: backgroundColor,
-            body: Stack(
+              daysPassed = totalDays - (pregnantInfo['dDay'] as int);
+              percentage = daysPassed / totalDays;
+              if (percentage < 0) percentage = 1; // TODO 방어로직.
+              selectedProfile = pregnantInfo['recentBabyProfile'];
+            }
+            if (!snapshot.hasData) {
+              return const Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: primaryColor,
+                color: Colors.white,
+              ));
+            }
+
+            // return Scaffold(
+            //   backgroundColor: backgroundColor,
+            return Stack(
               children: [
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
                   child: Image(
-                    width: screenWidth - 40,
+                    width: screenWidth - AppUtils.scaleSize(context, 40),
                     fit: BoxFit.cover,
                     image: const AssetImage(
                       "assets/images/subtract.png",
@@ -67,46 +72,47 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 47,
-                  left: 348,
+                  top: AppUtils.scaleSize(context, 47),
+                  left: AppUtils.scaleSize(context, 348),
                   child: IconButton(
                       icon: const Icon(
                         Icons.close,
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop(); // 현재 화면을 닫음
+                        Navigator.pop(context);
                       }),
                 ),
                 Positioned(
-                  top: 119,
+                  top: AppUtils.scaleSize(context, 119),
                   left: 0,
                   right: 0,
                   child: Column(children: [
-                    pregnantInfo['imageUrl'] == null ?
-                    Image.asset(
-                      'assets/images/icons/momProfile.png',
-                      fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                      width: 100,
-                      height: 100,
-                      alignment: Alignment.center,
-                    ) : ClipOval(
-                      child: Image.network(
-                        pregnantInfo['imageUrl'],
-                         fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
+                    pregnantInfo['imageUrl'] == null
+                        ? Image.asset(
+                            'assets/images/icons/momProfile.png',
+                            fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
+                            width: AppUtils.scaleSize(context, 100),
+                            height: AppUtils.scaleSize(context, 100),
+                            alignment: Alignment.center,
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              pregnantInfo['imageUrl'],
+                              fit: BoxFit.cover,
+                              width: AppUtils.scaleSize(context, 100),
+                              height: AppUtils.scaleSize(context, 100),
+                            ),
+                          ),
+                    SizedBox(height: AppUtils.scaleSize(context, 8)),
                     Text(
                       "${pregnantInfo['nickname']} 산모님",
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w700,
-                          fontSize: 20),
+                          fontSize: AppUtils.scaleSize(context, 20)),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppUtils.scaleSize(context, 4)),
                     InkWell(
                       onTap: () {
                         Navigator.push(
@@ -118,34 +124,34 @@ class _MyPageState extends State<MyPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             "프로필 수정",
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12),
+                                fontSize: AppUtils.scaleSize(context, 12)),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(width: 4),
-                          Image.asset('assets/images/icons/pen.png', width: 12),
+                          SizedBox(width: AppUtils.scaleSize(context, 4)),
+                          Image.asset('assets/images/icons/pen.png',
+                              width: AppUtils.scaleSize(context, 12)),
                         ],
                       ),
                     ),
                   ]),
                 ),
-                // const SizedBox(height: 20),
                 Positioned(
-                  top: 303,
-                  left: 11,
+                  top: AppUtils.scaleSize(context, 303),
+                  left: AppUtils.scaleSize(context, 11),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - 40,
-                      height: 114, // TODO 화면 높이에 맞춘 height로 수정해야함
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 114),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -153,22 +159,24 @@ class _MyPageState extends State<MyPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "${pregnantInfo['recentBabyProfile'].babies[0].babyName}와 만나는 날",
-                                style: const TextStyle(
+                                "아기와 만나기까지",
+                                style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16),
+                                    fontSize: AppUtils.scaleSize(context, 16)),
                               ),
                               Text(' D-${pregnantInfo['dDay']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16))),
                             ],
                           ),
                           Container(
-                            width: screenWidth - 80,
-                            height: 12, // TODO 화면 높이에 맞춘 height로 수정해야함
+                            width:
+                                screenWidth - AppUtils.scaleSize(context, 80),
+                            height: AppUtils.scaleSize(context, 12),
                             decoration: BoxDecoration(
                               color: lineTwoColor, // 전체 배경색
                               borderRadius: BorderRadius.circular(5),
@@ -177,7 +185,7 @@ class _MyPageState extends State<MyPage> {
                               widthFactor: percentage,
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                height: 20,
+                                height: AppUtils.scaleSize(context, 20),
                                 decoration: BoxDecoration(
                                   color: primaryColor,
                                   borderRadius: BorderRadius.circular(5),
@@ -191,17 +199,17 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 434,
-                  left: 10,
+                  top: AppUtils.scaleSize(context, 434),
+                  left: AppUtils.scaleSize(context, 10),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - 40,
-                      height: 102, // TODO 화면 높이에 맞춘 height로 수정해야함
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 102),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -221,7 +229,7 @@ class _MyPageState extends State<MyPage> {
                               }),
                           Container(
                             width: 1,
-                            height: 42,
+                            height: AppUtils.scaleSize(context, 42),
                             color: const Color(0xffE8E8ED),
                           ),
                           CustomTextButton(
@@ -243,37 +251,39 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 552,
-                  left: 10,
+                  top: AppUtils.scaleSize(context, 552),
+                  left: AppUtils.scaleSize(context, 10),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                        width: screenWidth - 40,
-                        height: 222, // TODO 화면 높이에 맞춘 height로 수정해야함
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: AppUtils.scaleSize(context, 222),
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 25, horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppUtils.scaleSize(context, 25),
+                                horizontal: AppUtils.scaleSize(context, 20)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  width: 312,
+                                  width: AppUtils.scaleSize(context, 312),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text("우리 아이 관리",
+                                      Text("우리 아이 관리",
                                           style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: 18)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 18))),
                                       Container(
-                                        width: 42,
-                                        height: 21,
+                                        width: AppUtils.scaleSize(context, 42),
+                                        height: AppUtils.scaleSize(context, 21),
                                         decoration: BoxDecoration(
                                           color: contentBoxColor,
                                           borderRadius:
@@ -281,18 +291,21 @@ class _MyPageState extends State<MyPage> {
                                         ),
                                         child: TextButton(
                                           onPressed: () {
-                                            print("편집 클릭");
+                                            setState(() {
+                                              isEditMode = !isEditMode;
+                                            });
                                           },
                                           style: ButtonStyle(
                                             padding: MaterialStateProperty.all<
                                                     EdgeInsetsGeometry>(
                                                 EdgeInsets.zero), // 패딩을 없애는 부분
                                           ),
-                                          child: const Text("편집",
+                                          child: Text(isEditMode ? "완료" : "편집",
                                               style: TextStyle(
                                                   color: offButtonTextColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12)),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12))),
                                         ),
                                       ),
                                     ],
@@ -300,7 +313,8 @@ class _MyPageState extends State<MyPage> {
                                 ),
                                 Expanded(
                                   child: Padding(
-                                      padding: const EdgeInsets.only(top: 30),
+                                      padding: EdgeInsets.only(
+                                          top: AppUtils.scaleSize(context, 30)),
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: pregnantInfo['babyProfiles']
@@ -312,85 +326,102 @@ class _MyPageState extends State<MyPage> {
                                                   .length) {
                                             // 추가 버튼 항목
                                             return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const BabyRegisterScreen(),
-                                                    ),
-                                                  );
-                                                });
+                                              onTap: () async {
+                                                final res =
+                                                    await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const BabyRegisterScreen(),
+                                                  ),
+                                                );
+                                                if (res == true) {
+                                                  setState(() {});
+                                                }
                                               },
-                                              child: InkWell(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(
-                                                          10, 0, 10, 10),
-                                                      child: Image.asset(
-                                                        'assets/images/icons/plusDotted.png',
-                                                        width: 80,
-                                                        height: 80,
-                                                        alignment:
-                                                            Alignment.center,
-                                                      ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            AppUtils.scaleSize(
+                                                                context, 10),
+                                                            0,
+                                                            AppUtils.scaleSize(
+                                                                context, 10),
+                                                            AppUtils.scaleSize(
+                                                                context, 10)),
+                                                    child: Image.asset(
+                                                      'assets/images/icons/plusDotted.png',
+                                                      width: AppUtils.scaleSize(
+                                                          context, 80),
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 80),
+                                                      alignment:
+                                                          Alignment.center,
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             );
                                           } else {
                                             return CustomProfileButton(
-                                              text: pregnantInfo['babyProfiles']
-                                                      [index]
-                                                  .babies
-                                                  .map((baby) => baby.babyName)
-                                                  .join('/'),
-                                              imagePath:
-                                                  pregnantInfo['babyProfiles']
-                                                          [index]
-                                                      .babyProfileImageUrl,
-                                              offBackColor:
-                                                  const Color(0xffF8F8FA),
-                                              onPressed: () async {
-                                                try {
-                                                  await userViewModel
-                                                      .modifyMainBaby(pregnantInfo[
-                                                                  'babyProfiles']
-                                                              [index]
-                                                          .babyProfileId);
-                                                  setState(() {
-                                                    selectedProfile =
+                                                text: pregnantInfo['babyProfiles']
+                                                        [index]
+                                                    .babies
+                                                    .map(
+                                                        (baby) => baby.babyName)
+                                                    .join('/'),
+                                                imagePath:
+                                                    pregnantInfo['babyProfiles']
+                                                            [index]
+                                                        .babyProfileImageUrl,
+                                                offBackColor:
+                                                    const Color(0xffF8F8FA),
+                                                onPressed: () async {
+                                                  if (!isEditMode) {
+                                                    try {
+                                                      await userViewModel
+                                                          .modifyMainBaby(
+                                                              pregnantInfo[
+                                                                          'babyProfiles']
+                                                                      [index]
+                                                                  .babyProfileId);
+                                                      setState(() {
+                                                        selectedProfile =
+                                                            pregnantInfo[
+                                                                    'babyProfiles']
+                                                                [index];
                                                         pregnantInfo[
-                                                                'babyProfiles']
-                                                            [index];
-                                                    pregnantInfo[
-                                                            'recentBabyProfile'] =
-                                                        pregnantInfo[
-                                                                'babyProfiles']
-                                                            [index];
-                                                  });
-                                                  print(
-                                                      'id:${selectedProfile!.babyProfileId} ${selectedProfile!.babies.map((baby) => baby.babyName)} 태아로 변경되었습니다.');
-                                                } catch (e) {
-                                                  // 에러 처리
-                                                  print('프로필 변경 실패: $e');
-                                                }
-                                              },
-                                              isSelected: pregnantInfo[
-                                                          'recentBabyProfile'] !=
-                                                      null &&
-                                                  pregnantInfo[
-                                                              'recentBabyProfile']
-                                                          .babyProfileId ==
-                                                      pregnantInfo[
-                                                                  'babyProfiles']
-                                                              [index]
-                                                          .babyProfileId,
-                                            );
+                                                                'recentBabyProfile'] =
+                                                            pregnantInfo[
+                                                                    'babyProfiles']
+                                                                [index];
+                                                      });
+                                                      print(
+                                                          'id:${selectedProfile!.babyProfileId} ${selectedProfile!.babies.map((baby) => baby.babyName)} 태아로 변경되었습니다.');
+                                                    } catch (e) {
+                                                      // 에러 처리
+                                                      print('프로필 변경 실패: $e');
+                                                    }
+                                                  }
+                                                },
+                                                isSelected: pregnantInfo['recentBabyProfile'] !=
+                                                        null &&
+                                                    pregnantInfo['recentBabyProfile']
+                                                            .babyProfileId ==
+                                                        pregnantInfo['babyProfiles']
+                                                                [index]
+                                                            .babyProfileId,
+                                                isEditMode: isEditMode,
+                                                babyProfileId:
+                                                    pregnantInfo['babyProfiles']
+                                                            [index]
+                                                        .babyProfileId,
+                                                onProfileUpdated: () {
+                                                  setState(() {});
+                                                });
                                           }
                                         },
                                       )),
@@ -400,8 +431,8 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ],
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

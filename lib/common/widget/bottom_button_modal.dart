@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
@@ -20,21 +21,22 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: const EdgeInsets.only(bottom: 34),
-      width: screenWidth - 40,
-      height: 56,
+      color: Colors.transparent,
+      margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 34)),
+      width: screenWidth - AppUtils.scaleSize(context, 40),
+      height: AppUtils.scaleSize(context, 56),
       child: InkWell(
-        onTap: widget.tapped,
+        onTap: widget.isActivated ? widget.tapped : null,
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: widget.isActivated ? primaryColor : induceButtonColor,
               borderRadius: BorderRadius.circular(12)),
           child: Text(widget.text,
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 16)),
+                  fontSize: AppUtils.scaleSize(context, 16))),
         ),
       ),
     );

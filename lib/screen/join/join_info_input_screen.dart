@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/welcome/welcome_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -39,33 +41,43 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   bool _isBabyNameAndGenderValid = false;
 
   void _updateEmailValidity(bool isValid) {
-    setState(() {
-      _isEmailValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isEmailValid = isValid;
+      });
+    }
   }
 
   void _updateNameAndBirthValidity(bool isValid) {
-    setState(() {
-      _isNameAndBirthValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isNameAndBirthValid = isValid;
+      });
+    }
   }
 
   void _updateNicknameValidity(bool isValid) {
-    setState(() {
-      _isNicknameValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isNicknameValid = isValid;
+      });
+    }
   }
 
   void _updateDueAtAndLastPeriodAtValidity(bool isValid) {
-    setState(() {
-      _isDueAtAndLastPeriodAtValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isDueAtAndLastPeriodAtValid = isValid;
+      });
+    }
   }
 
   void _updateBabyNameAndGenderValidity(bool isValid) {
-    setState(() {
-      _isBabyNameAndGenderValid = isValid;
-    });
+    if (mounted) {
+      setState(() {
+        _isBabyNameAndGenderValid = isValid;
+      });
+    }
   }
 
   void _nextPage() {
@@ -92,6 +104,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -108,11 +121,11 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             }
           },
         ),
-        title: const Text('회원가입',
+        title: Text('회원가입',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: 18)),
+                fontSize: AppUtils.scaleSize(context, 18))),
         actions: [
           InkWell(
             onTap: () async {
@@ -142,20 +155,18 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                       name: joinInputData.birthNames[index],
                       gender: joinInputData.genders[index]);
                 });
-
                 BabyInfo babyInfo = BabyInfo(
                     dueAt: joinInputData.dueDate.replaceAll('.', '-'),
                     lastPeriodAt:
                         joinInputData.laseMensesDate.replaceAll('.', '-'),
                     babies: babies);
-
                 try {
                   final response =
                       await joinApiService.signUp(userInfo, babyInfo);
-                  if (response['status'] == 201) {
+                  if (mounted && response['status'] == 201) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+                          builder: (context) => const WelcomeScreen()),
                     );
                   } else {
                     print('회원 가입을 실패했습니다.'); // TODO 회원가입 실패 알림 메시지 보여주기?
@@ -166,7 +177,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(right: screenWidth / 19),
+              padding: EdgeInsets.only(
+                  right: screenWidth / AppUtils.scaleSize(context, 19)),
               child: Text('다음',
                   style: TextStyle(
                       color: ((_currentPage == 0 && _isEmailValid) ||
@@ -179,7 +191,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                           ? Colors.black
                           : navOffTextColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 18)),
+                      fontSize: AppUtils.scaleSize(context, 18))),
             ),
           ),
         ],
@@ -187,9 +199,9 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
       body: Stack(
         children: [
           Positioned(
-            top: 43,
-            left: 20,
-            right: 20,
+            top: AppUtils.scaleSize(context, 43),
+            left: AppUtils.scaleSize(context, 20),
+            right: AppUtils.scaleSize(context, 20),
             child: LinearProgressIndicator(
               value: (_currentPage + 1) / _totalPage,
               backgroundColor: mainLineColor,
@@ -199,14 +211,16 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             ),
           ),
           Positioned.fill(
-            top: 43,
+            top: AppUtils.scaleSize(context, 43),
             left: 0,
             child: PageView(
               controller: _pageController,
               onPageChanged: (int page) {
-                setState(() {
-                  _currentPage = page;
-                });
+                if (mounted) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                }
               },
               children: [
                 MomEmailInputScreen(updateValidity: _updateEmailValidity),
@@ -216,7 +230,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                 BabyDuedateInputScreen(
                     updateValidity: _updateDueAtAndLastPeriodAtValidity),
                 const BabyFetalInfoScreen(),
-                BabyGenderScreen(
+                BabyGenderBirthNameScreen(
                     updateValidity: _updateBabyNameAndGenderValidity),
               ],
             ),

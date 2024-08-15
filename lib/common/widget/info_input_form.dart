@@ -1,5 +1,7 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter/services.dart';
 
 class InfoInputForm extends StatefulWidget {
   final String title;
@@ -25,47 +27,51 @@ class _InfoInputFormState extends State<InfoInputForm> {
 
   @override
   Widget build(BuildContext context) {
-    // print('Controller for ${widget.controller}');
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return SizedBox(
-      width: 350,
-      height: 83,
+      width: screenWidth - AppUtils.scaleSize(context, 40),
+      height: AppUtils.scaleSize(context, 83),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(widget.title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14)),
-          const SizedBox(height: 14),
+                  fontSize: AppUtils.scaleSize(context, 14))),
+          SizedBox(height: AppUtils.scaleSize(context, 14)),
           Container(
-              width: 350,
-              height: 48,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 48),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 20)),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 controller: widget.controller,
                 textAlign: TextAlign.start,
                 cursorColor: primaryColor,
-                cursorHeight: 17,
-                cursorWidth: 1.5,
-                style: const TextStyle(
+                cursorHeight: AppUtils.scaleSize(context, 17),
+                cursorWidth: AppUtils.scaleSize(context, 1.5),
+                style: TextStyle(
                     color: afterInputColor,
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: AppUtils.scaleSize(context, 16)),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   suffixText: widget.suffix,
-                  suffixStyle: const TextStyle(
+                  suffixStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                      fontSize: AppUtils.scaleSize(context, 16)),
                   hintText: _isHintVisible ? widget.hint : null,
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                      fontSize: AppUtils.scaleSize(context, 16)),
                 ),
                 onTap: () {
                   setState(() {

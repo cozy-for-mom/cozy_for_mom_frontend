@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -52,19 +53,20 @@ class _BloodsugarViewState extends State<BloodsugarView> {
 
             return Stack(
               children: [
-                const Positioned(
-                  top: 204,
-                  left: 20,
-                  child: TimeLineChart(recordType: RecordType.bloodsugar),
+                Positioned(
+                  top: AppUtils.scaleSize(context, 204),
+                  left: AppUtils.scaleSize(context, 20),
+                  child: const TimeLineChart(recordType: RecordType.bloodsugar),
                 ),
                 Positioned(
-                    top: 635,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 635),
+                    left: AppUtils.scaleSize(context, 20),
                     child: Container(
-                      width: screenWidth - 40,
-                      height: 114,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 24),
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 114),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppUtils.scaleSize(context, 20),
+                          vertical: AppUtils.scaleSize(context, 24)),
                       decoration: BoxDecoration(
                           color: contentBoxTwoColor,
                           borderRadius: BorderRadius.circular(20)),
@@ -76,34 +78,40 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('평균 $avg의 혈당 수치예요',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 18)),
-                                const Padding(
-                                    padding: EdgeInsets.only(bottom: 6)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 18))),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom:
+                                            AppUtils.scaleSize(context, 6))),
                                 Text.rich(
                                   TextSpan(
                                     text: '임산부의 ${timeText[randomIndex]} 혈당치는 ',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12)),
                                     children: [
                                       TextSpan(
                                           text:
                                               '평균 ${timeAvgBloodsugar[randomIndex]}mg/dL', // 고정값 - 평균 임산부 식후 혈당: 식후 1시간, 2시간 랜덤으로 보여주기
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 12))),
                                       TextSpan(
                                           text:
                                               '\n정도로 일반인보다 ${avg < timeAvgBloodsugar[randomIndex] ? '낮' : '높'}은 편이네요!',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 12))),
                                     ],
                                   ),
                                 ),
@@ -111,8 +119,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                             ),
                             Image.asset(
                                 'assets/images/icons/icon_bloodsugar.png',
-                                width: 47,
-                                height: 61),
+                                width: AppUtils.scaleSize(context, 47),
+                                height: AppUtils.scaleSize(context, 61)),
                           ]),
                     ))
               ],

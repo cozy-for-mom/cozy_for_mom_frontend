@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -33,22 +34,28 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: () {
-        setState(() {
-          if (widget.radioButtonType == RadioType.fetalInfo) {
-            joinInputData.setFetalInfo(widget.value);
-          }
-        });
+        if (mounted) {
+          setState(() {
+            if (widget.radioButtonType == RadioType.fetalInfo) {
+              joinInputData.setFetalInfo(widget.value);
+            }
+          });
+        }
       },
       child: Container(
-        height: 48,
+        height: AppUtils.scaleSize(context, 48),
         padding: EdgeInsets.symmetric(
-            vertical: 10, horizontal: widget.value == infoType ? 18 : 20),
-        margin: const EdgeInsets.only(bottom: 15),
+            vertical: AppUtils.scaleSize(context, 10),
+            horizontal: widget.value == infoType
+                ? AppUtils.scaleSize(context, 18)
+                : AppUtils.scaleSize(context, 20)),
+        margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 15)),
         decoration: BoxDecoration(
             color: contentBoxTwoColor,
             borderRadius: BorderRadius.circular(10),
             border: widget.value == infoType
-                ? Border.all(color: primaryColor, width: 2)
+                ? Border.all(
+                    color: primaryColor, width: AppUtils.scaleSize(context, 2))
                 : null),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,9 +66,9 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
                         ? mainTextColor
                         : beforeInputColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: 14)),
+                    fontSize: AppUtils.scaleSize(context, 14))),
             SizedBox(
-                width: 18,
+                width: AppUtils.scaleSize(context, 18),
                 child: Image(
                     image: AssetImage((widget.value == infoType)
                         ? 'assets/images/icons/radio_selected.png'

@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_modal.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -49,20 +50,23 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               child: Container(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 12),
-                width: screenWidth - 40,
-                height: 160,
+                padding: EdgeInsets.only(
+                    left: AppUtils.scaleSize(context, 20),
+                    right: AppUtils.scaleSize(context, 20),
+                    top: AppUtils.scaleSize(context, 20),
+                    bottom: AppUtils.scaleSize(context, 12)),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                height: AppUtils.scaleSize(context, 160),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       widget.time,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12),
+                          fontSize: AppUtils.scaleSize(context, 12)),
                     ),
                     Column(
                         children: periods.map((period) {
@@ -87,10 +91,11 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(period,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16))),
                               Row(
                                 children: <Widget>[
                                   InkWell(
@@ -146,6 +151,8 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                     tap2: () {
                                                       Navigator.pop(context);
                                                       showDialog(
+                                                          barrierDismissible:
+                                                              false,
                                                           context: context,
                                                           builder: (context) {
                                                             return DeleteModal(
@@ -165,10 +172,13 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                               });
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 50, vertical: 10),
-                                      width: 130,
-                                      height: 41,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              AppUtils.scaleSize(context, 50),
+                                          vertical:
+                                              AppUtils.scaleSize(context, 10)),
+                                      width: AppUtils.scaleSize(context, 130),
+                                      height: AppUtils.scaleSize(context, 41),
                                       decoration: BoxDecoration(
                                           color: input == '-'
                                               ? offButtonColor
@@ -178,30 +188,36 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                       child: Text(input,
                                           textAlign: TextAlign.center,
                                           style: input == '-'
-                                              ? const TextStyle(
+                                              ? TextStyle(
                                                   color: mainTextColor,
                                                   fontWeight: FontWeight.w400,
-                                                  fontSize: 18)
-                                              : const TextStyle(
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 18))
+                                              : TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 16)),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 16))),
                                     ),
                                   ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 8),
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          left: AppUtils.scaleSize(context, 8)),
                                       child: Text(
                                         'mg / dL',
                                         style: TextStyle(
                                             color: mainTextColor,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: 14),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 14)),
                                       )),
                                 ],
                               )
                             ],
                           ),
-                          const Padding(padding: EdgeInsets.only(bottom: 8)),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: AppUtils.scaleSize(context, 8))),
                         ],
                       );
                     }).toList()),

@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
-class DeleteCompleteAlertModal extends StatelessWidget {
+class CompleteAlertModal extends StatelessWidget {
   final String text;
+  final String action;
 
-  const DeleteCompleteAlertModal({Key? key, required this.text})
+  const CompleteAlertModal({Key? key, required this.text, required this.action})
       : super(key: key);
 
-  static void showDeleteCompleteDialog(BuildContext context, String text) {
+  static Future<void> showDeleteCompleteDialog(
+      BuildContext context, String text, String action) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -15,7 +18,7 @@ class DeleteCompleteAlertModal extends StatelessWidget {
           Navigator.of(context).pop();
         });
 
-        return DeleteCompleteAlertModal(text: text);
+        return CompleteAlertModal(text: text, action: action);
       },
     );
   }
@@ -28,15 +31,17 @@ class DeleteCompleteAlertModal extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         width: screenWidth * (1 / 3),
-        height: 41,
+        height: AppUtils.scaleSize(context, 41),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: const Color.fromRGBO(0, 0, 0, 0.7),
             borderRadius: BorderRadius.circular(10)),
         child: Text(
-          '${text} 삭제 되었습니다',
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
+          '${text} ${action} 되었습니다',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: AppUtils.scaleSize(context, 16)),
           textAlign: TextAlign.center,
         ),
       ),

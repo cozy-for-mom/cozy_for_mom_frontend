@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
@@ -17,16 +18,17 @@ class SelectBottomModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: screenWidth - 40,
-      height: 250,
+      width: screenWidth - AppUtils.scaleSize(context, 40),
+      height: AppUtils.scaleSize(context, 220),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            width: screenWidth - 40,
-            height: 128,
+            padding:
+                EdgeInsets.symmetric(vertical: AppUtils.scaleSize(context, 8)),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 128),
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
                 borderRadius: BorderRadius.circular(20)),
@@ -36,39 +38,39 @@ class SelectBottomModal extends StatelessWidget {
                 InkWell(
                   onTap: tap1,
                   child: Text(selec1,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16)),
+                          fontSize: AppUtils.scaleSize(context, 16))),
                 ),
                 InkWell(
                   onTap: tap2,
                   child: Text(selec2,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16)),
+                          fontSize: AppUtils.scaleSize(context, 16))),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppUtils.scaleSize(context, 16)),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
             },
             child: Container(
               alignment: Alignment.center,
-              width: screenWidth - 40,
-              height: 56,
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 56),
               decoration: BoxDecoration(
                   color: induceButtonColor,
                   borderRadius: BorderRadius.circular(12)),
-              child: const Text('취소',
+              child: Text('취소',
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: 16)),
+                      fontSize: AppUtils.scaleSize(context, 16))),
             ),
           ),
         ],

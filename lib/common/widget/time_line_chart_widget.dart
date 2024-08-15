@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/common/widget/tab_indicator_widget.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,6 +65,7 @@ class _TimeLineChartState extends State<TimeLineChart>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     BloodsugarApiService bloodsugarPeriodViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     WeightApiService weightPeriodViewModel =
@@ -102,8 +104,8 @@ class _TimeLineChartState extends State<TimeLineChart>
               ));
             }
             return Container(
-              width: 350,
-              height: 400,
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 400),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white,
@@ -116,12 +118,12 @@ class _TimeLineChartState extends State<TimeLineChart>
                         controller: _tabController,
                         labelColor: Colors.black,
                         indicatorColor: Colors.red,
-                        labelStyle: const TextStyle(
-                          fontSize: 18,
+                        labelStyle: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 18),
                           fontWeight: FontWeight.bold,
                         ),
-                        unselectedLabelStyle: const TextStyle(
-                          fontSize: 16,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 16),
                         ),
                         tabs: const [
                           Tab(text: "일간"),

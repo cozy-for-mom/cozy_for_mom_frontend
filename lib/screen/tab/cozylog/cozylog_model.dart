@@ -9,6 +9,8 @@ class CozyLog {
   final DateTime updatedAt;
   final int scrapCount;
   final int viewCount;
+  final int commentCount;
+
   final bool isScrapped;
 
   CozyLog({
@@ -22,6 +24,7 @@ class CozyLog {
     required this.updatedAt,
     required this.scrapCount,
     required this.viewCount,
+    required this.commentCount,
     required this.isScrapped,
   });
 
@@ -45,6 +48,7 @@ class CozyLog {
       updatedAt: DateTime.parse(json['updatedAt']),
       scrapCount: json['scrapCount'],
       viewCount: json['viewCount'],
+      commentCount: json['commentCount'],
       isScrapped: json['isScraped'],
     );
   }

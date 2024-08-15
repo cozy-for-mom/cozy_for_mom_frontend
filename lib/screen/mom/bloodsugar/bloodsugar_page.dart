@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -33,10 +34,10 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: 47,
+              top: AppUtils.scaleSize(context, 47),
               width: screenWidth,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                 child: Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,10 +53,10 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                           Text(
                             DateFormat('M.d E', 'ko_KR')
                                 .format(globalData.selectedDate),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: AppUtils.scaleSize(context, 18),
                             ),
                           ),
                           IconButton(
@@ -75,11 +76,11 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                         ],
                       ),
                       IconButton(
-                          icon: const Image(
-                              image:
-                                  AssetImage('assets/images/icons/alert.png'),
-                              height: 32,
-                              width: 32),
+                          icon: Image(
+                              image: const AssetImage(
+                                  'assets/images/icons/alert.png'),
+                              height: AppUtils.scaleSize(context, 32),
+                              width: AppUtils.scaleSize(context, 32)),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -94,11 +95,11 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 }),
               )),
           Positioned(
-              top: 104,
-              left: 20,
+              top: AppUtils.scaleSize(context, 104),
+              left: AppUtils.scaleSize(context, 20),
               child: Container(
-                width: 351,
-                height: 53,
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                height: AppUtils.scaleSize(context, 53),
                 decoration: BoxDecoration(
                     color: offButtonColor,
                     borderRadius: BorderRadius.circular(30)),
@@ -108,9 +109,12 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                     InkWell(
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: isRecordActive ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isRecordActive
+                              ? AppUtils.scaleSize(context, 173)
+                              : AppUtils.scaleSize(context, 153),
+                          height: AppUtils.scaleSize(context, 41),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: isRecordActive
@@ -123,15 +127,18 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: !isRecordActive ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: !isRecordActive
+                              ? AppUtils.scaleSize(context, 173)
+                              : AppUtils.scaleSize(context, 153),
+                          height: AppUtils.scaleSize(context, 41),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: !isRecordActive
@@ -144,7 +151,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                   ],

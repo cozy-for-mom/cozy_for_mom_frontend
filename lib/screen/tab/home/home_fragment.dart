@@ -1,7 +1,11 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
+import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
@@ -21,11 +25,25 @@ class HomeFragment extends StatefulWidget {
 class _HomeFragmentState extends State<HomeFragment> {
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
+  late Map<String, dynamic> upcomingNotification;
+  late NotificationApiService notificationViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MyDataModel>(context, listen: false)
+          .updateSelectedDay(DateTime.now());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    notificationViewModel =
+        Provider.of<NotificationApiService>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     DateTime now = DateTime.now();
     int nowHour = int.parse(DateFormat('HH').format(now));
     int nowMonth = int.parse(DateFormat('M').format(now));
@@ -33,17 +51,26 @@ class _HomeFragmentState extends State<HomeFragment> {
     String nowWeekDay = DateFormat.EEEE('ko').format(now);
 
     return FutureBuilder(
-        future: userViewModel.getUserInfo(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            pregnantInfo = snapshot.data!;
-          }
-          if (!snapshot.hasData) {
+        future: Future.wait([
+          userViewModel.getUserInfo(),
+          notificationViewModel.getUpcomingNotification()
+        ]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
                 child: CircularProgressIndicator(
               backgroundColor: primaryColor,
               color: Colors.white,
             ));
+          }
+
+          if (snapshot.hasData) {
+            pregnantInfo = snapshot.data![0];
+            upcomingNotification = snapshot.data![1];
+          }
+
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
           }
 
           return Scaffold(
@@ -64,12 +91,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 128,
+                  top: AppUtils.scaleSize(context, 128),
                   left: 0,
                   right: 0,
                   child: SizedBox(
-                    width: 186,
-                    height: 103,
+                    width: AppUtils.scaleSize(context, 186),
+                    height: AppUtils.scaleSize(context, 103),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -82,20 +109,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                                       ? afternoonTextColor
                                       : nightTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 16),
+                              fontSize: AppUtils.scaleSize(context, 16)),
                         ),
-                        const SizedBox(height: 3),
+                        SizedBox(height: AppUtils.scaleSize(context, 3)),
                         Text(
                           '${pregnantInfo['nickname']} 산모님',
-                          style: const TextStyle(
-                            fontSize: 26,
+                          style: TextStyle(
+                            fontSize: AppUtils.scaleSize(context, 26),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const Text(
+                        Text(
                           "오늘도 안녕하세요",
                           style: TextStyle(
-                            fontSize: 26,
+                            fontSize: AppUtils.scaleSize(context, 26),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -104,13 +131,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 66,
-                  left: 340,
+                  top: AppUtils.scaleSize(context, 66),
+                  left: AppUtils.scaleSize(context, 340),
                   child: IconButton(
-                    icon: const Image(
-                      width: 30,
-                      height: 30,
-                      image: AssetImage(
+                    icon: Image(
+                      width: AppUtils.scaleSize(context, 30),
+                      height: AppUtils.scaleSize(context, 30),
+                      image: const AssetImage(
                         "assets/images/icons/mypage.png",
                       ),
                     ),
@@ -123,12 +150,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 380,
+                  top: AppUtils.scaleSize(context, 380),
                   left: 0,
                   right: 0,
                   child: Container(
-                    width: 390, // TODO 화면 너비에 맞춘 width로 수정해야함
-                    height: 600, // TODO 화면 높이에 맞춘 height로 수정해야함
+                    width: screenWidth,
+                    height: screenHeight * 0.5,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
@@ -140,8 +167,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                     ),
                     child: Column(
                       children: [
-                        const SizedBox(
-                          height: 61,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 54),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,88 +232,155 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 )),
                           ],
                         ),
-                        const SizedBox(
-                          height: 44,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 38),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SupplementRecord(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('잊지 말고 기록하세요',
+                                style: TextStyle(
+                                    color: mainTextColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: AppUtils.scaleSize(context, 18))),
+                            SizedBox(height: AppUtils.scaleSize(context, 18)),
+                            InkWell(
+                              onTap: () async {
+                                final type = upcomingNotification['type'] ==
+                                        CardType.bloodsugar.name
+                                    ? CardType.bloodsugar
+                                    : CardType.supplement;
+
+                                final shouldRefresh = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AlarmSettingPage(type: type)),
+                                );
+
+                                if (mounted && shouldRefresh == true) {
+                                  setState(() {});
+                                }
+                              },
+                              child: Container(
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
+                                height: AppUtils.scaleSize(context, 100),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 30)),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFA2A0F4),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: upcomingNotification[
+                                                        'targetTimeAt'] ==
+                                                    ''
+                                                ? [
+                                                    Text('영양제와 혈당 알림을',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14))),
+                                                    Text('등록해보세요!',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14)))
+                                                  ]
+                                                : [
+                                                    Text(
+                                                        upcomingNotification[
+                                                            'targetTimeAt'],
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14))),
+                                                    SizedBox(
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 6)),
+                                                    Text(
+                                                        upcomingNotification[
+                                                            'title'],
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    18))),
+                                                  ]),
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Image(
+                                          image: AssetImage(
+                                            upcomingNotification['type'] ==
+                                                    CardType.bloodsugar.name
+                                                ? "assets/images/icons/icon_bloodsugar.png"
+                                                : "assets/images/icons/icon_supplement.png",
+                                          ),
+                                          height:
+                                              AppUtils.scaleSize(context, 48),
+                                          width:
+                                              AppUtils.scaleSize(context, 30),
+                                        ),
+                                        Image(
+                                          image: const AssetImage(
+                                            "assets/images/icons/icon_clock.png",
+                                          ),
+                                          height:
+                                              AppUtils.scaleSize(context, 66),
+                                          width:
+                                              AppUtils.scaleSize(context, 66),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            width: 350,
-                            height: 123,
-                            decoration: const BoxDecoration(
-                              color: Color(0xffEDF0FA),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(9)),
                             ),
-                            child: const Row(
-                              children: [
-                                SizedBox(
-                                  width: 19,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "잊지 말고 기록하세요",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 11.34,
-                                    ),
-                                    Text(
-                                      "철분제는 챙겨드셨나요?",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 49,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/icon_supplement.png",
-                                      ),
-                                      height: 43,
-                                      width: 19,
-                                    ),
-                                    Image(
-                                      image: AssetImage(
-                                        "assets/images/icons/icon_clock.png",
-                                      ),
-                                      height: 66,
-                                      width: 66,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
-                const Positioned(
-                  top: 278,
-                  left: 85,
-                  width: 221,
-                  child: Image(
+                Positioned(
+                  top: AppUtils.scaleSize(context, 278),
+                  left: AppUtils.scaleSize(context, 85),
+                  width: AppUtils.scaleSize(context, 221),
+                  child: const Image(
                     image: AssetImage(
                       "assets/images/baby.png",
                     ),

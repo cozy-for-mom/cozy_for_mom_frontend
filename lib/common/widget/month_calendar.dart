@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -21,11 +22,13 @@ class _MonthCalendarState extends State<MonthCalendar> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SizedBox(
-          width: screenWidth - 40,
+          width: screenWidth - AppUtils.scaleSize(context, 40),
           child: TableCalendar(
             focusedDay: globalDate.selectedDay,
             firstDay: DateTime(2020),
-            lastDay: widget.limitToday ? DateTime.now() : DateTime(2050),//DateTime.now().add(Duration(days: 1825)),
+            lastDay: widget.limitToday
+                ? DateTime.now()
+                : DateTime(2050), //DateTime.now().add(Duration(days: 1825)),
             selectedDayPredicate: (date) {
               return isSameDay(date, globalDate.selectedDay);
             },
@@ -37,27 +40,27 @@ class _MonthCalendarState extends State<MonthCalendar> {
             },
             locale: 'ko-KR',
             availableGestures: AvailableGestures.horizontalSwipe,
-            calendarStyle: const CalendarStyle(
+            calendarStyle: CalendarStyle(
               weekendTextStyle: TextStyle(
                 color: offButtonTextColor,
                 fontWeight: FontWeight.w500,
-                fontSize: 14,
+                fontSize: AppUtils.scaleSize(context, 14),
               ),
               defaultTextStyle: TextStyle(
                 color: offButtonTextColor,
                 fontWeight: FontWeight.w500,
-                fontSize: 14,
+                fontSize: AppUtils.scaleSize(context, 14),
               ),
               outsideTextStyle: TextStyle(
                 color: Color(0xffE3E3E3),
                 fontWeight: FontWeight.w500,
-                fontSize: 14,
+                fontSize: AppUtils.scaleSize(context, 14),
               ),
-              todayDecoration: BoxDecoration(
+              todayDecoration: const BoxDecoration(
                 color: Color.fromRGBO(92, 166, 248, 128), // 오늘 날짜 마크 색상
                 shape: BoxShape.circle, // 원 모양 마크
               ),
-              selectedDecoration: BoxDecoration(
+              selectedDecoration: const BoxDecoration(
                 color: primaryColor,
                 shape: BoxShape.circle,
               ),
@@ -73,11 +76,15 @@ class _MonthCalendarState extends State<MonthCalendar> {
               ),
               titleCentered: true,
               formatButtonVisible: false, // 디폴트로 2weeks 버튼 나오는거
-              titleTextStyle: const TextStyle(
+              titleTextStyle: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 20),
-              headerPadding: const EdgeInsets.fromLTRB(70, 0, 70, 20),
+                  fontSize: AppUtils.scaleSize(context, 20)),
+              headerPadding: EdgeInsets.fromLTRB(
+                  AppUtils.scaleSize(context, 70),
+                  0,
+                  AppUtils.scaleSize(context, 70),
+                  AppUtils.scaleSize(context, 20)),
               titleTextFormatter: (date, locale) {
                 final year = DateFormat('y', 'en_US').format(date);
                 final month = DateFormat('M', 'en_US').format(date);
@@ -85,14 +92,14 @@ class _MonthCalendarState extends State<MonthCalendar> {
               }, // 타이틀 텍스트를 무엇으로 할 것인지 지정
             ),
             daysOfWeekHeight: 34,
-            daysOfWeekStyle: const DaysOfWeekStyle(
+            daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
                 color: offButtonTextColor,
-                fontSize: 16.0,
+                fontSize: AppUtils.scaleSize(context, 16),
               ),
               weekendStyle: TextStyle(
                 color: offButtonTextColor,
-                fontSize: 16.0,
+                fontSize: AppUtils.scaleSize(context, 16),
               ),
             ),
           )),
@@ -115,8 +122,8 @@ class MonthCalendarModal extends StatelessWidget {
         children: [
           Container(
             alignment: AlignmentDirectional.centerEnd,
-            margin: const EdgeInsets.only(bottom: 15),
-            height: 20,
+            margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 15)),
+            height: AppUtils.scaleSize(context, 20),
             child: IconButton(
               icon: const Icon(Icons.close),
               iconSize: 20,
@@ -133,8 +140,7 @@ class MonthCalendarModal extends StatelessWidget {
             child: Container(
               alignment: Alignment.topCenter,
               color: Colors.white,
-              padding: const EdgeInsets.only(
-                  top: 20, bottom: 20, left: 20, right: 20),
+              padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
               width: screenWidth,
               height: screenHeight * (0.5),
               child: ChangeNotifierProvider.value(

@@ -1,9 +1,12 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
+import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class UserDeleteModal extends StatefulWidget {
-  const UserDeleteModal({super.key});
+  final String reason;
+  const UserDeleteModal({super.key, required this.reason});
 
   @override
   State<UserDeleteModal> createState() => UserDeleteModalState();
@@ -12,54 +15,57 @@ class UserDeleteModal extends StatefulWidget {
 class UserDeleteModalState extends State<UserDeleteModal> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Dialog(
       child: Container(
-        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
-        height: 220,
+        width: screenWidth - AppUtils.scaleSize(context, 40),
+        height: AppUtils.scaleSize(context, 220),
         decoration: BoxDecoration(
           color: contentBoxTwoColor,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 30,
+          padding: EdgeInsets.only(
+            top: AppUtils.scaleSize(context, 30),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "정말 코지포맘 계정을\n삭제하시겠어요?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
+                  height: AppUtils.scaleSize(context, 1.5),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: AppUtils.scaleSize(context, 16),
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
               ),
-              const Text(
+              Text(
                 "회원을 탈퇴하면 모든 데이터가 소멸돼요.\n추후 같은 회원 정보일지라도 복구되지 않습니다.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
-                  color: Color(0xff9397A4),
-                  fontSize: 13,
+                  height: AppUtils.scaleSize(context, 1.5),
+                  color: const Color(0xff9397A4),
+                  fontWeight: FontWeight.w500,
+                  fontSize: AppUtils.scaleSize(context, 13),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 20),
               ),
               Column(
                 children: [
-                  const Divider(
+                  Divider(
                     thickness: 1,
-                    color: Color(
+                    color: const Color(
                       0xffD9D9D9,
                     ),
-                    height: 2,
+                    height: AppUtils.scaleSize(context, 2),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,41 +76,43 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 56,
-                          child: const Text(
+                          width: AppUtils.scaleSize(context, 56),
+                          child: Text(
                             '취소',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),
                       ),
                       Container(
                         width: 1,
-                        height: 60,
+                        height: AppUtils.scaleSize(context, 60),
                         color: const Color(0xffD9D9D9),
                       ),
                       InkWell(
-                        onTap: () {
-                          print('탈퇴 api call?');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
-                            ),
-                          );
+                        onTap: () async {
+                          await JoinApiService().signOut(widget.reason);
+                          if (context.mounted) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                              (Route<dynamic> route) => false, // 모든 이전 화면을 제거
+                            );
+                          }
                         },
                         child: Container(
-                          width: 56,
+                          width: AppUtils.scaleSize(context, 56),
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             '탈퇴',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),
