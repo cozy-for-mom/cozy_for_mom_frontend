@@ -38,8 +38,10 @@ class CompleteAlertModal extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: Text(
           '${text} ${action} 되었습니다',
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: AppUtils.scaleSize(context, 16)),
           textAlign: TextAlign.center,
         ),
       ),

@@ -105,12 +105,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         Navigator.of(context).pop();
                       },
                     ),
-                    const SizedBox(width: 100),
-                    const Text('프로필 수정',
+                    SizedBox(width: AppUtils.scaleSize(context, 100)),
+                    Text('프로필 수정',
                         style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 18)),
+                            fontSize: AppUtils.scaleSize(context, 18))),
                   ],
                 ),
               ),
@@ -130,12 +130,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(33),
                     ),
-                    child: const Text(
+                    child: Text(
                       '완료',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: 12),
+                          fontSize: AppUtils.scaleSize(context, 12)),
                     ),
                   ),
                 ),
@@ -251,37 +251,37 @@ class _MomProfileModifyState extends State<MomProfileModify> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
+                  Text(
                     "소개",
                     style: TextStyle(
                         color: offButtonTextColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14),
+                        fontSize: AppUtils.scaleSize(context, 14)),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     controller: introduceController,
                     textAlign: TextAlign.start,
                     cursorColor: primaryColor,
-                    cursorHeight: 17,
-                    cursorWidth: 1.5,
+                    cursorHeight: AppUtils.scaleSize(context, 17),
+                    cursorWidth: AppUtils.scaleSize(context, 1.5),
                     maxLength: 30,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 16),
+                        fontSize: AppUtils.scaleSize(context, 16)),
                     decoration: InputDecoration(
                       counterText: '',
-                      counterStyle: const TextStyle(
+                      counterStyle: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 14),
+                          fontSize: AppUtils.scaleSize(context, 14)),
                       border: InputBorder.none,
                       hintText: "자기소개를 입력해주세요",
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                           color: beforeInputColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16),
+                          fontSize: AppUtils.scaleSize(context, 16)),
                       suffixIcon: introduceController.text.isNotEmpty &&
                               _isSuffixVisible
                           ? IconButton(
@@ -357,12 +357,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             },
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           '로그아웃',
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                            fontSize: AppUtils.scaleSize(context, 14),
                           ),
                         ),
                       ),
@@ -386,12 +386,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           '회원탈퇴',
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                            fontSize: AppUtils.scaleSize(context, 14),
                           ),
                         ),
                       ),

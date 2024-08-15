@@ -137,12 +137,12 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             width: AppUtils.scaleSize(context, 32),
                             height: AppUtils.scaleSize(context, 32),
                           ),
-                          const Text(
+                          Text(
                             '글쓰기',
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18),
+                                fontSize: AppUtils.scaleSize(context, 18)),
                           ),
                           InkWell(
                             onTap: () {
@@ -164,21 +164,21 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         keyboardType: TextInputType.text,
                         controller: titleController,
                         textAlign: TextAlign.start,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                          fontSize: AppUtils.scaleSize(context, 20),
                         ),
                         cursorColor: primaryColor,
-                        cursorHeight: 21,
-                        cursorWidth: 1.5,
-                        decoration: const InputDecoration(
+                        cursorHeight: AppUtils.scaleSize(context, 21),
+                        cursorWidth: AppUtils.scaleSize(context, 1.5),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "제목을 입력해주세요",
                           hintStyle: TextStyle(
                             color: offButtonTextColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: AppUtils.scaleSize(context, 20),
                           ),
                         ),
                         onChanged: (text) {
@@ -217,182 +217,203 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             color: contentBoxTwoColor,
                             borderRadius: BorderRadius.circular(20)),
 
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: screenHeight * 0.48,
-                              child: Scrollbar(
-                                // 스크롤바 표현
-                                trackVisibility: true,
-                                thickness: 5.0,
-                                radius: const Radius.circular(10),
+                        child: GestureDetector(
+                          onTap: () {
+                            // 키보드가 활성화 상태인지 체크하고 키보드를 내린다.
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: screenHeight * 0.48,
+                                child: Scrollbar(
+                                  // 스크롤바 표현
+                                  trackVisibility: true,
+                                  thickness: 5.0,
+                                  radius: const Radius.circular(10),
 
-                                child: SingleChildScrollView(
-                                  controller: scrollController,
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            bottom: AppUtils.scaleSize(
-                                                context, 20)),
-                                        width: screenWidth -
-                                            AppUtils.scaleSize(context, 80),
-                                        child: TextFormField(
-                                          focusNode: focusNode,
-                                          keyboardType: TextInputType.multiline,
-                                          controller: contentController,
-                                          textAlignVertical:
-                                              TextAlignVertical.top,
-                                          textAlign: TextAlign.start,
-                                          maxLines: null,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            height: 1.5,
-                                          ),
-                                          cursorColor: primaryColor,
-                                          cursorHeight: 15,
-                                          cursorWidth: 1.5,
-                                          decoration: const InputDecoration(
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.zero,
-                                            border: InputBorder.none,
-                                            hintText: "오늘 하루는 어땠나요?",
-                                            hintStyle: TextStyle(
-                                              color: offButtonTextColor,
+                                  child: SingleChildScrollView(
+                                    controller: scrollController,
+                                    scrollDirection: Axis.vertical,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              bottom: AppUtils.scaleSize(
+                                                  context, 20)),
+                                          width: screenWidth -
+                                              AppUtils.scaleSize(context, 80),
+                                          child: TextFormField(
+                                            focusNode: focusNode,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            controller: contentController,
+                                            textAlignVertical:
+                                                TextAlignVertical.top,
+                                            textAlign: TextAlign.start,
+                                            maxLines: null,
+                                            style: TextStyle(
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 14,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14),
+                                              height: AppUtils.scaleSize(
+                                                  context, 1.5),
                                             ),
+                                            cursorColor: primaryColor,
+                                            cursorHeight:
+                                                AppUtils.scaleSize(context, 15),
+                                            cursorWidth: AppUtils.scaleSize(
+                                                context, 1.5),
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.zero,
+                                              border: InputBorder.none,
+                                              hintText: "오늘 하루는 어땠나요?",
+                                              hintStyle: TextStyle(
+                                                color: offButtonTextColor,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 14),
+                                              ),
+                                            ),
+                                            onChanged: (text) {
+                                              setState(() {});
+                                            },
                                           ),
-                                          onChanged: (text) {
-                                            setState(() {});
-                                          },
                                         ),
-                                      ),
-                                      ...selectedImages
-                                          .asMap()
-                                          .entries
-                                          .map((entry) {
-                                        int index = entry.key;
-                                        CozyLogImage image = entry.value;
-                                        return Column(
-                                          children: [
-                                            ImageTextCard(
-                                              key: ValueKey(image.imageUrl),
-                                              image: image,
-                                              onMoveUp: () => _moveUp(index),
-                                              onMoveDown: () =>
-                                                  _moveDown(index),
-                                              onDelete: () =>
-                                                  _deleteImage(index),
-                                              onDescriptionChanged:
-                                                  (description) =>
-                                                      _updateDescription(
-                                                          index, description),
-                                            ),
-                                            SizedBox(
-                                                height: AppUtils.scaleSize(
-                                                    context, 10)),
-                                          ],
-                                        );
-                                      }).toList(),
-                                    ],
+                                        ...selectedImages
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          int index = entry.key;
+                                          CozyLogImage image = entry.value;
+                                          return Column(
+                                            children: [
+                                              ImageTextCard(
+                                                key: ValueKey(image.imageUrl),
+                                                image: image,
+                                                onMoveUp: () => _moveUp(index),
+                                                onMoveDown: () =>
+                                                    _moveDown(index),
+                                                onDelete: () =>
+                                                    _deleteImage(index),
+                                                onDescriptionChanged:
+                                                    (description) =>
+                                                        _updateDescription(
+                                                            index, description),
+                                              ),
+                                              SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 10)),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: AppUtils.scaleSize(context, 85),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (BuildContext context) {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: AppUtils.scaleSize(
-                                                    context, 18)),
-                                            child: SelectBottomModal(
-                                                selec1: '직접 찍기',
-                                                selec2: '앨범에서 선택',
+                              SizedBox(
+                                width: AppUtils.scaleSize(context, 85),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (BuildContext context) {
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      AppUtils.scaleSize(
+                                                          context, 18)),
+                                              child: SelectBottomModal(
+                                                  selec1: '직접 찍기',
+                                                  selec2: '앨범에서 선택',
+                                                  tap1: () {
+                                                    _pickImage(
+                                                        ImageSource.camera);
+                                                  },
+                                                  tap2: () {
+                                                    _pickImage(
+                                                        ImageSource.gallery);
+                                                  }),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/gallery.png'),
+                                          width:
+                                              AppUtils.scaleSize(context, 36),
+                                          height:
+                                              AppUtils.scaleSize(context, 36)),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (BuildContext context) {
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      AppUtils.scaleSize(
+                                                          context, 18)),
+                                              child: SelectBottomModal(
+                                                selec1: '공개',
+                                                selec2: '비공개',
                                                 tap1: () {
-                                                  _pickImage(
-                                                      ImageSource.camera);
+                                                  setState(() {
+                                                    mode =
+                                                        CozyLogModeType.public;
+                                                  });
+                                                  Navigator.pop(context);
                                                 },
                                                 tap2: () {
-                                                  _pickImage(
-                                                      ImageSource.gallery);
-                                                }),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Image(
-                                        image: const AssetImage(
-                                            'assets/images/icons/gallery.png'),
-                                        width: AppUtils.scaleSize(context, 36),
-                                        height:
-                                            AppUtils.scaleSize(context, 36)),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (BuildContext context) {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: AppUtils.scaleSize(
-                                                    context, 18)),
-                                            child: SelectBottomModal(
-                                              selec1: '공개',
-                                              selec2: '비공개',
-                                              tap1: () {
-                                                setState(() {
-                                                  mode = CozyLogModeType.public;
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                              tap2: () {
-                                                setState(() {
-                                                  mode =
-                                                      CozyLogModeType.private;
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Image(
-                                        image: AssetImage(
-                                          mode == CozyLogModeType.private
-                                              ? 'assets/images/icons/cozylog_private.png'
-                                              : 'assets/images/icons/cozylog_public.png',
-                                        ),
-                                        width: AppUtils.scaleSize(context, 36),
-                                        height:
-                                            AppUtils.scaleSize(context, 36)),
-                                  )
-                                ],
+                                                  setState(() {
+                                                    mode =
+                                                        CozyLogModeType.private;
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Image(
+                                          image: AssetImage(
+                                            mode == CozyLogModeType.private
+                                                ? 'assets/images/icons/cozylog_private.png'
+                                                : 'assets/images/icons/cozylog_public.png',
+                                          ),
+                                          width:
+                                              AppUtils.scaleSize(context, 36),
+                                          height:
+                                              AppUtils.scaleSize(context, 36)),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         // ),
                       )),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 755),
+                    top: screenHeight - AppUtils.scaleSize(context, 80),
                     left: AppUtils.scaleSize(context, 20),
                     child: InkWell(
                       onTap: () {
@@ -428,12 +449,12 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                 ? primaryColor
                                 : const Color(0xffC9DFF9),
                             borderRadius: BorderRadius.circular(12)),
-                        child: const Text(
+                        child: Text(
                           "작성 완료",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
-                            fontSize: 16,
+                            fontSize: AppUtils.scaleSize(context, 16),
                           ),
                         ),
                       ),

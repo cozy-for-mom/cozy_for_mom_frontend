@@ -97,10 +97,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         ),
                         Text(
                           isMyCozyLog ? '내 코지로그' : '코지로그',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 18,
+                            fontSize: AppUtils.scaleSize(context, 18),
                           ),
                         ),
                         IconButton(
@@ -140,8 +140,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         children: [
                           Text(
                             cozyLog.title,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: AppUtils.scaleSize(context, 20),
+                                fontWeight: FontWeight.w600),
                           ),
                           SizedBox(
                             height: AppUtils.scaleSize(context, 17),
@@ -169,7 +170,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     children: [
                                       Text(
                                         cozyLog.writer.nickname,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -181,14 +182,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                           Text(
                                             dateFormat
                                                 .format(cozyLog.createdAt),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Color(0xffAAAAAA),
                                             ),
                                           ),
                                           isMyCozyLog
                                               ? Text(
                                                   "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Color(0xffAAAAAA),
                                                   ),
                                                 )
@@ -390,7 +391,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           ),
                           Text(
                             cozyLog.content,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -421,7 +422,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     ),
                                     Text(
                                       cozyLog.imageList[index].description,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Color(0xffAAAAAA),
                                       ),
                                       textAlign: TextAlign.center,
@@ -453,10 +454,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                         width: AppUtils.scaleSize(context, 8)),
                                     Text(
                                       '스크랩 ${cozyLog.scrapCount}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Color(0xff8C909E),
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 12,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
                                       ),
                                     ),
                                   ],
@@ -473,10 +475,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     SizedBox(
                                         width: AppUtils.scaleSize(context, 8)),
                                     Text('댓글 ${cozyLog.commentCount}',
-                                        style: const TextStyle(
-                                            color: Color(0xff8C909E),
+                                        style: TextStyle(
+                                            color: const Color(0xff8C909E),
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 12)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 12))),
                                   ],
                                 ),
                               ],
@@ -579,10 +582,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         left: AppUtils.scaleSize(context, 20),
                         right: AppUtils.scaleSize(context, 6)),
                     child: TextField(
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,
-                        fontSize: 14,
+                        fontSize: AppUtils.scaleSize(context, 14),
                       ),
                       keyboardType: TextInputType.multiline,
                       controller: textController,
@@ -612,10 +615,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         hintText: parentCommentIdToReply != null
                             ? "답글을 남겨주세요."
                             : "댓글을 남겨주세요.",
-                        hintStyle: const TextStyle(
-                          color: Color(0xffBCC0C7),
+                        hintStyle: TextStyle(
+                          color: const Color(0xffBCC0C7),
                           fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                          fontSize: AppUtils.scaleSize(context, 14),
                         ),
                         suffixIcon: GestureDetector(
                           onTap: () async {

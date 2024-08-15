@@ -76,10 +76,12 @@ class _MyScrapState extends State<MyScrap> {
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
         elevation: 0.0,
-        title: const Text(
+        title: Text(
           '스크랩',
           style: TextStyle(
-              color: mainTextColor, fontWeight: FontWeight.w600, fontSize: 18),
+              color: mainTextColor,
+              fontWeight: FontWeight.w600,
+              fontSize: AppUtils.scaleSize(context, 18)),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -162,10 +164,11 @@ class _MyScrapState extends State<MyScrap> {
                                       width: AppUtils.scaleSize(context, 8)),
                                   Text(
                                     '${snapshot.data!.totalCount}개의 스크랩',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 14)),
                                   ),
                                 ]),
                                 InkWell(
@@ -184,12 +187,13 @@ class _MyScrapState extends State<MyScrap> {
                                           })
                                         : setState(() {});
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     '편집',
                                     style: TextStyle(
                                         color: offButtonTextColor,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 14)),
                                   ),
                                 ),
                               ]),
@@ -245,11 +249,12 @@ class _MyScrapState extends State<MyScrap> {
                                     SizedBox(
                                         height:
                                             AppUtils.scaleSize(context, 12)),
-                                    const Text('코지로그를 스크랩 해보세요!',
+                                    Text('코지로그를 스크랩 해보세요!',
                                         style: TextStyle(
-                                            color: Color(0xff9397A4),
+                                            color: const Color(0xff9397A4),
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 14)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 14))),
                                   ]),
                             ),
                     ],

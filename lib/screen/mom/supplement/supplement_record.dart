@@ -98,10 +98,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       Text(
                                         DateFormat('M.d E', 'ko_KR')
                                             .format(globalData.selectedDate),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 18),
                                         ),
                                       ),
                                       IconButton(
@@ -168,11 +169,12 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                               AppUtils.scaleSize(context, 28),
                                           height: AppUtils.scaleSize(
                                               context, 67.2)),
-                                      const Text('영양제를 등록해 보세요!',
+                                      Text('영양제를 등록해 보세요!',
                                           style: TextStyle(
-                                              color: Color(0xff9397A4),
+                                              color: const Color(0xff9397A4),
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 14)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14))),
                                     ]))
                             : SizedBox(
                                 height: screenHeight -

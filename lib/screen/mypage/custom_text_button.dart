@@ -39,7 +39,9 @@ class CustomTextButton extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  color: textColor, fontWeight: textWeight, fontSize: 14),
+                  color: textColor,
+                  fontWeight: textWeight,
+                  fontSize: AppUtils.scaleSize(context, 14)),
             ),
           ],
         ),

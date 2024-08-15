@@ -78,10 +78,11 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('평균 $avg의 혈당 수치예요',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 18)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 18))),
                                 Padding(
                                     padding: EdgeInsets.only(
                                         bottom:
@@ -89,25 +90,28 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                                 Text.rich(
                                   TextSpan(
                                     text: '임산부의 ${timeText[randomIndex]} 혈당치는 ',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12)),
                                     children: [
                                       TextSpan(
                                           text:
                                               '평균 ${timeAvgBloodsugar[randomIndex]}mg/dL', // 고정값 - 평균 임산부 식후 혈당: 식후 1시간, 2시간 랜덤으로 보여주기
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 12))),
                                       TextSpan(
                                           text:
                                               '\n정도로 일반인보다 ${avg < timeAvgBloodsugar[randomIndex] ? '낮' : '높'}은 편이네요!',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 12))),
                                     ],
                                   ),
                                 ),

@@ -122,12 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xffFEE500),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "카카오로 시작하기",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                   ),
@@ -160,13 +160,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xff393939),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "Apple로 시작하기",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                   ),

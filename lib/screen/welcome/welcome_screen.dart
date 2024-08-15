@@ -24,45 +24,45 @@ class WelcomeScreen extends StatelessWidget {
             ),
             fit: BoxFit.fitHeight,
           ),
-          const Text(
+          Text(
             "W   E   L   C   O   M   E",
             style: TextStyle(
               color: primaryColor,
               fontWeight: FontWeight.w800,
-              fontSize: 12,
+              fontSize: AppUtils.scaleSize(context, 12),
             ),
           ),
           SizedBox(
             height: AppUtils.scaleSize(context, 15),
           ),
-          const Text(
+          Text(
             "현명한 임신 준비\n코지포맘에서 시작해요",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 28,
-              height: 1.4,
+              fontSize: AppUtils.scaleSize(context, 28),
+              height: AppUtils.scaleSize(context, 1.4),
             ),
           ),
           SizedBox(
             height: AppUtils.scaleSize(context, 25),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "아기도, 엄마도 건강한 ",
                 style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xff5E6573),
+                  fontSize: AppUtils.scaleSize(context, 15),
+                  color: const Color(0xff5E6573),
                 ),
               ),
               Text(
                 "건강 기록 관리",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: AppUtils.scaleSize(context, 15),
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff5E6573),
+                  color: const Color(0xff5E6573),
                 ),
               ),
             ],
@@ -70,22 +70,22 @@ class WelcomeScreen extends StatelessWidget {
           SizedBox(
             height: AppUtils.scaleSize(context, 10),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "잊지않고 건강을 챙길 수 있는 ",
                 style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xff5E6573),
+                  fontSize: AppUtils.scaleSize(context, 15),
+                  color: const Color(0xff5E6573),
                 ),
               ),
               Text(
                 "포맘 알림",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: AppUtils.scaleSize(context, 15),
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff5E6573),
+                  color: const Color(0xff5E6573),
                 ),
               ),
             ],
@@ -93,22 +93,22 @@ class WelcomeScreen extends StatelessWidget {
           SizedBox(
             height: AppUtils.scaleSize(context, 10),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "산모들의 소통창구 ",
                 style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xff5E6573),
+                  fontSize: AppUtils.scaleSize(context, 15),
+                  color: const Color(0xff5E6573),
                 ),
               ),
               Text(
                 "코지로그 커뮤니티",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: AppUtils.scaleSize(context, 15),
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff5E6573),
+                  color: const Color(0xff5E6573),
                 ),
               ),
             ],
@@ -139,12 +139,12 @@ class WelcomeScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const MainScreen()));
               },
-              child: const Text(
+              child: Text(
                 '시작하기',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 16,
+                  fontSize: AppUtils.scaleSize(context, 16),
                 ),
                 textAlign: TextAlign.center,
               ),

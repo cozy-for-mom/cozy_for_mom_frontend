@@ -52,31 +52,31 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "코지포맘",
               style: TextStyle(
-                fontSize: 26,
+                fontSize: AppUtils.scaleSize(context, 26),
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const Text(
+            Text(
               "탈퇴 사유를 알려주세요.",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: 26,
+                fontSize: AppUtils.scaleSize(context, 26),
               ),
             ),
             SizedBox(
               height: AppUtils.scaleSize(context, 10),
             ),
-            const Text(
+            Text(
               "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
               style: TextStyle(
-                color: Color(0xff8C909E),
-                height: 1.3,
+                color: const Color(0xff8C909E),
+                height: AppUtils.scaleSize(context, 1.3),
                 fontWeight: FontWeight.w500,
-                fontSize: 14,
+                fontSize: AppUtils.scaleSize(context, 14),
               ),
             ),
             SizedBox(
@@ -141,7 +141,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                                         ? Colors.black
                                         : const Color(0xff858998),
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                               ],
@@ -176,12 +176,12 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         ? Colors.black.withOpacity(0.5)
                         : Colors.black,
                     borderRadius: BorderRadius.circular(12)),
-                child: const Text(
+                child: Text(
                   "회원 탈퇴",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: 16,
+                    fontSize: AppUtils.scaleSize(context, 16),
                   ),
                 ),
               ),

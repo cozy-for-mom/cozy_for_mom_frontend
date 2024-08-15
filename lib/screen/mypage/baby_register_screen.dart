@@ -201,12 +201,12 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "태명",
                 style: TextStyle(
                     color: labelTextColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14),
+                    fontSize: AppUtils.scaleSize(context, 14)),
               ),
               widget.babyProfileId! > -1
                   ? Container()
@@ -245,19 +245,19 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             ),
             child: TextFormField(
               cursorColor: primaryColor,
-              cursorHeight: 17,
-              cursorWidth: 1.5,
+              cursorHeight: AppUtils.scaleSize(context, 17),
+              cursorWidth: AppUtils.scaleSize(context, 1.5),
               maxLength: 8,
               controller: birthNameControllers[index],
               keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 counterText: '',
                 fillColor: Colors.white,
                 hintText: "태명을 입력해주세요",
                 hintStyle: TextStyle(
-                    color: Color(0xffE1E1E7),
+                    color: const Color(0xffE1E1E7),
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: AppUtils.scaleSize(context, 16)),
                 hoverColor: Colors.white,
                 border: InputBorder.none,
               ),
@@ -275,12 +275,12 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
         SizedBox(
           height: AppUtils.scaleSize(context, 30),
         ),
-        const Text(
+        Text(
           "성별",
           style: TextStyle(
             color: labelTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: 14,
+            fontSize: AppUtils.scaleSize(context, 14),
           ),
         ),
         SizedBox(
@@ -311,17 +311,17 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   hintText: '아직 모르겠어요',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                      fontSize: AppUtils.scaleSize(context, 16)),
                   suffixIcon: const Icon(CupertinoIcons.chevron_down,
                       size: 16, color: mainTextColor),
                 ),
-                style: const TextStyle(
+                style: TextStyle(
                     color: mainTextColor,
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: AppUtils.scaleSize(context, 16)),
               ),
             ),
           ),
@@ -359,10 +359,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                               EdgeInsets.all(AppUtils.scaleSize(context, 8)),
                           child: Text(
                             item,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: offButtonTextColor,
                               fontWeight: FontWeight.w500,
-                              fontSize: 16,
+                              fontSize: AppUtils.scaleSize(context, 16),
                             ),
                           ),
                         ),
@@ -475,12 +475,12 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         SizedBox(
                           height: AppUtils.scaleSize(context, 30),
                         ),
-                        const Text(
+                        Text(
                           "출산예정일",
                           style: TextStyle(
                               color: labelTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14),
+                              fontSize: AppUtils.scaleSize(context, 14)),
                         ),
                         SizedBox(
                           height: AppUtils.scaleSize(context, 14),
@@ -505,21 +505,21 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                               textAlignVertical: TextAlignVertical.center,
                               maxLength: 10,
                               cursorColor: primaryColor,
-                              cursorHeight: 14,
-                              cursorWidth: 1.2,
-                              style: const TextStyle(
+                              cursorHeight: AppUtils.scaleSize(context, 14),
+                              cursorWidth: AppUtils.scaleSize(context, 1.2),
+                              style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                                  fontSize: AppUtils.scaleSize(context, 16)),
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                     bottom: AppUtils.scaleSize(context, 10)),
                                 border: InputBorder.none,
                                 hintText: 'YYYY.MM.DD',
-                                hintStyle: const TextStyle(
+                                hintStyle: TextStyle(
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16),
+                                    fontSize: AppUtils.scaleSize(context, 16)),
                                 counterText: '',
                               ),
                               onChanged: (value) {
@@ -573,13 +573,14 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                       },
                                     );
                                   },
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
                                       '프로필 삭제하기',
                                       style: TextStyle(
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14)),
                                     ),
                                   ),
                                 )
@@ -592,13 +593,14 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                       });
                                     }
                                   },
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
                                       '+ 다태아 추가하기',
                                       style: TextStyle(
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14)),
                                     ),
                                   ),
                                 ),
@@ -639,7 +641,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             child: Container(
               width: screenWidth - AppUtils.scaleSize(context, 40),
               height: AppUtils.scaleSize(context, 56),
-              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 30)),
+              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 20)),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color:

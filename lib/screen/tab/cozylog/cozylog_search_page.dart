@@ -106,14 +106,14 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                         child: TextField(
                           keyboardType: TextInputType.text,
                           cursorColor: primaryColor,
-                          cursorHeight: 15,
-                          decoration: const InputDecoration(
+                          cursorHeight: AppUtils.scaleSize(context, 15),
+                          decoration: InputDecoration(
                             focusColor: primaryColor,
                             fillColor: primaryColor,
                             border: InputBorder.none,
                             hintStyle: TextStyle(
-                              color: Color(0xff858998),
-                              fontSize: 14,
+                              color: const Color(0xff858998),
+                              fontSize: AppUtils.scaleSize(context, 14),
                               height: 19 / 14,
                             ),
                             hintText: "검색어를 입력해주세요",
@@ -151,10 +151,10 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Text(
+                Text(
                   "최근 검색",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppUtils.scaleSize(context, 18),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -170,7 +170,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                           color: recentSearches.isNotEmpty
                               ? const Color(0xff858998)
                               : const Color(0xffD8DAE2),
-                          fontSize: 12,
+                          fontSize: AppUtils.scaleSize(context, 12),
                         ),
                       ),
                       onTap: () {
@@ -185,11 +185,11 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                     ),
                     autoSave
                         ? InkWell(
-                            child: const Text(
+                            child: Text(
                               "자동저장 끄기",
                               style: TextStyle(
-                                color: Color(0xff858998),
-                                fontSize: 12,
+                                color: const Color(0xff858998),
+                                fontSize: AppUtils.scaleSize(context, 12),
                               ),
                             ),
                             onTap: () {
@@ -200,11 +200,11 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                             },
                           )
                         : InkWell(
-                            child: const Text(
+                            child: Text(
                               "자동저장 켜기",
                               style: TextStyle(
-                                color: Color(0xff858998),
-                                fontSize: 12,
+                                color: const Color(0xff858998),
+                                fontSize: AppUtils.scaleSize(context, 12),
                               ),
                             ),
                             onTap: () {
@@ -262,8 +262,8 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 },
                                 child: Text(
                                   recentSearches[index],
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  style: TextStyle(
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                               ),

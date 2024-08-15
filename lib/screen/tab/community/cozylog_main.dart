@@ -92,11 +92,11 @@ class _CozylogMainState extends State<CozylogMain> {
                               },
                             ),
                             SizedBox(width: AppUtils.scaleSize(context, 110)),
-                            const Text('커뮤니티',
+                            Text('커뮤니티',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 18)),
+                                    fontSize: AppUtils.scaleSize(context, 18))),
                             SizedBox(width: AppUtils.scaleSize(context, 90)),
                             Row(
                               children: [
@@ -168,10 +168,11 @@ class _CozylogMainState extends State<CozylogMain> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(pregnantInfo['nickname'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 18)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 18))),
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: AppUtils.scaleSize(context, 8),
@@ -202,10 +203,10 @@ class _CozylogMainState extends State<CozylogMain> {
                             child: Text(
                               pregnantInfo['introduce'],
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: Color(0xff8A8A8A),
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 14),
+                                  fontSize: AppUtils.scaleSize(context, 14)),
                             ),
                           ),
                         ]),
@@ -271,12 +272,12 @@ class _CozylogMainState extends State<CozylogMain> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             '최신 코지로그',
                             style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w700,
-                              fontSize: 18,
+                              fontSize: AppUtils.scaleSize(context, 18),
                             ),
                           ),
                           InkWell(
@@ -300,11 +301,11 @@ class _CozylogMainState extends State<CozylogMain> {
                                   horizontal: AppUtils.scaleSize(context, 8),
                                   vertical: AppUtils.scaleSize(context, 2),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   "더보기",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 12,
+                                    fontSize: AppUtils.scaleSize(context, 12),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -336,12 +337,13 @@ class _CozylogMainState extends State<CozylogMain> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data == null) {
-                              return const Center(
+                              return Center(
                                   child: Text("최근 작성된 글이 없습니다.",
                                       style: TextStyle(
-                                          color: Color(0xff9397A4),
+                                          color: const Color(0xff9397A4),
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 16)));
+                                          fontSize: AppUtils.scaleSize(
+                                              context, 16))));
                             } else {
                               return SingleChildScrollView(
                                 child: Column(

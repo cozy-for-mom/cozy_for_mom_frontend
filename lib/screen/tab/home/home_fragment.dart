@@ -109,20 +109,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                                       ? afternoonTextColor
                                       : nightTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 16),
+                              fontSize: AppUtils.scaleSize(context, 16)),
                         ),
                         SizedBox(height: AppUtils.scaleSize(context, 3)),
                         Text(
                           '${pregnantInfo['nickname']} 산모님',
-                          style: const TextStyle(
-                            fontSize: 26,
+                          style: TextStyle(
+                            fontSize: AppUtils.scaleSize(context, 26),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const Text(
+                        Text(
                           "오늘도 안녕하세요",
                           style: TextStyle(
-                            fontSize: 26,
+                            fontSize: AppUtils.scaleSize(context, 26),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -239,11 +239,11 @@ class _HomeFragmentState extends State<HomeFragment> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('잊지 말고 기록하세요',
+                            Text('잊지 말고 기록하세요',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 18)),
+                                    fontSize: AppUtils.scaleSize(context, 18))),
                             SizedBox(height: AppUtils.scaleSize(context, 18)),
                             InkWell(
                               onTap: () async {
@@ -290,28 +290,37 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                         'targetTimeAt'] ==
                                                     ''
                                                 ? [
-                                                    const Text('영양제와 혈당 알림을',
+                                                    Text('영양제와 혈당 알림을',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: 14)),
-                                                    const Text('등록해보세요!',
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14))),
+                                                    Text('등록해보세요!',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: 14))
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14)))
                                                   ]
                                                 : [
                                                     Text(
                                                         upcomingNotification[
                                                             'targetTimeAt'],
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontSize: 14)),
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14))),
                                                     SizedBox(
                                                         height:
                                                             AppUtils.scaleSize(
@@ -319,11 +328,14 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                     Text(
                                                         upcomingNotification[
                                                             'title'],
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w700,
-                                                            fontSize: 18)),
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    18))),
                                                   ]),
                                       ],
                                     ),

@@ -66,7 +66,7 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
                         ? mainTextColor
                         : beforeInputColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: 14)),
+                    fontSize: AppUtils.scaleSize(context, 14))),
             SizedBox(
                 width: AppUtils.scaleSize(context, 18),
                 child: Image(

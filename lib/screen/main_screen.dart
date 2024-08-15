@@ -15,9 +15,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 1;
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.bold); // 텍스트 스타일 지정이므로 해당 부분은 제거해도 된다.
 
   final List<Widget> _widgetOptions = <Widget>[
     const BabyMainScreen(),

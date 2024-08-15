@@ -149,12 +149,12 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           height: AppUtils.scaleSize(context, 18),
                         ),
                         SizedBox(height: AppUtils.scaleSize(context, 5)),
-                        const Text(
+                        Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: AppUtils.scaleSize(context, 14),
                           ),
                         ),
                       ]),
@@ -186,10 +186,11 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                               children: [
                                 Flexible(
                                   child: Text(widget.notification.title,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: afterInputColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 18)),
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
@@ -217,7 +218,8 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                                     ? const Color(0xffFF9797)
                                                     : offButtonTextColor,
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12),
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12)),
                                           );
                                         })
                                         .expand((widget) => [
@@ -244,11 +246,11 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                         ),
                       ]),
                   const Divider(color: mainLineColor, thickness: 1),
-                  const Text('설정한 시간',
+                  Text('설정한 시간',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12)),
+                          fontSize: AppUtils.scaleSize(context, 12))),
                   SizedBox(
                     width: AppUtils.scaleSize(context, 312),
                     child: Row(
@@ -263,7 +265,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                   ? primaryColor
                                   : offButtonTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

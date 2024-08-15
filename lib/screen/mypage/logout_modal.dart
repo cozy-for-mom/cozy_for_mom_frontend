@@ -48,10 +48,10 @@ class _LogoutModalState extends State<LogoutModal> {
                   right: AppUtils.scaleSize(context, 20)),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     "로그아웃",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: AppUtils.scaleSize(context, 20),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -63,30 +63,30 @@ class _LogoutModalState extends State<LogoutModal> {
                     children: [
                       Text(
                         "${pregnantInfo['nickname']} ",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14),
+                            fontSize: AppUtils.scaleSize(context, 14)),
                       ),
-                      const Text(
+                      Text(
                         " 아이디가 로그아웃됩니다.",
                         style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14),
+                            fontSize: AppUtils.scaleSize(context, 14)),
                       ),
                     ],
                   ),
                   SizedBox(
                     height: AppUtils.scaleSize(context, 10),
                   ),
-                  const Text(
+                  Text(
                     "해당 아이디는 간편 아이디로 계속 유지되며, 원하지 않을 경우 삭제 할 수 있습니다.",
                     style: TextStyle(
                       color: offButtonTextColor,
-                      height: 1.3,
+                      height: AppUtils.scaleSize(context, 1.3),
                       fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                      fontSize: AppUtils.scaleSize(context, 12),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -115,12 +115,12 @@ class _LogoutModalState extends State<LogoutModal> {
                       decoration: BoxDecoration(
                           color: primaryColor,
                           borderRadius: BorderRadius.circular(12)),
-                      child: const Text(
+                      child: Text(
                         "확인",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16,
+                          fontSize: AppUtils.scaleSize(context, 16),
                         ),
                       ),
                     ),

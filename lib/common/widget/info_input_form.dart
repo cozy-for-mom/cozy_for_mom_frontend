@@ -36,10 +36,10 @@ class _InfoInputFormState extends State<InfoInputForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(widget.title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
           SizedBox(height: AppUtils.scaleSize(context, 14)),
           Container(
               width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -54,24 +54,24 @@ class _InfoInputFormState extends State<InfoInputForm> {
                 controller: widget.controller,
                 textAlign: TextAlign.start,
                 cursorColor: primaryColor,
-                cursorHeight: 17,
-                cursorWidth: 1.5,
-                style: const TextStyle(
+                cursorHeight: AppUtils.scaleSize(context, 17),
+                cursorWidth: AppUtils.scaleSize(context, 1.5),
+                style: TextStyle(
                     color: afterInputColor,
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: AppUtils.scaleSize(context, 16)),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   suffixText: widget.suffix,
-                  suffixStyle: const TextStyle(
+                  suffixStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                      fontSize: AppUtils.scaleSize(context, 16)),
                   hintText: _isHintVisible ? widget.hint : null,
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                      fontSize: AppUtils.scaleSize(context, 16)),
                 ),
                 onTap: () {
                   setState(() {

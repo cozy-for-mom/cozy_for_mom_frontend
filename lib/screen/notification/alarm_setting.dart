@@ -54,10 +54,12 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
         backgroundColor: const Color(0xffF7F7FA),
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "알림 설정",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: AppUtils.scaleSize(context, 18)),
         ),
         leading: IconButton(
           color: Colors.black,
@@ -108,7 +110,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                     InkWell(
@@ -138,7 +140,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                   ],

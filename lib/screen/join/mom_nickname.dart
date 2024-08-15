@@ -39,20 +39,20 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
         Positioned(
           top: AppUtils.scaleSize(context, 50),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('사용할 닉네임을 입력해주세요',
+          child: Text('사용할 닉네임을 입력해주세요',
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 26)),
+                  fontSize: AppUtils.scaleSize(context, 26))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 95),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('닉네임은 마이로그에서도 수정할 수 있어요.',
+          child: Text('닉네임은 마이로그에서도 수정할 수 있어요.',
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 180),
@@ -77,21 +77,21 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 maxLength:
                     9, // TODO LengthLimitingTextInputFormatter 적용 결과 보고 지우기
                 cursorColor: primaryColor,
-                cursorHeight: 14,
-                cursorWidth: 1.2,
-                style: const TextStyle(
+                cursorHeight: AppUtils.scaleSize(context, 14),
+                cursorWidth: AppUtils.scaleSize(context, 1.2),
+                style: TextStyle(
                     color: mainTextColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: 14),
+                    fontSize: AppUtils.scaleSize(context, 14)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical: AppUtils.scaleSize(context, 10)),
                   border: InputBorder.none,
                   hintText: '8자 이내로 입력해주세요',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 14),
+                      fontSize: AppUtils.scaleSize(context, 14)),
                   counterText: '',
                   suffixIcon: _isNicknameValid
                       ? SizedBox(
@@ -182,7 +182,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                           ? deleteButtonColor
                           : primaryColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 14),
+                      fontSize: AppUtils.scaleSize(context, 14)),
                 ))
             : Container(),
       ],

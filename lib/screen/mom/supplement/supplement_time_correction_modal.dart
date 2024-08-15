@@ -59,11 +59,11 @@ class _SupplementModalState extends State<SupplementModal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('영양제 기록',
+                Text('영양제 기록',
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 20)),
+                        fontSize: AppUtils.scaleSize(context, 20))),
                 Container(
                     width: AppUtils.scaleSize(context, 312),
                     height: AppUtils.scaleSize(context, 80),
@@ -112,7 +112,8 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12,
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                           ))),
                                 ),
                                 InkWell(
@@ -140,7 +141,8 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 12,
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                           ))),
                                 ),
                               ],
@@ -159,18 +161,19 @@ class _SupplementModalState extends State<SupplementModal> {
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(4),
                               ],
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                   border: InputBorder.none,
                                   counterText: '',
                                   hintText: '00 : 00',
                                   hintStyle: TextStyle(
                                       color: offButtonTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 24)),
-                              style: const TextStyle(
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 24))),
+                              style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 24),
+                                  fontSize: AppUtils.scaleSize(context, 24)),
                               onChanged: (value) {
                                 if (value.isNotEmpty) {
                                   textController.value =
@@ -233,12 +236,12 @@ class _SupplementModalState extends State<SupplementModal> {
                         });
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       '등록하기',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: AppUtils.scaleSize(context, 16)),
                       textAlign: TextAlign.center,
                     ),
                   ),

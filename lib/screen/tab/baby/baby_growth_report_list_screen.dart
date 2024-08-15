@@ -44,12 +44,12 @@ class _BabyGrowthReportListScreenState
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "성장 보고서",
           style: TextStyle(
             color: mainTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: 18,
+            fontSize: AppUtils.scaleSize(context, 18),
           ),
         ),
         leading: IconButton(
@@ -172,10 +172,12 @@ class _BabyGrowthReportListScreenState
                                                         const Color(0xffE2E2E2),
                                                   ),
                                                 ),
-                                                const Text(
+                                                Text(
                                                   "알림",
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 16),
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -431,12 +433,14 @@ class _BabyGrowthReportListScreenState
                                                   children: [
                                                     Text(
                                                       report.title,
-                                                      style: const TextStyle(
-                                                        fontSize: 15,
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 15),
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        color:
-                                                            Color(0xff2B2D35),
+                                                        color: const Color(
+                                                            0xff2B2D35),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -446,10 +450,12 @@ class _BabyGrowthReportListScreenState
                                                     ),
                                                     Text(
                                                       "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color:
-                                                            Color(0xffAAAAAA),
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 13),
+                                                        color: const Color(
+                                                            0xffAAAAAA),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -462,10 +468,12 @@ class _BabyGrowthReportListScreenState
                                                       maxLines: 2,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xff858998),
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 12),
+                                                        color: const Color(
+                                                            0xff858998),
                                                       ),
                                                     ),
                                                   ],
@@ -589,7 +597,7 @@ class NotificationOption extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppUtils.scaleSize(context, 12),
                 color: isSelected ? Colors.white : Colors.black,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),

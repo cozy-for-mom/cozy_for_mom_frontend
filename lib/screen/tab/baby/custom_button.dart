@@ -18,10 +18,10 @@ class CustomButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(text,
-              style: const TextStyle(
+              style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
           Image(
               image: AssetImage(imagePath),
               width: AppUtils.scaleSize(context, 31),

@@ -105,10 +105,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                     Text(
                                       DateFormat('M.d E', 'ko_KR')
                                           .format(globalData.selectedDate),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 18,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 18),
                                       ),
                                     ),
                                     IconButton(
@@ -188,10 +189,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                                 const Duration(days: -1)
                                             ? '측정 기록이 없어요'
                                             : '마지막 측정 ${lastRecordDate.inDays}일전',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: primaryColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 12)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 12))),
                                   ],
                                 ),
                                 Row(
@@ -211,8 +213,10 @@ class _WeightRecordState extends State<WeightRecord> {
                                         },
                                         textInputAction: TextInputAction.done,
                                         cursorColor: primaryColor,
-                                        cursorWidth: 1,
-                                        cursorHeight: 28,
+                                        cursorWidth:
+                                            AppUtils.scaleSize(context, 1),
+                                        cursorHeight:
+                                            AppUtils.scaleSize(context, 28),
                                         decoration: InputDecoration(
                                             contentPadding:
                                                 EdgeInsets.symmetric(
@@ -222,10 +226,11 @@ class _WeightRecordState extends State<WeightRecord> {
                                             border: InputBorder.none,
                                             counterText: '',
                                             hintText: '00.00',
-                                            hintStyle: const TextStyle(
+                                            hintStyle: TextStyle(
                                               color: beforeInputColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: 28,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 28),
                                             )),
                                         style: TextStyle(
                                           color:
@@ -233,7 +238,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 28,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 28),
                                         ),
                                         onChanged: (text) {
                                           setState(() {
@@ -280,7 +286,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 28),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 28)),
                                     ),
                                   ],
                                 ),

@@ -105,10 +105,10 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
                           '${scrapListModifyState.selectedCount}/${widget.totalCount}',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14),
+                              fontSize: AppUtils.scaleSize(context, 14)),
                         );
                       },
                     ),
@@ -129,10 +129,10 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                             scrapListModifyState.selectedCount > 0
                                 ? '전체해제'
                                 : '전체선택',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14)),
+                                fontSize: AppUtils.scaleSize(context, 14))),
                       ),
                       SizedBox(width: AppUtils.scaleSize(context, 24)),
                       InkWell(
@@ -142,11 +142,11 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                               MaterialPageRoute(
                                   builder: (context) => const MyScrap()));
                         },
-                        child: const Text('편집완료',
+                        child: Text('편집완료',
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14)),
+                                fontSize: AppUtils.scaleSize(context, 14))),
                       ),
                     ],
                   ),

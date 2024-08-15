@@ -131,10 +131,12 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
         backgroundColor: const Color(0xffF7F7FA),
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "알림 설정",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: AppUtils.scaleSize(context, 18)),
         ),
         leading: IconButton(
           color: Colors.black,
@@ -164,22 +166,22 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                       cursorColor: primaryColor,
                       controller: titleController,
                       keyboardType: TextInputType.text,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 20,
+                        fontSize: AppUtils.scaleSize(context, 20),
                       ),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
                         labelStyle: TextStyle(
-                          color: Color(0xff2B2D35),
-                          fontSize: 20,
+                          color: const Color(0xff2B2D35),
+                          fontSize: AppUtils.scaleSize(context, 20),
                         ),
                         hintText: "일정의 제목을 입력해주세요",
                         hintStyle: TextStyle(
-                          color: Color(0xff858998),
+                          color: const Color(0xff858998),
                           fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                          fontSize: AppUtils.scaleSize(context, 20),
                         ),
                       ),
                       onChanged: (text) {
@@ -200,10 +202,10 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     ),
                     Text(
                       type == CardType.bloodsugar.name ? "측정 시간" : "복용 시간",
-                      style: const TextStyle(
-                        color: Color(0xff2B2D35),
+                      style: TextStyle(
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                     SizedBox(
@@ -220,25 +222,25 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                         ? Container()
                         : GestureDetector(
                             onTap: _addNotificationCard,
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 "+ 알림 받을 시간 추가하기",
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14),
+                                    fontSize: AppUtils.scaleSize(context, 14)),
                               ),
                             ),
                           ),
                     SizedBox(
                       height: AppUtils.scaleSize(context, 20),
                     ),
-                    const Text(
+                    Text(
                       "알림",
                       style: TextStyle(
-                        color: Color(0xff2B2D35),
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                     SizedBox(
@@ -278,7 +280,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -316,7 +319,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -353,7 +357,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                           ? selectedTextColor
                                           : unselectedTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
                                 ),
                               ),
                             ),
@@ -364,12 +369,12 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     SizedBox(
                       height: AppUtils.scaleSize(context, 40),
                     ),
-                    const Text(
+                    Text(
                       "알림 받을 요일",
                       style: TextStyle(
-                        color: Color(0xff2B2D35),
+                        color: const Color(0xff2B2D35),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppUtils.scaleSize(context, 18),
                       ),
                     ),
                     SizedBox(
@@ -426,7 +431,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                             ? selectedTextColor
                                             : unselectedTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16)),
                                   ),
                                 ),
                               ),
@@ -468,7 +474,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                 width: screenWidth - AppUtils.scaleSize(context, 40),
                 height: AppUtils.scaleSize(context, 56),
                 margin:
-                    EdgeInsets.only(bottom: AppUtils.scaleSize(context, 35)),
+                    EdgeInsets.only(bottom: AppUtils.scaleSize(context, 20)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: isRegisterButtonEnabled()

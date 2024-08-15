@@ -29,20 +29,20 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
         Positioned(
           top: AppUtils.scaleSize(context, 50),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('산모님에 대해 알려주세요',
+          child: Text('산모님에 대해 알려주세요',
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 26)),
+                  fontSize: AppUtils.scaleSize(context, 26))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 95),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
+          child: Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 150),
@@ -50,11 +50,11 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('이름',
+              Text('이름',
                   style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14)),
+                      fontSize: AppUtils.scaleSize(context, 14))),
               SizedBox(height: AppUtils.scaleSize(context, 10)),
               Container(
                   width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -72,21 +72,21 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     maxLength: 24,
                     cursorColor: primaryColor,
-                    cursorHeight: 14,
-                    cursorWidth: 1.2,
-                    style: const TextStyle(
+                    cursorHeight: AppUtils.scaleSize(context, 14),
+                    cursorWidth: AppUtils.scaleSize(context, 1.2),
+                    style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w400,
-                        fontSize: 14),
+                        fontSize: AppUtils.scaleSize(context, 14)),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
                           vertical: AppUtils.scaleSize(context, 10)),
                       border: InputBorder.none,
                       hintText: '이름을 입력해주세요',
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                           color: beforeInputColor,
                           fontWeight: FontWeight.w400,
-                          fontSize: 14),
+                          fontSize: AppUtils.scaleSize(context, 14)),
                       counterText: '',
                     ),
                     onChanged: (value) {
@@ -108,11 +108,11 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('생년월일',
+              Text('생년월일',
                   style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14)),
+                      fontSize: AppUtils.scaleSize(context, 14))),
               SizedBox(height: AppUtils.scaleSize(context, 10)),
               Container(
                   width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -133,21 +133,21 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     maxLength: 10,
                     cursorColor: primaryColor,
-                    cursorHeight: 14,
-                    cursorWidth: 1.2,
-                    style: const TextStyle(
+                    cursorHeight: AppUtils.scaleSize(context, 14),
+                    cursorWidth: AppUtils.scaleSize(context, 1.2),
+                    style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w400,
-                        fontSize: 14),
+                        fontSize: AppUtils.scaleSize(context, 14)),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
                           vertical: AppUtils.scaleSize(context, 10)),
                       border: InputBorder.none,
                       hintText: 'YYYY.MM.DD',
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                           color: beforeInputColor,
                           fontWeight: FontWeight.w400,
-                          fontSize: 14),
+                          fontSize: AppUtils.scaleSize(context, 14)),
                       counterText: '',
                     ),
                     onChanged: (value) {

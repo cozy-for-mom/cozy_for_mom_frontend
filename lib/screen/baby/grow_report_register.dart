@@ -217,12 +217,12 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "성장 보고서",
           style: TextStyle(
             color: mainTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: 18,
+            fontSize: AppUtils.scaleSize(context, 18),
           ),
         ),
         leading: IconButton(
@@ -278,21 +278,23 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                           child: TextFormField(
                             controller: titleController,
                             textAlign: TextAlign.start,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
+                              fontSize: AppUtils.scaleSize(context, 20),
                             ),
                             cursorColor: primaryColor,
-                            cursorHeight: 21,
-                            cursorWidth: 1.5,
-                            decoration: const InputDecoration(
+                            cursorHeight: AppUtils.scaleSize(context, 21),
+                            cursorWidth: AppUtils.scaleSize(context, 1.5),
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "제목을 입력해주세요",
                               hintStyle: TextStyle(
-                                color: Color(0xff9397A4), // offButtonTextColor
+                                color: const Color(
+                                    0xff9397A4), // offButtonTextColor
                                 fontWeight: FontWeight.w500,
-                                fontSize: 20,
+                                fontSize: AppUtils.scaleSize(
+                                    context, AppUtils.scaleSize(context, 20)),
                               ),
                             ),
                             onChanged: (text) {
@@ -392,23 +394,24 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             textAlignVertical: TextAlignVertical.top,
                             textAlign: TextAlign.start,
                             maxLines: null,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
-                              fontSize: 16,
+                              fontSize: AppUtils.scaleSize(context, 16),
                             ),
                             cursorColor: primaryColor,
-                            cursorHeight: 17,
-                            cursorWidth: 1.5,
-                            decoration: const InputDecoration(
+                            cursorHeight: AppUtils.scaleSize(context, 17),
+                            cursorWidth: AppUtils.scaleSize(context, 1.5),
+                            decoration: InputDecoration(
                               isDense: true,
                               contentPadding: EdgeInsets.zero,
                               border: InputBorder.none,
                               hintText: "내용을 입력하세요.",
                               hintStyle: TextStyle(
-                                color: Color(0xff9397A4), // offButtonTextColor
+                                color: const Color(
+                                    0xff9397A4), // offButtonTextColor
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ),
                             ),
                             onChanged: (text) {
@@ -532,12 +535,12 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                         : const Color(0xffC9DFF9),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
+                  child: Text(
                     "등록하기",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: AppUtils.scaleSize(context, 16),
                     ),
                   ),
                 ),

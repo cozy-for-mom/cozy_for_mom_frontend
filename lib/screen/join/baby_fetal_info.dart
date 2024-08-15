@@ -20,20 +20,20 @@ class _BabyFetalInfoScreenState extends State<BabyFetalInfoScreen> {
         Positioned(
           top: AppUtils.scaleSize(context, 50),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('아기의 정보를 입력해주세요',
+          child: Text('아기의 정보를 입력해주세요',
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 26)),
+                  fontSize: AppUtils.scaleSize(context, 26))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 95),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
+          child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 181),

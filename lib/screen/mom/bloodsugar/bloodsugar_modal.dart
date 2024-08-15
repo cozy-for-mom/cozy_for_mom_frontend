@@ -81,11 +81,11 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('혈당 기록',
+                Text('혈당 기록',
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 20)),
+                        fontSize: AppUtils.scaleSize(context, 20))),
                 Container(
                   width: AppUtils.scaleSize(context, 312),
                   height: AppUtils.scaleSize(context, 80),
@@ -103,10 +103,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       children: [
                         SizedBox(
                           child: Text(widget.time,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: offButtonTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 12)),
+                                  fontSize: AppUtils.scaleSize(context, 12))),
                         ),
                         SizedBox(
                           height: AppUtils.scaleSize(context, 32),
@@ -121,8 +121,8 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             },
                             maxLength: 3,
                             textAlign: TextAlign.start,
-                            cursorWidth: 0.8,
-                            cursorHeight: 15,
+                            cursorWidth: AppUtils.scaleSize(context, 0.8),
+                            cursorHeight: AppUtils.scaleSize(context, 15),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -132,20 +132,20 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                 counterText: '',
                                 border: InputBorder.none,
                                 suffixText: 'mg / dL',
-                                suffixStyle: const TextStyle(
+                                suffixStyle: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 14),
+                                    fontSize: AppUtils.scaleSize(context, 14)),
                                 hintText: _isHintVisible ? 'mg / dL' : null,
-                                hintStyle: const TextStyle(
+                                hintStyle: TextStyle(
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16)),
+                                    fontSize: AppUtils.scaleSize(context, 16))),
                             cursorColor: primaryColor,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                                fontSize: AppUtils.scaleSize(context, 16)),
                             onTap: () {
                               setState(() {
                                 _isHintVisible = false;
@@ -192,12 +192,12 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                         });
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       '등록하기',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: AppUtils.scaleSize(context, 16)),
                       textAlign: TextAlign.center,
                     ),
                   ),

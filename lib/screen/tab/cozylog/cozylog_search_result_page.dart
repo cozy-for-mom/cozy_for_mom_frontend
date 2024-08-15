@@ -100,7 +100,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           widget.searchKeyword,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -133,7 +133,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                         children: [
                           Text(
                             "${snapshot.data!.totalElements.toString()}건",
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -266,7 +266,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                 ),
                                 Text(
                                   " ${sortType.name}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Color(0xff928C8C),
                                   ),
                                 )
@@ -322,8 +322,9 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                   children: [
                                     Text(
                                       item.title,
-                                      style: const TextStyle(
-                                        fontSize: 16,
+                                      style: TextStyle(
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -332,9 +333,10 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                     ),
                                     Text(
                                       item.summary,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xff858998),
+                                      style: TextStyle(
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
+                                        color: const Color(0xff858998),
                                       ),
                                     ),
                                     SizedBox(
@@ -342,9 +344,10 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                     ),
                                     Text(
                                       dateFormat.format(item.date),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xffAAAAAA),
+                                      style: TextStyle(
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
+                                        color: const Color(0xffAAAAAA),
                                       ),
                                     ),
                                     SizedBox(
@@ -366,9 +369,10 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                         ),
                                         Text(
                                           "댓글 ${item.commentCount}",
-                                          style: const TextStyle(
-                                            color: Color(0xffAAAAAA),
-                                            fontSize: 12,
+                                          style: TextStyle(
+                                            color: const Color(0xffAAAAAA),
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -389,9 +393,10 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                         ),
                                         Text(
                                           "스크랩 ${item.scrapCount}",
-                                          style: const TextStyle(
-                                            color: Color(0xffAAAAAA),
-                                            fontSize: 12,
+                                          style: TextStyle(
+                                            color: const Color(0xffAAAAAA),
+                                            fontSize:
+                                                AppUtils.scaleSize(context, 12),
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -439,9 +444,11 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                               child: Center(
                                                 child: Text(
                                                   item.imageCount.toString(),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 12,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 12),
                                                   ),
                                                 ),
                                               ),

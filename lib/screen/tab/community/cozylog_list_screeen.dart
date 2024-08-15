@@ -90,10 +90,12 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           '코지로그',
           style: TextStyle(
-              color: mainTextColor, fontWeight: FontWeight.w600, fontSize: 18),
+              color: mainTextColor,
+              fontWeight: FontWeight.w600,
+              fontSize: AppUtils.scaleSize(context, 18)),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -143,13 +145,13 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
               controller: tabController,
               labelColor: primaryColor,
               indicatorColor: primaryColor,
-              labelStyle: const TextStyle(
-                fontSize: 18,
+              labelStyle: TextStyle(
+                fontSize: AppUtils.scaleSize(context, 18),
                 fontWeight: FontWeight.w600,
               ),
               dividerColor: mainLineColor,
-              unselectedLabelStyle: const TextStyle(
-                fontSize: 18,
+              unselectedLabelStyle: TextStyle(
+                fontSize: AppUtils.scaleSize(context, 18),
                 fontWeight: FontWeight.w600,
                 color: mainTextColor,
               ),
@@ -216,11 +218,12 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                                           AppUtils.scaleSize(context, 40.77)),
                                   SizedBox(
                                       height: AppUtils.scaleSize(context, 12)),
-                                  const Text('코지로그를 작성해 보세요!',
+                                  Text('코지로그를 작성해 보세요!',
                                       style: TextStyle(
-                                          color: Color(0xff9397A4),
+                                          color: const Color(0xff9397A4),
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 14)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14))),
                                 ]),
                           ),
                   ],

@@ -33,10 +33,10 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
               color: widget.isActivated ? primaryColor : induceButtonColor,
               borderRadius: BorderRadius.circular(12)),
           child: Text(widget.text,
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 16)),
+                  fontSize: AppUtils.scaleSize(context, 16))),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -30,28 +31,28 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       selectedDayPredicate: (date) {
         return isSameDay(globalDate.selectedDay, date);
       },
-      calendarStyle: const CalendarStyle(
-        weekendTextStyle: TextStyle(
+      calendarStyle: CalendarStyle(
+        weekendTextStyle: const TextStyle(
           color: Color(0xff858998),
         ),
-        selectedDecoration: BoxDecoration(
+        selectedDecoration: const BoxDecoration(
           color: primaryColor,
           shape: BoxShape.circle,
         ),
-        selectedTextStyle: TextStyle(
+        selectedTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
         todayTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 15,
-          color: Color(0xff858998),
+          fontSize: AppUtils.scaleSize(context, 15),
+          color: const Color(0xff858998),
         ),
-        todayDecoration: BoxDecoration(),
+        todayDecoration: const BoxDecoration(),
         defaultTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 15,
-          color: Color(0xff858998),
+          fontSize: AppUtils.scaleSize(context, 15),
+          color: const Color(0xff858998),
         ),
       ),
       onDaySelected: (selectedDay, focusedDay) {

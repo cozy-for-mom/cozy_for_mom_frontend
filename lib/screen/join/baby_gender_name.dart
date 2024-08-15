@@ -114,22 +114,22 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                   padding: EdgeInsets.only(
                       top: AppUtils.scaleSize(context, 50),
                       left: AppUtils.scaleSize(context, 20)),
-                  child: const Text('아기의 정보를 입력해주세요',
+                  child: Text('아기의 정보를 입력해주세요',
                       style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w700,
-                          fontSize: 26)),
+                          fontSize: AppUtils.scaleSize(context, 26))),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
                       top: AppUtils.scaleSize(context, 10),
                       left: AppUtils.scaleSize(context, 20),
                       bottom: AppUtils.scaleSize(context, 30)),
-                  child: const Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
+                  child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 14)),
+                          fontSize: AppUtils.scaleSize(context, 14))),
                 ),
               ],
             ),
@@ -162,11 +162,12 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text('태명',
+                                  Text('태명',
                                       style: TextStyle(
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14))),
                                   IconButton(
                                       icon: Image(
                                           image: const AssetImage(
@@ -213,22 +214,24 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                   textAlignVertical: TextAlignVertical.center,
                                   maxLength: 10,
                                   cursorColor: primaryColor,
-                                  cursorHeight: 14,
-                                  cursorWidth: 1.2,
-                                  style: const TextStyle(
+                                  cursorHeight: AppUtils.scaleSize(context, 14),
+                                  cursorWidth: AppUtils.scaleSize(context, 1.2),
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 14),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 14)),
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical:
                                             AppUtils.scaleSize(context, 10)),
                                     border: InputBorder.none,
                                     hintText: '8자 이내로 입력해주세요',
-                                    hintStyle: const TextStyle(
+                                    hintStyle: TextStyle(
                                         color: beforeInputColor,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 14)),
                                     counterText: '',
                                   ),
                                   onChanged: (value) {
@@ -242,11 +245,11 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                   },
                                 )),
                             SizedBox(height: AppUtils.scaleSize(context, 25)),
-                            const Text('성별',
+                            Text('성별',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                                    fontSize: AppUtils.scaleSize(context, 14))),
                             SizedBox(height: AppUtils.scaleSize(context, 10)),
                             InkWell(
                               onTap: () {
@@ -277,19 +280,21 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       hintText: '성별',
-                                      hintStyle: const TextStyle(
+                                      hintStyle: TextStyle(
                                           color: beforeInputColor,
                                           fontWeight: FontWeight.w400,
-                                          fontSize: 14),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14)),
                                       suffixIcon: const Icon(
                                           CupertinoIcons.chevron_down,
                                           size: 15,
                                           color: mainTextColor),
                                     ),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 14)),
                                   ),
                                 ),
                               ),
@@ -334,10 +339,11 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                                       context, 8)),
                                               child: Text(
                                                 item,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: offButtonTextColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 16),
                                                 ),
                                               ),
                                             ),
@@ -381,13 +387,13 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                     child: Padding(
                         padding: EdgeInsets.only(
                             top: AppUtils.scaleSize(context, 10)),
-                        child: const Center(
+                        child: Center(
                             child: Text(
                           '+ 태아 추가하기',
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14),
+                              fontSize: AppUtils.scaleSize(context, 14)),
                         ))))
                 : Container(),
           ),

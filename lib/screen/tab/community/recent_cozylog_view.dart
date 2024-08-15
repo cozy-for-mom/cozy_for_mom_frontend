@@ -103,10 +103,11 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                 Text(widget.cozylog.title,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16))),
                                 SizedBox(
                                     height: AppUtils.scaleSize(context, 6)),
                                 SizedBox(
@@ -114,10 +115,11 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                   child: Text(widget.cozylog.summary,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w400,
-                                          fontSize: 12)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 12))),
                                 ),
                                 SizedBox(
                                     height: AppUtils.scaleSize(context, 6)),
@@ -126,43 +128,50 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                     Text(
                                       DateFormat('yyyy. MM. dd')
                                           .format(widget.cozylog.date),
-                                      style: const TextStyle(
-                                        color: Color(0xffAAAAAA),
+                                      style: TextStyle(
+                                        color: const Color(0xffAAAAAA),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
                                       ),
                                     ),
                                     widget.isMyCozyLog
                                         ? Row(
                                             children: [
-                                              const Text(
+                                              Text(
                                                 " · ",
                                                 style: TextStyle(
-                                                  color: Color(0xffAAAAAA),
+                                                  color:
+                                                      const Color(0xffAAAAAA),
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 12,
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
                                                 ),
                                               ),
                                               widget.cozylog.mode ==
                                                       CozyLogModeType.public
-                                                  ? const Text(
+                                                  ? Text(
                                                       '공개',
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xffAAAAAA),
+                                                        color: const Color(
+                                                            0xffAAAAAA),
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        fontSize: 12,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 12),
                                                       ),
                                                     )
-                                                  : const Text(
+                                                  : Text(
                                                       '비공개',
                                                       style: TextStyle(
-                                                        color:
-                                                            Color(0xffAAAAAA),
+                                                        color: const Color(
+                                                            0xffAAAAAA),
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        fontSize: 12,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 12),
                                                       ),
                                                     )
                                             ],
@@ -200,10 +209,11 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                         child: Text(
                                           '${widget.cozylog.imageCount}',
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 12)),
                                         ),
                                       ),
                                     ),
@@ -229,10 +239,11 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                     height: AppUtils.scaleSize(context, 15.68)),
                                 SizedBox(width: AppUtils.scaleSize(context, 7)),
                                 Text('댓글 ${widget.cozylog.commentCount}',
-                                    style: const TextStyle(
-                                        color: Color(0xffAAAAAA),
+                                    style: TextStyle(
+                                        color: const Color(0xffAAAAAA),
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 12)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12))),
                               ],
                             ),
                           ),
@@ -248,10 +259,10 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                 SizedBox(width: AppUtils.scaleSize(context, 7)),
                                 Text(
                                   '스크랩 ${widget.cozylog.scrapCount}',
-                                  style: const TextStyle(
-                                    color: Color(0xffAAAAAA),
+                                  style: TextStyle(
+                                    color: const Color(0xffAAAAAA),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 12,
+                                    fontSize: AppUtils.scaleSize(context, 12),
                                   ),
                                 ),
                               ],

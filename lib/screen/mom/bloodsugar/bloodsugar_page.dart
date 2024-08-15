@@ -53,10 +53,10 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                           Text(
                             DateFormat('M.d E', 'ko_KR')
                                 .format(globalData.selectedDate),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: AppUtils.scaleSize(context, 18),
                             ),
                           ),
                           IconButton(
@@ -127,7 +127,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                     InkWell(
@@ -151,7 +151,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                     ? Colors.white
                                     : offButtonTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                                fontSize: AppUtils.scaleSize(context, 16),
                               ))),
                     ),
                   ],

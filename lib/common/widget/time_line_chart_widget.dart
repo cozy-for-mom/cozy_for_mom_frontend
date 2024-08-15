@@ -118,12 +118,12 @@ class _TimeLineChartState extends State<TimeLineChart>
                         controller: _tabController,
                         labelColor: Colors.black,
                         indicatorColor: Colors.red,
-                        labelStyle: const TextStyle(
-                          fontSize: 18,
+                        labelStyle: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 18),
                           fontWeight: FontWeight.bold,
                         ),
-                        unselectedLabelStyle: const TextStyle(
-                          fontSize: 16,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 16),
                         ),
                         tabs: const [
                           Tab(text: "일간"),

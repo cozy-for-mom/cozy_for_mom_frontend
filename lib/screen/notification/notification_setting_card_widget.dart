@@ -149,7 +149,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                           ? Colors.white
                                           : offButtonTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 14,
+                                      fontSize: AppUtils.scaleSize(context, 14),
                                     ))),
                           ),
                           InkWell(
@@ -179,7 +179,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                           ? Colors.white
                                           : offButtonTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 14,
+                                      fontSize: AppUtils.scaleSize(context, 14),
                                     ))),
                           ),
                         ],
@@ -205,14 +205,14 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '00 : 00',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                   color: offButtonTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 24)),
-                          style: const TextStyle(
+                                  fontSize: AppUtils.scaleSize(context, 24))),
+                          style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 24),
+                              fontSize: AppUtils.scaleSize(context, 24)),
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               textEditingController.value =

@@ -126,16 +126,16 @@ class _ImageTextCardState extends State<ImageTextCard> {
               textAlignVertical: TextAlignVertical.top,
               textAlign: TextAlign.start,
               maxLines: 3,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
-                fontSize: 12,
-                height: 1.5,
+                fontSize: AppUtils.scaleSize(context, 12),
+                height: AppUtils.scaleSize(context, 1.5),
               ),
               cursorColor: primaryColor,
-              cursorHeight: 13,
-              cursorWidth: 1.5,
-              decoration: const InputDecoration(
+              cursorHeight: AppUtils.scaleSize(context, 13),
+              cursorWidth: AppUtils.scaleSize(context, 1.5),
+              decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
@@ -143,7 +143,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                 hintStyle: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
+                  fontSize: AppUtils.scaleSize(context, 12),
                 ),
               ),
             ),

@@ -44,11 +44,11 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('영양제 등록',
+                Text('영양제 등록',
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 18)),
+                        fontSize: AppUtils.scaleSize(context, 18))),
                 SizedBox(
                   height: AppUtils.scaleSize(context, 176),
                   child: Column(
@@ -69,12 +69,13 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const SizedBox(
+                                SizedBox(
                                   child: Text('이름',
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14))),
                                 ),
                                 SizedBox(
                                   height: AppUtils.scaleSize(context, 32),
@@ -94,21 +95,24 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                     },
                                     textAlign: TextAlign.start,
                                     maxLength: 15,
-                                    cursorHeight: 16,
+                                    cursorHeight:
+                                        AppUtils.scaleSize(context, 16),
                                     keyboardType: TextInputType.text,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                         border: InputBorder.none,
                                         counterText: '',
                                         hintText: '영양제 이름 입력',
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 16)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 16))),
                                     cursorColor: primaryColor,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16)),
                                   ),
                                 ),
                               ]),
@@ -128,12 +132,13 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const SizedBox(
+                                SizedBox(
                                   child: Text('목표 섭취량',
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14))),
                                 ),
                                 SizedBox(
                                   height: AppUtils.scaleSize(context, 32),
@@ -153,25 +158,28 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                     },
                                     textAlign: TextAlign.start,
                                     maxLength: 2,
-                                    cursorHeight: 16,
+                                    cursorHeight:
+                                        AppUtils.scaleSize(context, 16),
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
                                       LengthLimitingTextInputFormatter(2),
                                     ],
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                         border: InputBorder.none,
                                         counterText: '',
                                         hintText: '횟수 입력',
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 16)),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 16))),
                                     cursorColor: primaryColor,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16)),
                                   ),
                                 ),
                               ]),
@@ -204,12 +212,12 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                         widget.onRegister(id);
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       '등록하기',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: AppUtils.scaleSize(context, 16)),
                       textAlign: TextAlign.center,
                     ),
                   ),

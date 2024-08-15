@@ -129,10 +129,10 @@ class _MealScreenState extends State<MealScreen> {
                           Text(
                             DateFormat('M.d E', 'ko_KR')
                                 .format(globalData.selectedDate),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: AppUtils.scaleSize(context, 18),
                             ),
                           ),
                           IconButton(
@@ -283,9 +283,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.breakfast.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -362,12 +363,15 @@ class _MealScreenState extends State<MealScreen> {
                                                               .scaleSize(
                                                                   context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
@@ -389,10 +393,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.breakfast.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),
@@ -443,9 +449,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.lunch.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -521,12 +528,15 @@ class _MealScreenState extends State<MealScreen> {
                                                               .scaleSize(
                                                                   context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
@@ -548,10 +558,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.lunch.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),
@@ -602,9 +614,10 @@ class _MealScreenState extends State<MealScreen> {
                                           child: Center(
                                             child: Text(
                                               MealType.dinner.korName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12),
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -680,12 +693,15 @@ class _MealScreenState extends State<MealScreen> {
                                                               .scaleSize(
                                                                   context, 19),
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           "클릭하여 식사를 기록해 보세요",
                                                           style: TextStyle(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff9397A4),
-                                                            fontSize: 14,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    14),
                                                           ),
                                                         )
                                                       ],
@@ -707,10 +723,12 @@ class _MealScreenState extends State<MealScreen> {
                                             child: Center(
                                               child: Text(
                                                 MealType.dinner.korName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Color(0xff858998),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12),
+                                                  color:
+                                                      const Color(0xff858998),
                                                 ),
                                               ),
                                             ),

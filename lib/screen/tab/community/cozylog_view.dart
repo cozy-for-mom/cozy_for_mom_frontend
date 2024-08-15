@@ -56,10 +56,10 @@ class _CozylogListViewState extends State<CozylogListView> {
                     SizedBox(width: AppUtils.scaleSize(context, 8)),
                     Text(
                       '${widget.totalCount}개의 코지로그',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 14),
+                          fontSize: AppUtils.scaleSize(context, 14)),
                     ),
                   ]),
                   InkWell(
@@ -75,12 +75,12 @@ class _CozylogListViewState extends State<CozylogListView> {
                             })
                           : setState(() {});
                     },
-                    child: const Text(
+                    child: Text(
                       '편집',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w400,
-                          fontSize: 14),
+                          fontSize: AppUtils.scaleSize(context, 14)),
                     ),
                   ),
                 ]),
@@ -136,11 +136,11 @@ class _CozylogListViewState extends State<CozylogListView> {
                           width: AppUtils.scaleSize(context, 45.31),
                           height: AppUtils.scaleSize(context, 40.77)),
                       SizedBox(height: AppUtils.scaleSize(context, 12)),
-                      const Text('코지로그를 작성해 보세요!',
+                      Text('코지로그를 작성해 보세요!',
                           style: TextStyle(
-                              color: Color(0xff9397A4),
+                              color: const Color(0xff9397A4),
                               fontWeight: FontWeight.w500,
-                              fontSize: 14)),
+                              fontSize: AppUtils.scaleSize(context, 14))),
                     ]),
               ),
       ],

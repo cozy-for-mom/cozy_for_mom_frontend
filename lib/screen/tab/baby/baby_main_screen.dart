@@ -127,10 +127,10 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                             child: Text(babyNames.join(''),
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 26)),
+                                    fontSize: AppUtils.scaleSize(context, 26))),
                           ),
                           SizedBox(height: AppUtils.scaleSize(context, 5)),
                           Text('임신 ${week}주차 ${day}일째',
@@ -140,7 +140,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                           ? const Color(0xffFE8282)
                                           : const Color(0xff9D8DFF),
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 16)),
+                                  fontSize: AppUtils.scaleSize(context, 16))),
                         ],
                       )),
                   Positioned(
@@ -163,12 +163,12 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "아기와 만나기까지",
                               style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                                  fontSize: AppUtils.scaleSize(context, 16)),
                             ),
                             Text(' D-${dDay}',
                                 style: TextStyle(
@@ -177,7 +177,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                             ? const Color(0xffFE8282)
                                             : const Color(0xff9D8DFF),
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 16)),
+                                    fontSize: AppUtils.scaleSize(context, 16))),
                           ],
                         ),
                         SizedBox(height: AppUtils.scaleSize(context, 10)),
@@ -206,7 +206,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 475),
+                    top: AppUtils.scaleSize(context, 470),
                     left: AppUtils.scaleSize(context, 20),
                     child: SizedBox(
                       width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -244,7 +244,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 580),
+                      top: AppUtils.scaleSize(context, 575),
                       left: AppUtils.scaleSize(context, 20),
                       child: InkWell(
                         onTap: () {
@@ -257,11 +257,11 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('성장일지를 기록해요',
+                            Text('성장일지를 기록해요',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 18)),
+                                    fontSize: AppUtils.scaleSize(context, 18))),
                             SizedBox(height: AppUtils.scaleSize(context, 18)),
                             Container(
                               width:
@@ -276,11 +276,12 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text('오늘은 얼마나 자랐을까?',
+                                  Text('오늘은 얼마나 자랐을까?',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 16)),
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 16))),
                                   Image(
                                       image: const AssetImage(
                                           "assets/images/icons/diary_cozylog.png"),

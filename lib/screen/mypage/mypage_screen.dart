@@ -107,10 +107,10 @@ class _MyPageState extends State<MyPage> {
                     SizedBox(height: AppUtils.scaleSize(context, 8)),
                     Text(
                       "${pregnantInfo['nickname']} 산모님",
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w700,
-                          fontSize: 20),
+                          fontSize: AppUtils.scaleSize(context, 20)),
                     ),
                     SizedBox(height: AppUtils.scaleSize(context, 4)),
                     InkWell(
@@ -124,12 +124,12 @@ class _MyPageState extends State<MyPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             "프로필 수정",
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12),
+                                fontSize: AppUtils.scaleSize(context, 12)),
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(width: AppUtils.scaleSize(context, 4)),
@@ -158,18 +158,19 @@ class _MyPageState extends State<MyPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
+                              Text(
                                 "아기와 만나기까지",
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16),
+                                    fontSize: AppUtils.scaleSize(context, 16)),
                               ),
                               Text(' D-${pregnantInfo['dDay']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16))),
                             ],
                           ),
                           Container(
@@ -274,11 +275,12 @@ class _MyPageState extends State<MyPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text("우리 아이 관리",
+                                      Text("우리 아이 관리",
                                           style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: 18)),
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 18))),
                                       Container(
                                         width: AppUtils.scaleSize(context, 42),
                                         height: AppUtils.scaleSize(context, 21),
@@ -299,10 +301,11 @@ class _MyPageState extends State<MyPage> {
                                                 EdgeInsets.zero), // 패딩을 없애는 부분
                                           ),
                                           child: Text(isEditMode ? "완료" : "편집",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: offButtonTextColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 12)),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 12))),
                                         ),
                                       ),
                                     ],

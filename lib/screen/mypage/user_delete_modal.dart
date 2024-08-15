@@ -33,26 +33,26 @@ class UserDeleteModalState extends State<UserDeleteModal> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "정말 코지포맘 계정을\n삭제하시겠어요?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
+                  height: AppUtils.scaleSize(context, 1.5),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: AppUtils.scaleSize(context, 16),
                 ),
               ),
               SizedBox(
                 height: AppUtils.scaleSize(context, 15),
               ),
-              const Text(
+              Text(
                 "회원을 탈퇴하면 모든 데이터가 소멸돼요.\n추후 같은 회원 정보일지라도 복구되지 않습니다.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
-                  color: Color(0xff9397A4),
+                  height: AppUtils.scaleSize(context, 1.5),
+                  color: const Color(0xff9397A4),
                   fontWeight: FontWeight.w500,
-                  fontSize: 13,
+                  fontSize: AppUtils.scaleSize(context, 13),
                 ),
               ),
               SizedBox(
@@ -77,12 +77,12 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                         child: Container(
                           alignment: Alignment.center,
                           width: AppUtils.scaleSize(context, 56),
-                          child: const Text(
+                          child: Text(
                             '취소',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),
@@ -107,12 +107,12 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                         child: Container(
                           width: AppUtils.scaleSize(context, 56),
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             '탈퇴',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),

@@ -31,25 +31,25 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "코지포맘 회원님을 위한 이벤트와\n혜택 알림을 받아보시겠어요?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
+                  height: AppUtils.scaleSize(context, 1.5),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: AppUtils.scaleSize(context, 16),
                 ),
               ),
               SizedBox(
                 height: AppUtils.scaleSize(context, 15),
               ),
-              const Text(
+              Text(
                 "마케팅 푸시 허용 시, 산모에게 유용한 정보와\n이벤트, 혜택 정보를 받아보실 수 있어요.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   height: 1.5,
-                  color: Color(0xff9397A4),
-                  fontSize: 13,
+                  color: const Color(0xff9397A4),
+                  fontSize: AppUtils.scaleSize(context, 13),
                 ),
               ),
               SizedBox(
@@ -80,12 +80,12 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                         child: Container(
                           alignment: Alignment.center,
                           width: AppUtils.scaleSize(context, 56),
-                          child: const Text(
+                          child: Text(
                             '허용 안 함',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),
@@ -108,12 +108,12 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                         child: Container(
                           width: AppUtils.scaleSize(context, 56),
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             '허용',
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: AppUtils.scaleSize(context, 14),
                             ),
                           ),
                         ),

@@ -56,12 +56,12 @@ class _BabyGrowthReportDetailScreenState
           backgroundColor: backgroundColor,
           scrolledUnderElevation: 0,
           elevation: 0,
-          title: const Text(
+          title: Text(
             "성장 보고서",
             style: TextStyle(
               color: mainTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: 18,
+              fontSize: AppUtils.scaleSize(context, 18),
             ),
           ),
           leading: IconButton(
@@ -134,10 +134,11 @@ class _BabyGrowthReportDetailScreenState
                                     children: [
                                       Text(
                                         data.title,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 20,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 20),
                                         ),
                                       ),
                                       SizedBox(
@@ -145,10 +146,11 @@ class _BabyGrowthReportDetailScreenState
                                       ),
                                       Text(
                                         "${DateFormat("yyyy. MM. dd HH:mm").format(data.date)} 작성",
-                                        style: const TextStyle(
-                                          color: Color(0xffAAAAAA),
+                                        style: TextStyle(
+                                          color: const Color(0xffAAAAAA),
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 14,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14),
                                         ),
                                       ),
                                     ],
@@ -348,12 +350,12 @@ class _BabyGrowthReportDetailScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   "체중",
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                                 SizedBox(
@@ -373,10 +375,10 @@ class _BabyGrowthReportDetailScreenState
                                     controller: TextEditingController(
                                         text:
                                             "${selectedBaby.value!.babyGrowthInfo.weight} g"),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: afterInputColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16,
+                                      fontSize: AppUtils.scaleSize(context, 16),
                                     ),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
@@ -396,12 +398,12 @@ class _BabyGrowthReportDetailScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   "머리 직경",
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                                 SizedBox(
@@ -421,10 +423,10 @@ class _BabyGrowthReportDetailScreenState
                                     controller: TextEditingController(
                                         text:
                                             "${selectedBaby.value!.babyGrowthInfo.headCircum} cm"),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: afterInputColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16,
+                                      fontSize: AppUtils.scaleSize(context, 16),
                                     ),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
@@ -444,12 +446,12 @@ class _BabyGrowthReportDetailScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   "머리 둘레",
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                                 SizedBox(
@@ -469,10 +471,10 @@ class _BabyGrowthReportDetailScreenState
                                     controller: TextEditingController(
                                         text:
                                             "${selectedBaby.value!.babyGrowthInfo.headDiameter} cm"),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: afterInputColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16,
+                                      fontSize: AppUtils.scaleSize(context, 16),
                                     ),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
@@ -492,12 +494,12 @@ class _BabyGrowthReportDetailScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   "복부 둘레",
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                                 SizedBox(
@@ -517,10 +519,10 @@ class _BabyGrowthReportDetailScreenState
                                     controller: TextEditingController(
                                         text:
                                             "${selectedBaby.value!.babyGrowthInfo.abdomenCircum} cm"),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: afterInputColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16,
+                                      fontSize: AppUtils.scaleSize(context, 16),
                                     ),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
@@ -539,12 +541,12 @@ class _BabyGrowthReportDetailScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   "허벅지 길이",
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                                    fontSize: AppUtils.scaleSize(context, 14),
                                   ),
                                 ),
                                 SizedBox(
@@ -564,10 +566,10 @@ class _BabyGrowthReportDetailScreenState
                                     controller: TextEditingController(
                                         text:
                                             "${selectedBaby.value!.babyGrowthInfo.thighLength} cm"),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: afterInputColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16,
+                                      fontSize: AppUtils.scaleSize(context, 16),
                                     ),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,

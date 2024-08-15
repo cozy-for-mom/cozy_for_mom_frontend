@@ -69,10 +69,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                             children: [
                               Text(
                                 comment.writerNickname,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 14,
+                                  fontSize: AppUtils.scaleSize(context, 14),
                                 ),
                               ),
                               SizedBox(
@@ -80,10 +80,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                               ),
                               Text(
                                 comment.content,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 14,
+                                  fontSize: AppUtils.scaleSize(context, 14),
                                 ),
                               ),
                               SizedBox(
@@ -93,10 +93,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                 children: [
                                   Text(
                                     dateFormat.format(comment.createdAt),
-                                    style: const TextStyle(
-                                      color: Color(0xffAAAAAA),
+                                    style: TextStyle(
+                                      color: const Color(0xffAAAAAA),
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 12,
+                                      fontSize: AppUtils.scaleSize(context, 12),
                                     ),
                                   ),
                                   SizedBox(
@@ -104,12 +104,13 @@ class CozyLogCommentComponent extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: onReply,
-                                    child: const Text(
+                                    child: Text(
                                       "답글쓰기",
                                       style: TextStyle(
-                                        color: Color(0xffAAAAAA),
+                                        color: const Color(0xffAAAAAA),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
                                       ),
                                     ),
                                   ),
@@ -194,7 +195,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                         0.7),
                                                             textColor:
                                                                 Colors.white,
-                                                            fontSize: 16.0);
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    16));
                                                         requestCommentsUpdate();
                                                       },
                                                     ),
@@ -248,7 +252,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                         0.7),
                                                             textColor:
                                                                 Colors.white,
-                                                            fontSize: 16.0);
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    16));
                                                         requestCommentsUpdate();
                                                       },
                                                     ),
@@ -345,10 +352,11 @@ class CozyLogCommentComponent extends StatelessWidget {
                                           children: [
                                             Text(
                                               subComment.writerNickname,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 14,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 14),
                                               ),
                                             ),
                                             SizedBox(
@@ -357,10 +365,11 @@ class CozyLogCommentComponent extends StatelessWidget {
                                             ),
                                             Text(
                                               subComment.content,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.w400,
-                                                fontSize: 14,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 14),
                                               ),
                                             ),
                                             SizedBox(
@@ -372,10 +381,13 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                 Text(
                                                   dateFormat.format(
                                                       comment.createdAt),
-                                                  style: const TextStyle(
-                                                    color: Color(0xffAAAAAA),
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xffAAAAAA),
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize: 12,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 12),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -467,7 +479,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                                 timeInSecForIosWeb: 1,
                                                                                 backgroundColor: Colors.black.withOpacity(0.7),
                                                                                 textColor: Colors.white,
-                                                                                fontSize: 16.0);
+                                                                                fontSize: AppUtils.scaleSize(context, 16));
 
                                                                             requestCommentsUpdate();
                                                                           },
@@ -516,7 +528,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                                 timeInSecForIosWeb: 1,
                                                                                 backgroundColor: Colors.black.withOpacity(0.7),
                                                                                 textColor: Colors.white,
-                                                                                fontSize: 16.0);
+                                                                                fontSize: AppUtils.scaleSize(context, 16));
                                                                             requestCommentsUpdate();
                                                                           },
                                                                         ),

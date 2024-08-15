@@ -38,18 +38,18 @@ class SelectBottomModal extends StatelessWidget {
                 InkWell(
                   onTap: tap1,
                   child: Text(selec1,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16)),
+                          fontSize: AppUtils.scaleSize(context, 16))),
                 ),
                 InkWell(
                   onTap: tap2,
                   child: Text(selec2,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16)),
+                          fontSize: AppUtils.scaleSize(context, 16))),
                 ),
               ],
             ),
@@ -66,11 +66,11 @@ class SelectBottomModal extends StatelessWidget {
               decoration: BoxDecoration(
                   color: induceButtonColor,
                   borderRadius: BorderRadius.circular(12)),
-              child: const Text('취소',
+              child: Text('취소',
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: 16)),
+                      fontSize: AppUtils.scaleSize(context, 16))),
             ),
           ),
         ],

@@ -120,7 +120,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                     color:
                         widget.isSelected ? primaryColor : offButtonTextColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14),
+                    fontSize: AppUtils.scaleSize(context, 14)),
               ),
             ),
           ],

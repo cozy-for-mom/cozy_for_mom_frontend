@@ -108,12 +108,12 @@ class _SupplementCardState extends State<SupplementCard> {
                           height: AppUtils.scaleSize(context, 18),
                         ),
                         SizedBox(height: AppUtils.scaleSize(context, 5)),
-                        const Text(
+                        Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: AppUtils.scaleSize(context, 14),
                           ),
                         ),
                       ]),
@@ -145,10 +145,10 @@ class _SupplementCardState extends State<SupplementCard> {
                           height: AppUtils.scaleSize(context, 20)),
                       SizedBox(width: AppUtils.scaleSize(context, 10)),
                       Text(widget.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: afterInputColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18)),
+                              fontSize: AppUtils.scaleSize(context, 18))),
                       SizedBox(width: AppUtils.scaleSize(context, 7)),
                       Container(
                         width: AppUtils.scaleSize(context, 57),
@@ -159,10 +159,10 @@ class _SupplementCardState extends State<SupplementCard> {
                             borderRadius: BorderRadius.circular(8)),
                         child: Text(
                           '하루 ${widget.targetCount}회',
-                          style: const TextStyle(
-                              color: Color(0xffFF9797),
+                          style: TextStyle(
+                              color: const Color(0xffFF9797),
                               fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                              fontSize: AppUtils.scaleSize(context, 12)),
                         ),
                       )
                     ]),
@@ -263,7 +263,8 @@ class _SupplementCardState extends State<SupplementCard> {
                                             ? Colors.white
                                             : offButtonTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16)),
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16))),
                               ),
                             ),
                           ),

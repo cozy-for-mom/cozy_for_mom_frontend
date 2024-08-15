@@ -65,20 +65,20 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
         Positioned(
           top: AppUtils.scaleSize(context, 50),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('사용할 이메일을 입력해 주세요',
+          child: Text('사용할 이메일을 입력해 주세요',
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 26)),
+                  fontSize: AppUtils.scaleSize(context, 26))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 95),
           left: AppUtils.scaleSize(context, 20),
-          child: const Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
+          child: Text('안심하세요! 개인정보는 외부에 공개되지 않아요.',
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 14)),
+                  fontSize: AppUtils.scaleSize(context, 14))),
         ),
         Positioned(
           top: AppUtils.scaleSize(context, 180),
@@ -99,21 +99,21 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: primaryColor,
                 maxLength: 34,
-                cursorHeight: 14,
-                cursorWidth: 1.2,
-                style: const TextStyle(
+                cursorHeight: AppUtils.scaleSize(context, 14),
+                cursorWidth: AppUtils.scaleSize(context, 1.2),
+                style: TextStyle(
                     color: mainTextColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: 14),
+                    fontSize: AppUtils.scaleSize(context, 14)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical: AppUtils.scaleSize(context, 10)),
                   border: InputBorder.none,
                   hintText: 'cozy@cozy.com',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                       color: beforeInputColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 14),
+                      fontSize: AppUtils.scaleSize(context, 14)),
                   counterText: '',
                   suffixIcon: _isInputValid
                       ? SizedBox(
@@ -204,7 +204,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                           ? deleteButtonColor
                           : primaryColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 14),
+                      fontSize: AppUtils.scaleSize(context, 14)),
                 ))
             : Container(),
       ],

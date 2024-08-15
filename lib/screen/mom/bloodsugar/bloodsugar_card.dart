@@ -63,10 +63,10 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                   children: <Widget>[
                     Text(
                       widget.time,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12),
+                          fontSize: AppUtils.scaleSize(context, 12)),
                     ),
                     Column(
                         children: periods.map((period) {
@@ -91,10 +91,11 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(period,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16))),
                               Row(
                                 children: <Widget>[
                                   InkWell(
@@ -187,25 +188,28 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                       child: Text(input,
                                           textAlign: TextAlign.center,
                                           style: input == '-'
-                                              ? const TextStyle(
+                                              ? TextStyle(
                                                   color: mainTextColor,
                                                   fontWeight: FontWeight.w400,
-                                                  fontSize: 18)
-                                              : const TextStyle(
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 18))
+                                              : TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 16)),
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 16))),
                                     ),
                                   ),
                                   Padding(
                                       padding: EdgeInsets.only(
                                           left: AppUtils.scaleSize(context, 8)),
-                                      child: const Text(
+                                      child: Text(
                                         'mg / dL',
                                         style: TextStyle(
                                             color: mainTextColor,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: 14),
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 14)),
                                       )),
                                 ],
                               )

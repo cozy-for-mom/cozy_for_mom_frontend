@@ -38,10 +38,10 @@ class _DeleteModalState extends State<DeleteModal> {
                   horizontal: AppUtils.scaleSize(context, 20)),
               child: Text(widget.text,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16)),
+                      fontSize: AppUtils.scaleSize(context, 16))),
             ),
             Container(
                 width: screenWidth, height: 1, color: const Color(0xffD9D9D9)),
@@ -55,11 +55,11 @@ class _DeleteModalState extends State<DeleteModal> {
                   child: Container(
                     alignment: Alignment.center,
                     width: AppUtils.scaleSize(context, 56),
-                    child: const Text('취소',
+                    child: Text('취소',
                         style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14)),
+                            fontSize: AppUtils.scaleSize(context, 14))),
                   ),
                 ),
                 Container(
@@ -78,11 +78,11 @@ class _DeleteModalState extends State<DeleteModal> {
                   child: Container(
                     width: AppUtils.scaleSize(context, 56),
                     alignment: Alignment.center,
-                    child: const Text('삭제하기',
+                    child: Text('삭제하기',
                         style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14)),
+                            fontSize: AppUtils.scaleSize(context, 14))),
                   ),
                 ),
               ],

@@ -121,11 +121,11 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             }
           },
         ),
-        title: const Text('회원가입',
+        title: Text('회원가입',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: 18)),
+                fontSize: AppUtils.scaleSize(context, 18))),
         actions: [
           InkWell(
             onTap: () async {
@@ -191,7 +191,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                           ? Colors.black
                           : navOffTextColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: 18)),
+                      fontSize: AppUtils.scaleSize(context, 18))),
             ),
           ),
         ],
