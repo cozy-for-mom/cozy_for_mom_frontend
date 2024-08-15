@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
@@ -122,19 +123,19 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 62,
+                    top: AppUtils.scaleSize(context, 62),
                     left: 0,
                     child: Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                       width: screenWidth,
-                      height: 52,
+                      height: AppUtils.scaleSize(context, 52),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            width: 32,
-                            height: 32,
+                          SizedBox(
+                            width: AppUtils.scaleSize(context, 32),
+                            height: AppUtils.scaleSize(context, 32),
                           ),
                           const Text(
                             '글쓰기',
@@ -154,11 +155,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     ),
                   ),
                   Positioned(
-                    top: 132,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 132),
+                    left: AppUtils.scaleSize(context, 20),
                     child: SizedBox(
-                      width: screenWidth - 40,
-                      height: 52,
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 52),
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: titleController,
@@ -193,22 +194,25 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     ),
                   ),
                   Positioned(
-                    top: 182,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 182),
+                    left: AppUtils.scaleSize(context, 20),
                     child: Container(
-                      width: screenWidth - 40,
-                      height: 1.5,
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 1.5),
                       color: bottomLineColor,
                     ),
                   ),
                   Positioned(
-                      top: 217,
-                      left: 20,
+                      top: AppUtils.scaleSize(context, 217),
+                      left: AppUtils.scaleSize(context, 20),
                       child: Container(
-                        width: screenWidth - 40,
-                        height: screenHeight - 360,
-                        padding: const EdgeInsets.only(
-                            left: 25, right: 15, top: 20, bottom: 20),
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: screenHeight - AppUtils.scaleSize(context, 360),
+                        padding: EdgeInsets.only(
+                            left: AppUtils.scaleSize(context, 25),
+                            right: AppUtils.scaleSize(context, 15),
+                            top: AppUtils.scaleSize(context, 20),
+                            bottom: AppUtils.scaleSize(context, 20)),
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
                             borderRadius: BorderRadius.circular(20)),
@@ -231,9 +235,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                   child: Column(
                                     children: [
                                       Container(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 20),
-                                        width: screenWidth - 80,
+                                        padding: EdgeInsets.only(
+                                            bottom: AppUtils.scaleSize(
+                                                context, 20)),
+                                        width: screenWidth -
+                                            AppUtils.scaleSize(context, 80),
                                         child: TextFormField(
                                           focusNode: focusNode,
                                           keyboardType: TextInputType.multiline,
@@ -288,7 +294,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                                       _updateDescription(
                                                           index, description),
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(
+                                                height: AppUtils.scaleSize(
+                                                    context, 10)),
                                           ],
                                         );
                                       }).toList(),
@@ -298,7 +306,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                               ),
                             ),
                             SizedBox(
-                              width: 85,
+                              width: AppUtils.scaleSize(context, 85),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -310,8 +318,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         backgroundColor: Colors.transparent,
                                         builder: (BuildContext context) {
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 18.0),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: AppUtils.scaleSize(
+                                                    context, 18)),
                                             child: SelectBottomModal(
                                                 selec1: '직접 찍기',
                                                 selec2: '앨범에서 선택',
@@ -327,11 +336,12 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         },
                                       );
                                     },
-                                    child: const Image(
-                                        image: AssetImage(
+                                    child: Image(
+                                        image: const AssetImage(
                                             'assets/images/icons/gallery.png'),
-                                        width: 36,
-                                        height: 36),
+                                        width: AppUtils.scaleSize(context, 36),
+                                        height:
+                                            AppUtils.scaleSize(context, 36)),
                                   ),
                                   InkWell(
                                     onTap: () {
@@ -340,8 +350,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         backgroundColor: Colors.transparent,
                                         builder: (BuildContext context) {
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 18.0),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: AppUtils.scaleSize(
+                                                    context, 18)),
                                             child: SelectBottomModal(
                                               selec1: '공개',
                                               selec2: '비공개',
@@ -369,8 +380,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                               ? 'assets/images/icons/cozylog_private.png'
                                               : 'assets/images/icons/cozylog_public.png',
                                         ),
-                                        width: 36,
-                                        height: 36),
+                                        width: AppUtils.scaleSize(context, 36),
+                                        height:
+                                            AppUtils.scaleSize(context, 36)),
                                   )
                                 ],
                               ),
@@ -380,8 +392,8 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         // ),
                       )),
                   Positioned(
-                    top: 755,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 755),
+                    left: AppUtils.scaleSize(context, 20),
                     child: InkWell(
                       onTap: () {
                         if (isRegisterButtonEnabled()) {
@@ -408,8 +420,8 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         }
                       },
                       child: Container(
-                        width: screenWidth - 40,
-                        height: 56,
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: AppUtils.scaleSize(context, 56),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: isRegisterButtonEnabled()

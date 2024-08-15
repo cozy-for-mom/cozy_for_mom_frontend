@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -70,7 +71,7 @@ class _LineChartState extends State<LineChart> {
                   : '${dateToString(data.xValue)[1]}월',
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
-          width: 3,
+          width: AppUtils.scaleSize(context, 3),
           markerSettings: const MarkerSettings(
             isVisible: true,
             shape: DataMarkerType.circle,
@@ -92,7 +93,7 @@ class _LineChartState extends State<LineChart> {
           int seriesIndex,
         ) {
           return Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: Colors.black.withOpacity(0),
@@ -128,9 +129,9 @@ class _LineChartState extends State<LineChart> {
         minorGridLines: const MinorGridLines(
           width: 0,
         ),
-        axisLine: const AxisLine(
+        axisLine: AxisLine(
           color: thickLineColor,
-          width: 1.7,
+          width: AppUtils.scaleSize(context, 1.7),
         ),
         labelStyle: TextStyle(
           color: Colors.black.withOpacity(0.5),
@@ -144,8 +145,8 @@ class _LineChartState extends State<LineChart> {
         maximumLabels: 4,
         minorTicksPerInterval: 1,
         tickPosition: TickPosition.inside,
-        majorGridLines: const MajorGridLines(
-          width: 1.7,
+        majorGridLines: MajorGridLines(
+          width: AppUtils.scaleSize(context, 1.7),
           color: thickLineColor,
         ),
         minorGridLines: const MinorGridLines(

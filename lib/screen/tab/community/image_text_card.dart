@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
@@ -57,7 +58,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      width: screenWidth - 80,
+      width: screenWidth - AppUtils.scaleSize(context, 80),
       decoration: const BoxDecoration(
         color: contentBoxTwoColor,
       ),
@@ -66,44 +67,45 @@ class _ImageTextCardState extends State<ImageTextCard> {
           Stack(
             children: [
               SizedBox(
-                width: 69,
-                height: 69,
+                width: AppUtils.scaleSize(context, 69),
+                height: AppUtils.scaleSize(context, 69),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(widget.image.imageUrl, fit: BoxFit.fill),
                 ),
               ),
               Positioned(
-                top: 52,
-                left: 5,
+                top: AppUtils.scaleSize(context, 52),
+                left: AppUtils.scaleSize(context, 5),
                 child: SizedBox(
-                  width: 60,
+                  width: AppUtils.scaleSize(context, 60),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
                         onTap: widget.onMoveUp,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image: AssetImage('assets/images/icons/image_up.png'),
+                        child: Image(
+                          width: AppUtils.scaleSize(context, 10),
+                          height: AppUtils.scaleSize(context, 10),
+                          image: const AssetImage(
+                              'assets/images/icons/image_up.png'),
                         ),
                       ),
                       InkWell(
                         onTap: widget.onMoveDown,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image:
-                              AssetImage('assets/images/icons/image_down.png'),
+                        child: Image(
+                          width: AppUtils.scaleSize(context, 10),
+                          height: AppUtils.scaleSize(context, 10),
+                          image: const AssetImage(
+                              'assets/images/icons/image_down.png'),
                         ),
                       ),
                       InkWell(
                         onTap: widget.onDelete,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image: AssetImage(
+                        child: Image(
+                          width: AppUtils.scaleSize(context, 10),
+                          height: AppUtils.scaleSize(context, 10),
+                          image: const AssetImage(
                               'assets/images/icons/image_delete.png'),
                         ),
                       ),
@@ -114,9 +116,9 @@ class _ImageTextCardState extends State<ImageTextCard> {
             ],
           ),
           Container(
-            padding: const EdgeInsets.only(left: 15),
-            width: screenWidth - 80 - 70 - 15,
-            height: 60,
+            padding: EdgeInsets.only(left: AppUtils.scaleSize(context, 15)),
+            width: screenWidth - AppUtils.scaleSize(context, 165),
+            height: AppUtils.scaleSize(context, 60),
             child: TextFormField(
               controller: _descriptionController,
               // initialValue: widget.image.description,

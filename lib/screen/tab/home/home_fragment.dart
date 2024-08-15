@@ -5,6 +5,7 @@ import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
@@ -90,12 +91,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 128,
+                  top: AppUtils.scaleSize(context, 128),
                   left: 0,
                   right: 0,
                   child: SizedBox(
-                    width: 186,
-                    height: 103,
+                    width: AppUtils.scaleSize(context, 186),
+                    height: AppUtils.scaleSize(context, 103),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -110,7 +111,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                               fontWeight: FontWeight.w600,
                               fontSize: 16),
                         ),
-                        const SizedBox(height: 3),
+                        SizedBox(height: AppUtils.scaleSize(context, 3)),
                         Text(
                           '${pregnantInfo['nickname']} 산모님',
                           style: const TextStyle(
@@ -130,13 +131,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 66,
-                  left: 340,
+                  top: AppUtils.scaleSize(context, 66),
+                  left: AppUtils.scaleSize(context, 340),
                   child: IconButton(
-                    icon: const Image(
-                      width: 30,
-                      height: 30,
-                      image: AssetImage(
+                    icon: Image(
+                      width: AppUtils.scaleSize(context, 30),
+                      height: AppUtils.scaleSize(context, 30),
+                      image: const AssetImage(
                         "assets/images/icons/mypage.png",
                       ),
                     ),
@@ -149,7 +150,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: 380,
+                  top: AppUtils.scaleSize(context, 380),
                   left: 0,
                   right: 0,
                   child: Container(
@@ -166,8 +167,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                     ),
                     child: Column(
                       children: [
-                        const SizedBox(
-                          height: 54,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 54),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,8 +232,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 )),
                           ],
                         ),
-                        const SizedBox(
-                          height: 38,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 38),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +244,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 18)),
-                            const SizedBox(height: 18),
+                            SizedBox(height: AppUtils.scaleSize(context, 18)),
                             InkWell(
                               onTap: () async {
                                 final type = upcomingNotification['type'] ==
@@ -263,10 +264,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 }
                               },
                               child: Container(
-                                width: screenWidth - 40,
-                                height: 100,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30),
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
+                                height: AppUtils.scaleSize(context, 100),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 30)),
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFA2A0F4),
                                     borderRadius: BorderRadius.circular(10)),
@@ -309,7 +312,10 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14)),
-                                                    const SizedBox(height: 6),
+                                                    SizedBox(
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 6)),
                                                     Text(
                                                         upcomingNotification[
                                                             'title'],
@@ -332,15 +338,19 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 ? "assets/images/icons/icon_bloodsugar.png"
                                                 : "assets/images/icons/icon_supplement.png",
                                           ),
-                                          height: 48,
-                                          width: 30,
+                                          height:
+                                              AppUtils.scaleSize(context, 48),
+                                          width:
+                                              AppUtils.scaleSize(context, 30),
                                         ),
-                                        const Image(
-                                          image: AssetImage(
+                                        Image(
+                                          image: const AssetImage(
                                             "assets/images/icons/icon_clock.png",
                                           ),
-                                          height: 66,
-                                          width: 66,
+                                          height:
+                                              AppUtils.scaleSize(context, 66),
+                                          width:
+                                              AppUtils.scaleSize(context, 66),
                                         ),
                                       ],
                                     ),
@@ -354,11 +364,11 @@ class _HomeFragmentState extends State<HomeFragment> {
                     ),
                   ),
                 ),
-                const Positioned(
-                  top: 278,
-                  left: 85,
-                  width: 221,
-                  child: Image(
+                Positioned(
+                  top: AppUtils.scaleSize(context, 278),
+                  left: AppUtils.scaleSize(context, 85),
+                  width: AppUtils.scaleSize(context, 221),
+                  child: const Image(
                     image: AssetImage(
                       "assets/images/baby.png",
                     ),

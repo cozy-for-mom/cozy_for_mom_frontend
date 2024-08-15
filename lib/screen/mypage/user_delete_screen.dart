@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_modal.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class UserDeleteScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
         leading: Container(),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
             child: IconButton(
               icon: const Icon(
                 Icons.close,
@@ -47,7 +48,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -66,8 +67,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 fontSize: 26,
               ),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 10),
             ),
             const Text(
               "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
@@ -78,27 +79,26 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 fontSize: 14,
               ),
             ),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 40),
             ),
             Expanded(
               child: ListView.builder(
                 itemCount: deletedReasons.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                      bottom: 8.0,
+                    padding: EdgeInsets.symmetric(
+                      vertical: AppUtils.scaleSize(context, 8),
                     ),
                     child: Container(
-                      height: 48,
+                      height: AppUtils.scaleSize(context, 48),
                       decoration: BoxDecoration(
                         color: const Color(0xffF7F7FA),
                         borderRadius: BorderRadius.circular(10),
                         border: selectedIndex == index
                             ? Border.all(
                                 color: primaryColor,
-                                width: 2,
+                                width: AppUtils.scaleSize(context, 2),
                               )
                             : null,
                       ),
@@ -117,8 +117,9 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppUtils.scaleSize(context, 10),
+                                horizontal: AppUtils.scaleSize(context, 20)),
                             child: Row(
                               children: [
                                 Icon(
@@ -129,8 +130,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                                   size: 18,
                                   weight: 5,
                                 ),
-                                const SizedBox(
-                                  width: 10,
+                                SizedBox(
+                                  width: AppUtils.scaleSize(context, 10),
                                 ),
                                 Text(
                                   deletedReasons[index],
@@ -167,8 +168,8 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 }
               },
               child: Container(
-                width: screenWidth - 40,
-                height: 56,
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                height: AppUtils.scaleSize(context, 56),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: selectedIndex == null
@@ -185,7 +186,7 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: AppUtils.scaleSize(context, 10)),
           ],
         ),
       ),

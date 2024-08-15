@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -69,9 +70,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth - 40,
-            height: 207,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 207),
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 20)),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
               borderRadius: BorderRadius.circular(20.0),
@@ -85,9 +87,12 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                         fontWeight: FontWeight.w700,
                         fontSize: 20)),
                 Container(
-                  width: 312,
-                  height: 80,
-                  padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
+                  width: AppUtils.scaleSize(context, 312),
+                  height: AppUtils.scaleSize(context, 80),
+                  padding: EdgeInsets.only(
+                      left: AppUtils.scaleSize(context, 24),
+                      right: AppUtils.scaleSize(context, 24),
+                      top: AppUtils.scaleSize(context, 12)),
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(12),
@@ -104,7 +109,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                   fontSize: 12)),
                         ),
                         SizedBox(
-                          height: 32,
+                          height: AppUtils.scaleSize(context, 32),
                           child: TextFormField(
                             controller: textController,
                             onChanged: (text) {
@@ -153,15 +158,16 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: AppUtils.scaleSize(context, 18)),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: 350,
-                  height: 56,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 50),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  height: AppUtils.scaleSize(context, 56),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppUtils.scaleSize(context, 18),
+                      horizontal: AppUtils.scaleSize(context, 50)),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12)),

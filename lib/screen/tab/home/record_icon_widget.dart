@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class RecordIcon extends StatelessWidget {
@@ -20,8 +21,8 @@ class RecordIcon extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 76,
-          width: 76,
+          height: AppUtils.scaleSize(context, 76),
+          width: AppUtils.scaleSize(context, 76),
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: const BorderRadius.all(
@@ -38,8 +39,8 @@ class RecordIcon extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 7,
+        SizedBox(
+          height: AppUtils.scaleSize(context, 7),
         ),
         Text(
           recordTypeKorName,

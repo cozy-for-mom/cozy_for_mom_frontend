@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -102,24 +103,29 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final joinInputData = Provider.of<JoinInputData>(context);
     return SizedBox(
-      height: screenHeight - 43,
+      height: screenHeight - AppUtils.scaleSize(context, 43),
       child: CustomScrollView(
         slivers: <Widget>[
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 50, left: 20),
-                  child: Text('아기의 정보를 입력해주세요',
+                  padding: EdgeInsets.only(
+                      top: AppUtils.scaleSize(context, 50),
+                      left: AppUtils.scaleSize(context, 20)),
+                  child: const Text('아기의 정보를 입력해주세요',
                       style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w700,
                           fontSize: 26)),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10, left: 20, bottom: 30),
-                  child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
+                  padding: EdgeInsets.only(
+                      top: AppUtils.scaleSize(context, 10),
+                      left: AppUtils.scaleSize(context, 20),
+                      bottom: AppUtils.scaleSize(context, 30)),
+                  child: const Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
@@ -138,17 +144,20 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                   genderControllers.add(TextEditingController());
                 }
                 return Padding(
-                  padding: const EdgeInsets.only(left: 20),
+                  padding:
+                      EdgeInsets.only(left: AppUtils.scaleSize(context, 20)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(
+                            bottom: AppUtils.scaleSize(context, 10)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: screenWidth - 40,
+                              width:
+                                  screenWidth - AppUtils.scaleSize(context, 40),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -159,11 +168,13 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14)),
                                   IconButton(
-                                      icon: const Image(
-                                          image: AssetImage(
+                                      icon: Image(
+                                          image: const AssetImage(
                                               'assets/images/icons/baby_remove.png'),
-                                          height: 15,
-                                          width: 14),
+                                          height:
+                                              AppUtils.scaleSize(context, 15),
+                                          width:
+                                              AppUtils.scaleSize(context, 14)),
                                       onPressed: () {
                                         print('$index 태아 삭제');
                                         if (mounted && babyCount > 1) {
@@ -183,12 +194,15 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: AppUtils.scaleSize(context, 10)),
                             Container(
-                                width: screenWidth - 40,
-                                height: 48,
-                                padding: const EdgeInsets.only(
-                                    top: 10, bottom: 10, left: 20, right: 20),
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
+                                height: AppUtils.scaleSize(context, 48),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppUtils.scaleSize(context, 10),
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 20)),
                                 decoration: BoxDecoration(
                                     color: contentBoxTwoColor,
                                     borderRadius: BorderRadius.circular(10)),
@@ -205,12 +219,13 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14),
-                                  decoration: const InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(vertical: 10),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical:
+                                            AppUtils.scaleSize(context, 10)),
                                     border: InputBorder.none,
                                     hintText: '8자 이내로 입력해주세요',
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                         color: beforeInputColor,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 14),
@@ -226,13 +241,13 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                     }
                                   },
                                 )),
-                            const SizedBox(height: 25),
+                            SizedBox(height: AppUtils.scaleSize(context, 25)),
                             const Text('성별',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14)),
-                            const SizedBox(height: 10),
+                            SizedBox(height: AppUtils.scaleSize(context, 10)),
                             InkWell(
                               onTap: () {
                                 if (mounted) {
@@ -243,18 +258,20 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                 }
                               },
                               child: Container(
-                                width: screenWidth - 40,
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10)),
-                                padding: const EdgeInsets.only(left: 20),
+                                padding: EdgeInsets.only(
+                                    left: AppUtils.scaleSize(context, 20)),
                                 child: IgnorePointer(
                                   child: TextFormField(
                                     controller: genderControllers[index],
                                     readOnly: true,
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.only(top: 15),
+                                      contentPadding: EdgeInsets.only(
+                                          top: AppUtils.scaleSize(context, 15)),
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.circular(10),
@@ -279,10 +296,12 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                             ),
                             isOpenGenderModal[index]
                                 ? Container(
-                                    height: 188,
-                                    width: screenWidth - 40,
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                    height: AppUtils.scaleSize(context, 188),
+                                    width: screenWidth -
+                                        AppUtils.scaleSize(context, 40),
+                                    margin: EdgeInsets.symmetric(
+                                        vertical:
+                                            AppUtils.scaleSize(context, 8)),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: contentBoxTwoColor,
@@ -310,8 +329,9 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                           child: Align(
                                             alignment: Alignment.center,
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(
+                                                  AppUtils.scaleSize(
+                                                      context, 8)),
                                               child: Text(
                                                 item,
                                                 style: const TextStyle(
@@ -329,9 +349,11 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                 : Container(),
                             babyCount > 1 && index < babyCount - 1
                                 ? Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 30),
-                                    width: screenWidth - 40,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical:
+                                            AppUtils.scaleSize(context, 30)),
+                                    width: screenWidth -
+                                        AppUtils.scaleSize(context, 40),
                                     height: 1,
                                     color: mainLineColor)
                                 : Container(),
@@ -356,9 +378,10 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                         });
                       }
                     },
-                    child: const Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Center(
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            top: AppUtils.scaleSize(context, 10)),
+                        child: const Center(
                             child: Text(
                           '+ 태아 추가하기',
                           style: TextStyle(
@@ -368,8 +391,8 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                         ))))
                 : Container(),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 100),
+          SliverToBoxAdapter(
+            child: SizedBox(height: AppUtils.scaleSize(context, 100)),
           )
         ],
       ),

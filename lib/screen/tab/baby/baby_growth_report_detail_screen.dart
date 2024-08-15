@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
@@ -91,8 +92,10 @@ class _BabyGrowthReportDetailScreenState
                       slivers: [
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 10, bottom: 32),
+                            padding: EdgeInsets.only(
+                                top: AppUtils.scaleSize(context, 20),
+                                left: AppUtils.scaleSize(context, 10),
+                                bottom: AppUtils.scaleSize(context, 32)),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: snapshot.data!.babies!
@@ -117,7 +120,8 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 20)),
                             child: SizedBox(
                               width: screenWidth,
                               child: Row(
@@ -136,8 +140,8 @@ class _BabyGrowthReportDetailScreenState
                                           fontSize: 20,
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
+                                      SizedBox(
+                                        height: AppUtils.scaleSize(context, 5),
                                       ),
                                       Text(
                                         "${DateFormat("yyyy. MM. dd HH:mm").format(data.date)} 작성",
@@ -156,13 +160,18 @@ class _BabyGrowthReportDetailScreenState
                                         context: context,
                                         builder: (BuildContext context) {
                                           return SizedBox(
-                                            height: 230,
+                                            height: AppUtils.scaleSize(
+                                                context, 230),
                                             child: Column(
                                               children: [
                                                 Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 8),
-                                                  width: screenWidth - 40,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          AppUtils.scaleSize(
+                                                              context, 8)),
+                                                  width: screenWidth -
+                                                      AppUtils.scaleSize(
+                                                          context, 40),
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -234,16 +243,20 @@ class _BabyGrowthReportDetailScreenState
                                                         ]),
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 16,
+                                                SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 16),
                                                 ),
                                                 InkWell(
                                                   onTap: () {
                                                     Navigator.pop(context);
                                                   },
                                                   child: Container(
-                                                    width: screenWidth - 40,
-                                                    height: 56,
+                                                    width: screenWidth -
+                                                        AppUtils.scaleSize(
+                                                            context, 40),
+                                                    height: AppUtils.scaleSize(
+                                                        context, 56),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -280,13 +293,14 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 20),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 18),
+                                vertical: AppUtils.scaleSize(context, 20)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 width: screenWidth,
-                                height: 216,
+                                height: AppUtils.scaleSize(context, 216),
                                 decoration: const BoxDecoration(
                                   color: offButtonColor,
                                 ),
@@ -302,7 +316,8 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 21),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 21)),
                             child: SizedBox(
                               width: screenWidth,
                               height: _textFieldHeight,
@@ -314,8 +329,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 20),
+                                vertical: AppUtils.scaleSize(context, 10)),
                             child: Container(
                               width: screenWidth,
                               height: 1,
@@ -325,9 +341,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 20),
+                              vertical: AppUtils.scaleSize(context, 15),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,12 +356,15 @@ class _BabyGrowthReportDetailScreenState
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 14)),
                                 Container(
-                                  width: screenWidth - 40,
-                                  height: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 48),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(30)),
@@ -370,9 +389,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 20),
+                              vertical: AppUtils.scaleSize(context, 15),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,12 +404,15 @@ class _BabyGrowthReportDetailScreenState
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 14)),
                                 Container(
-                                  width: screenWidth - 40,
-                                  height: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 48),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(30)),
@@ -415,9 +437,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 20),
+                              vertical: AppUtils.scaleSize(context, 15),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -430,12 +452,15 @@ class _BabyGrowthReportDetailScreenState
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 14)),
                                 Container(
-                                  width: screenWidth - 40,
-                                  height: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 48),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(30)),
@@ -460,9 +485,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 20),
+                              vertical: AppUtils.scaleSize(context, 15),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,12 +500,15 @@ class _BabyGrowthReportDetailScreenState
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 14)),
                                 Container(
-                                  width: screenWidth - 40,
-                                  height: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 48),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(30)),
@@ -505,8 +533,9 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 20),
+                                vertical: AppUtils.scaleSize(context, 15)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -518,12 +547,15 @@ class _BabyGrowthReportDetailScreenState
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 14)),
                                 Container(
-                                  width: screenWidth - 40,
-                                  height: 48,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 48),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(30)),
@@ -546,8 +578,9 @@ class _BabyGrowthReportDetailScreenState
                             ),
                           ),
                         ),
-                        const SliverToBoxAdapter(
-                          child: SizedBox(height: 60),
+                        SliverToBoxAdapter(
+                          child:
+                              SizedBox(height: AppUtils.scaleSize(context, 60)),
                         ),
                       ],
                     );

@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_comment_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -27,13 +28,15 @@ class CozyLogCommentComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
     bool isMyComment = comment.writerId == 1;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 15.0,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppUtils.scaleSize(context, 8),
+        vertical: AppUtils.scaleSize(context, 15),
       ),
       child: Column(
         children: [
@@ -48,7 +51,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          height: 50,
+                          height: AppUtils.scaleSize(context, 50),
                           child: comment.writerImageUrl == null
                               ? Image.asset(
                                   "assets/images/icons/momProfile.png")
@@ -56,11 +59,11 @@ class CozyLogCommentComponent extends StatelessWidget {
                                   comment.writerImageUrl!,
                                 ),
                         ),
-                        const SizedBox(
-                          width: 12,
+                        SizedBox(
+                          width: AppUtils.scaleSize(context, 12),
                         ),
                         SizedBox(
-                          height: 70,
+                          height: AppUtils.scaleSize(context, 70),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -72,8 +75,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 5,
+                              SizedBox(
+                                height: AppUtils.scaleSize(context, 5),
                               ),
                               Text(
                                 comment.content,
@@ -83,8 +86,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 5,
+                              SizedBox(
+                                height: AppUtils.scaleSize(context, 5),
                               ),
                               Row(
                                 children: [
@@ -96,8 +99,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                       fontSize: 12,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 7,
+                                  SizedBox(
+                                    width: AppUtils.scaleSize(context, 7),
                                   ),
                                   InkWell(
                                     onTap: onReply,
@@ -129,11 +132,12 @@ class CozyLogCommentComponent extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                    height: 220,
+                                    height: AppUtils.scaleSize(context, 220),
                                     child: Column(
                                       children: [
                                         Container(
-                                          width: 350,
+                                          width: screenWidth -
+                                              AppUtils.scaleSize(context, 40),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -251,16 +255,19 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                   ]),
                                                 ),
                                         ),
-                                        const SizedBox(
-                                          height: 20,
+                                        SizedBox(
+                                          height:
+                                              AppUtils.scaleSize(context, 20),
                                         ),
                                         InkWell(
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
                                           child: Container(
-                                            width: 350,
-                                            height: 56,
+                                            width: screenWidth -
+                                                AppUtils.scaleSize(context, 40),
+                                            height:
+                                                AppUtils.scaleSize(context, 56),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -292,19 +299,20 @@ class CozyLogCommentComponent extends StatelessWidget {
                       child: Text("댓글이 삭제되었습니다.")),
                 ),
           subComments.isNotEmpty
-              ? const SizedBox(
-                  height: 20,
+              ? SizedBox(
+                  height: AppUtils.scaleSize(context, 20),
                 )
               : const SizedBox(),
           subComments.isNotEmpty
               ? Padding(
-                  padding: const EdgeInsets.only(left: 50.0), // 왼쪽 패딩으로 인덴트 조정
+                  padding: EdgeInsets.only(
+                      left: AppUtils.scaleSize(context, 50)), // 왼쪽 패딩으로 인덴트 조정
                   child: Column(
                     children: subComments.map((subComment) {
                       return Column(
                         children: [
-                          const SizedBox(
-                            height: 10,
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 10),
                           ),
                           !subComment.isDeleted
                               ? Row(
@@ -318,7 +326,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                           ),
-                                          height: 50,
+                                          height:
+                                              AppUtils.scaleSize(context, 50),
                                           child: comment.writerImageUrl == null
                                               ? Image.asset(
                                                   "assets/images/icons/momProfile.png")
@@ -326,8 +335,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                   comment.writerImageUrl!,
                                                 ),
                                         ),
-                                        const SizedBox(
-                                          width: 12,
+                                        SizedBox(
+                                          width:
+                                              AppUtils.scaleSize(context, 12),
                                         ),
                                         Column(
                                           crossAxisAlignment:
@@ -341,8 +351,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                 fontSize: 14,
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 5,
+                                            SizedBox(
+                                              height: AppUtils.scaleSize(
+                                                  context, 5),
                                             ),
                                             Text(
                                               subComment.content,
@@ -352,8 +363,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                 fontSize: 14,
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 5,
+                                            SizedBox(
+                                              height: AppUtils.scaleSize(
+                                                  context, 5),
                                             ),
                                             Row(
                                               children: [
@@ -366,13 +378,15 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                     fontSize: 12,
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 7,
+                                                SizedBox(
+                                                  width: AppUtils.scaleSize(
+                                                      context, 7),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 10,
+                                            SizedBox(
+                                              height: AppUtils.scaleSize(
+                                                  context, 10),
                                             ),
                                           ],
                                         ),
@@ -392,11 +406,16 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                 builder:
                                                     (BuildContext context) {
                                                   return SizedBox(
-                                                    height: 220,
+                                                    height: AppUtils.scaleSize(
+                                                        context, 220),
                                                     child: Column(
                                                       children: [
                                                         Container(
-                                                          width: 350,
+                                                          width: screenWidth -
+                                                              AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      40),
                                                           decoration:
                                                               BoxDecoration(
                                                             borderRadius:
@@ -504,8 +523,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                       ]),
                                                                 ),
                                                         ),
-                                                        const SizedBox(
-                                                          height: 20,
+                                                        SizedBox(
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 20),
                                                         ),
                                                         InkWell(
                                                           onTap: () {
@@ -513,8 +534,15 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                 context);
                                                           },
                                                           child: Container(
-                                                            width: 350,
-                                                            height: 56,
+                                                            width: screenWidth -
+                                                                AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        40),
+                                                            height: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    56),
                                                             decoration:
                                                                 BoxDecoration(
                                                               borderRadius:

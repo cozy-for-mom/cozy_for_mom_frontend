@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_card.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 
@@ -13,15 +14,15 @@ class BloodsugarRecord extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned(
-            top: 177,
-            left: 20,
+            top: AppUtils.scaleSize(context, 177),
+            left: AppUtils.scaleSize(context, 20),
             child: SizedBox(
-              height: 100,
-              width: screenWidth - 40,
+              height: AppUtils.scaleSize(context, 100),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
               child: const WeeklyCalendar(),
             )),
         Positioned(
-          top: 288,
+          top: AppUtils.scaleSize(context, 288),
           left: 0,
           right: 0,
           child: Column(
@@ -29,7 +30,9 @@ class BloodsugarRecord extends StatelessWidget {
               return Column(
                 children: [
                   BloodsugarCard(time: time),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          bottom: AppUtils.scaleSize(context, 10))),
                 ],
               );
             }).toList(),

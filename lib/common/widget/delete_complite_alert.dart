@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class CompleteAlertModal extends StatelessWidget {
@@ -30,7 +31,7 @@ class CompleteAlertModal extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         width: screenWidth * (1 / 3),
-        height: 41,
+        height: AppUtils.scaleSize(context, 41),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: const Color.fromRGBO(0, 0, 0, 0.7),

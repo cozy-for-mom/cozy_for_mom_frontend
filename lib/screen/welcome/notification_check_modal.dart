@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class NotificationCheckModal extends StatefulWidget {
@@ -12,17 +13,19 @@ class NotificationCheckModal extends StatefulWidget {
 class _NotificationCheckModalState extends State<NotificationCheckModal> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Dialog(
       child: Container(
-        width: 350, // TODO 화면 너비에 맞춘 width로 수정해야함
-        height: 220,
+        width: screenWidth - AppUtils.scaleSize(context, 40),
+        height: AppUtils.scaleSize(context, 220),
         decoration: BoxDecoration(
           color: contentBoxTwoColor,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 30,
+          padding: EdgeInsets.only(
+            top: AppUtils.scaleSize(context, 30),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -37,8 +40,8 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
               ),
               const Text(
                 "마케팅 푸시 허용 시, 산모에게 유용한 정보와\n이벤트, 혜택 정보를 받아보실 수 있어요.",
@@ -49,17 +52,17 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                   fontSize: 13,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 20),
               ),
               Column(
                 children: [
-                  const Divider(
+                  Divider(
                     thickness: 1,
-                    color: Color(
+                    color: const Color(
                       0xffD9D9D9,
                     ),
-                    height: 2,
+                    height: AppUtils.scaleSize(context, 2),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -76,7 +79,7 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 56,
+                          width: AppUtils.scaleSize(context, 56),
                           child: const Text(
                             '허용 안 함',
                             style: TextStyle(
@@ -89,7 +92,7 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                       ),
                       Container(
                         width: 1,
-                        height: 60,
+                        height: AppUtils.scaleSize(context, 60),
                         color: const Color(0xffD9D9D9),
                       ),
                       InkWell(
@@ -103,7 +106,7 @@ class _NotificationCheckModalState extends State<NotificationCheckModal> {
                           );
                         },
                         child: Container(
-                          width: 56,
+                          width: AppUtils.scaleSize(context, 56),
                           alignment: Alignment.center,
                           child: const Text(
                             '허용',

@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
@@ -26,7 +27,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      width: 350,
+      width: screenWidth - AppUtils.scaleSize(context, 40),
       // height: 83,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -36,11 +37,12 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14)),
-          const SizedBox(height: 14),
+          SizedBox(height: AppUtils.scaleSize(context, 14)),
           Container(
-              width: screenWidth - 40,
-              height: 48,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 48),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 20)),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(
@@ -72,7 +74,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                               widget.title == '이메일') &&
                           _isSuffixVisible
                       ? SizedBox(
-                          width: 42,
+                          width: AppUtils.scaleSize(context, 42),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -83,11 +85,11 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                                     _isSuffixVisible = false;
                                   });
                                 },
-                                child: const Image(
-                                  image: AssetImage(
+                                child: Image(
+                                  image: const AssetImage(
                                       'assets/images/icons/text_delete.png'),
-                                  width: 16,
-                                  height: 16,
+                                  width: AppUtils.scaleSize(context, 16),
+                                  height: AppUtils.scaleSize(context, 16),
                                 ),
                               ),
                               Image(
@@ -96,8 +98,8 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                                         _validateEmail(widget.controller!.text)
                                     ? 'assets/images/icons/pass.png'
                                     : 'assets/images/icons/unpass.png'),
-                                width: 18,
-                                height: 18,
+                                width: AppUtils.scaleSize(context, 18),
+                                height: AppUtils.scaleSize(context, 18),
                               ),
                             ],
                           ),
@@ -122,7 +124,9 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
               )),
           (widget.title == '닉네임' || widget.title == '이메일') && _isSuffixVisible
               ? Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 10),
+                  padding: EdgeInsets.only(
+                      top: AppUtils.scaleSize(context, 5),
+                      left: AppUtils.scaleSize(context, 10)),
                   child: Text(
                     (widget.title == '닉네임' &&
                                 checkNicknameLength(widget.controller!.text)) ||

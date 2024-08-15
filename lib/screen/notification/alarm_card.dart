@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -97,7 +98,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
       return hourA.compareTo(hourB);
     });
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 5)),
       child: Card(
         elevation: 0.0,
         shape:
@@ -109,7 +110,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             IconSlideAction(
               color: Colors.transparent,
               iconWidget: Container(
-                width: 120,
+                width: AppUtils.scaleSize(context, 120),
                 decoration: const BoxDecoration(
                   color: deleteButtonColor,
                   borderRadius: BorderRadius.only(
@@ -138,16 +139,17 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                       },
                     );
                   },
-                  child: const Column(
+                  child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
-                          image: AssetImage('assets/images/icons/delete.png'),
-                          width: 17.5,
-                          height: 18,
+                          image: const AssetImage(
+                              'assets/images/icons/delete.png'),
+                          width: AppUtils.scaleSize(context, 17.5),
+                          height: AppUtils.scaleSize(context, 18),
                         ),
-                        SizedBox(height: 5),
-                        Text(
+                        SizedBox(height: AppUtils.scaleSize(context, 5)),
+                        const Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
@@ -161,12 +163,14 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             ),
           ],
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+            padding: EdgeInsets.symmetric(
+                vertical: AppUtils.scaleSize(context, 24),
+                horizontal: AppUtils.scaleSize(context, 20)),
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
                 borderRadius: BorderRadius.circular(20.0)),
-            width: screenWidth - 40,
-            height: 164,
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 164),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,12 +194,13 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: AppUtils.scaleSize(context, 8)),
                                 Container(
-                                  height: 22,
+                                  height: AppUtils.scaleSize(context, 22),
                                   alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 8)),
                                   decoration: BoxDecoration(
                                       color: widget.notification.isActive
                                           ? const Color(0xffFEEEEE)
@@ -215,8 +220,12 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                                 fontSize: 12),
                                           );
                                         })
-                                        .expand((widget) =>
-                                            [widget, const SizedBox(width: 8)])
+                                        .expand((widget) => [
+                                              widget,
+                                              SizedBox(
+                                                  width: AppUtils.scaleSize(
+                                                      context, 8))
+                                            ])
                                         .toList()
                                       ..removeLast(),
                                   ),
@@ -241,7 +250,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           fontWeight: FontWeight.w500,
                           fontSize: 12)),
                   SizedBox(
-                    width: 312,
+                    width: AppUtils.scaleSize(context, 312),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,

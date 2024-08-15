@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/welcome/notification_check_modal.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -8,15 +9,17 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 70,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 70),
           ),
-          const Image(
-            height: 395,
-            image: AssetImage(
+          Image(
+            height: AppUtils.scaleSize(context, 395),
+            image: const AssetImage(
               "assets/images/welcome_image.png",
             ),
             fit: BoxFit.fitHeight,
@@ -29,8 +32,8 @@ class WelcomeScreen extends StatelessWidget {
               fontSize: 12,
             ),
           ),
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 15),
           ),
           const Text(
             "현명한 임신 준비\n코지포맘에서 시작해요",
@@ -41,8 +44,8 @@ class WelcomeScreen extends StatelessWidget {
               height: 1.4,
             ),
           ),
-          const SizedBox(
-            height: 25,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 25),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,8 +67,8 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 10),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -87,8 +90,8 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 10),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,13 +113,15 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 90,
+          SizedBox(
+            height: AppUtils.scaleSize(context, 90),
           ),
           Container(
-            width: 350,
-            height: 56,
-            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 50),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 56),
+            padding: EdgeInsets.symmetric(
+                vertical: AppUtils.scaleSize(context, 18),
+                horizontal: AppUtils.scaleSize(context, 50)),
             decoration: BoxDecoration(
               color: primaryColor,
               borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
@@ -29,14 +30,15 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: screenWidth - 40,
+      width: screenWidth - AppUtils.scaleSize(context, 40),
       child: Column(
         children: [
           Row(
             children: [
               widget.isEditMode
                   ? Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: EdgeInsets.only(
+                          right: AppUtils.scaleSize(context, 20)),
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -56,8 +58,8 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                   'assets/images/icons/select_on.png')
                               : const AssetImage(
                                   'assets/images/icons/select_off.png'),
-                          width: 20,
-                          height: 20,
+                          width: AppUtils.scaleSize(context, 20),
+                          height: AppUtils.scaleSize(context, 20),
                         ),
                       ),
                     )
@@ -77,21 +79,23 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppUtils.scaleSize(context, 24)),
                     SizedBox(
                       width: widget.isEditMode
-                          ? screenWidth - 84 - 40
-                          : screenWidth - 84,
+                          ? screenWidth - AppUtils.scaleSize(context, 124)
+                          : screenWidth - AppUtils.scaleSize(context, 84),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             width: widget.cozylog.imageCount < 1
                                 ? widget.isEditMode
-                                    ? screenWidth * (3 / 4) - 40
+                                    ? screenWidth * (3 / 4) -
+                                        AppUtils.scaleSize(context, 40)
                                     : screenWidth * (3 / 4)
                                 : widget.isEditMode
-                                    ? screenWidth / 2 - 40
+                                    ? screenWidth / 2 -
+                                        AppUtils.scaleSize(context, 40)
                                     : screenWidth / 2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,9 +107,10 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16)),
-                                const SizedBox(height: 6),
                                 SizedBox(
-                                  height: 36,
+                                    height: AppUtils.scaleSize(context, 6)),
+                                SizedBox(
+                                  height: AppUtils.scaleSize(context, 36),
                                   child: Text(widget.cozylog.summary,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -114,7 +119,8 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12)),
                                 ),
-                                const SizedBox(height: 6),
+                                SizedBox(
+                                    height: AppUtils.scaleSize(context, 6)),
                                 Row(
                                   children: [
                                     Text(
@@ -175,17 +181,17 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
                                         widget.cozylog.imageUrl,
-                                        width: 88,
-                                        height: 88,
+                                        width: AppUtils.scaleSize(context, 88),
+                                        height: AppUtils.scaleSize(context, 88),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                     Positioned(
-                                      top: 7,
-                                      right: 7,
+                                      top: AppUtils.scaleSize(context, 7),
+                                      right: AppUtils.scaleSize(context, 7),
                                       child: Container(
-                                        width: 24,
-                                        height: 18,
+                                        width: AppUtils.scaleSize(context, 24),
+                                        height: AppUtils.scaleSize(context, 18),
                                         decoration: BoxDecoration(
                                             color: const Color.fromRGBO(
                                                 0, 0, 0, 0.4),
@@ -206,9 +212,9 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 13),
+                    SizedBox(height: AppUtils.scaleSize(context, 13)),
                     SizedBox(
-                      width: 144,
+                      width: AppUtils.scaleSize(context, 144),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -216,12 +222,12 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Image(
-                                    image: AssetImage(
+                                Image(
+                                    image: const AssetImage(
                                         'assets/images/icons/comment.png'),
-                                    width: 16,
-                                    height: 15.68),
-                                const SizedBox(width: 7),
+                                    width: AppUtils.scaleSize(context, 16),
+                                    height: AppUtils.scaleSize(context, 15.68)),
+                                SizedBox(width: AppUtils.scaleSize(context, 7)),
                                 Text('댓글 ${widget.cozylog.commentCount}',
                                     style: const TextStyle(
                                         color: Color(0xffAAAAAA),
@@ -233,13 +239,13 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                           SizedBox(
                             child: Row(
                               children: [
-                                const Image(
-                                  image: AssetImage(
+                                Image(
+                                  image: const AssetImage(
                                       'assets/images/icons/scrap_gray.png'),
-                                  width: 11.76,
-                                  height: 15.68,
+                                  width: AppUtils.scaleSize(context, 11.76),
+                                  height: AppUtils.scaleSize(context, 15.68),
                                 ),
-                                const SizedBox(width: 7),
+                                SizedBox(width: AppUtils.scaleSize(context, 7)),
                                 Text(
                                   '스크랩 ${widget.cozylog.scrapCount}',
                                   style: const TextStyle(
@@ -254,7 +260,7 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: AppUtils.scaleSize(context, 20)),
                     const Divider(color: lineTwoColor, height: 1),
                   ],
                 ),

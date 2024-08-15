@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 
@@ -39,8 +40,8 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/images/icons/navigation_baby.png', // 사용할 이미지 파일의 경로
-              width: 40,
-              height: 40,
+              width: AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 40),
               color:
                   selectedIndex == 0 ? primaryColor : const Color(0xffBCC0C7),
             ),
@@ -58,13 +59,13 @@ class _MainScreenState extends State<MainScreen> {
               ]),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 8,
+                  SizedBox(
+                    height: AppUtils.scaleSize(context, 8),
                   ),
                   Image.asset(
                     'assets/images/icons/navigation_home.png', // 사용할 이미지 파일의 경로
-                    width: 50,
-                    height: 50,
+                    width: AppUtils.scaleSize(context, 50),
+                    height: AppUtils.scaleSize(context, 50),
                   ),
                 ],
               ),
@@ -74,8 +75,8 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/images/icons/navigation_community.png', // 사용할 이미지 파일의 경로
-              width: 40,
-              height: 40,
+              width: AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 40),
               color:
                   selectedIndex == 2 ? primaryColor : const Color(0xffBCC0C7),
             ),

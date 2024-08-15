@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/bloodsugar_alarm.dart';
@@ -69,11 +70,11 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: 10,
-              left: 20,
+              top: AppUtils.scaleSize(context, 10),
+              left: AppUtils.scaleSize(context, 20),
               child: Container(
-                width: screenWidth - 40,
-                height: 53,
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                height: AppUtils.scaleSize(context, 53),
                 decoration: BoxDecoration(
                     color: offButtonColor,
                     borderRadius: BorderRadius.circular(30)),
@@ -89,9 +90,12 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                         });
                       },
                       child: Container(
-                          width: isBloodSugarButtonEnabled ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isBloodSugarButtonEnabled
+                              ? AppUtils.scaleSize(context, 173)
+                              : AppUtils.scaleSize(context, 153),
+                          height: AppUtils.scaleSize(context, 41),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: isBloodSugarButtonEnabled
@@ -116,9 +120,12 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                         });
                       },
                       child: Container(
-                          width: isSupplementButtonEnabled ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isSupplementButtonEnabled
+                              ? AppUtils.scaleSize(context, 173)
+                              : AppUtils.scaleSize(context, 153),
+                          height: AppUtils.scaleSize(context, 41),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: isSupplementButtonEnabled

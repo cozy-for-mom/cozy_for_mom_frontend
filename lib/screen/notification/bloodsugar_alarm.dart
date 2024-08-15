@@ -3,6 +3,7 @@ import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_card.dart';
 import 'package:provider/provider.dart';
@@ -61,23 +62,23 @@ class _BloodsugarAlarmState extends State<BloodsugarAlarm> {
             ));
           }
           return Positioned(
-            top: 90,
+            top: AppUtils.scaleSize(context, 90),
             left: 0,
             right: 0,
             child: notifications.isEmpty
                 ? Column(children: [
                     SizedBox(
                         height: screenHeight * (0.55),
-                        child: const Column(
+                        child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image(
-                                  image: AssetImage(
+                                  image: const AssetImage(
                                       'assets/images/icons/notification_off.png'),
-                                  width: 50,
-                                  height: 52),
-                              SizedBox(height: 7),
-                              Text('알림을 등록해 보세요!',
+                                  width: AppUtils.scaleSize(context, 50),
+                                  height: AppUtils.scaleSize(context, 52)),
+                              SizedBox(height: AppUtils.scaleSize(context, 7)),
+                              const Text('알림을 등록해 보세요!',
                                   style: TextStyle(
                                       color: Color(0xff9397A4),
                                       fontWeight: FontWeight.w500,
@@ -85,7 +86,7 @@ class _BloodsugarAlarmState extends State<BloodsugarAlarm> {
                             ])),
                   ])
                 : SizedBox(
-                    height: screenHeight - 200,
+                    height: screenHeight - AppUtils.scaleSize(context, 200),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
@@ -111,8 +112,9 @@ class _BloodsugarAlarmState extends State<BloodsugarAlarm> {
                             ),
                           );
                         }).toList()
-                          ..add(const SizedBox(
-                              height: 110)), // 리스트 끝에 SizedBox 추가
+                          ..add(SizedBox(
+                              height: screenHeight *
+                                  (1 / 8))), // 리스트 끝에 SizedBox 추가
                       ),
                     ),
                   ),

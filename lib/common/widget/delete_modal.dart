@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
@@ -23,8 +24,8 @@ class _DeleteModalState extends State<DeleteModal> {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Container(
-        width: screenWidth, // TODO 화면 너비에 맞춘 width로 수정해야함
-        height: 173,
+        width: screenWidth,
+        height: AppUtils.scaleSize(context, 173),
         decoration: BoxDecoration(
             color: contentBoxTwoColor, borderRadius: BorderRadius.circular(20)),
         child: Column(
@@ -32,7 +33,9 @@ class _DeleteModalState extends State<DeleteModal> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              padding: EdgeInsets.symmetric(
+                  vertical: AppUtils.scaleSize(context, 30),
+                  horizontal: AppUtils.scaleSize(context, 20)),
               child: Text(widget.text,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
@@ -41,9 +44,7 @@ class _DeleteModalState extends State<DeleteModal> {
                       fontSize: 16)),
             ),
             Container(
-                width: 350,
-                height: 1,
-                color: const Color(0xffD9D9D9)), // TODO 화면 너비에 맞춘 width로 수정해야함
+                width: screenWidth, height: 1, color: const Color(0xffD9D9D9)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -53,7 +54,7 @@ class _DeleteModalState extends State<DeleteModal> {
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    width: 56,
+                    width: AppUtils.scaleSize(context, 56),
                     child: const Text('취소',
                         style: TextStyle(
                             color: primaryColor,
@@ -61,7 +62,10 @@ class _DeleteModalState extends State<DeleteModal> {
                             fontSize: 14)),
                   ),
                 ),
-                Container(width: 1, height: 65, color: const Color(0xffD9D9D9)),
+                Container(
+                    width: 1,
+                    height: AppUtils.scaleSize(context, 65),
+                    color: const Color(0xffD9D9D9)),
                 InkWell(
                   onTap: () async {
                     await widget.tapFunc!();
@@ -72,7 +76,7 @@ class _DeleteModalState extends State<DeleteModal> {
                     }
                   },
                   child: Container(
-                    width: 56,
+                    width: AppUtils.scaleSize(context, 56),
                     alignment: Alignment.center,
                     child: const Text('삭제하기',
                         style: TextStyle(

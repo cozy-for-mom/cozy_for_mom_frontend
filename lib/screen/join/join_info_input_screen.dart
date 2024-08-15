@@ -5,6 +5,7 @@ import 'package:cozy_for_mom_frontend/screen/welcome/welcome_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -176,7 +177,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(right: screenWidth / 19),
+              padding: EdgeInsets.only(
+                  right: screenWidth / AppUtils.scaleSize(context, 19)),
               child: Text('다음',
                   style: TextStyle(
                       color: ((_currentPage == 0 && _isEmailValid) ||
@@ -197,9 +199,9 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
       body: Stack(
         children: [
           Positioned(
-            top: 43,
-            left: 20,
-            right: 20,
+            top: AppUtils.scaleSize(context, 43),
+            left: AppUtils.scaleSize(context, 20),
+            right: AppUtils.scaleSize(context, 20),
             child: LinearProgressIndicator(
               value: (_currentPage + 1) / _totalPage,
               backgroundColor: mainLineColor,
@@ -209,7 +211,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             ),
           ),
           Positioned.fill(
-            top: 43,
+            top: AppUtils.scaleSize(context, 43),
             left: 0,
             child: PageView(
               controller: _pageController,

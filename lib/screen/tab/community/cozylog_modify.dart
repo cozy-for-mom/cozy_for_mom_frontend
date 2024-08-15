@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -80,11 +81,13 @@ class _CozylogListModifyState extends State<CozylogListModify> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding:
+              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            width: screenWidth - 40,
-            height: 53,
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 24)),
+            width: screenWidth - AppUtils.scaleSize(context, 40),
+            height: AppUtils.scaleSize(context, 53),
             decoration: BoxDecoration(
                 color: const Color(0xffF0F0F5),
                 borderRadius: BorderRadius.circular(30)),
@@ -92,11 +95,12 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    const Image(
-                        image: AssetImage('assets/images/icons/cozylog.png'),
-                        width: 25.02,
-                        height: 23.32),
-                    const SizedBox(width: 8),
+                    Image(
+                        image:
+                            const AssetImage('assets/images/icons/cozylog.png'),
+                        width: AppUtils.scaleSize(context, 25.02),
+                        height: AppUtils.scaleSize(context, 23.32)),
+                    SizedBox(width: AppUtils.scaleSize(context, 8)),
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
@@ -130,7 +134,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14)),
                       ),
-                      const SizedBox(width: 24),
+                      SizedBox(width: AppUtils.scaleSize(context, 24)),
                       InkWell(
                         onTap: () {
                           Navigator.push(
@@ -149,14 +153,18 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                 ]),
           ),
         ),
-        const SizedBox(height: 22),
+        SizedBox(height: AppUtils.scaleSize(context, 22)),
         Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
+          padding: EdgeInsets.only(
+              left: AppUtils.scaleSize(context, 20),
+              right: AppUtils.scaleSize(context, 20),
+              bottom: AppUtils.scaleSize(context, 60)),
           child: Container(
-            width: screenWidth - 40,
+            width: screenWidth - AppUtils.scaleSize(context, 40),
             // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
             height: screenHeight * (0.7),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 20)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: contentBoxTwoColor),

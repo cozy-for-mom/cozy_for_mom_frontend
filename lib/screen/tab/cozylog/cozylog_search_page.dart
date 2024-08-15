@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_result_page.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_local_storage_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class CozyLogSearchPage extends StatefulWidget {
@@ -10,7 +11,8 @@ class CozyLogSearchPage extends StatefulWidget {
   State<CozyLogSearchPage> createState() => _CozyLogSearchPageState();
 }
 
-class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindingObserver {
+class _CozyLogSearchPageState extends State<CozyLogSearchPage>
+    with WidgetsBindingObserver {
   List<String> recentSearches = [];
   late CozyLogLocalStorageService storageService;
   final TextEditingController _controller = TextEditingController();
@@ -37,11 +39,10 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
     }
   }
 
-
   Future<void> initializeStorageService() async {
     storageService =
         await CozyLogLocalStorageService.getInstance(); // 인스턴스 가져오기
-    
+
     storageService.getAutoSave().then((value) => autoSave = value);
     await loadRecentSearches(); // 최근 검색어 로드
   }
@@ -71,35 +72,35 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
         child: Column(
           children: [
-            const SizedBox(
-              height: 70,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 70),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  height: 37,
-                  width: 316,
+                  height: AppUtils.scaleSize(context, 37),
+                  width: AppUtils.scaleSize(context, 316),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.white,
                   ),
                   child: Row(
                     children: [
-                      const SizedBox(
-                        width: 17,
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 17),
                       ),
-                      const Image(
-                        image:
-                            AssetImage("assets/images/icons/icon_search.png"),
-                        width: 15,
-                        height: 15,
+                      Image(
+                        image: const AssetImage(
+                            "assets/images/icons/icon_search.png"),
+                        width: AppUtils.scaleSize(context, 15),
+                        height: AppUtils.scaleSize(context, 15),
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 10),
                       ),
                       Expanded(
                         child: TextField(
@@ -143,8 +144,8 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                 )
               ],
             ),
-            const SizedBox(
-              height: 25,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 25),
             ),
             // 최근 검색
             Row(
@@ -157,8 +158,8 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                  width: 100,
+                SizedBox(
+                  width: AppUtils.scaleSize(context, 100),
                 ),
                 Row(
                   children: [
@@ -179,8 +180,8 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                         });
                       },
                     ),
-                    const SizedBox(
-                      width: 20,
+                    SizedBox(
+                      width: AppUtils.scaleSize(context, 20),
                     ),
                     autoSave
                         ? InkWell(
@@ -217,46 +218,47 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 10),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 8),
               ),
               child: SizedBox(
-                height: 50,
+                height: AppUtils.scaleSize(context, 50),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: recentSearches.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 10,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppUtils.scaleSize(context, 5),
+                        vertical: AppUtils.scaleSize(context, 10),
                       ),
                       child: Container(
-                        height: 30,
+                        height: AppUtils.scaleSize(context, 30),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           color: Color(0xffF0F0F5),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 12),
                           ),
                           child: Row(
                             children: [
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CozyLogSearchResultPage(
-                                  searchKeyword: recentSearches[index],
-                                ),
-                              ),
-                            );
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CozyLogSearchResultPage(
+                                        searchKeyword: recentSearches[index],
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   recentSearches[index],
@@ -265,16 +267,16 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: AppUtils.scaleSize(context, 12)),
                               SizedBox(
-                                height: 8,
-                                width: 8,
+                                height: AppUtils.scaleSize(context, 8),
+                                width: AppUtils.scaleSize(context, 8),
                                 child: InkWell(
-                                  child: const Image(
-                                    image: AssetImage(
+                                  child: Image(
+                                    image: const AssetImage(
                                         "assets/images/icons/icon_close.png"),
-                                    width: 8,
-                                    height: 8,
+                                    width: AppUtils.scaleSize(context, 8),
+                                    height: AppUtils.scaleSize(context, 8),
                                   ),
                                   onTap: () {
                                     deleteSearch(recentSearches[index]);
@@ -290,17 +292,17 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage> with WidgetsBindi
                 ),
               ),
             ),
-            const SizedBox(
-              height: 180,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 180),
             ),
-            const Image(
-              image: AssetImage("assets/images/icons/icon_search.png"),
-              width: 44,
-              height: 44,
-              color: Color(0xffCBCBD3),
+            Image(
+              image: const AssetImage("assets/images/icons/icon_search.png"),
+              width: AppUtils.scaleSize(context, 44),
+              height: AppUtils.scaleSize(context, 44),
+              color: const Color(0xffCBCBD3),
             ),
-            const SizedBox(
-              height: 17,
+            SizedBox(
+              height: AppUtils.scaleSize(context, 17),
             ),
             const Text(
               "검색어를 입력해보세요!",

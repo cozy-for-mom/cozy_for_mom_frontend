@@ -6,6 +6,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
@@ -247,8 +248,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20, left: 10, bottom: 32),
+                        padding: EdgeInsets.only(
+                            top: AppUtils.scaleSize(context, 20),
+                            left: AppUtils.scaleSize(context, 10),
+                            bottom: AppUtils.scaleSize(context, 32)),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: babies.map((baby) {
@@ -267,10 +270,11 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 20)),
                         child: SizedBox(
                           width: screenWidth,
-                          height: 52,
+                          height: AppUtils.scaleSize(context, 52),
                           child: TextFormField(
                             controller: titleController,
                             textAlign: TextAlign.start,
@@ -304,23 +308,25 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 20)),
                         child: Container(
                           width: screenWidth,
-                          height: 1.5,
+                          height: AppUtils.scaleSize(context, 1.5),
                           color: bottomLineColor,
                         ),
                       ),
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 18),
+                            vertical: AppUtils.scaleSize(context, 20)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
                             width: screenWidth,
-                            height: 216,
+                            height: AppUtils.scaleSize(context, 216),
                             decoration: const BoxDecoration(
                               color: offButtonColor,
                             ),
@@ -376,7 +382,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 21),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 21)),
                         child: SizedBox(
                           width: screenWidth,
                           height: _textFieldHeight,
@@ -416,8 +423,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 15),
+                        padding: EdgeInsets.only(
+                            left: AppUtils.scaleSize(context, 20),
+                            right: AppUtils.scaleSize(context, 20),
+                            top: AppUtils.scaleSize(context, 15)),
                         child: Container(
                           width: screenWidth,
                           height: 1,
@@ -435,8 +444,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                   ?[index];
                           return Column(
                             children: [
-                              const Padding(
-                                  padding: EdgeInsets.only(bottom: 30)),
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: AppUtils.scaleSize(context, 30))),
                               InfoInputForm(
                                 title: type,
                                 hint: "0 $unit",
@@ -452,8 +462,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                         childCount: babyInfoType.length,
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 120),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: AppUtils.scaleSize(context, 120)),
                     ),
                   ],
                 );
@@ -465,7 +475,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
             left: 0,
             right: 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 20),
+                  vertical: AppUtils.scaleSize(context, 20)),
               child: InkWell(
                 onTap: () async {
                   final reportId =
@@ -512,7 +524,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 },
                 child: Container(
                   width: screenWidth,
-                  height: 56,
+                  height: AppUtils.scaleSize(context, 56),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: isRegisterButtonEnabled()

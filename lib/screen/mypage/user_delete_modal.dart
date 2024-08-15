@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class UserDeleteModal extends StatefulWidget {
@@ -18,15 +19,15 @@ class UserDeleteModalState extends State<UserDeleteModal> {
 
     return Dialog(
       child: Container(
-        width: screenWidth - 40,
-        height: 220,
+        width: screenWidth - AppUtils.scaleSize(context, 40),
+        height: AppUtils.scaleSize(context, 220),
         decoration: BoxDecoration(
           color: contentBoxTwoColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 30,
+          padding: EdgeInsets.only(
+            top: AppUtils.scaleSize(context, 30),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,8 +42,8 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
               ),
               const Text(
                 "회원을 탈퇴하면 모든 데이터가 소멸돼요.\n추후 같은 회원 정보일지라도 복구되지 않습니다.",
@@ -54,17 +55,17 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                   fontSize: 13,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 20),
               ),
               Column(
                 children: [
-                  const Divider(
+                  Divider(
                     thickness: 1,
-                    color: Color(
+                    color: const Color(
                       0xffD9D9D9,
                     ),
-                    height: 2,
+                    height: AppUtils.scaleSize(context, 2),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -75,7 +76,7 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 56,
+                          width: AppUtils.scaleSize(context, 56),
                           child: const Text(
                             '취소',
                             style: TextStyle(
@@ -88,7 +89,7 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                       ),
                       Container(
                         width: 1,
-                        height: 60,
+                        height: AppUtils.scaleSize(context, 60),
                         color: const Color(0xffD9D9D9),
                       ),
                       InkWell(
@@ -104,7 +105,7 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                           }
                         },
                         child: Container(
-                          width: 56,
+                          width: AppUtils.scaleSize(context, 56),
                           alignment: Alignment.center,
                           child: const Text(
                             '탈퇴',

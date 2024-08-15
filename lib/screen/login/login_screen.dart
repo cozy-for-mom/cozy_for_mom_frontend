@@ -6,6 +6,7 @@ import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:cozy_for_mom_frontend/slpsh_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
-    print(deviceToken);
+    print('dt $deviceToken');
 
     return Scaffold(
       body: FutureBuilder<String?>(
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Stack(
       children: [
         Positioned(
-          top: -230,
+          top: AppUtils.scaleSize(context, -230),
           child: Image(
             image: const AssetImage('assets/images/login_confetti_image.png'),
             width: screenWidth,
@@ -87,15 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Positioned(
-          top: 120,
+          top: AppUtils.scaleSize(context, 120),
           child: Column(
             children: [
               Image(
                 image: const AssetImage('assets/images/login_cozy_image.png'),
                 width: screenWidth,
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 20),
               ),
               InkWell(
                 onTap: () async {
@@ -115,8 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: screenWidth - 40,
+                  height: AppUtils.scaleSize(context, 60),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xffFEE500),
@@ -132,8 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 13,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 13),
               ),
               InkWell(
                 onTap: () async {
@@ -153,8 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: 350,
+                  height: AppUtils.scaleSize(context, 60),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: const Color(0xff393939),
@@ -171,8 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 25),
               ),
               // const Text(
               //   "가입 후 코지포맘을 자유롭게 이용해보세요!",
@@ -222,8 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         Positioned(
           // top: 700,
-          bottom: -135,
-          left: -170,
+          bottom: AppUtils.scaleSize(context, -135),
+          left: AppUtils.scaleSize(context, -170),
           child: Image(
             image: const AssetImage('assets/images/login_group_image.png'),
             width: screenWidth + 250,

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -52,19 +53,20 @@ class _BloodsugarViewState extends State<BloodsugarView> {
 
             return Stack(
               children: [
-                const Positioned(
-                  top: 204,
-                  left: 20,
-                  child: TimeLineChart(recordType: RecordType.bloodsugar),
+                Positioned(
+                  top: AppUtils.scaleSize(context, 204),
+                  left: AppUtils.scaleSize(context, 20),
+                  child: const TimeLineChart(recordType: RecordType.bloodsugar),
                 ),
                 Positioned(
-                    top: 635,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 635),
+                    left: AppUtils.scaleSize(context, 20),
                     child: Container(
-                      width: screenWidth - 40,
-                      height: 114,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 24),
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 114),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppUtils.scaleSize(context, 20),
+                          vertical: AppUtils.scaleSize(context, 24)),
                       decoration: BoxDecoration(
                           color: contentBoxTwoColor,
                           borderRadius: BorderRadius.circular(20)),
@@ -80,8 +82,10 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                                         color: primaryColor,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 18)),
-                                const Padding(
-                                    padding: EdgeInsets.only(bottom: 6)),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom:
+                                            AppUtils.scaleSize(context, 6))),
                                 Text.rich(
                                   TextSpan(
                                     text: '임산부의 ${timeText[randomIndex]} 혈당치는 ',
@@ -111,8 +115,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                             ),
                             Image.asset(
                                 'assets/images/icons/icon_bloodsugar.png',
-                                width: 47,
-                                height: 61),
+                                width: AppUtils.scaleSize(context, 47),
+                                height: AppUtils.scaleSize(context, 61)),
                           ]),
                     ))
               ],

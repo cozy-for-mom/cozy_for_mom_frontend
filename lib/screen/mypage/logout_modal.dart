@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,12 +37,15 @@ class _LogoutModalState extends State<LogoutModal> {
           backgroundColor: Colors.white,
           elevation: 0.0,
           child: Container(
-            height: 252,
+            height: AppUtils.scaleSize(context, 252),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              padding: EdgeInsets.only(
+                  top: AppUtils.scaleSize(context, 30),
+                  left: AppUtils.scaleSize(context, 20),
+                  right: AppUtils.scaleSize(context, 20)),
               child: Column(
                 children: [
                   const Text(
@@ -51,8 +55,8 @@ class _LogoutModalState extends State<LogoutModal> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: AppUtils.scaleSize(context, 15),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,8 +77,8 @@ class _LogoutModalState extends State<LogoutModal> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: AppUtils.scaleSize(context, 10),
                   ),
                   const Text(
                     "해당 아이디는 간편 아이디로 계속 유지되며, 원하지 않을 경우 삭제 할 수 있습니다.",
@@ -86,11 +90,11 @@ class _LogoutModalState extends State<LogoutModal> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: AppUtils.scaleSize(context, 10),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: AppUtils.scaleSize(context, 20),
                   ),
                   InkWell(
                     onTap: () async {
@@ -106,7 +110,7 @@ class _LogoutModalState extends State<LogoutModal> {
                       }
                     },
                     child: Container(
-                      height: 56,
+                      height: AppUtils.scaleSize(context, 56),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: primaryColor,

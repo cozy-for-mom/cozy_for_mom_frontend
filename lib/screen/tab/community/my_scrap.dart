@@ -4,6 +4,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -104,16 +105,16 @@ class _MyScrapState extends State<MyScrap> {
                 ),
               );
             },
-            child: const Image(
-                width: 20,
-                height: 20,
-                image: AssetImage("assets/images/icons/icon_search.png")),
+            child: Image(
+                width: AppUtils.scaleSize(context, 20),
+                height: AppUtils.scaleSize(context, 20),
+                image: const AssetImage("assets/images/icons/icon_search.png")),
           ),
           IconButton(
-            icon: const Image(
-              width: 24,
-              height: 24,
-              image: AssetImage(
+            icon: Image(
+              width: AppUtils.scaleSize(context, 24),
+              height: AppUtils.scaleSize(context, 24),
+              image: const AssetImage(
                 "assets/images/icons/mypage.png",
               ),
             ),
@@ -138,11 +139,13 @@ class _MyScrapState extends State<MyScrap> {
                 : Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 20)),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          width: screenWidth - 40,
-                          height: 53,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppUtils.scaleSize(context, 24)),
+                          width: screenWidth - AppUtils.scaleSize(context, 40),
+                          height: AppUtils.scaleSize(context, 53),
                           decoration: BoxDecoration(
                               color: const Color(0xffF0F0F5),
                               borderRadius: BorderRadius.circular(30)),
@@ -150,12 +153,13 @@ class _MyScrapState extends State<MyScrap> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(children: [
-                                  const Image(
-                                      image: AssetImage(
+                                  Image(
+                                      image: const AssetImage(
                                           'assets/images/icons/scrap.png'),
-                                      width: 18.4,
-                                      height: 24),
-                                  const SizedBox(width: 8),
+                                      width: AppUtils.scaleSize(context, 18.4),
+                                      height: AppUtils.scaleSize(context, 24)),
+                                  SizedBox(
+                                      width: AppUtils.scaleSize(context, 8)),
                                   Text(
                                     '${snapshot.data!.totalCount}개의 스크랩',
                                     style: const TextStyle(
@@ -191,19 +195,19 @@ class _MyScrapState extends State<MyScrap> {
                               ]),
                         ),
                       ),
-                      const SizedBox(height: 22),
+                      SizedBox(height: AppUtils.scaleSize(context, 22)),
                       snapshot.data!.cozyLogs.isNotEmpty
                           ? Padding(
-                              padding: const EdgeInsets.only(
-                                left: 20,
-                                right: 20,
-                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20)),
                               child: Container(
-                                width: screenWidth - 40,
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
                                 // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                                 height: screenHeight * (0.75),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 20)),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: contentBoxTwoColor,
@@ -225,19 +229,23 @@ class _MyScrapState extends State<MyScrap> {
                               ),
                             )
                           : SizedBox(
-                              width: 150,
+                              width: AppUtils.scaleSize(context, 150),
                               height: screenHeight * (0.6),
-                              child: const Column(
+                              child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Image(
-                                        image: AssetImage(
+                                        image: const AssetImage(
                                             'assets/images/icons/scrap_off.png'),
-                                        width: 34.54,
-                                        height: 45.05),
-                                    SizedBox(height: 12),
-                                    Text('코지로그를 스크랩 해보세요!',
+                                        width:
+                                            AppUtils.scaleSize(context, 34.54),
+                                        height:
+                                            AppUtils.scaleSize(context, 45.05)),
+                                    SizedBox(
+                                        height:
+                                            AppUtils.scaleSize(context, 12)),
+                                    const Text('코지로그를 스크랩 해보세요!',
                                         style: TextStyle(
                                             color: Color(0xff9397A4),
                                             fontWeight: FontWeight.w500,
@@ -270,7 +278,7 @@ class _MyScrapState extends State<MyScrap> {
             ),
       bottomSheet: widget.isEditMode
           ? SizedBox(
-              width: screenWidth - 40,
+              width: screenWidth - AppUtils.scaleSize(context, 40),
               child: BottomSheet(
                 backgroundColor: Colors.transparent,
                 elevation: 0,

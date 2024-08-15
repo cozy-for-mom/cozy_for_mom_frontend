@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/services.dart';
@@ -29,8 +30,8 @@ class _InfoInputFormState extends State<InfoInputForm> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      width: screenWidth - 40,
-      height: 83,
+      width: screenWidth - AppUtils.scaleSize(context, 40),
+      height: AppUtils.scaleSize(context, 83),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -39,11 +40,12 @@ class _InfoInputFormState extends State<InfoInputForm> {
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14)),
-          const SizedBox(height: 14),
+          SizedBox(height: AppUtils.scaleSize(context, 14)),
           Container(
-              width: screenWidth - 40,
-              height: 48,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 48),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 20)),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
               child: TextFormField(

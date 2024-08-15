@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -85,7 +86,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: -10,
+                    top: AppUtils.scaleSize(context, -10),
                     child: Image(
                         width: screenWidth,
                         fit: BoxFit.cover,
@@ -96,13 +97,13 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 : "assets/images/babyhome_dark.png")),
                   ),
                   Positioned(
-                    top: 66,
-                    left: 340,
+                    top: AppUtils.scaleSize(context, 66),
+                    left: AppUtils.scaleSize(context, 340),
                     child: IconButton(
-                      icon: const Image(
-                        width: 30,
-                        height: 30,
-                        image: AssetImage(
+                      icon: Image(
+                        width: AppUtils.scaleSize(context, 30),
+                        height: AppUtils.scaleSize(context, 30),
+                        image: const AssetImage(
                           "assets/images/icons/mypage.png",
                         ),
                       ),
@@ -115,7 +116,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: 120,
+                      top: AppUtils.scaleSize(context, 120),
                       left: 0,
                       right: 0,
                       child: Column(
@@ -126,7 +127,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 26)),
-                          const SizedBox(height: 5),
+                          SizedBox(height: AppUtils.scaleSize(context, 5)),
                           Text('임신 ${week}주차 ${day}일째',
                               style: TextStyle(
                                   color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
@@ -138,14 +139,17 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                         ],
                       )),
                   Positioned(
-                    top: 255,
-                    left: 120,
-                    child: Image(width: 167, height: 125, image: AssetImage(
-                        // 1부터 imageCount까지
-                        "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png")),
+                    top: AppUtils.scaleSize(context, 255),
+                    left: AppUtils.scaleSize(context, 120),
+                    child: Image(
+                        width: AppUtils.scaleSize(context, 167),
+                        height: AppUtils.scaleSize(context, 125),
+                        image: AssetImage(
+                            // 1부터 imageCount까지
+                            "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png")),
                   ),
                   Positioned(
-                    top: 410,
+                    top: AppUtils.scaleSize(context, 410),
                     left: 0,
                     right: 0,
                     child: Column(
@@ -171,10 +175,10 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                     fontSize: 16)),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: AppUtils.scaleSize(context, 10)),
                         Container(
-                          width: 298,
-                          height: 12,
+                          width: AppUtils.scaleSize(context, 298),
+                          height: AppUtils.scaleSize(context, 12),
                           decoration: BoxDecoration(
                             color: lineTwoColor, // 전체 배경색
                             borderRadius: BorderRadius.circular(5),
@@ -183,7 +187,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                             widthFactor: percentage,
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              height: 20,
+                              height: AppUtils.scaleSize(context, 20),
                               decoration: BoxDecoration(
                                 color: nowHour >= 8 && nowHour < 18
                                     ? const Color(0xffFE8282)
@@ -197,10 +201,10 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 475,
-                    left: 20,
+                    top: AppUtils.scaleSize(context, 475),
+                    left: AppUtils.scaleSize(context, 20),
                     child: SizedBox(
-                      width: screenWidth - 40,
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -235,8 +239,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: 580,
-                      left: 20,
+                      top: AppUtils.scaleSize(context, 580),
+                      left: AppUtils.scaleSize(context, 20),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -253,29 +257,31 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 18)),
-                            const SizedBox(height: 18),
+                            SizedBox(height: AppUtils.scaleSize(context, 18)),
                             Container(
-                              width: screenWidth - 40,
-                              height: 100,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              width:
+                                  screenWidth - AppUtils.scaleSize(context, 40),
+                              height: AppUtils.scaleSize(context, 100),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20)),
                               decoration: BoxDecoration(
                                   color: babyNightBar,
                                   borderRadius: BorderRadius.circular(10)),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('오늘은 얼마나 자랐을까?',
+                                  const Text('오늘은 얼마나 자랐을까?',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 16)),
                                   Image(
-                                      image: AssetImage(
+                                      image: const AssetImage(
                                           "assets/images/icons/diary_cozylog.png"),
-                                      width: 78.44,
-                                      height: 53.27),
+                                      width: AppUtils.scaleSize(context, 78.44),
+                                      height:
+                                          AppUtils.scaleSize(context, 53.27)),
                                 ],
                               ),
                             )

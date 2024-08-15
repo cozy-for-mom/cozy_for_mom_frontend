@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -76,11 +77,12 @@ class _BabyGrowthReportListScreenState
       ),
       body: Consumer<MyDataModel>(builder: (context, globalData, _) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          padding:
+              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 12)),
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -88,8 +90,9 @@ class _BabyGrowthReportListScreenState
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 25),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppUtils.scaleSize(context, 20),
+                      horizontal: AppUtils.scaleSize(context, 25)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -157,12 +160,16 @@ class _BabyGrowthReportListScreenState
                                             color: Colors.white,
                                             child: Column(
                                               children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                Padding(
+                                                  padding: EdgeInsets.all(
+                                                      AppUtils.scaleSize(
+                                                          context, 8)),
                                                   child: Divider(
-                                                    height: 30,
+                                                    height: AppUtils.scaleSize(
+                                                        context, 30),
                                                     thickness: 1,
-                                                    color: Color(0xffE2E2E2),
+                                                    color:
+                                                        const Color(0xffE2E2E2),
                                                   ),
                                                 ),
                                                 const Text(
@@ -172,11 +179,14 @@ class _BabyGrowthReportListScreenState
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 20),
+                                                SizedBox(
+                                                    height: AppUtils.scaleSize(
+                                                        context, 20)),
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal:
+                                                          AppUtils.scaleSize(
+                                                              context, 10)),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -235,7 +245,9 @@ class _BabyGrowthReportListScreenState
                                                     ],
                                                   ),
                                                 ),
-                                                const SizedBox(height: 30),
+                                                SizedBox(
+                                                    height: AppUtils.scaleSize(
+                                                        context, 30)),
                                                 InkWell(
                                                   onTap: () async {
                                                     if (selectedNotifications
@@ -254,8 +266,11 @@ class _BabyGrowthReportListScreenState
                                                     }
                                                   },
                                                   child: Container(
-                                                    width: screenWidth - 40,
-                                                    height: 56,
+                                                    width: screenWidth -
+                                                        AppUtils.scaleSize(
+                                                            context, 40),
+                                                    height: AppUtils.scaleSize(
+                                                        context, 56),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -279,7 +294,9 @@ class _BabyGrowthReportListScreenState
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(height: 20),
+                                                SizedBox(
+                                                    height: AppUtils.scaleSize(
+                                                        context, 20)),
                                               ],
                                             ),
                                           ),
@@ -315,8 +332,8 @@ class _BabyGrowthReportListScreenState
                                       return Container();
                                     }
                                   }),
-                              const SizedBox(
-                                width: 5,
+                              SizedBox(
+                                width: AppUtils.scaleSize(context, 5),
                               ),
                               const Icon(
                                 Icons.arrow_forward_ios,
@@ -356,8 +373,8 @@ class _BabyGrowthReportListScreenState
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: AppUtils.scaleSize(context, 30),
               ),
               FutureBuilder(
                 future: data,
@@ -371,10 +388,10 @@ class _BabyGrowthReportListScreenState
                             color: Colors.white,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5.0,
-                              left: 3,
-                              right: 3,
+                            padding: EdgeInsets.only(
+                              top: AppUtils.scaleSize(context, 5),
+                              left: AppUtils.scaleSize(context, 3),
+                              right: AppUtils.scaleSize(context, 3),
                             ),
                             child: ListView.builder(
                               itemCount: snapshot.data.first.length,
@@ -395,8 +412,11 @@ class _BabyGrowthReportListScreenState
                                   },
                                   child: SizedBox(
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 27.0, vertical: 5.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              AppUtils.scaleSize(context, 27),
+                                          vertical:
+                                              AppUtils.scaleSize(context, 5)),
                                       child: Column(
                                         children: [
                                           Row(
@@ -419,8 +439,10 @@ class _BabyGrowthReportListScreenState
                                                             Color(0xff2B2D35),
                                                       ),
                                                     ),
-                                                    const SizedBox(
-                                                      height: 5,
+                                                    SizedBox(
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 5),
                                                     ),
                                                     Text(
                                                       "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
@@ -430,8 +452,10 @@ class _BabyGrowthReportListScreenState
                                                             Color(0xffAAAAAA),
                                                       ),
                                                     ),
-                                                    const SizedBox(
-                                                      height: 10,
+                                                    SizedBox(
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 10),
                                                     ),
                                                     Text(
                                                       report.diary,
@@ -450,8 +474,9 @@ class _BabyGrowthReportListScreenState
                                               Flexible(
                                                 flex: 3,
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(3.0),
+                                                  padding: EdgeInsets.all(
+                                                      AppUtils.scaleSize(
+                                                          context, 3)),
                                                   child: Container(
                                                     clipBehavior: Clip.hardEdge,
                                                     decoration: BoxDecoration(
@@ -461,8 +486,11 @@ class _BabyGrowthReportListScreenState
                                                     ),
                                                     child: Image.network(
                                                       report.growthImageUrl,
-                                                      width: 79,
-                                                      height: 79,
+                                                      width: AppUtils.scaleSize(
+                                                          context, 79),
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 79),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -470,8 +498,9 @@ class _BabyGrowthReportListScreenState
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(
-                                            height: 8,
+                                          SizedBox(
+                                            height:
+                                                AppUtils.scaleSize(context, 8),
                                           ),
                                           const Divider(
                                             color: Color(0xffE1E1E7),
@@ -488,27 +517,27 @@ class _BabyGrowthReportListScreenState
                         ),
                       );
                     } else {
-                      return const Expanded(
+                      return Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage(
+                              image: const AssetImage(
                                   "assets/images/icons/diary_inactive.png"),
-                              width: 45.31,
-                              height: 44.35,
+                              width: AppUtils.scaleSize(context, 45.31),
+                              height: AppUtils.scaleSize(context, 44.35),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: AppUtils.scaleSize(context, 15),
                             ),
-                            Text(
+                            const Text(
                               "태아의 검진기록을 입력해보세요!",
                               style: TextStyle(
                                 color: Color(0xff9397A4),
                               ),
                             ),
                             SizedBox(
-                              height: 140,
+                              height: AppUtils.scaleSize(context, 140),
                             ),
                           ],
                         ),
@@ -545,11 +574,13 @@ class NotificationOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: EdgeInsets.all(AppUtils.scaleSize(context, 3)),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+          padding: EdgeInsets.symmetric(
+              vertical: AppUtils.scaleSize(context, 8),
+              horizontal: AppUtils.scaleSize(context, 12)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
             color: isSelected ? primaryColor : const Color(0xffF0F0F5),

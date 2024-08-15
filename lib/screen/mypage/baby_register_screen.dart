@@ -5,6 +5,7 @@ import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -194,9 +195,9 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 30),
+        SizedBox(height: AppUtils.scaleSize(context, 30)),
         SizedBox(
-          width: screenWidth - 40,
+          width: screenWidth - AppUtils.scaleSize(context, 40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -210,11 +211,11 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
               widget.babyProfileId! > -1
                   ? Container()
                   : IconButton(
-                      icon: const Image(
-                          image:
-                              AssetImage('assets/images/icons/baby_remove.png'),
-                          height: 15,
-                          width: 14),
+                      icon: Image(
+                          image: const AssetImage(
+                              'assets/images/icons/baby_remove.png'),
+                          height: AppUtils.scaleSize(context, 15),
+                          width: AppUtils.scaleSize(context, 14)),
                       onPressed: () {
                         print('$index 태아 삭제');
                         if (mounted && babyCount > 1) {
@@ -230,8 +231,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 14,
+        SizedBox(
+          height: AppUtils.scaleSize(context, 14),
         ),
         Container(
           decoration: BoxDecoration(
@@ -239,8 +240,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             color: Colors.white,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
+            padding: EdgeInsets.symmetric(
+              horizontal: AppUtils.scaleSize(context, 20),
             ),
             child: TextFormField(
               cursorColor: primaryColor,
@@ -271,8 +272,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             ),
           ),
         ),
-        const SizedBox(
-          height: 30,
+        SizedBox(
+          height: AppUtils.scaleSize(context, 30),
         ),
         const Text(
           "성별",
@@ -282,8 +283,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             fontSize: 14,
           ),
         ),
-        const SizedBox(
-          height: 14,
+        SizedBox(
+          height: AppUtils.scaleSize(context, 14),
         ),
         InkWell(
           onTap: () {
@@ -294,16 +295,17 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             }
           },
           child: Container(
-            width: screenWidth - 40,
+            width: screenWidth - AppUtils.scaleSize(context, 40),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
-            padding: const EdgeInsets.only(left: 20),
+            padding: EdgeInsets.only(left: AppUtils.scaleSize(context, 20)),
             child: IgnorePointer(
               child: TextFormField(
                 controller: genderControllers[index],
                 readOnly: true,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 16),
+                  contentPadding:
+                      EdgeInsets.only(top: AppUtils.scaleSize(context, 16)),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(10),
@@ -326,9 +328,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
         ),
         isOpenGenderModal[index]
             ? Container(
-                height: 188,
-                width: screenWidth - 40,
-                margin: const EdgeInsets.symmetric(vertical: 8),
+                height: AppUtils.scaleSize(context, 188),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                margin: EdgeInsets.symmetric(
+                    vertical: AppUtils.scaleSize(context, 8)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: contentBoxTwoColor,
@@ -352,7 +355,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding:
+                              EdgeInsets.all(AppUtils.scaleSize(context, 8)),
                           child: Text(
                             item,
                             style: const TextStyle(
@@ -370,8 +374,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             : Container(),
         babyCount > 1 && index < babyCount - 1
             ? Container(
-                margin: const EdgeInsets.only(top: 20),
-                width: screenWidth - 40,
+                margin: EdgeInsets.only(top: AppUtils.scaleSize(context, 20)),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
                 height: 1,
                 color: mainLineColor)
             : Container(),
@@ -406,8 +410,11 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, bottom: 40, top: 25),
+                padding: EdgeInsets.only(
+                    left: AppUtils.scaleSize(context, 20),
+                    right: AppUtils.scaleSize(context, 20),
+                    bottom: AppUtils.scaleSize(context, 40),
+                    top: AppUtils.scaleSize(context, 25)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -418,24 +425,25 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                           children: [
                             Center(
                               child: babyProfileImageUrl == null
-                                  ? const Image(
-                                      image: AssetImage(
+                                  ? Image(
+                                      image: const AssetImage(
                                           "assets/images/icons/babyProfile.png"),
-                                      width: 100,
-                                      height: 100)
+                                      width: AppUtils.scaleSize(context, 100),
+                                      height: AppUtils.scaleSize(context, 100))
                                   : ClipOval(
                                       // 원형
                                       child: Image.network(
                                         babyProfileImageUrl!,
                                         fit: BoxFit.cover,
-                                        width: 100,
-                                        height: 100,
+                                        width: AppUtils.scaleSize(context, 100),
+                                        height:
+                                            AppUtils.scaleSize(context, 100),
                                       ),
                                     ),
                             ),
                             Positioned(
-                              left: 206,
-                              top: 72,
+                              left: AppUtils.scaleSize(context, 206),
+                              top: AppUtils.scaleSize(context, 72),
                               child: InkWell(
                                 onTap: () async {
                                   if (babyProfileImageUrl == null) {
@@ -454,18 +462,18 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                     showSelectModal();
                                   }
                                 },
-                                child: const Image(
-                                  image: AssetImage(
+                                child: Image(
+                                  image: const AssetImage(
                                       "assets/images/icons/circle_pen.png"),
-                                  width: 24,
-                                  height: 24,
+                                  width: AppUtils.scaleSize(context, 24),
+                                  height: AppUtils.scaleSize(context, 24),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 30),
                         ),
                         const Text(
                           "출산예정일",
@@ -474,14 +482,16 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                               fontWeight: FontWeight.w600,
                               fontSize: 14),
                         ),
-                        const SizedBox(
-                          height: 14,
+                        SizedBox(
+                          height: AppUtils.scaleSize(context, 14),
                         ),
                         Container(
-                            width: screenWidth - 40,
-                            height: 48,
-                            padding: const EdgeInsets.only(
-                                top: 10, bottom: 10, left: 20, right: 20),
+                            width:
+                                screenWidth - AppUtils.scaleSize(context, 40),
+                            height: AppUtils.scaleSize(context, 48),
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppUtils.scaleSize(context, 10),
+                                horizontal: AppUtils.scaleSize(context, 20)),
                             decoration: BoxDecoration(
                                 color: contentBoxTwoColor,
                                 borderRadius: BorderRadius.circular(30)),
@@ -501,11 +511,12 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16),
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.only(bottom: 10),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: AppUtils.scaleSize(context, 10)),
                                 border: InputBorder.none,
                                 hintText: 'YYYY.MM.DD',
-                                hintStyle: TextStyle(
+                                hintStyle: const TextStyle(
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16),
@@ -534,7 +545,9 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                           return _buildBabyField(index);
                         })),
                         Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 60),
+                          padding: EdgeInsets.only(
+                              top: AppUtils.scaleSize(context, 20),
+                              bottom: AppUtils.scaleSize(context, 60)),
                           child: widget.babyProfileId! > -1
                               ? InkWell(
                                   onTap: () {
@@ -624,9 +637,9 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
               }
             },
             child: Container(
-              width: screenWidth - 40,
-              height: 56,
-              margin: const EdgeInsets.only(bottom: 30),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 56),
+              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 30)),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color:

@@ -2,6 +2,7 @@ import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -93,7 +94,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: EdgeInsets.zero,
               title: Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 10),
+                padding: EdgeInsets.only(
+                    left: AppUtils.scaleSize(context, 10),
+                    bottom: AppUtils.scaleSize(context, 10)),
                 child: Row(
                   children: [
                     IconButton(
@@ -117,10 +120,12 @@ class _MomProfileModifyState extends State<MomProfileModify> {
               InkWell(
                 child: Center(
                   child: Container(
-                    margin: const EdgeInsets.only(right: 20, bottom: 13),
+                    margin: EdgeInsets.only(
+                        right: AppUtils.scaleSize(context, 20),
+                        bottom: AppUtils.scaleSize(context, 13)),
                     alignment: Alignment.center,
-                    width: 53,
-                    height: 29,
+                    width: AppUtils.scaleSize(context, 53),
+                    height: AppUtils.scaleSize(context, 29),
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(33),
@@ -151,31 +156,31 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           ),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 140,
+              height: AppUtils.scaleSize(context, 140),
               child: Stack(
                 children: [
                   Positioned(
-                    top: 10,
-                    left: 145,
+                    top: AppUtils.scaleSize(context, 10),
+                    left: AppUtils.scaleSize(context, 145),
                     child: imageUrl == null
-                        ? const Image(
-                            image: AssetImage(
+                        ? Image(
+                            image: const AssetImage(
                                 "assets/images/icons/momProfile.png"),
-                            width: 100,
-                            height: 100)
+                            width: AppUtils.scaleSize(context, 100),
+                            height: AppUtils.scaleSize(context, 100))
                         : ClipOval(
                             // 원형
                             child: Image.network(
                               imageUrl!,
                               fit: BoxFit.cover,
-                              width: 100,
-                              height: 100,
+                              width: AppUtils.scaleSize(context, 100),
+                              height: AppUtils.scaleSize(context, 100),
                             ),
                           ),
                   ),
                   Positioned(
-                    top: 181 - 109,
-                    left: 229,
+                    top: AppUtils.scaleSize(context, 181 - 109),
+                    left: AppUtils.scaleSize(context, 229),
                     child: InkWell(
                       onTap: () async {
                         showModalBottomSheet(
@@ -183,8 +188,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                           context: context,
                           builder: (BuildContext context) {
                             return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 18)),
                                 child: SelectBottomModal(
                                     selec1: '직접 찍기',
                                     selec2: '앨범에서 선택',
@@ -224,10 +230,11 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                           },
                         );
                       },
-                      child: const Image(
-                        image: AssetImage("assets/images/icons/circle_pen.png"),
-                        width: 24,
-                        height: 24,
+                      child: Image(
+                        image: const AssetImage(
+                            "assets/images/icons/circle_pen.png"),
+                        width: AppUtils.scaleSize(context, 24),
+                        height: AppUtils.scaleSize(context, 24),
                       ),
                     ),
                   ),
@@ -237,9 +244,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              width: screenWidth - 40,
-              height: 96,
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppUtils.scaleSize(context, 20)),
+              width: screenWidth - AppUtils.scaleSize(context, 40),
+              height: AppUtils.scaleSize(context, 96),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -279,8 +287,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                           ? IconButton(
                               icon: Image.asset(
                                 'assets/images/icons/text_delete.png',
-                                width: 16,
-                                height: 16,
+                                width: AppUtils.scaleSize(context, 16),
+                                height: AppUtils.scaleSize(context, 16),
                               ),
                               onPressed: () {
                                 introduceController.clear();
@@ -295,7 +303,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     },
                   ),
                   Container(
-                    width: screenWidth - 40,
+                    width: screenWidth - AppUtils.scaleSize(context, 40),
                     height: 1,
                     color: mainLineColor,
                   ),
@@ -324,7 +332,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                       hint: hint,
                       controller: controllers[type],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppUtils.scaleSize(context, 24)),
                   ],
                 );
               },
@@ -333,8 +341,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           ),
           SliverToBoxAdapter(
             child: SizedBox(
-              width: 132,
-              height: 21,
+              width: AppUtils.scaleSize(context, 132),
+              height: AppUtils.scaleSize(context, 21),
               child: Stack(
                 children: [
                   Row(
@@ -358,16 +366,16 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 10),
                       ),
                       Container(
                         width: 1,
-                        height: 11,
+                        height: AppUtils.scaleSize(context, 11),
                         color: primaryColor,
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 10),
                       ),
                       InkWell(
                         onTap: () {

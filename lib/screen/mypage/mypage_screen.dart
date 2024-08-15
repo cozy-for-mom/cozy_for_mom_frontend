@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
@@ -61,7 +62,7 @@ class _MyPageState extends State<MyPage> {
                   left: 0,
                   right: 0,
                   child: Image(
-                    width: screenWidth - 40,
+                    width: screenWidth - AppUtils.scaleSize(context, 40),
                     fit: BoxFit.cover,
                     image: const AssetImage(
                       "assets/images/subtract.png",
@@ -69,8 +70,8 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 47,
-                  left: 348,
+                  top: AppUtils.scaleSize(context, 47),
+                  left: AppUtils.scaleSize(context, 348),
                   child: IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -81,7 +82,7 @@ class _MyPageState extends State<MyPage> {
                       }),
                 ),
                 Positioned(
-                  top: 119,
+                  top: AppUtils.scaleSize(context, 119),
                   left: 0,
                   right: 0,
                   child: Column(children: [
@@ -89,19 +90,19 @@ class _MyPageState extends State<MyPage> {
                         ? Image.asset(
                             'assets/images/icons/momProfile.png',
                             fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                            width: 100,
-                            height: 100,
+                            width: AppUtils.scaleSize(context, 100),
+                            height: AppUtils.scaleSize(context, 100),
                             alignment: Alignment.center,
                           )
                         : ClipOval(
                             child: Image.network(
                               pregnantInfo['imageUrl'],
                               fit: BoxFit.cover,
-                              width: 100,
-                              height: 100,
+                              width: AppUtils.scaleSize(context, 100),
+                              height: AppUtils.scaleSize(context, 100),
                             ),
                           ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: AppUtils.scaleSize(context, 8)),
                     Text(
                       "${pregnantInfo['nickname']} 산모님",
                       style: const TextStyle(
@@ -109,7 +110,7 @@ class _MyPageState extends State<MyPage> {
                           fontWeight: FontWeight.w700,
                           fontSize: 20),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppUtils.scaleSize(context, 4)),
                     InkWell(
                       onTap: () {
                         Navigator.push(
@@ -129,25 +130,26 @@ class _MyPageState extends State<MyPage> {
                                 fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(width: 4),
-                          Image.asset('assets/images/icons/pen.png', width: 12),
+                          SizedBox(width: AppUtils.scaleSize(context, 4)),
+                          Image.asset('assets/images/icons/pen.png',
+                              width: AppUtils.scaleSize(context, 12)),
                         ],
                       ),
                     ),
                   ]),
                 ),
                 Positioned(
-                  top: 303,
-                  left: 11,
+                  top: AppUtils.scaleSize(context, 303),
+                  left: AppUtils.scaleSize(context, 11),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - 40,
-                      height: 114, // TODO 화면 높이에 맞춘 height로 수정해야함
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 114),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -169,8 +171,9 @@ class _MyPageState extends State<MyPage> {
                             ],
                           ),
                           Container(
-                            width: screenWidth - 80,
-                            height: 12, // TODO 화면 높이에 맞춘 height로 수정해야함
+                            width:
+                                screenWidth - AppUtils.scaleSize(context, 80),
+                            height: AppUtils.scaleSize(context, 12),
                             decoration: BoxDecoration(
                               color: lineTwoColor, // 전체 배경색
                               borderRadius: BorderRadius.circular(5),
@@ -179,7 +182,7 @@ class _MyPageState extends State<MyPage> {
                               widthFactor: percentage,
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                height: 20,
+                                height: AppUtils.scaleSize(context, 20),
                                 decoration: BoxDecoration(
                                   color: primaryColor,
                                   borderRadius: BorderRadius.circular(5),
@@ -193,17 +196,17 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 434,
-                  left: 10,
+                  top: AppUtils.scaleSize(context, 434),
+                  left: AppUtils.scaleSize(context, 10),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - 40,
-                      height: 102, // TODO 화면 높이에 맞춘 height로 수정해야함
+                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      height: AppUtils.scaleSize(context, 102),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -223,7 +226,7 @@ class _MyPageState extends State<MyPage> {
                               }),
                           Container(
                             width: 1,
-                            height: 42,
+                            height: AppUtils.scaleSize(context, 42),
                             color: const Color(0xffE8E8ED),
                           ),
                           CustomTextButton(
@@ -245,25 +248,26 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: 552,
-                  left: 10,
+                  top: AppUtils.scaleSize(context, 552),
+                  left: AppUtils.scaleSize(context, 10),
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    margin: const EdgeInsets.all(10),
+                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                        width: screenWidth - 40,
-                        height: 222, // TODO 화면 높이에 맞춘 height로 수정해야함
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: AppUtils.scaleSize(context, 222),
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 25, horizontal: 20),
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppUtils.scaleSize(context, 25),
+                                horizontal: AppUtils.scaleSize(context, 20)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  width: 312,
+                                  width: AppUtils.scaleSize(context, 312),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -274,8 +278,8 @@ class _MyPageState extends State<MyPage> {
                                               fontWeight: FontWeight.w700,
                                               fontSize: 18)),
                                       Container(
-                                        width: 42,
-                                        height: 21,
+                                        width: AppUtils.scaleSize(context, 42),
+                                        height: AppUtils.scaleSize(context, 21),
                                         decoration: BoxDecoration(
                                           color: contentBoxColor,
                                           borderRadius:
@@ -304,7 +308,8 @@ class _MyPageState extends State<MyPage> {
                                 ),
                                 Expanded(
                                   child: Padding(
-                                      padding: const EdgeInsets.only(top: 30),
+                                      padding: EdgeInsets.only(
+                                          top: AppUtils.scaleSize(context, 30)),
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: pregnantInfo['babyProfiles']
@@ -332,13 +337,22 @@ class _MyPageState extends State<MyPage> {
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(
-                                                        10, 0, 10, 10),
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            AppUtils.scaleSize(
+                                                                context, 10),
+                                                            0,
+                                                            AppUtils.scaleSize(
+                                                                context, 10),
+                                                            AppUtils.scaleSize(
+                                                                context, 10)),
                                                     child: Image.asset(
                                                       'assets/images/icons/plusDotted.png',
-                                                      width: 80,
-                                                      height: 80,
+                                                      width: AppUtils.scaleSize(
+                                                          context, 80),
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 80),
                                                       alignment:
                                                           Alignment.center,
                                                     ),

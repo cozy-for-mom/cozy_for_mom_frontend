@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomProfileButton extends StatefulWidget {
@@ -31,7 +32,8 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
     return InkWell(
       onTap: widget.onPressed,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding:
+            EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 12)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -57,19 +59,20 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                     ),
                     child: widget.imagePath == ''
                         ? Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding:
+                                EdgeInsets.all(AppUtils.scaleSize(context, 16)),
                             child: Image.asset(
                               'assets/images/icons/babyProfileOn.png',
-                              width: 45,
-                              height: 45,
+                              width: AppUtils.scaleSize(context, 45),
+                              height: AppUtils.scaleSize(context, 45),
                             ),
                           )
                         : ClipOval(
                             child: Image.network(
                               widget.imagePath,
                               fit: BoxFit.cover,
-                              width: 82,
-                              height: 82,
+                              width: AppUtils.scaleSize(context, 82),
+                              height: AppUtils.scaleSize(context, 82),
                             ),
                           ),
                   ),
@@ -97,17 +100,17 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                           },
                           child: Image.asset(
                             'assets/images/icons/babyprofile_modify_pen.png', // TODO 클릭했을떄 편집 화면으로..
-                            width: 20,
-                            height: 20,
+                            width: AppUtils.scaleSize(context, 20),
+                            height: AppUtils.scaleSize(context, 20),
                           ),
                         ),
                       )
                     : Container(),
               ],
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: AppUtils.scaleSize(context, 6)),
             SizedBox(
-              width: 70,
+              width: AppUtils.scaleSize(context, 70),
               child: Text(
                 widget.text,
                 overflow: TextOverflow.ellipsis,
