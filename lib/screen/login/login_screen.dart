@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Image(
                 image: const AssetImage('assets/images/login_cozy_image.png'),
                 width: screenWidth,
+                height: AppUtils.scaleSize(context, 69),
               ),
               SizedBox(
                 height: AppUtils.scaleSize(context, 20),
@@ -223,11 +224,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         Positioned(
           // top: 700,
-          bottom: AppUtils.scaleSize(context, -135),
+          bottom: AppUtils.scaleSize(context, -125),
           left: AppUtils.scaleSize(context, -170),
           child: Image(
             image: const AssetImage('assets/images/login_group_image.png'),
             width: screenWidth + 250,
+            height: AppUtils.scaleSize(context, 471),
           ),
         ),
       ],
