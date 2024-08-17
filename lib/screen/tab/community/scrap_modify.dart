@@ -154,39 +154,59 @@ class _ScrapListModifyState extends State<ScrapListModify> {
           ),
         ),
         SizedBox(height: AppUtils.scaleSize(context, 22)),
-        Padding(
-          padding: EdgeInsets.only(
-              left: AppUtils.scaleSize(context, 20),
-              right: AppUtils.scaleSize(context, 20),
-              bottom: AppUtils.scaleSize(context, 60)),
-          child: Container(
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-            height: screenHeight * (0.7),
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 20)),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: contentBoxTwoColor),
-            child: PagedListView<int, CozyLogForList>(
-              // physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.only(bottom: screenHeight * 0.35),
-              pagingController: pagingController,
-              builderDelegate: PagedChildBuilderDelegate<CozyLogForList>(
-                itemBuilder: (context, item, index) => CozylogViewWidget(
-                  cozylog: item,
-                  isEditMode: true,
-                  isMyCozyLog: true,
-                  listModifyState: scrapListModifyState,
-                  onSelectedChanged: (isAllSelected) {
-                    scrapListModifyState.toggleSelected(item.cozyLogId);
-                    setState(() {});
-                  },
-                ),
+        widget.cozyLogs.isNotEmpty
+            ? Padding(
+                padding: EdgeInsets.only(
+                    left: AppUtils.scaleSize(context, 20),
+                    right: AppUtils.scaleSize(context, 20),
+                    bottom: AppUtils.scaleSize(context, 60)),
+                child: Container(
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+                  height: screenHeight * (0.7),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppUtils.scaleSize(context, 20)),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: contentBoxTwoColor),
+                  child: PagedListView<int, CozyLogForList>(
+                    // physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.35),
+                    pagingController: pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<CozyLogForList>(
+                      itemBuilder: (context, item, index) => CozylogViewWidget(
+                        cozylog: item,
+                        isEditMode: true,
+                        isMyCozyLog: true,
+                        listModifyState: scrapListModifyState,
+                        onSelectedChanged: (isAllSelected) {
+                          scrapListModifyState.toggleSelected(item.cozyLogId);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  ),
+                ))
+            : SizedBox(
+                width: AppUtils.scaleSize(context, 150),
+                height: screenHeight * (0.6),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                          image: const AssetImage(
+                              'assets/images/icons/scrap_off.png'),
+                          width: AppUtils.scaleSize(context, 34.54),
+                          height: AppUtils.scaleSize(context, 45.05)),
+                      SizedBox(height: AppUtils.scaleSize(context, 12)),
+                      Text('코지로그를 스크랩 해보세요!',
+                          style: TextStyle(
+                              color: const Color(0xff9397A4),
+                              fontWeight: FontWeight.w500,
+                              fontSize: AppUtils.scaleSize(context, 14))),
+                    ]),
               ),
-            ),
-          ),
-        ),
       ],
     );
   }
