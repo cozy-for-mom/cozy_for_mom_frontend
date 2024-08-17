@@ -78,6 +78,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
         }
       },
       child: Scaffold(
+        backgroundColor: backgroundColor,
         body: Padding(
           padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
           child: Column(
@@ -86,6 +87,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                 height: AppUtils.scaleSize(context, 70),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
@@ -107,7 +109,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                           height: AppUtils.scaleSize(context, 15),
                         ),
                         SizedBox(
-                          width: AppUtils.scaleSize(context, 10),
+                          width: AppUtils.scaleSize(context, 15),
                         ),
                         Expanded(
                           child: TextField(
@@ -120,8 +122,8 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                               border: InputBorder.none,
                               hintStyle: TextStyle(
                                 color: const Color(0xff858998),
+                                fontWeight: FontWeight.w400,
                                 fontSize: AppUtils.scaleSize(context, 14),
-                                height: 19 / 14,
                               ),
                               hintText: "검색어를 입력해주세요",
                             ),
@@ -145,8 +147,14 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const Center(
-                      child: Text("취소"),
+                    child: Center(
+                      child: Text(
+                        "취소",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppUtils.scaleSize(context, 14),
+                        ),
+                      ),
                     ),
                   )
                 ],
@@ -172,11 +180,12 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                     children: [
                       InkWell(
                         child: Text(
-                          "전체 삭제",
+                          "전체삭제",
                           style: TextStyle(
                             color: recentSearches.isNotEmpty
                                 ? const Color(0xff858998)
                                 : const Color(0xffD8DAE2),
+                            fontWeight: FontWeight.w500,
                             fontSize: AppUtils.scaleSize(context, 12),
                           ),
                         ),
@@ -196,6 +205,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 "자동저장 끄기",
                                 style: TextStyle(
                                   color: const Color(0xff858998),
+                                  fontWeight: FontWeight.w500,
                                   fontSize: AppUtils.scaleSize(context, 12),
                                 ),
                               ),
@@ -211,6 +221,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 "자동저장 켜기",
                                 style: TextStyle(
                                   color: const Color(0xff858998),
+                                  fontWeight: FontWeight.w500,
                                   fontSize: AppUtils.scaleSize(context, 12),
                                 ),
                               ),
@@ -312,11 +323,12 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
               SizedBox(
                 height: AppUtils.scaleSize(context, 17),
               ),
-              const Text(
+              Text(
                 "검색어를 입력해보세요!",
                 style: TextStyle(
-                  color: Color(0xff9397A4),
+                  color: const Color(0xff9397A4),
                   fontWeight: FontWeight.w500,
+                  fontSize: AppUtils.scaleSize(context, 14),
                 ),
               )
             ],

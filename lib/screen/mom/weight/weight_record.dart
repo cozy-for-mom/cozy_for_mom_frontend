@@ -109,7 +109,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
                                         fontSize:
-                                            AppUtils.scaleSize(context, 18),
+                                            AppUtils.scaleSize(context, 20),
                                       ),
                                     ),
                                     IconButton(

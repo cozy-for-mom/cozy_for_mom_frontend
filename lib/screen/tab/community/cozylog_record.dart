@@ -171,7 +171,6 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                   left: AppUtils.scaleSize(context, 20),
                   child: SizedBox(
                     width: screenWidth - AppUtils.scaleSize(context, 40),
-                    height: AppUtils.scaleSize(context, 52),
                     child: TextFormField(
                       keyboardType: TextInputType.text,
                       controller: titleController,

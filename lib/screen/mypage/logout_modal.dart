@@ -51,6 +51,7 @@ class _LogoutModalState extends State<LogoutModal> {
                   Text(
                     "로그아웃",
                     style: TextStyle(
+                      color: mainTextColor,
                       fontSize: AppUtils.scaleSize(context, 20),
                       fontWeight: FontWeight.w600,
                     ),

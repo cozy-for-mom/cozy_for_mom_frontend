@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -37,7 +39,14 @@ class _PostCreationPageState extends State<PostCreationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('게시글 작성'),
+        title: Text(
+          '게시글 작성',
+          style: TextStyle(
+            color: mainTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: AppUtils.scaleSize(context, 20),
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

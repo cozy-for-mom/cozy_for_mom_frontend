@@ -61,7 +61,7 @@ class _BabyGrowthReportDetailScreenState
             style: TextStyle(
               color: mainTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 18),
+              fontSize: AppUtils.scaleSize(context, 20),
             ),
           ),
           leading: IconButton(
@@ -184,13 +184,19 @@ class _BabyGrowthReportDetailScreenState
                                                     child: Column(
                                                         children: <Widget>[
                                                           ListTile(
-                                                            title: const Center(
+                                                            title: Center(
                                                                 child: Text(
                                                               '수정하기',
                                                               style: TextStyle(
+                                                                color:
+                                                                    mainTextColor,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
+                                                                fontSize: AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        16),
                                                               ),
                                                             )),
                                                             onTap: () {
@@ -210,13 +216,19 @@ class _BabyGrowthReportDetailScreenState
                                                             },
                                                           ),
                                                           ListTile(
-                                                            title: const Center(
+                                                            title: Center(
                                                                 child: Text(
                                                               '보고서 삭제하기',
                                                               style: TextStyle(
+                                                                color:
+                                                                    mainTextColor,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
+                                                                fontSize: AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        16),
                                                               ),
                                                             )),
                                                             onTap: () async {
@@ -268,13 +280,16 @@ class _BabyGrowthReportDetailScreenState
                                                       color: const Color(
                                                           0xffC2C4CB),
                                                     ),
-                                                    child: const Center(
+                                                    child: Center(
                                                         child: Text(
                                                       "취소",
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w600,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 16),
                                                       ),
                                                     )),
                                                   ),

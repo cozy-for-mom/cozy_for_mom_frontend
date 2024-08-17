@@ -102,7 +102,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
                                           fontSize:
-                                              AppUtils.scaleSize(context, 18),
+                                              AppUtils.scaleSize(context, 20),
                                         ),
                                       ),
                                       IconButton(

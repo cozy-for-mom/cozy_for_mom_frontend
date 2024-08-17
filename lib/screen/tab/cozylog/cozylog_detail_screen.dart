@@ -100,7 +100,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 18),
+                            fontSize: AppUtils.scaleSize(context, 20),
                           ),
                         ),
                         IconButton(
@@ -172,6 +172,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                         cozyLog.writer.nickname,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14),
                                         ),
                                       ),
                                       SizedBox(
@@ -183,14 +185,22 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                             dateFormat
                                                 .format(cozyLog.createdAt),
                                             style: TextStyle(
-                                              color: Color(0xffAAAAAA),
+                                              color: const Color(0xffAAAAAA),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14),
                                             ),
                                           ),
                                           isMyCozyLog
                                               ? Text(
                                                   "・${cozyLog.mode == CozyLogModeType.public ? "공개" : "비공개"}",
                                                   style: TextStyle(
-                                                    color: Color(0xffAAAAAA),
+                                                    color:
+                                                        const Color(0xffAAAAAA),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 14),
                                                   ),
                                                 )
                                               : Container()
@@ -226,16 +236,18 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                       child: Column(
                                                           children: <Widget>[
                                                             ListTile(
-                                                              title:
-                                                                  const Center(
-                                                                      child:
-                                                                          Text(
+                                                              title: Center(
+                                                                  child: Text(
                                                                 '수정하기',
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
+                                                                  fontSize: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          16),
                                                                 ),
                                                               )),
                                                               onTap: () {
@@ -254,16 +266,18 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                               },
                                                             ),
                                                             ListTile(
-                                                              title:
-                                                                  const Center(
-                                                                      child:
-                                                                          Text(
+                                                              title: Center(
+                                                                  child: Text(
                                                                 '삭제하기',
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
+                                                                  fontSize: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          16),
                                                                 ),
                                                               )),
                                                               onTap: () {
@@ -332,13 +346,16 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                         color:
                                                             induceButtonColor,
                                                       ),
-                                                      child: const Center(
+                                                      child: Center(
                                                           child: Text(
                                                         "취소",
                                                         style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.w600,
+                                                          fontSize: AppUtils
+                                                              .scaleSize(
+                                                                  context, 16),
                                                         ),
                                                       )),
                                                     ),

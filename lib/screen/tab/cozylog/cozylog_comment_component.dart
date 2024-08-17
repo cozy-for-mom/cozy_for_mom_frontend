@@ -280,12 +280,14 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                   BorderRadius.circular(12),
                                               color: const Color(0xffC2C4CB),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                                 child: Text(
                                               "취소",
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 16),
                                               ),
                                             )),
                                           ),
@@ -564,7 +566,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                               color: const Color(
                                                                   0xffC2C4CB),
                                                             ),
-                                                            child: const Center(
+                                                            child: Center(
                                                                 child: Text(
                                                               "취소",
                                                               style: TextStyle(
@@ -573,6 +575,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
+                                                                fontSize: AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        16),
                                                               ),
                                                             )),
                                                           ),

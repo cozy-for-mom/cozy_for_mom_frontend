@@ -6,7 +6,6 @@ import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_screen.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +25,7 @@ class _BabyGrowthReportListScreenState
     extends State<BabyGrowthReportListScreen> {
   DateFormat dateFormat = DateFormat('yyyy년 MM월 dd일');
   late Future<Pair<List<BabyProfileGrowth>, DateTime?>> data;
+  String nextCheckUpDate = "";
   DateFormat dateFormatForString = DateFormat('yyyy-MM-dd');
 
   @override
@@ -36,7 +36,6 @@ class _BabyGrowthReportListScreenState
 
   @override
   Widget build(BuildContext context) {
-    DateTime? nextCheckUpDate = DateTime.now();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -51,7 +50,7 @@ class _BabyGrowthReportListScreenState
           style: TextStyle(
             color: mainTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: AppUtils.scaleSize(context, 18),
+            fontSize: AppUtils.scaleSize(context, 20),
           ),
         ),
         leading: IconButton(
@@ -95,281 +94,266 @@ class _BabyGrowthReportListScreenState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "다음 검진일",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: primaryColor,
+                          fontSize: AppUtils.scaleSize(context, 14),
                         ),
                       ),
-                      if (nextCheckUpDate != "")
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              elevation: 0.0,
-                              context: context,
-                              builder: (context) {
-                                List<String> selectedNotifications = [];
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
+                            context: context,
+                            builder: (context) {
+                              List<String> selectedNotifications = [];
 
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    void toggleOffNotification(
-                                        String notification) {
-                                      setState(() {
-                                        if (selectedNotifications
-                                            .contains(notification)) {
-                                          selectedNotifications
-                                              .remove(notification);
-                                        }
-                                      });
-                                    }
-
-                                    void toggleNotification(
-                                        String notification) {
-                                      setState(() {
-                                        if (selectedNotifications
-                                            .contains(notification)) {
-                                          selectedNotifications
-                                              .remove(notification);
-                                        } else {
-                                          selectedNotifications
-                                              .add(notification);
-                                          if (notification != 'none') {
-                                            toggleOffNotification("none");
-                                          } else {
-                                            toggleOffNotification("on day");
-                                            toggleOffNotification(
-                                                "one day ago");
-                                            toggleOffNotification(
-                                                "two day ago");
-                                            toggleOffNotification(
-                                                "one week ago");
-                                          }
-                                        }
-                                      });
-                                    }
-
-                                    return SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          MonthCalendarModal(),
-                                          Container(
-                                            color: Colors.white,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.all(
-                                                      AppUtils.scaleSize(
-                                                          context, 8)),
-                                                  child: Divider(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 30),
-                                                    thickness: 1,
-                                                    color:
-                                                        const Color(0xffE2E2E2),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "알림",
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        AppUtils.scaleSize(
-                                                            context, 16),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 20)),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          AppUtils.scaleSize(
-                                                              context, 10)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      NotificationOption(
-                                                          title: '당일 정오',
-                                                          isSelected:
-                                                              selectedNotifications
-                                                                  .contains(
-                                                                      "on day"),
-                                                          onTap: () => {
-                                                                toggleNotification(
-                                                                    "on day")
-                                                              }),
-                                                      NotificationOption(
-                                                        title: '하루 전',
-                                                        isSelected:
-                                                            selectedNotifications
-                                                                .contains(
-                                                                    "one day ago"),
-                                                        onTap: () =>
-                                                            toggleNotification(
-                                                                "one day ago"),
-                                                      ),
-                                                      NotificationOption(
-                                                        title: '이틀 전',
-                                                        isSelected:
-                                                            selectedNotifications
-                                                                .contains(
-                                                                    "two day ago"),
-                                                        onTap: () =>
-                                                            toggleNotification(
-                                                                "two day ago"),
-                                                      ),
-                                                      NotificationOption(
-                                                        title: '일주일 전',
-                                                        isSelected:
-                                                            selectedNotifications
-                                                                .contains(
-                                                                    "one week ago"),
-                                                        onTap: () =>
-                                                            toggleNotification(
-                                                                "one week ago"),
-                                                      ),
-                                                      NotificationOption(
-                                                        title: '설정 안 함',
-                                                        isSelected:
-                                                            selectedNotifications
-                                                                .contains(
-                                                                    "none"),
-                                                        onTap: () =>
-                                                            toggleNotification(
-                                                                "none"),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 30)),
-                                                InkWell(
-                                                  onTap: () async {
-                                                    if (selectedNotifications
-                                                        .isNotEmpty) {
-                                                      await BabyGrowthApiService()
-                                                          .registerNotificationExaminationDate(
-                                                              dateFormatForString
-                                                                  .format(globalData
-                                                                      .selectedDate),
-                                                              selectedNotifications);
-                                                      if (mounted) {
-                                                        // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
-                                                        Navigator.pop(
-                                                            context, true);
-                                                      }
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                    width: screenWidth -
-                                                        AppUtils.scaleSize(
-                                                            context, 40),
-                                                    height: AppUtils.scaleSize(
-                                                        context, 56),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      color:
-                                                          selectedNotifications
-                                                                  .isNotEmpty
-                                                              ? primaryColor
-                                                              : const Color(
-                                                                  0xffC9DFF9),
-                                                    ),
-                                                    child: const Center(
-                                                      child: Text(
-                                                        "등록하기",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 20)),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ).then((value) {
-                              if (value == true) {
-                                setState(() {
-                                  data = BabyGrowthApiService()
-                                      .getBabyProfileGrowths(null, 10);
-                                });
-                              }
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              FutureBuilder(
-                                  future: data,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data.second != null) {
-                                        return Text(dateFormat
-                                            .format(snapshot.data.second));
-                                      } else {
-                                        return Container();
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  void toggleOffNotification(
+                                      String notification) {
+                                    setState(() {
+                                      if (selectedNotifications
+                                          .contains(notification)) {
+                                        selectedNotifications
+                                            .remove(notification);
                                       }
-                                    } else {
-                                      return Container();
-                                    }
-                                  }),
-                              SizedBox(
-                                width: AppUtils.scaleSize(context, 5),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 13,
-                                color: Color(0xff858998),
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (nextCheckUpDate == "")
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              backgroundColor: Colors.transparent,
-                              elevation: 0.0,
-                              context: context,
-                              builder: (context) {
-                                return MonthCalendarModal();
-                              },
-                            );
-                          },
-                          child: const Row(
-                            children: [
-                              Text(
-                                "검진일 등록하기",
-                                style: TextStyle(color: Color(0xff858998)),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 13,
-                                color: Color(0xff858998),
-                              ),
-                            ],
-                          ),
-                        ),
+                                    });
+                                  }
+
+                                  void toggleNotification(String notification) {
+                                    setState(() {
+                                      if (selectedNotifications
+                                          .contains(notification)) {
+                                        selectedNotifications
+                                            .remove(notification);
+                                      } else {
+                                        selectedNotifications.add(notification);
+                                        if (notification != 'none') {
+                                          toggleOffNotification("none");
+                                        } else {
+                                          toggleOffNotification("on day");
+                                          toggleOffNotification("one day ago");
+                                          toggleOffNotification("two day ago");
+                                          toggleOffNotification("one week ago");
+                                        }
+                                      }
+                                    });
+                                  }
+
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        MonthCalendarModal(),
+                                        Container(
+                                          color: Colors.white,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.all(
+                                                    AppUtils.scaleSize(
+                                                        context, 8)),
+                                                child: Divider(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 30),
+                                                  thickness: 1,
+                                                  color:
+                                                      const Color(0xffE2E2E2),
+                                                ),
+                                              ),
+                                              Text(
+                                                "알림",
+                                                style: TextStyle(
+                                                  color: mainTextColor,
+                                                  fontSize: AppUtils.scaleSize(
+                                                      context, 16),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 20)),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        AppUtils.scaleSize(
+                                                            context, 10)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    NotificationOption(
+                                                        title: '당일 정오',
+                                                        isSelected:
+                                                            selectedNotifications
+                                                                .contains(
+                                                                    "on day"),
+                                                        onTap: () => {
+                                                              toggleNotification(
+                                                                  "on day")
+                                                            }),
+                                                    NotificationOption(
+                                                      title: '하루 전',
+                                                      isSelected:
+                                                          selectedNotifications
+                                                              .contains(
+                                                                  "one day ago"),
+                                                      onTap: () =>
+                                                          toggleNotification(
+                                                              "one day ago"),
+                                                    ),
+                                                    NotificationOption(
+                                                      title: '이틀 전',
+                                                      isSelected:
+                                                          selectedNotifications
+                                                              .contains(
+                                                                  "two day ago"),
+                                                      onTap: () =>
+                                                          toggleNotification(
+                                                              "two day ago"),
+                                                    ),
+                                                    NotificationOption(
+                                                      title: '일주일 전',
+                                                      isSelected:
+                                                          selectedNotifications
+                                                              .contains(
+                                                                  "one week ago"),
+                                                      onTap: () =>
+                                                          toggleNotification(
+                                                              "one week ago"),
+                                                    ),
+                                                    NotificationOption(
+                                                      title: '설정 안 함',
+                                                      isSelected:
+                                                          selectedNotifications
+                                                              .contains("none"),
+                                                      onTap: () =>
+                                                          toggleNotification(
+                                                              "none"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 30)),
+                                              InkWell(
+                                                onTap: () async {
+                                                  if (selectedNotifications
+                                                      .isNotEmpty) {
+                                                    await BabyGrowthApiService()
+                                                        .registerNotificationExaminationDate(
+                                                            dateFormatForString
+                                                                .format(globalData
+                                                                    .selectedDate),
+                                                            selectedNotifications);
+                                                    if (mounted) {
+                                                      // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
+                                                      Navigator.pop(
+                                                          context, true);
+                                                    }
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: screenWidth -
+                                                      AppUtils.scaleSize(
+                                                          context, 40),
+                                                  height: AppUtils.scaleSize(
+                                                      context, 56),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    color: selectedNotifications
+                                                            .isNotEmpty
+                                                        ? primaryColor
+                                                        : const Color(
+                                                            0xffC9DFF9),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "등록하기",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 16),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 20)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ).then((value) {
+                            if (value == true) {
+                              setState(() {
+                                data = BabyGrowthApiService()
+                                    .getBabyProfileGrowths(null, 10);
+                              });
+                            }
+                          });
+                        },
+                        child: FutureBuilder(
+                            future: data,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data.second != null) {
+                                  nextCheckUpDate =
+                                      dateFormat.format(snapshot.data.second);
+                                }
+                                return Row(
+                                  children: [
+                                    SizedBox(
+                                      width: AppUtils.scaleSize(context, 5),
+                                    ),
+                                    nextCheckUpDate == ""
+                                        ? Text(
+                                            "검진일 등록하기",
+                                            style: TextStyle(
+                                                color: const Color(0xff858998),
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 14)),
+                                          )
+                                        : Text(
+                                            dateFormat
+                                                .format(snapshot.data.second),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 14)),
+                                          ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 13,
+                                      color: Color(0xff858998),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
+                      ),
                     ],
                   ),
                 ),

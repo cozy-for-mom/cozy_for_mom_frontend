@@ -233,7 +233,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           style: TextStyle(
             color: mainTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: AppUtils.scaleSize(context, 18),
+            fontSize: AppUtils.scaleSize(context, 20),
           ),
         ),
         leading: IconButton(
@@ -285,7 +285,6 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             horizontal: AppUtils.scaleSize(context, 20)),
                         child: SizedBox(
                           width: screenWidth,
-                          height: AppUtils.scaleSize(context, 52),
                           child: TextFormField(
                             controller: titleController,
                             textAlign: TextAlign.start,

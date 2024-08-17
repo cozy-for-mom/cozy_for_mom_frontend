@@ -490,7 +490,6 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                 screenWidth - AppUtils.scaleSize(context, 40),
                             height: AppUtils.scaleSize(context, 48),
                             padding: EdgeInsets.symmetric(
-                                vertical: AppUtils.scaleSize(context, 10),
                                 horizontal: AppUtils.scaleSize(context, 20)),
                             decoration: BoxDecoration(
                                 color: contentBoxTwoColor,
@@ -512,8 +511,6 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: AppUtils.scaleSize(context, 16)),
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    bottom: AppUtils.scaleSize(context, 10)),
                                 border: InputBorder.none,
                                 hintText: 'YYYY.MM.DD',
                                 hintStyle: TextStyle(
@@ -650,9 +647,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
               child: Center(
                 child: Text(
                   widget.babyProfileId! > -1 ? "수정하기" : "등록하기",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: AppUtils.scaleSize(context, 16),
                   ),
                 ),
               ),

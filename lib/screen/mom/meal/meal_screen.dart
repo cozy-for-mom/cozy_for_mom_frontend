@@ -132,7 +132,7 @@ class _MealScreenState extends State<MealScreen> {
                             style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 18),
+                              fontSize: AppUtils.scaleSize(context, 20),
                             ),
                           ),
                           IconButton(

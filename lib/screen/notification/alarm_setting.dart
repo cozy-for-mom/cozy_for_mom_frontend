@@ -59,7 +59,7 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 18)),
+              fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
           color: Colors.black,

@@ -80,7 +80,7 @@ class _MyCozylogState extends State<MyCozylog> {
           style: TextStyle(
               color: mainTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 18)),
+              fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
           icon: const Icon(

@@ -136,7 +136,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 18)),
+              fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
           color: Colors.black,
@@ -481,13 +481,13 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                       ? primaryColor
                       : const Color(0xffC9DFF9),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
                     "등록하기",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppUtils.scaleSize(context, 16)),
                   ),
                 ),
               ),

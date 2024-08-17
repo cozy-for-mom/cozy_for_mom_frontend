@@ -125,7 +125,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: AppUtils.scaleSize(context, 18))),
+                fontSize: AppUtils.scaleSize(context, 20))),
         actions: [
           InkWell(
             onTap: () async {

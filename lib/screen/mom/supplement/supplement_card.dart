@@ -40,10 +40,11 @@ class SupplementCard extends StatefulWidget {
 class _SupplementCardState extends State<SupplementCard> {
   final SlidableController _slidableController = SlidableController();
   // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
-  double calculateCardHeight(int itemCount) {
+  double calculateCardHeight(BuildContext context, int itemCount) {
     double buttonHeight = 36;
     double spacingHeight = 8;
-    return itemCount * (buttonHeight + spacingHeight) + 40;
+    return AppUtils.scaleSize(
+        context, itemCount * (buttonHeight + spacingHeight) + 40);
   }
 
   @override
@@ -129,7 +130,7 @@ class _SupplementCardState extends State<SupplementCard> {
                   vertical: AppUtils.scaleSize(context, 20)),
               color: contentBoxTwoColor,
               width: screenWidth - AppUtils.scaleSize(context, 40),
-              height: calculateCardHeight(widget.targetCount),
+              height: calculateCardHeight(context, widget.targetCount),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

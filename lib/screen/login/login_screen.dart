@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Positioned(
-          top: AppUtils.scaleSize(context, 120),
+          top: AppUtils.scaleSize(context, 180),
           child: Column(
             children: [
               Image(
@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: AppUtils.scaleSize(context, 69),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 20),
+                height: AppUtils.scaleSize(context, 45),
               ),
               InkWell(
                 onTap: () async {
