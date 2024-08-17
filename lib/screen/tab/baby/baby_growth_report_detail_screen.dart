@@ -220,16 +220,18 @@ class _BabyGrowthReportDetailScreenState
                                                               ),
                                                             )),
                                                             onTap: () async {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const BabyGrowthReportListScreen()));
                                                               await babyGrowthApiService
                                                                   .deleteBabyProfileGrowth(
                                                                       widget
                                                                           .babyProfileGrowthId);
+                                                              if (mounted) {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                const BabyGrowthReportListScreen()));
+                                                              }
 
                                                               setState(() {
                                                                 if (mounted) {
@@ -311,7 +313,13 @@ class _BabyGrowthReportDetailScreenState
                                         data.growthImageUrl!,
                                         fit: BoxFit.cover,
                                       )
-                                    : Container(),
+                                    : Center(
+                                        child: Text("등록된 이미지가 없습니다.",
+                                            style: TextStyle(
+                                                color: const Color(0xff9397A4),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 16)))),
                               ),
                             ),
                           ),

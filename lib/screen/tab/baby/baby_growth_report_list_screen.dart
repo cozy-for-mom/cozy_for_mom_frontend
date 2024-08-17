@@ -38,10 +38,12 @@ class _BabyGrowthReportListScreenState
   Widget build(BuildContext context) {
     DateTime? nextCheckUpDate = DateTime.now();
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
         elevation: 0,
         title: Text(
@@ -81,9 +83,6 @@ class _BabyGrowthReportListScreenState
               EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 12)),
           child: Column(
             children: [
-              SizedBox(
-                height: AppUtils.scaleSize(context, 15),
-              ),
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xffF0F0F5),
@@ -376,151 +375,155 @@ class _BabyGrowthReportListScreenState
                 ),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 30),
+                height: AppUtils.scaleSize(context, 22),
               ),
               FutureBuilder(
                 future: data,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data.first.isNotEmpty) {
-                      return Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
+                      return Container(
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        height: screenHeight * (0.75),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: AppUtils.scaleSize(context, 20),
+                            bottom: screenHeight * 0.35,
+                            left: AppUtils.scaleSize(context, 3),
+                            right: AppUtils.scaleSize(context, 3),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: AppUtils.scaleSize(context, 5),
-                              left: AppUtils.scaleSize(context, 3),
-                              right: AppUtils.scaleSize(context, 3),
-                            ),
-                            child: ListView.builder(
-                              itemCount: snapshot.data.first.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final report = snapshot.data.first[index];
-                                final dateTime = report.date;
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BabyGrowthReportDetailScreen(
-                                          babyProfileGrowthId: report.id,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              AppUtils.scaleSize(context, 27),
-                                          vertical:
-                                              AppUtils.scaleSize(context, 5)),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                flex: 7,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      report.title,
-                                                      style: TextStyle(
-                                                        fontSize:
-                                                            AppUtils.scaleSize(
-                                                                context, 15),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: const Color(
-                                                            0xff2B2D35),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 5),
-                                                    ),
-                                                    Text(
-                                                      "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
-                                                      style: TextStyle(
-                                                        fontSize:
-                                                            AppUtils.scaleSize(
-                                                                context, 13),
-                                                        color: const Color(
-                                                            0xffAAAAAA),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 10),
-                                                    ),
-                                                    Text(
-                                                      report.diary,
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        fontSize:
-                                                            AppUtils.scaleSize(
-                                                                context, 12),
-                                                        color: const Color(
-                                                            0xff858998),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Flexible(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      AppUtils.scaleSize(
-                                                          context, 3)),
-                                                  child: Container(
-                                                    clipBehavior: Clip.hardEdge,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: Image.network(
-                                                      report.growthImageUrl,
-                                                      width: AppUtils.scaleSize(
-                                                          context, 79),
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 79),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height:
-                                                AppUtils.scaleSize(context, 8),
-                                          ),
-                                          const Divider(
-                                            color: Color(0xffE1E1E7),
-                                            thickness: 1.0,
-                                          ),
-                                        ],
+                          child: ListView.builder(
+                            itemCount: snapshot.data.first.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final report = snapshot.data.first[index];
+                              final dateTime = report.date;
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BabyGrowthReportDetailScreen(
+                                        babyProfileGrowthId: report.id,
                                       ),
                                     ),
+                                  );
+                                },
+                                child: SizedBox(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            AppUtils.scaleSize(context, 27),
+                                        vertical:
+                                            AppUtils.scaleSize(context, 5)),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                              flex: 7,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    report.title,
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          AppUtils.scaleSize(
+                                                              context, 15),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: const Color(
+                                                          0xff2B2D35),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: AppUtils.scaleSize(
+                                                        context, 5),
+                                                  ),
+                                                  Text(
+                                                    "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          AppUtils.scaleSize(
+                                                              context, 13),
+                                                      color: const Color(
+                                                          0xffAAAAAA),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: AppUtils.scaleSize(
+                                                        context, 7),
+                                                  ),
+                                                  Text(
+                                                    report.diary,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          AppUtils.scaleSize(
+                                                              context, 12),
+                                                      color: const Color(
+                                                          0xff858998),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Flexible(
+                                              flex: 3,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(
+                                                    AppUtils.scaleSize(
+                                                        context, 3)),
+                                                child: Container(
+                                                  clipBehavior: Clip.hardEdge,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: report
+                                                              .growthImageUrl ==
+                                                          null
+                                                      ? Container()
+                                                      : Image.network(
+                                                          report.growthImageUrl,
+                                                          width: AppUtils
+                                                              .scaleSize(
+                                                                  context, 79),
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 79),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              AppUtils.scaleSize(context, 10),
+                                        ),
+                                        const Divider(
+                                          color: Color(0xffE1E1E7),
+                                          thickness: 1.0,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       );

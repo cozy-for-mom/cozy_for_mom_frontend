@@ -35,8 +35,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   TextEditingController titleController = TextEditingController();
   TextEditingController diaryController = TextEditingController();
   Map<Baby, List<TextEditingController>> infoControllersByBabies = {};
-  late ValueNotifier<Baby?> selectedBaby;
-  double _textFieldHeight = 50.0; // 초기 높이
+  ValueNotifier<Baby?> selectedBaby = ValueNotifier<Baby?>(null);
+  double _textFieldHeight = 50; // 초기 높이
 
   late BabyProfile babyProfile;
   List<Baby> babies = List.empty();
@@ -45,8 +45,17 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
 
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
-  double calculateHeight(String text) {
-    return 50.0 + text.length.toDouble() / 1.2;
+  double calculateHeight(BuildContext context, String text, double width) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+          text: text,
+          style: TextStyle(fontSize: AppUtils.scaleSize(context, 16))),
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(maxWidth: width);
+    return AppUtils.scaleSize(
+        context, 50 + textPainter.height.toDouble() * 1.2);
   }
 
   @override
@@ -85,6 +94,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
 
     // Initialize selectedBaby and infoControllersByBabies here
     selectedBaby = ValueNotifier<Baby?>(babies[0]);
+
     if (widget.babyProfileGrowth != null) {
       infoControllersByBabies = {
         for (int i = 0; i < babies.length; i++)
@@ -128,6 +138,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final babyGrowthApiService = BabyGrowthApiService();
+    var id = widget.babyProfileGrowth?.id;
 
     bool isRegisterButtonEnabled() {
       return titleController.text.isNotEmpty ||
@@ -417,7 +428,11 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             onChanged: (text) {
                               setState(() {
                                 // 텍스트의 길이에 따라 높이를 조절
-                                _textFieldHeight = calculateHeight(text);
+                                _textFieldHeight = calculateHeight(
+                                    context,
+                                    text,
+                                    screenWidth -
+                                        AppUtils.scaleSize(context, 50));
                               });
                             },
                           ),
@@ -486,7 +501,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   final reportId =
                       await babyGrowthApiService.registerBabyProfileGrowth(
                     BabyProfileGrowth(
-                      id: null, // TODO 이게 다이어리 id인가?
+                      id: id,
                       babyProfileId: babyProfileId!,
                       date: DateTime.now(),
                       growthImageUrl: growthImageUrl,
@@ -536,7 +551,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    "등록하기",
+                    widget.babyProfileGrowth == null ? "등록하기" : "수정하기",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
