@@ -1,7 +1,7 @@
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 
 class DeleteModal extends StatefulWidget {
   final String text;
@@ -71,7 +71,7 @@ class _DeleteModalState extends State<DeleteModal> {
                     await widget.tapFunc!();
                     if (mounted) {
                       Navigator.of(context).pop(true);
-                      await CompleteAlertModal.showDeleteCompleteDialog(
+                      await CompleteAlertModal.showCompleteDialog(
                           context, widget.title, '삭제');
                     }
                   },

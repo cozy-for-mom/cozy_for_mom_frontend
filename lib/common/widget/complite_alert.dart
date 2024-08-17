@@ -9,7 +9,7 @@ class CompleteAlertModal extends StatelessWidget {
   const CompleteAlertModal({Key? key, required this.text, required this.action})
       : super(key: key);
 
-  static Future<void> showDeleteCompleteDialog(
+  static Future<void> showCompleteDialog(
       BuildContext context, String text, String action) async {
     showDialog(
       context: context,

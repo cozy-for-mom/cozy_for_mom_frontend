@@ -1,5 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
@@ -619,7 +619,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                       babyProfileImageUrl,
                       babies);
                   if (mounted) {
-                    await CompleteAlertModal.showDeleteCompleteDialog(
+                    await CompleteAlertModal.showCompleteDialog(
                         context, '프로필이', '변경');
                     Navigator.pop(context, true);
                   }

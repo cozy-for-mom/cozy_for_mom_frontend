@@ -1,5 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/extension/map_with_index.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
@@ -248,7 +248,7 @@ class _BabyGrowthReportDetailScreenState
                                                               setState(() {
                                                                 if (mounted) {
                                                                   CompleteAlertModal
-                                                                      .showDeleteCompleteDialog(
+                                                                      .showCompleteDialog(
                                                                           context,
                                                                           '성장 보고서가',
                                                                           '삭제');
