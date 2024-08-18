@@ -37,7 +37,7 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: FutureBuilder(
-          future: userViewModel.getUserInfo(),
+          future: userViewModel.getUserInfo(context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               pregnantInfo = snapshot.data!;
@@ -384,6 +384,7 @@ class _MyPageState extends State<MyPage> {
                                                     try {
                                                       await userViewModel
                                                           .modifyMainBaby(
+                                                              context,
                                                               pregnantInfo[
                                                                           'babyProfiles']
                                                                       [index]

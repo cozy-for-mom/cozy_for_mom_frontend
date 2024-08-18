@@ -34,7 +34,7 @@ class _MyScrapState extends State<MyScrap> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final cozyLogWrapper =
-          await CozyLogApiService().getScrapCozyLogs(pageKey, 10);
+          await CozyLogApiService().getScrapCozyLogs(context, pageKey, 10);
       final cozyLogs = cozyLogWrapper.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
@@ -55,7 +55,7 @@ class _MyScrapState extends State<MyScrap> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ListModifyState>(context, listen: false).clearSelection();
     });
-    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(null, 10);
+    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(context, null, 10);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -307,11 +307,12 @@ class _MyScrapState extends State<MyScrap> {
                             text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                             tapFunc: () async {
                               await CozyLogApiService().bulkUnscrapCozyLog(
+                                context,
                                 scrapListModifyState.selectedIds,
                               );
                               setState(() {
                                 cozyLogWrapper = CozyLogApiService()
-                                    .getScrapCozyLogs(null, 10);
+                                    .getScrapCozyLogs(context, null, 10);
                                 scrapListModifyState.clearSelection();
                               });
                             },

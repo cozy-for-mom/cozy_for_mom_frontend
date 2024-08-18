@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class CozyLogApiService {
   Future<MyCozyLogListWrapper> getMyCozyLogs(
+    BuildContext context,
     int? lastId,
     int size,
   ) async {
@@ -27,11 +30,13 @@ class CozyLogApiService {
       }).toList();
       return MyCozyLogListWrapper(cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그 목록 조회 실패');
     }
   }
 
   Future<ScrapCozyLogListWrapper> getScrapCozyLogs(
+    BuildContext context,
     int? lastId,
     int size,
   ) async {
@@ -54,11 +59,13 @@ class CozyLogApiService {
       return ScrapCozyLogListWrapper(
           cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그 목록 조회 실패');
     }
   }
 
   Future<List<CozyLogForList>> getCozyLogs(
+    BuildContext context,
     int? lastId,
     int size, {
     String sortType = 'LATELY',
@@ -83,11 +90,13 @@ class CozyLogApiService {
       }).toList();
       return cozyLogs;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그 목록 조회 실패');
     }
   }
 
   Future<CozyLogSearchResponse> searchCozyLogs(
+    BuildContext context,
     String keyword,
     int? lastId,
     int size,
@@ -125,11 +134,13 @@ class CozyLogApiService {
         totalElements: totalCount,
       );
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그 검색 조회 실패');
     }
   }
 
   Future<CozyLog> getCozyLog(
+    BuildContext context,
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
@@ -143,11 +154,13 @@ class CozyLogApiService {
       dynamic data = body['data'];
       return CozyLog.fromJson(data);
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(id: $id) 조회 실패');
     }
   }
 
   Future<int> createCozyLog(
+    BuildContext context,
     String title,
     String content,
     List<CozyLogImage> images,
@@ -184,11 +197,13 @@ class CozyLogApiService {
       Map<String, dynamic> data = body['data'];
       return data['cozyLogId'] as int;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그 작성 실패');
     }
   }
 
   Future<int> updateCozyLog(
+    BuildContext context,
     int id,
     String title,
     String content,
@@ -227,11 +242,13 @@ class CozyLogApiService {
       Map<String, dynamic> data = body['data'];
       return data['modifiedCozyLogId'] as int;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(id: $id) 수정 실패');
     }
   }
 
   void deleteCozyLog(
+    BuildContext context,
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
@@ -246,11 +263,13 @@ class CozyLogApiService {
     if (response.statusCode == 204) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(id: $id) 삭제 실패');
     }
   }
 
   Future<void> scrapCozyLog(
+    BuildContext context,
     int cozyLogId,
   ) async {
     var urlString = '$baseUrl/scrap';
@@ -271,11 +290,13 @@ class CozyLogApiService {
     if (response.statusCode == 201) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
 
   Future<void> unscrapCozyLog(
+    BuildContext context,
     int cozyLogId,
   ) async {
     var urlString = '$baseUrl/scrap';
@@ -296,11 +317,13 @@ class CozyLogApiService {
     if (response.statusCode == 201) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
 
   Future<void> bulkDeleteCozyLog(
+    BuildContext context,
     List<int> cozyLogIds,
   ) async {
     var urlString = '$baseUrl/me/cozy-log';
@@ -320,11 +343,13 @@ class CozyLogApiService {
       print("삭제왼료");
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
   }
 
   Future<void> bulkAllDeleteCozyLog(
+    BuildContext context,
     List<int> cozyLogIds,
   ) async {
     var urlString = '$baseUrl/me/cozy-log/all';
@@ -344,11 +369,13 @@ class CozyLogApiService {
     if (response.statusCode == 204) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
   }
 
   Future<void> bulkUnscrapCozyLog(
+    BuildContext context,
     List<int> cozyLogIds,
   ) async {
     var urlString = '$baseUrl/scrap/unscraps?userId=1';
@@ -368,6 +395,7 @@ class CozyLogApiService {
     if (response.statusCode == 204) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
     }
   }

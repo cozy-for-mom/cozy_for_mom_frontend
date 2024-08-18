@@ -206,6 +206,7 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                     onTap: () async {
                       if (isEnabled) {
                         int id = await supplementApi.registerSupplement(
+                            context,
                             nameController.text,
                             int.parse(targetCountController.text));
                         Navigator.of(context).pop();

@@ -45,7 +45,8 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
 
   void initEmail(String text) async {
     _isEmailValid = _validateEmail(text);
-    _isEmailNotDuplicated = await JoinApiService().emailDuplicateCheck(text);
+    _isEmailNotDuplicated =
+        await JoinApiService().emailDuplicateCheck(context, text);
     if (mounted) {
       setState(() {
         _isInputValid = text.isNotEmpty;
@@ -172,7 +173,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                             if (dotIndex != -1 &&
                                 dotIndex + 3 <= value.length) {
                               _isEmailNotDuplicated = await JoinApiService()
-                                  .emailDuplicateCheck(value);
+                                  .emailDuplicateCheck(context, value);
                             }
                           }
                           setState(() {

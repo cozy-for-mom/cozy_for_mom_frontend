@@ -234,6 +234,7 @@ class _BabyGrowthReportDetailScreenState
                                                             onTap: () async {
                                                               await babyGrowthApiService
                                                                   .deleteBabyProfileGrowth(
+                                                                      context,
                                                                       widget
                                                                           .babyProfileGrowthId);
                                                               if (mounted) {

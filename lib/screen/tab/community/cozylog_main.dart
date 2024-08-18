@@ -33,6 +33,7 @@ class _CozylogMainState extends State<CozylogMain> {
   void initState() {
     super.initState();
     cozyLogs = CozyLogApiService().getCozyLogs(
+      context,
       null,
       10,
     );
@@ -44,7 +45,7 @@ class _CozylogMainState extends State<CozylogMain> {
     final screenHeight = MediaQuery.of(context).size.height;
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
-        future: userViewModel.getUserInfo(),
+        future: userViewModel.getUserInfo(context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;

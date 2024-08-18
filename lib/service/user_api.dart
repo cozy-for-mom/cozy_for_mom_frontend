@@ -1,19 +1,21 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
+import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class UserApiService extends ChangeNotifier {
   final tokenManager = TokenManager.TokenManager();
 
-  Future<Map<String, dynamic>> getUserInfo() async {
+  Future<Map<String, dynamic>> getUserInfo(BuildContext context) async {
     UserLocalStorageService storageService =
         await UserLocalStorageService.getInstance();
     try {
@@ -63,15 +65,16 @@ class UserApiService extends ChangeNotifier {
           'dDay': dDay
         };
       } else {
-        throw Exception('Failed to load user info: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+        return {};
       }
     } catch (e) {
       throw Exception('$e');
     }
   }
 
-  Future<void> modifyUserProfile(String name, String nickname, String introduce,
-      String? imageUrl, String birth, String email) async {
+  Future<void> modifyUserProfile(BuildContext context, name, String nickname,
+      String introduce, String? imageUrl, String birth, String email) async {
     final headers = await getHeaders();
     final url = Uri.parse('$baseUrl/me');
     Map data = {
@@ -87,11 +90,12 @@ class UserApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('$name 산모 프로필 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> modifyMainBaby(int id) async {
+  Future<void> modifyMainBaby(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/me/baby/recent');
     final headers = await getHeaders();
     Map data = {'babyProfileId': id};
@@ -101,11 +105,14 @@ class UserApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$id 메인 태아 프로필 변경을 실패하였습니다.');
     }
   }
 
-  Future<Map<String, dynamic>> getBabyProfile(int babyProfileId) async {
+  Future<Map<String, dynamic>> getBabyProfile(
+      BuildContext context, int babyProfileId) async {
     try {
       final url = Uri.parse('$baseUrl/baby/$babyProfileId');
       final headers = await getHeaders();
@@ -125,6 +132,8 @@ class UserApiService extends ChangeNotifier {
           'babies': babies
         };
       } else {
+        handleHttpResponse(res.statusCode, context);
+
         throw Exception('$babyProfileId 태아 프로필 조회 실패: ${res.statusCode}');
       }
     } catch (e) {
@@ -134,8 +143,8 @@ class UserApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> addBabyProfile(String dueAt, String? profileImageUrl,
-      List<BabyForRegister> babies) async {
+  Future<void> addBabyProfile(BuildContext context, String dueAt,
+      String? profileImageUrl, List<BabyForRegister> babies) async {
     final url = Uri.parse('$baseUrl/baby');
     final headers = await getHeaders();
     final Response response = await post(url,
@@ -149,12 +158,18 @@ class UserApiService extends ChangeNotifier {
     if (response.statusCode == 201) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('태아 추가를 실패하였습니다.');
     }
   }
 
-  Future<void> modifyBabyProfile(int babyProfileId, String dueAt,
-      String? profileImageUrl, List<BabyForRegister> babies) async {
+  Future<void> modifyBabyProfile(
+      BuildContext context,
+      int babyProfileId,
+      String dueAt,
+      String? profileImageUrl,
+      List<BabyForRegister> babies) async {
     final url = Uri.parse('$baseUrl/baby/$babyProfileId');
     final headers = await getHeaders();
     final Response response = await put(url,
@@ -167,22 +182,27 @@ class UserApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return;
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('태아 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteBabyProfile(int babyProfileId) async {
+  Future<void> deleteBabyProfile(
+      BuildContext context, int babyProfileId) async {
     final url = Uri.parse('$baseUrl/baby/$babyProfileId');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
     if (res.statusCode == 200) {
       print('$babyProfileId 태아 프로필이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$babyProfileId 태아 프로필 삭제를 실패하였습니다.';
     }
   }
 
-  Future<void> logOut() async {
+  Future<void> logOut(BuildContext context) async {
     final url = Uri.parse('$baseUrl/user/logout');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
@@ -192,6 +212,8 @@ class UserApiService extends ChangeNotifier {
       final id = responseData['data']['userId'];
       print('user $id 회원이 로그아웃되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '로그아웃을 실패하였습니다.';
     }
   }

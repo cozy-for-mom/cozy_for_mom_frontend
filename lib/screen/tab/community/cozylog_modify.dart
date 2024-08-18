@@ -32,7 +32,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final cozyLogWrapper =
-          await CozyLogApiService().getMyCozyLogs(pageKey, 10);
+          await CozyLogApiService().getMyCozyLogs(context, pageKey, 10);
       final cozyLogs = cozyLogWrapper.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
@@ -53,7 +53,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ListModifyState>(context, listen: false).clearSelection();
     });
-    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(null, 10);
+    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(context, null, 10);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);

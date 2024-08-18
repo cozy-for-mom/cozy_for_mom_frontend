@@ -33,7 +33,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final cozyLogWrapper =
-          await CozyLogApiService().getScrapCozyLogs(pageKey, 10);
+          await CozyLogApiService().getScrapCozyLogs(context, pageKey, 10);
       final cozyLogs = cozyLogWrapper.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
@@ -54,7 +54,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ListModifyState>(context, listen: false).clearSelection();
     });
-    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(null, 10);
+    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(context, null, 10);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);

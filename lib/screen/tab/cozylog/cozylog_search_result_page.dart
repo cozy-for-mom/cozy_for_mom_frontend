@@ -35,7 +35,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
   void initState() {
     super.initState();
     response = CozyLogApiService()
-        .searchCozyLogs(widget.searchKeyword, null, 15, sortType);
+        .searchCozyLogs(context, widget.searchKeyword, null, 15, sortType);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -74,6 +74,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final response = await CozyLogApiService().searchCozyLogs(
+        context,
         widget.searchKeyword,
         pageKey,
         15,
@@ -217,6 +218,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                         response =
                                                             CozyLogApiService()
                                                                 .searchCozyLogs(
+                                                          context,
                                                           widget.searchKeyword,
                                                           0,
                                                           15,
@@ -260,6 +262,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                         response =
                                                             CozyLogApiService()
                                                                 .searchCozyLogs(
+                                                          context,
                                                           widget.searchKeyword,
                                                           0,
                                                           15,

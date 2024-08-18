@@ -82,9 +82,13 @@ class _MealScreenState extends State<MealScreen> {
                 final selectedImage = await showImageSelectModal();
                 if (selectedImage != null) {
                   final imageUrl =
-                      await imageApiService.uploadImage(selectedImage);
-                  await momMealViewModel.modifyMeals(id, globalData.selectedDay,
-                      mealType.substring(0, 2), imageUrl);
+                      await imageApiService.uploadImage(context, selectedImage);
+                  await momMealViewModel.modifyMeals(
+                      context,
+                      id,
+                      globalData.selectedDay,
+                      mealType.substring(0, 2),
+                      imageUrl);
                   setState(() {
                     breakfastImageUrl = imageUrl;
                   });
@@ -95,7 +99,7 @@ class _MealScreenState extends State<MealScreen> {
               tap2: () async {
                 Navigator.pop(context);
                 // 삭제 작업 수행
-                await momMealViewModel.deleteMeal(id);
+                await momMealViewModel.deleteMeal(context, id);
                 // 상태 업데이트
                 setState(() {});
               },
@@ -175,7 +179,8 @@ class _MealScreenState extends State<MealScreen> {
         ),
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
           return FutureBuilder(
-              future: momMealViewModel.getMeals(globalData.selectedDay),
+              future:
+                  momMealViewModel.getMeals(context, globalData.selectedDay),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   pregnantMeals = snapshot.data! as List<MealModel>;
@@ -304,8 +309,9 @@ class _MealScreenState extends State<MealScreen> {
                                     });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
-                                          .uploadImage(selectedImage);
+                                          .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
+                                        context,
                                         globalData.selectedDate,
                                         MealType.breakfast.korName
                                             .substring(0, 2),
@@ -470,8 +476,9 @@ class _MealScreenState extends State<MealScreen> {
                                     });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
-                                          .uploadImage(selectedImage);
+                                          .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
+                                        context,
                                         globalData.selectedDate,
                                         MealType.lunch.korName.substring(0, 2),
                                         imageUrl,
@@ -635,8 +642,9 @@ class _MealScreenState extends State<MealScreen> {
                                     });
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
-                                          .uploadImage(selectedImage);
+                                          .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
+                                        context,
                                         globalData.selectedDate,
                                         MealType.dinner.korName.substring(0, 2),
                                         imageUrl,

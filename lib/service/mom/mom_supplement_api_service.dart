@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class SupplementApiService extends ChangeNotifier {
-  Future<List<dynamic>> getSupplements(DateTime date) async {
+  Future<List<dynamic>> getSupplements(
+      BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/supplement/intake?date=$formattedDate');
@@ -24,7 +26,9 @@ class SupplementApiService extends ChangeNotifier {
         }).toList();
         return supplements;
       } else {
-        throw Exception('GET 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+
+        throw Exception('$formattedDate 영양제 목록 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -33,7 +37,8 @@ class SupplementApiService extends ChangeNotifier {
     }
   }
 
-  Future<int> recordSupplementIntake(String name, DateTime takeTime) async {
+  Future<int> recordSupplementIntake(
+      BuildContext context, String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
     final headers = await getHeaders();
     Map data = {
@@ -47,12 +52,14 @@ class SupplementApiService extends ChangeNotifier {
     if (response.statusCode == 201) {
       return responseData['data']['supplementRecordId'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$name 섭취 기록 등록을 실패하였습니다.');
     }
   }
 
   Future<int> modifySupplementIntake(
-      int id, String name, String takeTime) async {
+      BuildContext context, int id, String name, String takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
     final headers = await getHeaders();
     Map data = {'supplementName': name, 'datetime': takeTime};
@@ -64,11 +71,13 @@ class SupplementApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return responseData['data']['supplementRecordId'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$name 섭취 기록 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteSupplementIntake(int id) async {
+  Future<void> deleteSupplementIntake(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
@@ -76,11 +85,14 @@ class SupplementApiService extends ChangeNotifier {
     if (res.statusCode == 204) {
       print('$id 기록이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$id 기록 삭제를 실패하였습니다.';
     }
   }
 
-  Future<int> registerSupplement(String name, int targetCount) async {
+  Future<int> registerSupplement(
+      BuildContext context, String name, int targetCount) async {
     final url = Uri.parse('$baseUrl/supplement');
     final headers = await getHeaders();
     Map data = {'supplementName': name, 'targetCount': targetCount};
@@ -91,13 +103,15 @@ class SupplementApiService extends ChangeNotifier {
     if (response.statusCode == 201) {
       return responseData['data']['supplementId'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$name 영양제 등록을 실패하였습니다.');
     }
   }
 
   // TODO 나의 영양제 수정
   Future<PregnantSupplement> modifySupplement(
-      String name, DateTime takeTime) async {
+      BuildContext context, String name, DateTime takeTime) async {
     final url = Uri.parse('$baseUrl/supplement/intake');
     final headers = await getHeaders();
     Map data = {'supplementName': name, 'datetime': takeTime.toIso8601String()};
@@ -107,11 +121,13 @@ class SupplementApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return PregnantSupplement.fromJson(json.decode(response.body));
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$name 섭취 기록 등록을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteSupplement(int id) async {
+  Future<void> deleteSupplement(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/supplement/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
@@ -119,6 +135,8 @@ class SupplementApiService extends ChangeNotifier {
     if (res.statusCode == 204) {
       print('$id 영양제가 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$id 영양제 삭제를 실패하였습니다.';
     }
   }

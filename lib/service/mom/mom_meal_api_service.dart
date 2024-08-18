@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/model/meal_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class MealApiService extends ChangeNotifier {
-  Future<List<dynamic>> getMeals(DateTime date) async {
+  Future<List<dynamic>> getMeals(BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/meal?date=$formattedDate');
@@ -24,7 +25,9 @@ class MealApiService extends ChangeNotifier {
         }).toList();
         return meals;
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+
+        throw Exception('$formattedDate 식단 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -33,8 +36,8 @@ class MealApiService extends ChangeNotifier {
     }
   }
 
-  Future<int> recordMeals(
-      DateTime dateTime, String mealType, String? imageUrl) async {
+  Future<int> recordMeals(BuildContext context, DateTime dateTime,
+      String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal');
     final headers = await getHeaders();
@@ -50,12 +53,14 @@ class MealApiService extends ChangeNotifier {
     if (response.statusCode == 201) {
       return responseData['data']['id'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$dateTime $mealType 식사 기록 등록을 실패하였습니다.');
     }
   }
 
-  Future<int> modifyMeals(
-      int id, DateTime dateTime, String mealType, String? imageUrl) async {
+  Future<int> modifyMeals(BuildContext context, int id, DateTime dateTime,
+      String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal/$id');
     final headers = await getHeaders();
@@ -71,17 +76,21 @@ class MealApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return responseData['data']['id'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('$dateTime $mealType 식사 기록 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteMeal(int id) async {
+  Future<void> deleteMeal(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/meal/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('$id 식사 기록이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$id 식사 기록 삭제를 실패하였습니다.';
     }
   }

@@ -58,8 +58,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
         body: Consumer<MyDataModel>(
           builder: (context, globalData, _) {
             return FutureBuilder(
-                future: momSupplementViewModel
-                    .getSupplements(globalData.selectedDay),
+                future: momSupplementViewModel.getSupplements(
+                    context, globalData.selectedDay),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     pregnantSupplements =

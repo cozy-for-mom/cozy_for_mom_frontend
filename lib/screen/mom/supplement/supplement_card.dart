@@ -87,8 +87,8 @@ class _SupplementCardState extends State<SupplementCard> {
                           text: '등록된 영양제를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                           title: '영양제가',
                           tapFunc: () async {
-                            await supplementApi
-                                .deleteSupplement(widget.supplementId);
+                            await supplementApi.deleteSupplement(
+                                context, widget.supplementId);
                             widget.onDelete(
                                 widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
                             setState(() {
@@ -215,7 +215,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                                       tapFunc: () async {
                                                         await supplementApi
                                                             .deleteSupplementIntake(
-                                                                id);
+                                                                context, id);
                                                         setState(() {
                                                           widget.realCount--;
                                                           widget.takeTimes
@@ -237,7 +237,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                       );
 
                                       int intakeId = await supplementApi
-                                          .recordSupplementIntake(
+                                          .recordSupplementIntake(context,
                                               widget.name, currentTime);
                                       setState(() {
                                         widget.realCount++;

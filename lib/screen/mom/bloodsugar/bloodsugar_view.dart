@@ -36,6 +36,7 @@ class _BloodsugarViewState extends State<BloodsugarView> {
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
       return FutureBuilder(
           future: bloodsugarViewModel.getAvgBloodsugar(
+            context,
             globalData.selectedDate,
           ),
           builder: (context, snapshot) {

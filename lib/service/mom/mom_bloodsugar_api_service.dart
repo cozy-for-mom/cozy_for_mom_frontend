@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class BloodsugarApiService extends ChangeNotifier {
-  Future<List<dynamic>> getBloodsugars(DateTime date) async {
+  Future<List<dynamic>> getBloodsugars(
+      BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/bloodsugar?date=$formattedDate');
@@ -24,7 +26,9 @@ class BloodsugarApiService extends ChangeNotifier {
         }).toList();
         return bloodsugars;
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+
+        throw Exception('$formattedDate 혈당 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -34,7 +38,7 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> getPeriodBloodsugars(
-      DateTime date, String type) async {
+      BuildContext context, DateTime date, String type) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final headers = await getHeaders();
@@ -57,7 +61,8 @@ class BloodsugarApiService extends ChangeNotifier {
           'bloodsugars': bloodsugars,
         };
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+        throw Exception('$formattedDate 혈당 기간별 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -66,7 +71,7 @@ class BloodsugarApiService extends ChangeNotifier {
     }
   }
 
-  Future<double> getAvgBloodsugar(DateTime date) async {
+  Future<double> getAvgBloodsugar(BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final headers = await getHeaders();
@@ -78,7 +83,8 @@ class BloodsugarApiService extends ChangeNotifier {
         double avgBloodsugar = body['data']['avgBloodSugar'];
         return avgBloodsugar;
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+        throw Exception('$formattedDate 혈당 평균 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -89,7 +95,7 @@ class BloodsugarApiService extends ChangeNotifier {
 
   // TODO 혈당 수치 기록 api 연동
   Future<int> recordBloodsugar(
-      DateTime dateTime, String type, int level) async {
+      BuildContext context, DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar');
     final headers = await getHeaders();
     Map data = {
@@ -103,14 +109,16 @@ class BloodsugarApiService extends ChangeNotifier {
     if (response.statusCode == 201) {
       return responseData['data']['bloodSugarRecordId'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception(
           '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록을 실패하였습니다.');
     }
   }
 
   // TODO 혈당 수치 기록 수정 api 연동
-  Future<int> modifyBloodsugar(
-      int id, DateTime dateTime, String type, int level) async {
+  Future<int> modifyBloodsugar(BuildContext context, int id, DateTime dateTime,
+      String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     final headers = await getHeaders();
     Map data = {
@@ -124,18 +132,22 @@ class BloodsugarApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return responseData['data']['bloodSugarRecordId'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception(
           '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteBloodsugar(int id) async {
+  Future<void> deleteBloodsugar(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('혈당 기록이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '혈당 기록 삭제를 실패하였습니다.';
     }
   }

@@ -47,7 +47,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
 
   Future<void> _loadData() async {
     try {
-      var pregnantInfo = await userApiService.getUserInfo();
+      var pregnantInfo = await userApiService.getUserInfo(context);
       introduceController.text = pregnantInfo['introduce'];
       controllers['이름']!.text = pregnantInfo['name'];
       controllers['닉네임']!.text = pregnantInfo['nickname'];
@@ -141,6 +141,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 ),
                 onTap: () async {
                   await userApiService.modifyUserProfile(
+                      context,
                       controllers['이름']!.text,
                       controllers['닉네임']!.text,
                       introduceController.text,
@@ -202,8 +203,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                               source: ImageSource.camera);
                                       if (selectedImage != null) {
                                         final selectedImageUrl =
-                                            await imageApiService
-                                                .uploadImage(selectedImage);
+                                            await imageApiService.uploadImage(
+                                                context, selectedImage);
                                         setState(() {
                                           imageUrl = selectedImageUrl;
                                         });
@@ -218,8 +219,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                               source: ImageSource.gallery);
                                       if (selectedImage != null) {
                                         final selectedImageUrl =
-                                            await imageApiService
-                                                .uploadImage(selectedImage);
+                                            await imageApiService.uploadImage(
+                                                context, selectedImage);
                                         setState(() {
                                           imageUrl = selectedImageUrl;
                                         });

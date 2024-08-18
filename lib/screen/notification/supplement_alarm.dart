@@ -43,7 +43,7 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
     return FutureBuilder(
-        future: notificationViewModel.getNotifications('supplement'),
+        future: notificationViewModel.getNotifications(context, 'supplement'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // 비동기 작업이 완전히 완료되었는지 확인하는 조건

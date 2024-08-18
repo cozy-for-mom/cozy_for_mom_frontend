@@ -52,8 +52,8 @@ class _HomeFragmentState extends State<HomeFragment> {
 
     return FutureBuilder(
         future: Future.wait([
-          userViewModel.getUserInfo(),
-          notificationViewModel.getUpcomingNotification()
+          userViewModel.getUserInfo(context),
+          notificationViewModel.getUpcomingNotification(context)
         ]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

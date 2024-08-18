@@ -53,7 +53,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   Future<void> _loadInitialData() async {
     try {
       var babyProfileData =
-          await userApiService.getBabyProfile(widget.babyProfileId!);
+          await userApiService.getBabyProfile(context, widget.babyProfileId!);
       setState(() {
         dueDateController.text = babyProfileData['dueAt'].replaceAll('-', '.');
         dueDate = dueDateController.text;
@@ -146,7 +146,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
               final selectedImage = await showImageSelectModal();
               if (selectedImage != null) {
                 final imageUrl =
-                    await imageApiService.uploadImage(selectedImage);
+                    await imageApiService.uploadImage(context, selectedImage);
                 setState(() {
                   babyProfileImageUrl = imageUrl;
                 });
@@ -451,7 +451,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                         await showImageSelectModal();
                                     if (selectedImage != null) {
                                       final imageUrl = await imageApiService
-                                          .uploadImage(selectedImage);
+                                          .uploadImage(context, selectedImage);
                                       setState(() {
                                         babyProfileImageUrl = imageUrl;
                                       });
@@ -558,7 +558,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                           title: '프로필이',
                                           tapFunc: () async {
                                             await UserApiService()
-                                                .deleteBabyProfile(
+                                                .deleteBabyProfile(context,
                                                     widget.babyProfileId!);
                                             if (mounted) {
                                               Navigator.of(context).pop(true);
@@ -614,6 +614,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
               if (_validateFields()) {
                 if (widget.babyProfileId! > -1) {
                   await UserApiService().modifyBabyProfile(
+                      context,
                       widget.babyProfileId!,
                       dueDate.replaceAll('.', '-'),
                       babyProfileImageUrl,
@@ -625,6 +626,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                   }
                 } else {
                   await UserApiService().addBabyProfile(
+                      context,
                       dueDate.replaceAll('.', '-'),
                       babyProfileImageUrl,
                       babies);

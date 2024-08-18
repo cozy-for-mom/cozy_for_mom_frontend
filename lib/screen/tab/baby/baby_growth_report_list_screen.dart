@@ -31,7 +31,7 @@ class _BabyGrowthReportListScreenState
   @override
   void initState() {
     super.initState();
-    data = BabyGrowthApiService().getBabyProfileGrowths(null, 10);
+    data = BabyGrowthApiService().getBabyProfileGrowths(context, null, 10);
   }
 
   @override
@@ -248,6 +248,7 @@ class _BabyGrowthReportListScreenState
                                                       .isNotEmpty) {
                                                     await BabyGrowthApiService()
                                                         .registerNotificationExaminationDate(
+                                                            context,
                                                             dateFormatForString
                                                                 .format(globalData
                                                                     .selectedDate),
@@ -306,7 +307,7 @@ class _BabyGrowthReportListScreenState
                             if (value == true) {
                               setState(() {
                                 data = BabyGrowthApiService()
-                                    .getBabyProfileGrowths(null, 10);
+                                    .getBabyProfileGrowths(context, null, 10);
                               });
                             }
                           });

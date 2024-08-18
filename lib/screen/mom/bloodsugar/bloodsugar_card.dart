@@ -32,8 +32,8 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
         Provider.of<BloodsugarApiService>(context, listen: true);
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
       return FutureBuilder(
-          future:
-              momBloodsugarViewModel.getBloodsugars(globalData.selectedDate),
+          future: momBloodsugarViewModel.getBloodsugars(
+              context, globalData.selectedDate),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;
@@ -163,6 +163,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                                     () async {
                                                                   await momBloodsugarViewModel
                                                                       .deleteBloodsugar(
+                                                                          context,
                                                                           id);
                                                                   setState(
                                                                       () {});

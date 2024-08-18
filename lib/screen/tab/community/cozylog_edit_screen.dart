@@ -47,7 +47,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
     Navigator.of(context).pop();
 
     if (pickedFile != null) {
-      imageApiService.uploadImage(pickedFile).then((value) => {
+      imageApiService.uploadImage(context, pickedFile).then((value) => {
             setState(() {
               selectedImages.add(CozyLogImage(
                 imageId: null, // Set appropriate ID if needed
@@ -94,7 +94,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   @override
   void initState() {
     super.initState();
-    futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
+    futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
     futureCozyLog.then((cozyLog) => {
           setState(() {
             titleController = TextEditingController(text: cozyLog.title);
@@ -420,6 +420,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         if (isRegisterButtonEnabled()) {
                           CozyLogApiService()
                               .updateCozyLog(
+                                context,
                                 cozyLog.cozyLogId!,
                                 titleController.text,
                                 contentController.text,

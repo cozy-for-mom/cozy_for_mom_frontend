@@ -178,12 +178,14 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                         widget.id > 0
                             ? bloodsugarId =
                                 await bloodsugarApi.modifyBloodsugar(
+                                    context,
                                     widget.id,
                                     globalData.selectedDate,
                                     '${widget.time} ${widget.period}',
                                     int.parse(textController.text))
                             : bloodsugarId =
                                 await bloodsugarApi.recordBloodsugar(
+                                    context,
                                     globalData.selectedDate,
                                     '${widget.time} ${widget.period}',
                                     int.parse(textController.text));

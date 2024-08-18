@@ -147,8 +147,8 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                         return; // 필드가 비어있다면, 더 이상 진행하지 않는다.
                       }
 
-                      _isNicknameNotDuplicated =
-                          await JoinApiService().nicknameDuplicateCheck(value);
+                      _isNicknameNotDuplicated = await JoinApiService()
+                          .nicknameDuplicateCheck(context, value);
                       if (mounted) {
                         setState(() {
                           _isNicknameLengthNotExceeded = value.length <= 8;

@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class NotificationApiService extends ChangeNotifier {
-  Future<List<dynamic>> getNotifications(String type) async {
+  Future<List<dynamic>> getNotifications(
+      BuildContext context, String type) async {
     try {
       final url = Uri.parse('$baseUrl/notification/record?type=$type');
 
@@ -22,7 +24,9 @@ class NotificationApiService extends ChangeNotifier {
         }).toList();
         return notifications;
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+
+        throw Exception('$type 알림 목록 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -31,7 +35,8 @@ class NotificationApiService extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> getUpcomingNotification() async {
+  Future<Map<String, dynamic>> getUpcomingNotification(
+      BuildContext context) async {
     try {
       final url = Uri.parse('$baseUrl/notification/record/upcoming');
 
@@ -42,7 +47,9 @@ class NotificationApiService extends ChangeNotifier {
             jsonDecode(utf8.decode(res.bodyBytes));
         return upcomingNotification['data'];
       } else {
-        throw Exception('HTTP 요청 실패: ${res.statusCode}');
+        handleHttpResponse(res.statusCode, context);
+
+        throw Exception('가장 가까운 알림을 불러오는데 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -51,7 +58,8 @@ class NotificationApiService extends ChangeNotifier {
     }
   }
 
-  Future<int> recordNotification(NotificationModel notification) async {
+  Future<int> recordNotification(
+      BuildContext context, NotificationModel notification) async {
     final url = Uri.parse('$baseUrl/notification/record');
     final headers = await getHeaders();
     Map data = {
@@ -69,12 +77,15 @@ class NotificationApiService extends ChangeNotifier {
       notifyListeners();
       return responseData['data']['id'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception(
           '${notification.type} ${notification.title} 알림 등록을 실패하였습니다.');
     }
   }
 
-  Future<int> modifyNotification(int id, NotificationModel notification) async {
+  Future<int> modifyNotification(
+      BuildContext context, int id, NotificationModel notification) async {
     final url = Uri.parse('$baseUrl/notification/record/$id');
     final headers = await getHeaders();
     Map data = {
@@ -90,12 +101,15 @@ class NotificationApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return responseData['data']['id'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception(
           '${notification.type} ${notification.title} 알림 수정을 실패하였습니다.');
     }
   }
 
-  Future<int> modifyNotificationActive(int id, bool isActive) async {
+  Future<int> modifyNotificationActive(
+      BuildContext context, int id, bool isActive) async {
     final url = Uri.parse('$baseUrl/notification/record/active/$id');
     final headers = await getHeaders();
     Map data = {'isActive': isActive};
@@ -106,17 +120,21 @@ class NotificationApiService extends ChangeNotifier {
     if (response.statusCode == 200) {
       return responseData['data']['id'];
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('알림 활성화 수정을 실패하였습니다.');
     }
   }
 
-  Future<void> deleteNotification(int id) async {
+  Future<void> deleteNotification(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/notification/record/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('$id 알림 기록이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$id 알림 기록 삭제를 실패하였습니다.';
     }
   }

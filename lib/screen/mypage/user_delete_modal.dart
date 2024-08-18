@@ -94,7 +94,8 @@ class UserDeleteModalState extends State<UserDeleteModal> {
                       ),
                       InkWell(
                         onTap: () async {
-                          await JoinApiService().signOut(widget.reason);
+                          await JoinApiService()
+                              .signOut(context, widget.reason);
                           if (context.mounted) {
                             Navigator.pushAndRemoveUntil(
                               context,

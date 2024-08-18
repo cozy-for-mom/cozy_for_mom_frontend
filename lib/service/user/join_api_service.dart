@@ -7,6 +7,7 @@ import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
@@ -16,7 +17,7 @@ class JoinApiService extends ChangeNotifier {
   final tokenManager = TokenManager.TokenManager();
 
   Future<Map<String, dynamic>> signUp(
-      UserInfo userInfo, BabyInfo babyInfo) async {
+      BuildContext context, UserInfo userInfo, BabyInfo babyInfo) async {
     final url = Uri.parse('$baseUrl/user/signup');
     final headers = await getHeaders();
     Map data = {
@@ -34,11 +35,14 @@ class JoinApiService extends ChangeNotifier {
       print(UserType.findByString(decoded['info']['role']));
       return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('회원가입을 실패하였습니다.');
     }
   }
 
-  Future<bool> nicknameDuplicateCheck(String nickname) async {
+  Future<bool> nicknameDuplicateCheck(
+      BuildContext context, String nickname) async {
     final url = Uri.parse('$baseUrl/authenticate/nickname');
     final data = {'nickname': nickname};
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
@@ -49,11 +53,13 @@ class JoinApiService extends ChangeNotifier {
     } else if (response.statusCode == 409) {
       return false;
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('닉네임 중복 확인 실패');
     }
   }
 
-  Future<bool> emailDuplicateCheck(String email) async {
+  Future<bool> emailDuplicateCheck(BuildContext context, String email) async {
     final url = Uri.parse('$baseUrl/authenticate/email');
     final data = {'email': email};
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
@@ -67,11 +73,13 @@ class JoinApiService extends ChangeNotifier {
     } else if (response.statusCode == 409) {
       return false;
     } else {
+      handleHttpResponse(response.statusCode, context);
+
       throw Exception('이메일 중복 확인 실패');
     }
   }
 
-  Future<void> signOut(String reason) async {
+  Future<void> signOut(BuildContext context, String reason) async {
     final url = Uri.parse('$baseUrl/user/signout');
     final data = {'reason': reason};
     final headers = await getHeaders();
@@ -81,6 +89,8 @@ class JoinApiService extends ChangeNotifier {
       JoinInputData().resetData();
       print('회원탈퇴가 완료되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '회원탈퇴를 실패하였습니다.';
     }
   }

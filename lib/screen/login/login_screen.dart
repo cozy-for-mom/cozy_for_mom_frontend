@@ -279,7 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return oauthApiService.authenticateByOauth(
-        OauthType.kakao, kakaoAccessToken);
+        context, OauthType.kakao, kakaoAccessToken);
   }
 
   Future<UserType> appleLogin() async {
@@ -306,6 +306,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
-    return oauthApiService.authenticateByOauth(OauthType.apple, appleAuthCode);
+    return oauthApiService.authenticateByOauth(context, OauthType.apple, appleAuthCode);
   }
 }

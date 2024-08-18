@@ -74,8 +74,9 @@ class _TimeLineChartState extends State<TimeLineChart>
       return FutureBuilder(
           future: widget.recordType == RecordType.bloodsugar
               ? bloodsugarPeriodViewModel.getPeriodBloodsugars(
-                  globalData.selectedDate, type)
-              : weightPeriodViewModel.getWeights(globalData.selectedDate, type),
+                  context, globalData.selectedDate, type)
+              : weightPeriodViewModel.getWeights(
+                  context, globalData.selectedDate, type),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               data = snapshot.data!;

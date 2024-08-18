@@ -44,7 +44,7 @@ class _BloodsugarAlarmState extends State<BloodsugarAlarm> {
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
     return FutureBuilder(
-        future: notificationViewModel.getNotifications('bloodsugar'),
+        future: notificationViewModel.getNotifications(context, 'bloodsugar'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // 비동기 작업이 완전히 완료되었는지 확인하는 조건

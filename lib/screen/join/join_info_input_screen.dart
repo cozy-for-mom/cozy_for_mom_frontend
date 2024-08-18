@@ -162,7 +162,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                     babies: babies);
                 try {
                   final response =
-                      await joinApiService.signUp(userInfo, babyInfo);
+                      await joinApiService.signUp(context, userInfo, babyInfo);
                   if (mounted && response['status'] == 201) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(

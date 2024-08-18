@@ -55,7 +55,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
     int imageCount = 1; // 기본값으로 1개 설정
 
     return FutureBuilder(
-        future: userViewModel.getUserInfo(),
+        future: userViewModel.getUserInfo(context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;

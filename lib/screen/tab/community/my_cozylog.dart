@@ -34,7 +34,7 @@ class _MyCozylogState extends State<MyCozylog> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final cozyLogWrapper =
-          await CozyLogApiService().getMyCozyLogs(pageKey, 10);
+          await CozyLogApiService().getMyCozyLogs(context, pageKey, 10);
       setState(() {
         this.cozyLogWrapper = Future.value(cozyLogWrapper);
       });
@@ -54,7 +54,7 @@ class _MyCozylogState extends State<MyCozylog> {
   @override
   void initState() {
     super.initState();
-    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(null, 10);
+    cozyLogWrapper = CozyLogApiService().getMyCozyLogs(context, null, 10);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -309,10 +309,10 @@ class _MyCozylogState extends State<MyCozylog> {
                             text: '등록된 코지로그를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                             tapFunc: () async {
                               await CozyLogApiService().bulkDeleteCozyLog(
-                                  cozylogListModifyState.selectedIds);
+                                  context, cozylogListModifyState.selectedIds);
                               setState(() {
-                                cozyLogWrapper =
-                                    CozyLogApiService().getMyCozyLogs(null, 10);
+                                cozyLogWrapper = CozyLogApiService()
+                                    .getMyCozyLogs(context, null, 10);
                                 cozylogListModifyState.clearSelection();
                               });
                             },

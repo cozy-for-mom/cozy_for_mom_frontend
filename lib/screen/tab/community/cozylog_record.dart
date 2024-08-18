@@ -52,7 +52,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
     }
 
     if (pickedFile != null) {
-      imageApiService.uploadImage(pickedFile).then((value) => {
+      imageApiService.uploadImage(context, pickedFile).then((value) => {
             setState(() {
               selectedImages.add(CozyLogImage(
                 imageId:
@@ -420,7 +420,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                   child: InkWell(
                     onTap: () {
                       cozyLogApiService
-                          .createCozyLog(titleController.text,
+                          .createCozyLog(context, titleController.text,
                               contentController.text, selectedImages, mode)
                           .then(
                             (value) => {

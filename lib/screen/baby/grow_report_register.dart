@@ -190,7 +190,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 final selectedImage = await showImageSelectModal();
                 if (selectedImage != null) {
                   final imageUrl =
-                      await imageApiService.uploadImage(selectedImage);
+                      await imageApiService.uploadImage(context, selectedImage);
                   setState(() {
                     growthImageUrl = imageUrl;
                   });
@@ -375,7 +375,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                           if (selectedImage != null) {
                                             final imageUrl =
                                                 await imageApiService
-                                                    .uploadImage(selectedImage);
+                                                    .uploadImage(
+                                                        context, selectedImage);
                                             setState(() {
                                               growthImageUrl = imageUrl;
                                               isImageLoading = false;
@@ -499,6 +500,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                 onTap: () async {
                   final reportId =
                       await babyGrowthApiService.registerBabyProfileGrowth(
+                    context,
                     BabyProfileGrowth(
                       id: id,
                       babyProfileId: babyProfileId!,

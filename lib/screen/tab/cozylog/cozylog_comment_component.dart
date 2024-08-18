@@ -176,6 +176,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         Navigator.pop(context);
                                                         await CozyLogCommentApiService()
                                                             .deleteComment(
+                                                          context,
                                                           cozyLog.cozyLogId!,
                                                           comment.commentId,
                                                         );
@@ -233,6 +234,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         Navigator.pop(context);
                                                         await CozyLogCommentApiService()
                                                             .deleteComment(
+                                                          context,
                                                           cozyLog.cozyLogId!,
                                                           comment.commentId,
                                                         );
@@ -470,6 +472,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                               () async {
                                                                             Navigator.pop(context);
                                                                             await CozyLogCommentApiService().deleteComment(
+                                                                              context,
                                                                               cozyLog.cozyLogId!,
                                                                               comment.commentId,
                                                                             );
@@ -519,6 +522,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                               () async {
                                                                             Navigator.pop(context);
                                                                             await CozyLogCommentApiService().deleteComment(
+                                                                              context,
                                                                               cozyLog.cozyLogId!,
                                                                               comment.commentId,
                                                                             );

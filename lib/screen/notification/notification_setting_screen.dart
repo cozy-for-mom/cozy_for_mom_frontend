@@ -458,11 +458,11 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                   );
                   if (widget.notification != null) {
                     int responseId = await notificationViewModel
-                        .modifyNotification(id, notification);
+                        .modifyNotification(context, id, notification);
                     widget.onModify!(responseId);
                   } else {
                     int responseId = await notificationViewModel
-                        .recordNotification(notification);
+                        .recordNotification(context, notification);
                     widget.onRegister!(responseId);
                   }
                   if (mounted) {

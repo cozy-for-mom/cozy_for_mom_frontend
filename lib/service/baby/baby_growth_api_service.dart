@@ -5,10 +5,13 @@ import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class BabyGrowthApiService {
-  Future<int> registerBabyProfileGrowth(BabyProfileGrowth growth) async {
+  Future<int> registerBabyProfileGrowth(
+      BuildContext context, BabyProfileGrowth growth) async {
     final headers = await getHeaders();
     if (growth.id != null) {
       final url = Uri.parse("$baseUrl/growth/${growth.id}");
@@ -32,12 +35,14 @@ class BabyGrowthApiService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body)['data']['growthReportId'];
       } else {
+        handleHttpResponse(response.statusCode, context);
         throw Exception('성장 보고서 저장 실패');
       }
     }
   }
 
   Future<Pair<List<BabyProfileGrowth>, DateTime?>> getBabyProfileGrowths(
+    BuildContext context,
     int? lastId,
     int size,
   ) async {
@@ -64,6 +69,7 @@ class BabyGrowthApiService {
       }).toList();
       return Pair(growths, nextExaminationDate);
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('성장 보고서 목록 조회 실패');
     }
   }
@@ -92,6 +98,7 @@ class BabyGrowthApiService {
   }
 
   Future<void> registerNotificationExaminationDate(
+    BuildContext context,
     String examinationAt,
     List<String> notificationOptions,
   ) async {
@@ -112,17 +119,20 @@ class BabyGrowthApiService {
 
     if (response.statusCode == 201) {
     } else {
+      handleHttpResponse(response.statusCode, context);
       throw Exception('다음검진일 설정 실패');
     }
   }
 
-  Future<void> deleteBabyProfileGrowth(int id) async {
+  Future<void> deleteBabyProfileGrowth(BuildContext context, int id) async {
     final url = Uri.parse('$baseUrl/growth/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
     if (res.statusCode == 204) {
       print('$id 성장보고서 기록이 삭제되었습니다.');
     } else {
+      handleHttpResponse(res.statusCode, context);
+
       throw '$id 성장보고서 기록 삭제를 실패하였습니다.';
     }
   }

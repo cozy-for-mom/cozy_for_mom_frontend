@@ -128,8 +128,8 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                           title: '알림이',
                           tapFunc: () async {
-                            await notificationViewModel
-                                .deleteNotification(widget.notification.id);
+                            await notificationViewModel.deleteNotification(
+                                context, widget.notification.id);
                             widget.onDelete(widget.notification.id);
                             setState(() {
                               _slidableController.activeState?.close();
@@ -239,7 +239,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           onChanged: (value) async {
                             await notificationViewModel
                                 .modifyNotificationActive(
-                                    widget.notification.id, value);
+                                    context, widget.notification.id, value);
                             widget.onActiveChanged();
                           },
                           activeColor: primaryColor,

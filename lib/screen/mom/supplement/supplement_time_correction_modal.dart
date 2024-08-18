@@ -229,7 +229,7 @@ class _SupplementModalState extends State<SupplementModal> {
                             '$currentTime ${hourValue.toString().padLeft(2, '0')}:${minuteValue.toString().padLeft(2, '0')}:00';
 
                         await supplementApi.modifySupplementIntake(
-                            widget.id, widget.name, time);
+                            context, widget.id, widget.name, time);
 
                         setState(() {
                           Navigator.pop(context, DateTime.parse(time));

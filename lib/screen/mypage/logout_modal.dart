@@ -21,7 +21,7 @@ class _LogoutModalState extends State<LogoutModal> {
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
-      future: userViewModel.getUserInfo(),
+      future: userViewModel.getUserInfo(context),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           pregnantInfo = snapshot.data!;
@@ -100,7 +100,7 @@ class _LogoutModalState extends State<LogoutModal> {
                   InkWell(
                     onTap: () async {
                       Navigator.pop(context);
-                      await userViewModel.logOut();
+                      await userViewModel.logOut(context);
                       if (context.mounted) {
                         Navigator.pushAndRemoveUntil(
                           context,

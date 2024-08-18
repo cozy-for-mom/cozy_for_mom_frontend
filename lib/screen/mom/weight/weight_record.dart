@@ -59,7 +59,9 @@ class _WeightRecordState extends State<WeightRecord> {
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
           return FutureBuilder(
-              future: momWeightViewModel.getWeights(globalData.selectedDate,
+              future: momWeightViewModel.getWeights(
+                  context,
+                  globalData.selectedDate,
                   'daily'), // 조회 그래프가 아닌 선택한 날짜의 체중값을 위헤 호출하는 것이므로 daily로 픽스한다.
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -268,10 +270,12 @@ class _WeightRecordState extends State<WeightRecord> {
                                           _isInitialized
                                               ? await momWeightViewModel
                                                   .modifyWeight(
+                                                      context,
                                                       globalData.selectedDate,
                                                       double.parse(value))
                                               : await momWeightViewModel
                                                   .recordWeight(
+                                                      context,
                                                       globalData.selectedDate,
                                                       double.parse(value));
                                           setState(() {});

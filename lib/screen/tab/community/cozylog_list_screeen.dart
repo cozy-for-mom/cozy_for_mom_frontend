@@ -29,7 +29,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
     tabController = TabController(length: 2, vsync: this);
     tabController!.addListener(handleTabSelection);
     cozyLogListFuture =
-        CozyLogApiService().getCozyLogs(null, 10, sortType: type);
+        CozyLogApiService().getCozyLogs(context, null, 10, sortType: type);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -39,7 +39,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
   Future<void> _fetchPage(int pageKey) async {
     try {
       cozyLogListFuture =
-          CozyLogApiService().getCozyLogs(pageKey, 10, sortType: type);
+          CozyLogApiService().getCozyLogs(context, pageKey, 10, sortType: type);
       final cozyLogs = await cozyLogListFuture;
       final isLastPage = cozyLogs.length < 10;
 
@@ -59,15 +59,16 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
       switch (tabController!.index) {
         case 0:
           setState(() {
-            cozyLogListFuture = CozyLogApiService().getCozyLogs(null, 10);
+            cozyLogListFuture =
+                CozyLogApiService().getCozyLogs(context, null, 10);
             type = 'LATELY';
             pagingController.refresh();
           });
           break;
         case 1:
           setState(() {
-            cozyLogListFuture =
-                CozyLogApiService().getCozyLogs(null, 10, sortType: "HOT");
+            cozyLogListFuture = CozyLogApiService()
+                .getCozyLogs(context, null, 10, sortType: "HOT");
             type = 'HOT';
             pagingController.refresh();
           });

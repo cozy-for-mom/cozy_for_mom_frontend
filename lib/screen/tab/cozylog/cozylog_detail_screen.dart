@@ -44,10 +44,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureCozyLog = CozyLogApiService().getCozyLog(widget.id);
+    futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
     futureCozyLog.then((value) => setIsMyCozyLog(value));
 
-    futureComments = CozyLogCommentApiService().getCozyLogComments(widget.id);
+    futureComments =
+        CozyLogCommentApiService().getCozyLogComments(context, widget.id);
   }
 
   void setIsMyCozyLog(CozyLog cozyLog) async {
@@ -283,6 +284,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                               onTap: () {
                                                                 CozyLogApiService()
                                                                     .deleteCozyLog(
+                                                                        context,
                                                                         cozyLog
                                                                             .cozyLogId!);
                                                                 Navigator.pop(
@@ -376,16 +378,17 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                         // 스크랩 상태에 따른 API 호출
                                         if (cozyLog.isScrapped) {
                                           await CozyLogApiService()
-                                              .unscrapCozyLog(widget.id);
+                                              .unscrapCozyLog(
+                                                  context, widget.id);
                                         } else {
                                           await CozyLogApiService()
-                                              .scrapCozyLog(widget.id);
+                                              .scrapCozyLog(context, widget.id);
                                         }
 
                                         // 상태 업데이트
                                         setState(() {
                                           futureCozyLog = CozyLogApiService()
-                                              .getCozyLog(widget.id);
+                                              .getCozyLog(context, widget.id);
                                         });
                                       },
                                       icon: cozyLog.isScrapped
@@ -546,6 +549,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                     futureComments =
                                                         CozyLogCommentApiService()
                                                             .getCozyLogComments(
+                                                                context,
                                                                 widget.id);
                                                   });
                                                 },
@@ -642,12 +646,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             if (commentInput != '') {
                               if (commentIdToUpdate == null) {
                                 await CozyLogCommentApiService().postComment(
+                                  context,
                                   widget.id,
                                   parentCommentIdToReply,
                                   commentInput,
                                 );
                               } else {
                                 await CozyLogCommentApiService().updateComment(
+                                  context,
                                   widget.id,
                                   commentIdToUpdate!,
                                   parentCommentIdToReply,
@@ -657,7 +663,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                               setState(() {
                                 textController.text = '';
                                 futureComments = CozyLogCommentApiService()
-                                    .getCozyLogComments(widget.id);
+                                    .getCozyLogComments(context, widget.id);
                               });
                             }
                           },
