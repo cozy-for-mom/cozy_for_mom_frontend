@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -176,49 +177,51 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: AppUtils.scaleSize(context, 25),
               ),
-              // const Text(
-              //   "가입 후 코지포맘을 자유롭게 이용해보세요!",
-              //   style: TextStyle(
-              //     color: Color(0xff858998),
-              //     fontSize: 12,
-              //     fontWeight: FontWeight.w600,
-              //   ),
-              // ),
-              // const Text(
-              //   "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
-              //   style: TextStyle(
-              //     color: Color(0xff858998),
-              //     fontSize: 12,
-              //     fontWeight: FontWeight.w500,
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 8,
-              // ),
-              // const Row(
-              //   children: [
-              //     Text(
-              //       "개인정보처리방침",
-              //       style: TextStyle(
-              //         decoration: TextDecoration.underline,
-              //         fontSize: 12,
-              //         color: Color(0xff858998),
-              //         fontWeight: FontWeight.w300,
-              //       ),
-              //     ),
-              //     SizedBox(
-              //       width: 30,
-              //     ),
-              //     Text(
-              //       "이용약관",
-              //       style: TextStyle(
-              //         decoration: TextDecoration.underline,
-              //         fontSize: 12,
-              //         color: Color(0xff858998),
-              //       ),
-              //     ),
-              //   ],
-              // )
+              Text(
+                "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
+                style: TextStyle(
+                  color: const Color(0xff858998),
+                  fontSize: AppUtils.scaleSize(context, 12),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 8),
+              ),
+              Row(
+                children: [
+                  InkWell(
+                      child: Text(
+                        "개인정보처리방침",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: AppUtils.scaleSize(context, 12),
+                          color: const Color(0xff858998),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://glitter-stealer-46b.notion.site/59242de9773b49ba8cef776e14fdd498?pvs=4'));
+                      }),
+                  SizedBox(
+                    width: AppUtils.scaleSize(context, 30),
+                  ),
+                  InkWell(
+                      child: Text(
+                        "이용약관",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: AppUtils.scaleSize(context, 12),
+                            color: const Color(0xff858998),
+                            fontWeight: FontWeight.w400),
+                      ),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://glitter-stealer-46b.notion.site/7d7b29f16fdb4ce6ae9160f2d754c6be?pvs=4'));
+                      }),
+                ],
+              )
             ],
           ),
         ),
@@ -306,6 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
-    return oauthApiService.authenticateByOauth(context, OauthType.apple, appleAuthCode);
+    return oauthApiService.authenticateByOauth(
+        context, OauthType.apple, appleAuthCode);
   }
 }
