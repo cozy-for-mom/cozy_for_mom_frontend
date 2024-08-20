@@ -32,8 +32,10 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         return isSameDay(globalDate.selectedDay, date);
       },
       calendarStyle: CalendarStyle(
-        weekendTextStyle: const TextStyle(
-          color: Color(0xff858998),
+        weekendTextStyle: TextStyle(
+          color: const Color(0xff858998),
+          fontSize: AppUtils.scaleSize(context, 15),
+          fontWeight: FontWeight.w600,
         ),
         selectedDecoration: const BoxDecoration(
           color: primaryColor,

@@ -73,14 +73,14 @@ class _MyPageState extends State<MyPage> {
                 ),
                 Positioned(
                   top: AppUtils.scaleSize(context, 47),
-                  left: AppUtils.scaleSize(context, 348),
+                  left: AppUtils.scaleSize(context, 340),
                   child: IconButton(
                       icon: const Icon(
                         Icons.close,
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }),
                 ),
                 Positioned(

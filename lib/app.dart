@@ -13,6 +13,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme.light(), // 필요한 테마 설정
         fontFamily: 'Pretendard',
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Color(0xff5CA6F8),
+        ),
       ),
       routes: {
         '/login': (context) => const LoginScreen(),
