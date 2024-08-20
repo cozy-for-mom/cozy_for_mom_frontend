@@ -70,7 +70,7 @@ class _BabyGrowthReportListModifyState
 
   @override
   void didUpdateWidget(oldWidget) {
-    // 코지로그 개수가 달라졌을 때(= 삭제했을 때), 리스트를 바로 업데이트할 수 있도록 구현한 코드(위젯의 구성이 변경될 때마다 호출)
+    // 성장보고서 개수가 달라졌을 때(= 삭제했을 때), 리스트를 바로 업데이트할 수 있도록 구현한 코드(위젯의 구성이 변경될 때마다 호출)
     super.didUpdateWidget(oldWidget);
     if (oldWidget.babyProfileGrowths != widget.babyProfileGrowths) {
       pagingController.refresh();

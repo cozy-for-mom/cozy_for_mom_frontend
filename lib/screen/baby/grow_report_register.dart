@@ -1,4 +1,3 @@
-import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
@@ -36,8 +35,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   TextEditingController diaryController = TextEditingController();
   Map<Baby, List<TextEditingController>> infoControllersByBabies = {};
   ValueNotifier<Baby?> selectedBaby = ValueNotifier<Baby?>(null);
-  double _textFieldHeight = 50; // 초기 높이
 
+  late double _textFieldHeight = 50;
   late BabyProfile babyProfile;
   List<Baby> babies = List.empty();
   String? growthImageUrl;
@@ -62,6 +61,13 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   void initState() {
     super.initState();
     initializeBabyInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final screenWidth = MediaQuery.of(context).size.width;
+      _textFieldHeight = calculateHeight(context, diaryController.text,
+          screenWidth - AppUtils.scaleSize(context, 50)); // 초기 높이
+
+      setState(() {});
+    });
   }
 
   Future<void> initializeBabyInfo() async {
@@ -188,7 +194,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
               tap1: () async {
                 Navigator.pop(context);
                 final selectedImage = await showImageSelectModal();
-                if (selectedImage != null) {
+                if (mounted && selectedImage != null) {
                   final imageUrl =
                       await imageApiService.uploadImage(context, selectedImage);
                   setState(() {
@@ -372,7 +378,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                           setState(() {
                                             isImageLoading = true;
                                           });
-                                          if (selectedImage != null) {
+                                          if (mounted &&
+                                              selectedImage != null) {
                                             final imageUrl =
                                                 await imageApiService
                                                     .uploadImage(
@@ -497,49 +504,58 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   horizontal: AppUtils.scaleSize(context, 20),
                   vertical: AppUtils.scaleSize(context, 20)),
               child: InkWell(
-                onTap: () async {
-                  final reportId =
-                      await babyGrowthApiService.registerBabyProfileGrowth(
-                    context,
-                    BabyProfileGrowth(
-                      id: id,
-                      babyProfileId: babyProfileId!,
-                      date: DateTime.now(),
-                      growthImageUrl: growthImageUrl,
-                      diary: diaryController.text,
-                      title: titleController.text,
-                      babies: babies.map(
-                        (baby) {
-                          final infoControllers =
-                              infoControllersByBabies[baby] ?? [];
-                          return BabyGrowth(
-                            name: baby.name,
-                            babyId: baby.id,
-                            babyGrowthInfo: BabyGrowthInfo(
-                              weight: parseDouble(infoControllers[0].text),
-                              headDiameter:
-                                  parseDouble(infoControllers[1].text),
-                              headCircum: parseDouble(infoControllers[2].text),
-                              abdomenCircum:
-                                  parseDouble(infoControllers[3].text),
-                              thighLength: parseDouble(infoControllers[4].text),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  );
-                  if (mounted) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BabyGrowthReportDetailScreen(
-                          babyProfileGrowthId: reportId,
-                          babyProfileImageUrl: babyProfile.image,
+                onTap: () {
+                  babyGrowthApiService
+                      .registerBabyProfileGrowth(
+                        context,
+                        BabyProfileGrowth(
+                          id: id,
+                          babyProfileId: babyProfileId!,
+                          date: DateTime.now(),
+                          growthImageUrl: growthImageUrl,
+                          diary: diaryController.text,
+                          title: titleController.text,
+                          babies: babies.map(
+                            (baby) {
+                              final infoControllers =
+                                  infoControllersByBabies[baby] ?? [];
+                              return BabyGrowth(
+                                name: baby.name,
+                                babyId: baby.id,
+                                babyGrowthInfo: BabyGrowthInfo(
+                                  weight: parseDouble(infoControllers[0].text),
+                                  headDiameter:
+                                      parseDouble(infoControllers[1].text),
+                                  headCircum:
+                                      parseDouble(infoControllers[2].text),
+                                  abdomenCircum:
+                                      parseDouble(infoControllers[3].text),
+                                  thighLength:
+                                      parseDouble(infoControllers[4].text),
+                                ),
+                              );
+                            },
+                          ).toList(),
                         ),
-                      ),
-                    );
-                  }
+                      )
+                      .then(
+                        (reportId) => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BabyGrowthReportDetailScreen(
+                                babyProfileGrowthId: reportId!,
+                              ),
+                            ),
+                          ).then((value) {
+                            if (value == true) {
+                              Navigator.pop(context,
+                                  true); // true를 반환하여 목록 화면에서 업데이트를 트리거
+                            }
+                          })
+                        },
+                      );
                 },
                 child: Container(
                   width: screenWidth,

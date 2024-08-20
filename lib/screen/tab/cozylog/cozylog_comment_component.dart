@@ -5,9 +5,11 @@ import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
+    as TokenManager;
 
-class CozyLogCommentComponent extends StatelessWidget {
-  const CozyLogCommentComponent({
+class CozyLogCommentComponent extends StatefulWidget {
+  CozyLogCommentComponent({
     super.key,
     required this.cozyLog,
     required this.comment,
@@ -27,11 +29,40 @@ class CozyLogCommentComponent extends StatelessWidget {
   final bool isMyCozyLog;
 
   @override
+  State<CozyLogCommentComponent> createState() =>
+      _CozyLogCommentComponentState();
+}
+
+class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
+  bool isMyComment = false;
+  int userId = -1;
+  final tokenManager = TokenManager.TokenManager();
+
+  void setIsMyComment() async {
+    if (widget.comment.writerId == userId) {
+      setState(() {
+        isMyComment = true;
+      });
+    }
+  }
+
+  void initUserId() async {
+    userId = await tokenManager.getUserId();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initUserId();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    setIsMyComment();
 
     DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
-    bool isMyComment = comment.writerId == 1;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -40,7 +71,7 @@ class CozyLogCommentComponent extends StatelessWidget {
       ),
       child: Column(
         children: [
-          !comment.isDeleted
+          !widget.comment.isDeleted
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -52,11 +83,12 @@ class CozyLogCommentComponent extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           height: AppUtils.scaleSize(context, 50),
-                          child: comment.writerImageUrl == null
+                          child: widget.comment.writerImageUrl == null
                               ? Image.asset(
                                   "assets/images/icons/momProfile.png")
                               : Image.network(
-                                  comment.writerImageUrl!,
+                                  widget.comment.writerImageUrl!,
+                                  height: 50,
                                 ),
                         ),
                         SizedBox(
@@ -68,7 +100,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                comment.writerNickname,
+                                widget.comment.writerNickname,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
@@ -79,7 +111,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                 height: AppUtils.scaleSize(context, 5),
                               ),
                               Text(
-                                comment.content,
+                                widget.comment.content,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400,
@@ -92,7 +124,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    dateFormat.format(comment.createdAt),
+                                    dateFormat.format(widget.comment.createdAt),
                                     style: TextStyle(
                                       color: const Color(0xffAAAAAA),
                                       fontWeight: FontWeight.w500,
@@ -103,7 +135,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                     width: AppUtils.scaleSize(context, 7),
                                   ),
                                   InkWell(
-                                    onTap: onReply,
+                                    onTap: widget.onReply,
                                     child: Text(
                                       "답글쓰기",
                                       style: TextStyle(
@@ -121,7 +153,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                         ),
                       ],
                     ),
-                    isMyCozyLog || isMyComment
+                    widget.isMyCozyLog || isMyComment
                         ? IconButton(
                             icon: const Icon(
                               Icons.more_vert_outlined,
@@ -158,8 +190,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         ),
                                                       )),
                                                       onTap: () {
-                                                        onCommentUpdate(
-                                                            comment);
+                                                        widget.onCommentUpdate(
+                                                            widget.comment);
                                                         Navigator.pop(context);
                                                       },
                                                     ),
@@ -177,8 +209,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         await CozyLogCommentApiService()
                                                             .deleteComment(
                                                           context,
-                                                          cozyLog.cozyLogId!,
-                                                          comment.commentId,
+                                                          widget.cozyLog
+                                                              .cozyLogId!,
+                                                          widget.comment
+                                                              .commentId,
                                                         );
 
                                                         await Fluttertoast.showToast(
@@ -200,7 +234,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                 .scaleSize(
                                                                     context,
                                                                     16));
-                                                        requestCommentsUpdate();
+                                                        widget
+                                                            .requestCommentsUpdate();
                                                       },
                                                     ),
                                                   ]),
@@ -218,7 +253,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         ),
                                                       )),
                                                       onTap: () {
-                                                        onReply;
+                                                        widget.onReply;
                                                       },
                                                     ),
                                                     ListTile(
@@ -235,8 +270,10 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                         await CozyLogCommentApiService()
                                                             .deleteComment(
                                                           context,
-                                                          cozyLog.cozyLogId!,
-                                                          comment.commentId,
+                                                          widget.cozyLog
+                                                              .cozyLogId!,
+                                                          widget.comment
+                                                              .commentId,
                                                         );
 
                                                         await Fluttertoast.showToast(
@@ -258,7 +295,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                 .scaleSize(
                                                                     context,
                                                                     16));
-                                                        requestCommentsUpdate();
+                                                        widget
+                                                            .requestCommentsUpdate();
                                                       },
                                                     ),
                                                   ]),
@@ -309,17 +347,17 @@ class CozyLogCommentComponent extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text("댓글이 삭제되었습니다.")),
                 ),
-          subComments.isNotEmpty
+          widget.subComments.isNotEmpty
               ? SizedBox(
                   height: AppUtils.scaleSize(context, 20),
                 )
               : const SizedBox(),
-          subComments.isNotEmpty
+          widget.subComments.isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(
                       left: AppUtils.scaleSize(context, 50)), // 왼쪽 패딩으로 인덴트 조정
                   child: Column(
-                    children: subComments.map((subComment) {
+                    children: widget.subComments.map((subComment) {
                       return Column(
                         children: [
                           SizedBox(
@@ -339,11 +377,13 @@ class CozyLogCommentComponent extends StatelessWidget {
                                           ),
                                           height:
                                               AppUtils.scaleSize(context, 50),
-                                          child: comment.writerImageUrl == null
+                                          child: subComment.writerImageUrl ==
+                                                  null
                                               ? Image.asset(
                                                   "assets/images/icons/momProfile.png")
                                               : Image.network(
-                                                  comment.writerImageUrl!,
+                                                  subComment.writerImageUrl!,
+                                                  height: 50,
                                                 ),
                                         ),
                                         SizedBox(
@@ -384,7 +424,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   dateFormat.format(
-                                                      comment.createdAt),
+                                                      widget.comment.createdAt),
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xffAAAAAA),
@@ -408,7 +448,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    isMyCozyLog || isMyComment
+                                    widget.isMyCozyLog ||
+                                            subComment.writerId == userId
                                         ? IconButton(
                                             icon: const Icon(
                                               Icons.more_vert_outlined,
@@ -440,7 +481,9 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                         20),
                                                             color: Colors.white,
                                                           ),
-                                                          child: isMyComment
+                                                          child: subComment
+                                                                      .writerId ==
+                                                                  userId
                                                               ? Center(
                                                                   child: Column(
                                                                       children: <Widget>[
@@ -455,7 +498,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                           )),
                                                                           onTap:
                                                                               () {
-                                                                            onCommentUpdate(subComment);
+                                                                            widget.onCommentUpdate(subComment);
                                                                             Navigator.pop(context);
                                                                           },
                                                                         ),
@@ -473,8 +516,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                             Navigator.pop(context);
                                                                             await CozyLogCommentApiService().deleteComment(
                                                                               context,
-                                                                              cozyLog.cozyLogId!,
-                                                                              comment.commentId,
+                                                                              widget.cozyLog.cozyLogId!,
+                                                                              subComment.commentId,
                                                                             );
 
                                                                             await Fluttertoast.showToast(
@@ -486,7 +529,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                                 textColor: Colors.white,
                                                                                 fontSize: AppUtils.scaleSize(context, 16));
 
-                                                                            requestCommentsUpdate();
+                                                                            widget.requestCommentsUpdate();
                                                                           },
                                                                         ),
                                                                       ]),
@@ -505,7 +548,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                           )),
                                                                           onTap:
                                                                               () {
-                                                                            onReply;
+                                                                            widget.onReply;
                                                                             Navigator.pop(context);
                                                                           },
                                                                         ),
@@ -523,8 +566,8 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                             Navigator.pop(context);
                                                                             await CozyLogCommentApiService().deleteComment(
                                                                               context,
-                                                                              cozyLog.cozyLogId!,
-                                                                              comment.commentId,
+                                                                              widget.cozyLog.cozyLogId!,
+                                                                              subComment.commentId,
                                                                             );
 
                                                                             await Fluttertoast.showToast(
@@ -535,7 +578,7 @@ class CozyLogCommentComponent extends StatelessWidget {
                                                                                 backgroundColor: Colors.black.withOpacity(0.7),
                                                                                 textColor: Colors.white,
                                                                                 fontSize: AppUtils.scaleSize(context, 16));
-                                                                            requestCommentsUpdate();
+                                                                            widget.requestCommentsUpdate();
                                                                           },
                                                                         ),
                                                                       ]),

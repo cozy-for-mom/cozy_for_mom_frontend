@@ -56,7 +56,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
 
   Future<void> addSearch(String search) async {
     if (autoSave) {
-      return await storageService.addRecentSearch(search); // 검색어 추가
+      await storageService.addRecentSearch(search); // 검색어 추가
     }
 
     await loadRecentSearches(); // 업데이트
@@ -117,6 +117,12 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                             cursorColor: primaryColor,
                             cursorHeight: AppUtils.scaleSize(context, 15),
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: (AppUtils.scaleSize(context, 37) -
+                                          AppUtils.scaleSize(context, 14) *
+                                              1.2) /
+                                      2 // 폰트 크기와 라인 높이 고려
+                                  ),
                               focusColor: primaryColor,
                               fillColor: primaryColor,
                               border: InputBorder.none,
@@ -127,9 +133,12 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                               ),
                               hintText: "검색어를 입력해주세요",
                             ),
-                            onSubmitted: (String value) {
-                              addSearch(value);
-                              Navigator.push(
+                            style: TextStyle(
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppUtils.scaleSize(context, 14)),
+                            onSubmitted: (String value) async {
+                              final res = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CozyLogSearchResultPage(
@@ -137,6 +146,11 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                   ),
                                 ),
                               );
+                              if (res == true) {
+                                setState(() {
+                                  addSearch(value);
+                                });
+                              }
                             },
                           ),
                         ),

@@ -23,7 +23,7 @@ class CozylogListModify extends StatefulWidget {
 }
 
 class _CozylogListModifyState extends State<CozylogListModify> {
-  late Future<MyCozyLogListWrapper> cozyLogWrapper;
+  late Future<MyCozyLogListWrapper?> cozyLogWrapper;
   bool isAllSelected = false;
 
   PagingController<int, CozyLogForList> pagingController =
@@ -33,7 +33,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
     try {
       final cozyLogWrapper =
           await CozyLogApiService().getMyCozyLogs(context, pageKey, 10);
-      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final cozyLogs = cozyLogWrapper!.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
       if (isLastPage) {
@@ -120,7 +120,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                           cozylogListModifyState.selectedCount > 0
                               ? cozylogListModifyState.clearSelection()
                               : cozylogListModifyState
-                                  .setAllSelected(widget.cozyLogs);
+                                  .setCozylogAllSelected(widget.cozyLogs);
                           setState(() {
                             isAllSelected = !isAllSelected;
                           });

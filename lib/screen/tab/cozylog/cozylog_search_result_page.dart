@@ -21,7 +21,7 @@ class CozyLogSearchResultPage extends StatefulWidget {
 }
 
 class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
-  late Future<CozyLogSearchResponse> response;
+  late Future<CozyLogSearchResponse?> res;
   CozyLogSearchSortType sortType = CozyLogSearchSortType.time;
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
@@ -34,7 +34,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
   @override
   void initState() {
     super.initState();
-    response = CozyLogApiService()
+    res = CozyLogApiService()
         .searchCozyLogs(context, widget.searchKeyword, null, 15, sortType);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
@@ -73,14 +73,14 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final response = await CozyLogApiService().searchCozyLogs(
+      final res = await CozyLogApiService().searchCozyLogs(
         context,
         widget.searchKeyword,
         pageKey,
         15,
         sortType,
       );
-      final cozyLogs = response.results;
+      final cozyLogs = res!.results;
       final isLastPage = cozyLogs.length < 15;
 
       if (isLastPage) {
@@ -147,7 +147,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                     child: Text("취소"),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, true);
                   },
                 )
               ],
@@ -156,7 +156,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
               height: AppUtils.scaleSize(context, 20),
             ),
             FutureBuilder(
-                future: response,
+                future: res,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.totalElements > 0) {
@@ -215,7 +215,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                         sortType =
                                                             CozyLogSearchSortType
                                                                 .time;
-                                                        response =
+                                                        res =
                                                             CozyLogApiService()
                                                                 .searchCozyLogs(
                                                           context,
@@ -259,7 +259,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                         sortType =
                                                             CozyLogSearchSortType
                                                                 .comment;
-                                                        response =
+                                                        res =
                                                             CozyLogApiService()
                                                                 .searchCozyLogs(
                                                           context,

@@ -24,7 +24,7 @@ class ScrapListModify extends StatefulWidget {
 }
 
 class _ScrapListModifyState extends State<ScrapListModify> {
-  late Future<ScrapCozyLogListWrapper> cozyLogWrapper;
+  late Future<ScrapCozyLogListWrapper?> cozyLogWrapper;
   bool isAllSelected = false;
 
   PagingController<int, CozyLogForList> pagingController =
@@ -34,7 +34,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
     try {
       final cozyLogWrapper =
           await CozyLogApiService().getScrapCozyLogs(context, pageKey, 10);
-      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final cozyLogs = cozyLogWrapper!.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
       if (isLastPage) {
@@ -120,7 +120,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                           scrapListModifyState.selectedCount > 0
                               ? scrapListModifyState.clearSelection()
                               : scrapListModifyState
-                                  .setAllSelected(widget.cozyLogs);
+                                  .setCozylogAllSelected(widget.cozyLogs);
                           setState(() {
                             isAllSelected = !isAllSelected;
                           });
@@ -137,7 +137,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                       SizedBox(width: AppUtils.scaleSize(context, 24)),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const MyScrap()));

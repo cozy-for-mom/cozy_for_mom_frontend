@@ -144,7 +144,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             tap1: () async {
               Navigator.pop(context);
               final selectedImage = await showImageSelectModal();
-              if (selectedImage != null) {
+              if (mounted && selectedImage != null) {
                 final imageUrl =
                     await imageApiService.uploadImage(context, selectedImage);
                 setState(() {
@@ -261,6 +261,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                 hoverColor: Colors.white,
                 border: InputBorder.none,
               ),
+              style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: AppUtils.scaleSize(context, 16)),
               onChanged: (value) {
                 if (mounted) {
                   setState(() {
@@ -313,7 +317,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                   hintText: '아직 모르겠어요',
                   hintStyle: TextStyle(
                       color: beforeInputColor,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       fontSize: AppUtils.scaleSize(context, 16)),
                   suffixIcon: const Icon(CupertinoIcons.chevron_down,
                       size: 16, color: mainTextColor),
@@ -449,7 +453,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                   if (babyProfileImageUrl == null) {
                                     final selectedImage =
                                         await showImageSelectModal();
-                                    if (selectedImage != null) {
+                                    if (mounted && selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(context, selectedImage);
                                       setState(() {
@@ -501,7 +505,6 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               textAlign: TextAlign.start,
-                              textAlignVertical: TextAlignVertical.center,
                               maxLength: 10,
                               cursorColor: primaryColor,
                               cursorHeight: AppUtils.scaleSize(context, 14),
@@ -511,6 +514,12 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: AppUtils.scaleSize(context, 16)),
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: (AppUtils.scaleSize(context, 48) -
+                                            AppUtils.scaleSize(context, 16) *
+                                                1.2) /
+                                        2 // 폰트 크기와 라인 높이 고려
+                                    ),
                                 border: InputBorder.none,
                                 hintText: 'YYYY.MM.DD',
                                 hintStyle: TextStyle(

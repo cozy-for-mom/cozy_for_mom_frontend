@@ -25,7 +25,7 @@ class CozylogMain extends StatefulWidget {
 }
 
 class _CozylogMainState extends State<CozylogMain> {
-  late Future<List<CozyLogForList>> cozyLogs;
+  late Future<List<CozyLogForList>?> cozyLogs;
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
 
@@ -352,6 +352,16 @@ class _CozylogMainState extends State<CozylogMain> {
                                       .map((cozylog) => CozylogViewWidget(
                                             cozylog: cozylog,
                                             isMyCozyLog: false,
+                                            onUpdate: () {
+                                              setState(() {
+                                                cozyLogs = CozyLogApiService()
+                                                    .getCozyLogs(
+                                                  context,
+                                                  null,
+                                                  10,
+                                                );
+                                              });
+                                            },
                                           ))
                                       .toList(),
                                 ),
@@ -372,11 +382,21 @@ class _CozylogMainState extends State<CozylogMain> {
               ),
             ),
             floatingActionButton: CustomFloatingButton(
-              pressed: () {
-                Navigator.push(
+              pressed: () async {
+                final res = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CozylogRecordPage()));
+
+                if (res == true) {
+                  setState(() {
+                    cozyLogs = CozyLogApiService().getCozyLogs(
+                      context,
+                      null,
+                      10,
+                    );
+                  });
+                }
               },
             ),
           );

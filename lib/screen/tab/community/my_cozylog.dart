@@ -26,7 +26,7 @@ class MyCozylog extends StatefulWidget {
 }
 
 class _MyCozylogState extends State<MyCozylog> {
-  late Future<MyCozyLogListWrapper> cozyLogWrapper;
+  late Future<MyCozyLogListWrapper?> cozyLogWrapper;
 
   PagingController<int, CozyLogForList> pagingController =
       PagingController(firstPageKey: 0);
@@ -38,7 +38,7 @@ class _MyCozylogState extends State<MyCozylog> {
       setState(() {
         this.cozyLogWrapper = Future.value(cozyLogWrapper);
       });
-      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final cozyLogs = cozyLogWrapper!.cozyLogs;
       final isLastPage = cozyLogs.length < 10; // 10개 미만이면 마지막 페이지로 간주
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
@@ -229,6 +229,11 @@ class _MyCozylogState extends State<MyCozylog> {
                                       cozylog: item,
                                       isEditMode: false,
                                       isMyCozyLog: true,
+                                      onUpdate: () {
+                                        setState(() {
+                                          pagingController.refresh();
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
@@ -276,11 +281,17 @@ class _MyCozylogState extends State<MyCozylog> {
       floatingActionButton: widget.isEditMode
           ? null
           : CustomFloatingButton(
-              pressed: () {
-                Navigator.push(
+              pressed: () async {
+                final res = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CozylogRecordPage()));
+
+                if (res == true) {
+                  setState(() {
+                    pagingController.refresh();
+                  });
+                }
               },
             ),
       bottomSheet: widget.isEditMode

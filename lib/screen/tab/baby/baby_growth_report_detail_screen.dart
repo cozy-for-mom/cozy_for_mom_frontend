@@ -2,8 +2,8 @@ import 'package:cozy_for_mom_frontend/common/extension/map_with_index.dart';
 import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
+import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -12,9 +12,8 @@ import 'package:intl/intl.dart';
 
 class BabyGrowthReportDetailScreen extends StatefulWidget {
   final int babyProfileGrowthId;
-  final String? babyProfileImageUrl;
   const BabyGrowthReportDetailScreen(
-      {super.key, required this.babyProfileGrowthId, this.babyProfileImageUrl});
+      {super.key, required this.babyProfileGrowthId});
 
   @override
   State<BabyGrowthReportDetailScreen> createState() =>
@@ -23,26 +22,43 @@ class BabyGrowthReportDetailScreen extends StatefulWidget {
 
 class _BabyGrowthReportDetailScreenState
     extends State<BabyGrowthReportDetailScreen> {
-  late Future<BabyProfileGrowth> growth;
+  late UserLocalStorageService userLocalStorageService;
+  late String? babyProfileImageUrl;
+  late Future<BabyProfileGrowth?> growth;
 
   late BabyProfileGrowth data;
 
   Color bottomLineColor = mainLineColor;
   ValueNotifier<BabyGrowth?> selectedBaby = ValueNotifier<BabyGrowth?>(null);
   var selectedBabyIndex = 0;
-  final double _textFieldHeight = 50.0; // 초기 높이
 
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
-  double calculateHeight(String text) {
-    return 50.0 + text.length.toDouble() / 1.2;
+  double calculateHeight(BuildContext context, String text, double width) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+          text: text,
+          style: TextStyle(fontSize: AppUtils.scaleSize(context, 16))),
+      maxLines: null,
+      // textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(maxWidth: width);
+    return AppUtils.scaleSize(
+        context, 50 + textPainter.height.toDouble() * 1.2);
+  }
+
+  Future<void> initializeBabyInfo() async {
+    userLocalStorageService = await UserLocalStorageService.getInstance();
+    babyProfileImageUrl =
+        await userLocalStorageService.getBabyProfileImageUrl();
   }
 
   @override
   void initState() {
     super.initState();
-    growth =
-        BabyGrowthApiService().getBabyProfileGrowth(widget.babyProfileGrowthId);
+    initializeBabyInfo();
+    growth = BabyGrowthApiService()
+        .getBabyProfileGrowth(context, widget.babyProfileGrowthId);
   }
 
   @override
@@ -67,11 +83,7 @@ class _BabyGrowthReportDetailScreenState
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: mainTextColor),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const BabyGrowthReportListScreen()));
+              Navigator.pop(context, true);
             },
           ),
         ),
@@ -84,6 +96,10 @@ class _BabyGrowthReportDetailScreenState
                 data.babies![selectedBabyIndex],
               );
               selectedBaby.value = data.babies![selectedBabyIndex];
+              var textFieldHeight = AppUtils.scaleSize(
+                  context, 50 + data.diary.length.toDouble());
+              // calculateHeight(context, data.diary,
+              //     screenWidth - AppUtils.scaleSize(context, 40));
 
               return ValueListenableBuilder<BabyGrowth?>(
                   valueListenable: selectedBaby,
@@ -102,7 +118,7 @@ class _BabyGrowthReportDetailScreenState
                                   .mapWithIndex((baby, index) {
                                 return CustomProfileButton(
                                   text: baby.name,
-                                  imagePath: widget.babyProfileImageUrl ?? '',
+                                  imagePath: babyProfileImageUrl ?? '',
                                   offBackColor: const Color(0xffF0F0F5),
                                   isSelected: activeProfile == baby,
                                   onPressed: () {
@@ -199,9 +215,9 @@ class _BabyGrowthReportDetailScreenState
                                                                         16),
                                                               ),
                                                             )),
-                                                            onTap: () {
-                                                              Navigator
-                                                                  .pushReplacement(
+                                                            onTap: () async {
+                                                              await Navigator
+                                                                  .push(
                                                                 context,
                                                                 MaterialPageRoute(
                                                                   builder:
@@ -212,7 +228,17 @@ class _BabyGrowthReportDetailScreenState
                                                                             .data,
                                                                   ),
                                                                 ),
-                                                              );
+                                                              ).then((value) {
+                                                                if (value ==
+                                                                    true) {
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      true);
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      true);
+                                                                }
+                                                              });
                                                             },
                                                           ),
                                                           ListTile(
@@ -238,22 +264,19 @@ class _BabyGrowthReportDetailScreenState
                                                                       widget
                                                                           .babyProfileGrowthId);
                                                               if (mounted) {
-                                                                Navigator.push(
+                                                                Navigator.pop(
                                                                     context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                const BabyGrowthReportListScreen()));
+                                                                    true);
+                                                                Navigator.pop(
+                                                                    context,
+                                                                    true);
                                                               }
-
                                                               setState(() {
-                                                                if (mounted) {
-                                                                  CompleteAlertModal
-                                                                      .showCompleteDialog(
-                                                                          context,
-                                                                          '성장 보고서가',
-                                                                          '삭제');
-                                                                }
+                                                                CompleteAlertModal
+                                                                    .showCompleteDialog(
+                                                                        context,
+                                                                        '성장 보고서가',
+                                                                        '삭제');
                                                               });
                                                             },
                                                           ),
@@ -346,7 +369,7 @@ class _BabyGrowthReportDetailScreenState
                                 horizontal: AppUtils.scaleSize(context, 21)),
                             child: SizedBox(
                               width: screenWidth,
-                              height: _textFieldHeight,
+                              height: textFieldHeight,
                               child: Text(
                                 data.diary,
                               ),
@@ -616,26 +639,5 @@ class _BabyGrowthReportDetailScreenState
             }
           },
         ));
-  }
-}
-
-class Baby {
-  final int id;
-  final String name;
-  final String image;
-  bool isProfileSelected = false; // 프로필 선택 상태를 저장
-
-  Baby(
-      {required this.id,
-      required this.name,
-      required this.image,
-      this.isProfileSelected = false});
-}
-
-double parseDouble(String value, {double defaultValue = 0.0}) {
-  try {
-    return double.parse(value);
-  } catch (e) {
-    return defaultValue;
   }
 }

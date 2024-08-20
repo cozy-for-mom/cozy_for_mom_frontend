@@ -51,7 +51,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
       Navigator.of(context).pop();
     }
 
-    if (pickedFile != null) {
+    if (mounted && pickedFile != null) {
       imageApiService.uploadImage(context, pickedFile).then((value) => {
             setState(() {
               selectedImages.add(CozyLogImage(
@@ -428,10 +428,15 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CozyLogDetailScreen(
-                                    id: value,
+                                    id: value!,
                                   ),
                                 ),
-                              )
+                              ).then((value) {
+                                if (value == true) {
+                                  Navigator.pop(context,
+                                      true); // true를 반환하여 목록 화면에서 업데이트를 트리거
+                                }
+                              })
                             },
                           );
                     },

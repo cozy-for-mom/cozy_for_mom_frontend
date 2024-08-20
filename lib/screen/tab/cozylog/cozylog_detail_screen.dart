@@ -1,8 +1,7 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_edit_screen.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_screeen.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_component.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
@@ -14,18 +13,18 @@ import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 
+// 목록 --> 상세 페이지 --replacement--> 수정페이지 --replacement--> 상세페이지
 class CozyLogDetailScreen extends StatefulWidget {
   final int id;
-  final bool ispop;
-  const CozyLogDetailScreen({super.key, required this.id, this.ispop = false});
+  const CozyLogDetailScreen({super.key, required this.id});
 
   @override
   State<CozyLogDetailScreen> createState() => _CozyLogDetailScreenState();
 }
 
 class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
-  late Future<CozyLog> futureCozyLog;
-  late Future<List<CozyLogComment>> futureComments;
+  late Future<CozyLog?> futureCozyLog;
+  late Future<List<CozyLogComment>?> futureComments;
   bool isMyCozyLog = false;
   int? parentCommentIdToReply;
   int? commentIdToUpdate;
@@ -41,11 +40,15 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
 
   TextEditingController textController = TextEditingController();
 
+  void reloadCozyLog() {
+    futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
+  }
+
   @override
   void initState() {
     super.initState();
     futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
-    futureCozyLog.then((value) => setIsMyCozyLog(value));
+    futureCozyLog.then((value) => setIsMyCozyLog(value!));
 
     futureComments =
         CozyLogCommentApiService().getCozyLogComments(context, widget.id);
@@ -83,17 +86,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           onPressed: () {
-                            (widget.ispop)
-                                ? Navigator.pop(context)
-                                : isMyCozyLog
-                                    ? Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyCozylog(),
-                                        ),
-                                      )
-                                    : Navigator.pop(context);
+                            Navigator.pop(context, true);
                           },
                         ),
                         Text(
@@ -251,8 +244,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                           16),
                                                                 ),
                                                               )),
-                                                              onTap: () {
-                                                                Navigator.push(
+                                                              onTap: () async {
+                                                                await Navigator
+                                                                    .push(
                                                                   context,
                                                                   MaterialPageRoute(
                                                                     builder:
@@ -262,8 +256,17 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                           .id,
                                                                     ),
                                                                   ),
-                                                                );
-                                                                setState(() {});
+                                                                ).then((value) {
+                                                                  if (value ==
+                                                                      true) {
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        true);
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        true);
+                                                                  }
+                                                                });
                                                               },
                                                             ),
                                                             ListTile(
@@ -281,47 +284,30 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                           16),
                                                                 ),
                                                               )),
-                                                              onTap: () {
-                                                                CozyLogApiService()
+                                                              onTap: () async {
+                                                                await CozyLogApiService()
                                                                     .deleteCozyLog(
                                                                         context,
                                                                         cozyLog
                                                                             .cozyLogId!);
-                                                                Navigator.pop(
-                                                                    context);
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            const MyCozylog(),
-                                                                  ),
-                                                                );
-                                                                setState(() {});
+
+                                                                if (mounted) {
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      true);
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      true);
+                                                                }
+
+                                                                setState(() {
+                                                                  CompleteAlertModal
+                                                                      .showCompleteDialog(
+                                                                          context,
+                                                                          '코지로그가',
+                                                                          '삭제');
+                                                                });
                                                               },
-                                                              // onTap: () {
-                                                              //   CozyLogApiService()
-                                                              //       .deleteCozyLog(
-                                                              //           cozyLog
-                                                              //               .cozyLogId!);
-                                                              //   Navigator.pop(
-                                                              //       context);
-                                                              //   widget.ispop
-                                                              //       ? Navigator
-                                                              //           .pop(
-                                                              //           context,
-                                                              //         )
-                                                              //       : Navigator
-                                                              //           .push(
-                                                              //           context,
-                                                              //           MaterialPageRoute(
-                                                              //             builder: (context) =>
-                                                              //                 const MyCozylog(),
-                                                              //           ),
-                                                              //         );
-                                                              //   setState(
-                                                              //       () {});
-                                                              // },
                                                             ),
                                                           ]),
                                                     ),
@@ -412,8 +398,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           Text(
                             cozyLog.content,
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppUtils.scaleSize(context, 14)),
                           ),
                           SizedBox(
                             height: AppUtils.scaleSize(context, 22),
@@ -443,7 +430,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     Text(
                                       cozyLog.imageList[index].description,
                                       style: TextStyle(
-                                        color: Color(0xffAAAAAA),
+                                        color: const Color(0xffAAAAAA),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 12),
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -546,6 +536,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                 },
                                                 requestCommentsUpdate: () {
                                                   setState(() {
+                                                    futureCozyLog =
+                                                        CozyLogApiService()
+                                                            .getCozyLog(context,
+                                                                widget.id);
                                                     futureComments =
                                                         CozyLogCommentApiService()
                                                             .getCozyLogComments(
@@ -651,6 +645,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                   parentCommentIdToReply,
                                   commentInput,
                                 );
+                                reloadCozyLog();
                               } else {
                                 await CozyLogCommentApiService().updateComment(
                                   context,
@@ -664,6 +659,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                 textController.text = '';
                                 futureComments = CozyLogCommentApiService()
                                     .getCozyLogComments(context, widget.id);
+                                parentCommentIdToReply = null;
                               });
                             }
                           },

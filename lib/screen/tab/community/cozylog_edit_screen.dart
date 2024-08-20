@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:cozy_for_mom_frontend/screen/tab/community/image_text_card.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
+import 'package:provider/provider.dart';
 
 class CozylogEditPage extends StatefulWidget {
   final int id;
@@ -22,7 +23,7 @@ class CozylogEditPage extends StatefulWidget {
 }
 
 class _CozylogEditPageState extends State<CozylogEditPage> {
-  late Future<CozyLog> futureCozyLog;
+  late Future<CozyLog?> futureCozyLog;
   Color bottomLineColor = mainLineColor;
 
   late TextEditingController titleController;
@@ -44,9 +45,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
 
-    if (pickedFile != null) {
+    if (mounted && pickedFile != null) {
       imageApiService.uploadImage(context, pickedFile).then((value) => {
             setState(() {
               selectedImages.add(CozyLogImage(
@@ -97,7 +100,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
     futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
     futureCozyLog.then((cozyLog) => {
           setState(() {
-            titleController = TextEditingController(text: cozyLog.title);
+            titleController = TextEditingController(text: cozyLog!.title);
             contentController = TextEditingController(text: cozyLog.content);
             mode = cozyLog.mode;
             selectedImages = cozyLog.imageList;
@@ -109,6 +112,9 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final cozylogProvider =
+        Provider.of<CozyLogApiService>(context, listen: false);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -433,10 +439,15 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => CozyLogDetailScreen(
-                                        id: value,
+                                        id: value!,
                                       ),
                                     ),
-                                  )
+                                  ).then((value) {
+                                    if (value == true) {
+                                      Navigator.pop(context,
+                                          true); // true를 반환하여 목록 화면에서 업데이트를 트리거
+                                    }
+                                  })
                                 },
                               );
                         }

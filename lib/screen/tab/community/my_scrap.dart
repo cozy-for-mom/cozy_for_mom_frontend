@@ -25,7 +25,7 @@ class MyScrap extends StatefulWidget {
 }
 
 class _MyScrapState extends State<MyScrap> {
-  late Future<ScrapCozyLogListWrapper> cozyLogWrapper;
+  late Future<ScrapCozyLogListWrapper?> cozyLogWrapper;
   bool isAllSelected = false;
 
   PagingController<int, CozyLogForList> pagingController =
@@ -35,7 +35,7 @@ class _MyScrapState extends State<MyScrap> {
     try {
       final cozyLogWrapper =
           await CozyLogApiService().getScrapCozyLogs(context, pageKey, 10);
-      final cozyLogs = cozyLogWrapper.cozyLogs;
+      final cozyLogs = cozyLogWrapper!.cozyLogs;
       final isLastPage = cozyLogs.length < 10;
 
       if (isLastPage) {
@@ -89,12 +89,7 @@ class _MyScrapState extends State<MyScrap> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(selectedIndex: 2),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
         actions: [
@@ -175,7 +170,7 @@ class _MyScrapState extends State<MyScrap> {
                                   onTap: () {
                                     snapshot.data!.cozyLogs.isNotEmpty
                                         ? setState(() {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
@@ -227,6 +222,14 @@ class _MyScrapState extends State<MyScrap> {
                                       cozylog: item,
                                       isEditMode: false,
                                       isMyCozyLog: true,
+                                      onUpdate: () {
+                                        setState(() {
+                                          pagingController.refresh();
+                                          cozyLogWrapper = CozyLogApiService()
+                                              .getScrapCozyLogs(
+                                                  context, null, 10);
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),

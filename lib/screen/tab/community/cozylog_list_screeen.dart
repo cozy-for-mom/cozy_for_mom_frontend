@@ -17,7 +17,7 @@ class CozyLogListScreen extends StatefulWidget {
 
 class _CozyLogListScreenState extends State<CozyLogListScreen>
     with SingleTickerProviderStateMixin {
-  late Future<List<CozyLogForList>> cozyLogListFuture;
+  late Future<List<CozyLogForList>?> cozyLogListFuture;
   TabController? tabController;
   PagingController<int, CozyLogForList> pagingController =
       PagingController(firstPageKey: 0);
@@ -41,7 +41,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
       cozyLogListFuture =
           CozyLogApiService().getCozyLogs(context, pageKey, 10, sortType: type);
       final cozyLogs = await cozyLogListFuture;
-      final isLastPage = cozyLogs.length < 10;
+      final isLastPage = cozyLogs!.length < 10;
 
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
@@ -163,7 +163,6 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
               indicatorSize: TabBarIndicatorSize.tab,
             ),
           ),
-
           FutureBuilder(
             future: cozyLogListFuture,
             builder: (context, snapshot) {
@@ -199,6 +198,11 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                                     cozylog: item,
                                     isEditMode: false,
                                     isMyCozyLog: true, // TODO 수정 필요
+                                    onUpdate: () {
+                                      setState(() {
+                                        pagingController.refresh();
+                                      });
+                                    },
                                   );
                                 }),
                               ),
@@ -238,7 +242,6 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
               }
             },
           ),
-          // )
         ],
       ),
     );

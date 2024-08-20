@@ -12,13 +12,17 @@ class CozylogViewWidget extends StatefulWidget {
   final CozyLogForList cozylog;
   final ListModifyState? listModifyState;
   final ValueChanged<bool>? onSelectedChanged;
-  const CozylogViewWidget(
-      {super.key,
-      this.isEditMode = false,
-      required this.cozylog,
-      this.isMyCozyLog = false,
-      this.listModifyState,
-      this.onSelectedChanged});
+  final Function()? onUpdate;
+
+  const CozylogViewWidget({
+    super.key,
+    this.isEditMode = false,
+    required this.cozylog,
+    this.isMyCozyLog = false,
+    this.listModifyState,
+    this.onSelectedChanged,
+    this.onUpdate,
+  });
   @override
   State<CozylogViewWidget> createState() => _CozylogViewWidgetState();
 }
@@ -65,16 +69,25 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                     )
                   : Container(),
               InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CozyLogDetailScreen(
-                        id: widget.cozylog.cozyLogId,
-                      ),
-                    ),
-                  );
-                },
+                onTap: widget.isEditMode
+                    ? () {}
+                    : () async {
+                        final res = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CozyLogDetailScreen(
+                              id: widget.cozylog.cozyLogId,
+                            ),
+                          ),
+                        );
+                        if (res == true) {
+                          setState(() {
+                            if (widget.onUpdate != null) {
+                              widget.onUpdate!();
+                            }
+                          });
+                        }
+                      },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

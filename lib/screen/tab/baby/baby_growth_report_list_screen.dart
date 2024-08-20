@@ -121,12 +121,8 @@ class _BabyGrowthReportListScreenState
             onTap: () async {
               setState(() {
                 isEditMode = !isEditMode;
+                pagingController.refresh();
               });
-
-              // await
-              // if (mounted) {
-              //   Navigator.pop(context, true);
-              // }
             },
           ),
         ],
@@ -142,7 +138,6 @@ class _BabyGrowthReportListScreenState
                         const GrowReportRegister(babyProfileGrowth: null),
                   ),
                 );
-                print('res $res');
 
                 if (res == true) {
                   setState(() {
