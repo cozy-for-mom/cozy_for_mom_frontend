@@ -115,3 +115,15 @@ class BabyGrowthInfo {
     );
   }
 }
+
+class BabyProfileGrowthResult {
+  final List<BabyProfileGrowth> growths;
+  final DateTime? nextExaminationDate;
+  final int? totalCount;
+
+  BabyProfileGrowthResult({
+    required this.growths,
+    this.nextExaminationDate,
+    this.totalCount = 0,
+  });
+}

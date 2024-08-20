@@ -10,38 +10,43 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class BabyGrowthApiService {
-  Future<int> registerBabyProfileGrowth(
+  Future<int?> registerBabyProfileGrowth(
       BuildContext context, BabyProfileGrowth growth) async {
     final headers = await getHeaders();
     if (growth.id != null) {
       final url = Uri.parse("$baseUrl/growth/${growth.id}");
-      final response = await put(
+      final res = await put(
         url,
         headers: headers,
         body: jsonEncode(growth.toJson()),
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return jsonDecode(res.body)['data']['growthReportId'];
       } else {
         throw Exception('성장 보고서 저장 실패');
       }
     } else {
       final url = Uri.parse("$baseUrl/growth");
-      final response = await post(
+      final res = await post(
         url,
         headers: headers,
         body: jsonEncode(growth.toJson()),
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body)['data']['growthReportId'];
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return jsonDecode(res.body)['data']['growthReportId'];
       } else {
-        handleHttpResponse(response.statusCode, context);
-        throw Exception('성장 보고서 저장 실패');
+        if (context.mounted) {
+          if (context.mounted) {
+            handleHttpResponse(res.statusCode, context);
+          }
+        }
+        return null;
+        // throw Exception('성장 보고서 저장 실패');
       }
     }
   }
 
-  Future<Pair<List<BabyProfileGrowth>, DateTime?>> getBabyProfileGrowths(
+  Future<BabyProfileGrowthResult?> getBabyProfileGrowths(
     BuildContext context,
     int? lastId,
     int size,
@@ -51,30 +56,38 @@ class BabyGrowthApiService {
     final babyProfileId = await userStorageService.getBabyProfileId();
     var urlString = '$baseUrl/growth/$babyProfileId/board?size=$size';
     final headers = await getHeaders();
-    if (lastId != null) urlString += '&lastId=null';
+    if (lastId != null && lastId != 0) urlString += '&lastId=$lastId';
+    // if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    dynamic res;
+    res = await get(url, headers: headers);
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['list'];
       data = data.reversed.toList();
       DateTime? nextExaminationDate = body['data']['nextExaminationDate'] == ""
           ? null
           : DateTime.parse(body['data']['nextExaminationDate']);
+      int? totalCount = body['data']['totalCount'] ?? 0;
 
       List<BabyProfileGrowth> growths = data.map((growth) {
         return BabyProfileGrowth.fromJson(growth, babyProfileId!);
       }).toList();
-      return Pair(growths, nextExaminationDate);
+      return BabyProfileGrowthResult(
+          growths: growths,
+          nextExaminationDate: nextExaminationDate,
+          totalCount: totalCount);
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('성장 보고서 목록 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('성장 보고서 목록 조회 실패');
     }
   }
 
-  Future<BabyProfileGrowth> getBabyProfileGrowth(
+  Future<BabyProfileGrowth?> getBabyProfileGrowth(
+    BuildContext context,
     int id,
   ) async {
     UserLocalStorageService userStorageService =
@@ -83,17 +96,21 @@ class BabyGrowthApiService {
     var urlString = '$baseUrl/growth/$id';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       dynamic data = body['data'];
       BabyProfileGrowth growth =
           BabyProfileGrowth.fromJson(data, babyProfileId!);
       return growth;
     } else {
-      throw Exception('성장 보고서 조회 실패 - id: $id');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('성장 보고서 조회 실패 - id: $id');
     }
   }
 
@@ -108,8 +125,8 @@ class BabyGrowthApiService {
     var urlString = '$baseUrl/notification/examination';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(url,
+    dynamic res;
+    res = await post(url,
         headers: headers,
         body: jsonEncode({
           'babyProfileId': babyProfileId,
@@ -117,10 +134,55 @@ class BabyGrowthApiService {
           'notifyAt': notificationOptions,
         }));
 
-    if (response.statusCode == 201) {
+    if (res.statusCode == 201) {
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('다음검진일 설정 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('다음검진일 설정 실패');
+    }
+  }
+
+  Future<void> bulkDeleteBabyProfileGrowth(
+    BuildContext context,
+    List<int> growthIds,
+  ) async {
+    var urlString = '$baseUrl/growth/bulk';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic res;
+    res = await delete(
+      url,
+      headers: headers,
+      body: jsonEncode(
+        {
+          'growthIds': growthIds,
+        },
+      ),
+    );
+    if (res.statusCode == 204) {
+      print("성장보고서 삭제왼료");
+      return;
+    } else {
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('성장보고서(ids: $growthIds) 삭제 실패');
+    }
+  }
+
+  Future<void> allDeleteBabyProfileGrowth(
+      BuildContext context, int babyProfileId) async {
+    final url = Uri.parse('$baseUrl/growth/all/$babyProfileId');
+    final headers = await getHeaders();
+    Response res = await delete(url, headers: headers);
+    if (res.statusCode == 204) {
+      print('$babyProfileId 성장보고서 기록이 삭제되었습니다.');
+    } else {
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '모든 성장보고서 기록 삭제를 실패하였습니다.';
     }
   }
 
@@ -131,9 +193,10 @@ class BabyGrowthApiService {
     if (res.statusCode == 204) {
       print('$id 성장보고서 기록이 삭제되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '$id 성장보고서 기록 삭제를 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '$id 성장보고서 기록 삭제를 실패하였습니다.';
     }
   }
 }
