@@ -40,29 +40,6 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
     ValueNotifier<bool> isButtonEnabled =
         ValueNotifier<bool>(widget.bloodsugarValue != '');
     BloodsugarApiService bloodsugarApi = BloodsugarApiService();
-    // return Consumer<MyDataModel>(builder: (context, globalData, _) {
-    //   return FutureBuilder(
-    //       future:
-    //           momBloodsugarViewModel.getBloodsugars(globalData.selectedDate),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.hasData) {
-    //           pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;
-    //           textController.text = pregnantBloodsugars.any((bloodsugar) =>
-    //                   bloodsugar.type == '${widget.time} ${widget.period}')
-    //               ? pregnantBloodsugars
-    //                   .firstWhere((bloodsugar) =>
-    //                       bloodsugar.type == '${widget.time} ${widget.period}')
-    //                   .level
-    //                   .toString()
-    //               : '';
-    //         }
-    //         if (!snapshot.hasData) {
-    //           return const Center(
-    //               child: CircularProgressIndicator(
-    //             backgroundColor: primaryColor,
-    //             color: Colors.white,
-    //           ));
-    //         }
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
@@ -174,7 +151,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                   child: InkWell(
                     onTap: () async {
                       if (isEnabled) {
-                        late int bloodsugarId;
+                        late int? bloodsugarId;
                         widget.id > 0
                             ? bloodsugarId =
                                 await bloodsugarApi.modifyBloodsugar(

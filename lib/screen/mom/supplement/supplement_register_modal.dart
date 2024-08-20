@@ -205,12 +205,12 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                   child: InkWell(
                     onTap: () async {
                       if (isEnabled) {
-                        int id = await supplementApi.registerSupplement(
+                        int? id = await supplementApi.registerSupplement(
                             context,
                             nameController.text,
                             int.parse(targetCountController.text));
                         Navigator.of(context).pop();
-                        widget.onRegister(id);
+                        widget.onRegister(id!);
                       }
                     },
                     child: Text(

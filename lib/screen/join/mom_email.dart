@@ -19,7 +19,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
   TextEditingController textController = TextEditingController();
   bool _isEmailValid = false;
   bool _isInputValid = false;
-  bool _isEmailNotDuplicated = false;
+  bool? _isEmailNotDuplicated = false;
   Timer? _debounce;
 
   @override
@@ -51,7 +51,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
       setState(() {
         _isInputValid = text.isNotEmpty;
         widget.updateValidity(
-            _isEmailValid && _isEmailNotDuplicated && _isInputValid);
+            _isEmailValid && _isEmailNotDuplicated! && _isInputValid);
       });
     }
   }
@@ -142,7 +142,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                               ),
                               Image(
                                 image: AssetImage(
-                                    _isEmailValid && _isEmailNotDuplicated
+                                    _isEmailValid && _isEmailNotDuplicated!
                                         ? 'assets/images/icons/pass.png'
                                         : 'assets/images/icons/unpass.png'),
                                 width: AppUtils.scaleSize(context, 18),
@@ -180,7 +180,7 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                             _isEmailValid = _validateEmail(value);
                             _isInputValid = true;
                             widget.updateValidity(_isEmailValid &
-                                _isEmailNotDuplicated &
+                                _isEmailNotDuplicated! &
                                 _isInputValid);
                           });
                         });
@@ -196,12 +196,12 @@ class _MomEmailInputScreenState extends State<MomEmailInputScreen> {
                 left: AppUtils.scaleSize(context, 39),
                 child: Text(
                   _isEmailValid
-                      ? _isEmailNotDuplicated
+                      ? _isEmailNotDuplicated!
                           ? '사용 가능한 이메일입니다.'
                           : '이미 사용중인 이메일입니다.'
                       : '사용 불가능한 형식의 이메일입니다.',
                   style: TextStyle(
-                      color: !_isEmailNotDuplicated || !_isEmailValid
+                      color: !_isEmailNotDuplicated! || !_isEmailValid
                           ? deleteButtonColor
                           : primaryColor,
                       fontWeight: FontWeight.w400,

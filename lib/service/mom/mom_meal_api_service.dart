@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class MealApiService extends ChangeNotifier {
-  Future<List<dynamic>> getMeals(BuildContext context, DateTime date) async {
+  Future<List<dynamic>?> getMeals(BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final url = Uri.parse('$baseUrl/meal?date=$formattedDate');
@@ -25,9 +25,11 @@ class MealApiService extends ChangeNotifier {
         }).toList();
         return meals;
       } else {
-        handleHttpResponse(res.statusCode, context);
-
-        throw Exception('$formattedDate 식단 조회를 실패하였습니다.');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return null;
+        // throw Exception('$formattedDate 식단 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -36,7 +38,7 @@ class MealApiService extends ChangeNotifier {
     }
   }
 
-  Future<int> recordMeals(BuildContext context, DateTime dateTime,
+  Future<int?> recordMeals(BuildContext context, DateTime dateTime,
       String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal');
@@ -47,19 +49,21 @@ class MealApiService extends ChangeNotifier {
       'mealImageUrl': imageUrl
     };
 
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    Map<String, dynamic> responseData = jsonDecode(response.body);
-    if (response.statusCode == 201) {
-      return responseData['data']['id'];
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if (res.statusCode == 201) {
+      return resData['data']['id'];
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('$dateTime $mealType 식사 기록 등록을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('$dateTime $mealType 식사 기록 등록을 실패하였습니다.');
     }
   }
 
-  Future<int> modifyMeals(BuildContext context, int id, DateTime dateTime,
+  Future<int?> modifyMeals(BuildContext context, int id, DateTime dateTime,
       String mealType, String? imageUrl) async {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
     final url = Uri.parse('$baseUrl/meal/$id');
@@ -70,15 +74,17 @@ class MealApiService extends ChangeNotifier {
       'mealImageUrl': imageUrl
     };
 
-    final Response response =
+    final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
-    Map<String, dynamic> responseData = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      return responseData['data']['id'];
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      return resData['data']['id'];
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('$dateTime $mealType 식사 기록 수정을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('$dateTime $mealType 식사 기록 수정을 실패하였습니다.');
     }
   }
 
@@ -89,9 +95,10 @@ class MealApiService extends ChangeNotifier {
     if (res.statusCode == 204) {
       print('$id 식사 기록이 삭제되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '$id 식사 기록 삭제를 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '$id 식사 기록 삭제를 실패하였습니다.';
     }
   }
 }

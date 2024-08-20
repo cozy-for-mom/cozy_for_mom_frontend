@@ -31,9 +31,11 @@ class WeightApiService extends ChangeNotifier {
           'lastRecordDate': lastRecordDate
         };
       } else {
-        handleHttpResponse(res.statusCode, context);
-
-        throw Exception('$formattedDate $type 체중 조회를 실패하였습니다.');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return {};
+        // throw Exception('$formattedDate $type 체중 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -48,17 +50,18 @@ class WeightApiService extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/weight');
     final headers = await getHeaders();
     Map data = {'date': formattedDate, 'weight': weight};
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
 
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       notifyListeners();
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception(
-          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} 체중 기록을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception(
+      // '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} 체중 기록을 실패하였습니다.');
     }
   }
 
@@ -69,16 +72,17 @@ class WeightApiService extends ChangeNotifier {
     final headers = await getHeaders();
     Map data = {'weight': weight};
 
-    final Response response =
+    final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       notifyListeners();
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception(
-          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} 체중 기록 수정을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception(
+      //     '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} 체중 기록 수정을 실패하였습니다.');
     }
   }
 }

@@ -201,7 +201,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                       final selectedImage = await ImagePicker()
                                           .pickImage(
                                               source: ImageSource.camera);
-                                      if (selectedImage != null) {
+                                      if (mounted && selectedImage != null) {
                                         final selectedImageUrl =
                                             await imageApiService.uploadImage(
                                                 context, selectedImage);
@@ -217,7 +217,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                       final selectedImage = await ImagePicker()
                                           .pickImage(
                                               source: ImageSource.gallery);
-                                      if (selectedImage != null) {
+                                      if (mounted && selectedImage != null) {
                                         final selectedImageUrl =
                                             await imageApiService.uploadImage(
                                                 context, selectedImage);
@@ -405,15 +405,5 @@ class _MomProfileModifyState extends State<MomProfileModify> {
         ],
       ),
     );
-    // } else {
-    //   return const Center(
-    //     child: CircularProgressIndicator(
-    //       backgroundColor: primaryColor,
-    //       color: Colors.white,
-    //     ),
-    //   );
-    // }
-    // },
-    // );
   }
 }

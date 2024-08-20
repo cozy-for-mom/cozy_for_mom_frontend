@@ -18,7 +18,7 @@ class MomNicknameInputScreen extends StatefulWidget {
 class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
   final TextEditingController _nicknameController = TextEditingController();
   bool _isNicknameLengthNotExceeded = false;
-  bool _isNicknameNotDuplicated = false;
+  bool? _isNicknameNotDuplicated = false;
   bool _isNicknameValid = false;
   Timer? _debounce;
 
@@ -118,7 +118,7 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                               Image(
                                 image: AssetImage(
                                     _isNicknameLengthNotExceeded &&
-                                            _isNicknameNotDuplicated
+                                            _isNicknameNotDuplicated!
                                         ? 'assets/images/icons/pass.png'
                                         : 'assets/images/icons/unpass.png'),
                                 width: AppUtils.scaleSize(context, 18),
@@ -155,13 +155,13 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                           _isNicknameValid = true;
                           widget.updateValidity(_isNicknameLengthNotExceeded &
                               _isNicknameValid &
-                              _isNicknameNotDuplicated);
+                              _isNicknameNotDuplicated!);
                         });
                       }
                     });
                   }
                   widget.updateValidity(_isNicknameLengthNotExceeded &
-                      _isNicknameNotDuplicated &
+                      _isNicknameNotDuplicated! &
                       _isNicknameValid);
                 },
               )),
@@ -171,13 +171,13 @@ class _MomNicknameInputScreenState extends State<MomNicknameInputScreen> {
                 top: AppUtils.scaleSize(context, 239),
                 left: AppUtils.scaleSize(context, 39),
                 child: Text(
-                  _isNicknameNotDuplicated
+                  _isNicknameNotDuplicated!
                       ? _isNicknameLengthNotExceeded
                           ? '사용 가능한 닉네임입니다.'
                           : '닉네임은 최대 8자까지 입력이 가능해요.'
                       : '이미 사용중인 닉네임입니다.',
                   style: TextStyle(
-                      color: !_isNicknameNotDuplicated ||
+                      color: !_isNicknameNotDuplicated! ||
                               !_isNicknameLengthNotExceeded
                           ? deleteButtonColor
                           : primaryColor,

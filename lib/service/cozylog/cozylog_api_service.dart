@@ -7,8 +7,8 @@ import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class CozyLogApiService {
-  Future<MyCozyLogListWrapper> getMyCozyLogs(
+class CozyLogApiService extends ChangeNotifier {
+  Future<MyCozyLogListWrapper?> getMyCozyLogs(
     BuildContext context,
     int? lastId,
     int size,
@@ -17,11 +17,11 @@ class CozyLogApiService {
     final headers = await getHeaders();
     if (lastId != null) urlString += '&lastId=$lastId';
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
 
       int totalCount = body['data']['totalCount'];
       List<CozyLogForList> cozyLogs =
@@ -30,12 +30,15 @@ class CozyLogApiService {
       }).toList();
       return MyCozyLogListWrapper(cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그 목록 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 목록 조회 실패');
     }
   }
 
-  Future<ScrapCozyLogListWrapper> getScrapCozyLogs(
+  Future<ScrapCozyLogListWrapper?> getScrapCozyLogs(
     BuildContext context,
     int? lastId,
     int size,
@@ -46,11 +49,11 @@ class CozyLogApiService {
       urlString += '&lastId=$lastId';
     }
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       int totalCount = body['data']['totalCount'];
       List<CozyLogForList> cozyLogs =
           (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
@@ -59,12 +62,15 @@ class CozyLogApiService {
       return ScrapCozyLogListWrapper(
           cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그 목록 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 목록 조회 실패');
     }
   }
 
-  Future<List<CozyLogForList>> getCozyLogs(
+  Future<List<CozyLogForList>?> getCozyLogs(
     BuildContext context,
     int? lastId,
     int size, {
@@ -79,23 +85,26 @@ class CozyLogApiService {
     }
     urlString += '&sort=$sortType';
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['cozyLogs'];
       List<CozyLogForList> cozyLogs = data.map((cozyLog) {
         return CozyLogForList.fromJson(cozyLog);
       }).toList();
       return cozyLogs;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그 목록 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 목록 조회 실패');
     }
   }
 
-  Future<CozyLogSearchResponse> searchCozyLogs(
+  Future<CozyLogSearchResponse?> searchCozyLogs(
     BuildContext context,
     String keyword,
     int? lastId,
@@ -119,11 +128,11 @@ class CozyLogApiService {
     }
     urlString += '&sort=$sortTypeString';
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<CozyLogSearchResult> cozyLogs =
           (body['data']['results'] as List<dynamic>).map((cozyLog) {
         return CozyLogSearchResult.fromJson(cozyLog);
@@ -134,32 +143,38 @@ class CozyLogApiService {
         totalElements: totalCount,
       );
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그 검색 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 검색 조회 실패');
     }
   }
 
-  Future<CozyLog> getCozyLog(
+  Future<CozyLog?> getCozyLog(
     BuildContext context,
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
+    dynamic res;
+    res = await get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       dynamic data = body['data'];
       return CozyLog.fromJson(data);
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(id: $id) 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그(id: $id) 조회 실패');
     }
   }
 
-  Future<int> createCozyLog(
+  Future<int?> createCozyLog(
     BuildContext context,
     String title,
     String content,
@@ -169,8 +184,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/cozy-log';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -192,17 +207,20 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       Map<String, dynamic> data = body['data'];
       return data['cozyLogId'] as int;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그 작성 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 작성 실패');
     }
   }
 
-  Future<int> updateCozyLog(
+  Future<int?> updateCozyLog(
     BuildContext context,
     int id,
     String title,
@@ -213,8 +231,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/cozy-log?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await put(
+    dynamic res;
+    res = await put(
       url,
       headers: headers,
       body: jsonEncode(
@@ -237,34 +255,39 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       Map<String, dynamic> data = body['data'];
       return data['modifiedCozyLogId'] as int;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(id: $id) 수정 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그(id: $id) 수정 실패');
     }
   }
 
-  void deleteCozyLog(
+  Future<void> deleteCozyLog(
     BuildContext context,
     int id,
   ) async {
     var urlString = '$baseUrl/cozy-log/$id?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await delete(
+    dynamic res;
+    res = await delete(
       url,
       headers: headers,
     );
 
-    if (response.statusCode == 204) {
+    if (res.statusCode == 204) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(id: $id) 삭제 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(id: $id) 삭제 실패');
     }
   }
 
@@ -275,8 +298,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/scrap';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -287,11 +310,13 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 201) {
+    if (res.statusCode == 201) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
 
@@ -302,8 +327,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/scrap';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -314,11 +339,13 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 201) {
+    if (res.statusCode == 201) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
   }
 
@@ -329,8 +356,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/me/cozy-log';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await delete(
+    dynamic res;
+    res = await delete(
       url,
       headers: headers,
       body: jsonEncode(
@@ -339,12 +366,14 @@ class CozyLogApiService {
         },
       ),
     );
-    if (response.statusCode == 204) {
-      print("삭제왼료");
+    if (res.statusCode == 204) {
+      print("코지로그 삭제왼료");
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
   }
 
@@ -355,8 +384,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/me/cozy-log/all';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -366,11 +395,13 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 204) {
+    if (res.statusCode == 204) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
   }
 
@@ -381,8 +412,8 @@ class CozyLogApiService {
     var urlString = '$baseUrl/scrap/unscraps?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -392,11 +423,13 @@ class CozyLogApiService {
       ),
     );
 
-    if (response.statusCode == 204) {
+    if (res.statusCode == 204) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
     }
   }
 }

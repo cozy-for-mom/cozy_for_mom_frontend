@@ -24,58 +24,61 @@ class JoinApiService extends ChangeNotifier {
       'userInfo': userInfo.toJson(),
       'babyInfo': babyInfo.toJson(),
     };
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    print(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 201) {
+    print(utf8.decode(res.bodyBytes));
+    if (res.statusCode == 201) {
       final accessToken =
-          (response.headers['authorization'] as String).split(' ')[1];
+          (res.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
       final decoded = JwtDecoder.decode(accessToken);
       print(UserType.findByString(decoded['info']['role']));
-      return jsonDecode(utf8.decode(response.bodyBytes));
+      return jsonDecode(utf8.decode(res.bodyBytes));
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('회원가입을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return {};
+      // throw Exception('회원가입을 실패하였습니다.');
     }
   }
 
-  Future<bool> nicknameDuplicateCheck(
+  Future<bool?> nicknameDuplicateCheck(
       BuildContext context, String nickname) async {
     final url = Uri.parse('$baseUrl/authenticate/nickname');
     final data = {'nickname': nickname};
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 409) {
+    } else if (res.statusCode == 409) {
       return false;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('닉네임 중복 확인 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('닉네임 중복 확인 실패');
     }
   }
 
-  Future<bool> emailDuplicateCheck(BuildContext context, String email) async {
+  Future<bool?> emailDuplicateCheck(BuildContext context, String email) async {
     final url = Uri.parse('$baseUrl/authenticate/email');
     final data = {'email': email};
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    print('요청 바디: ${jsonEncode(data)}');
-    print(headers);
-    print(response.body);
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       return true;
-    } else if (response.statusCode == 409) {
+    } else if (res.statusCode == 409) {
       return false;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('이메일 중복 확인 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('이메일 중복 확인 실패');
     }
   }
 
@@ -89,9 +92,10 @@ class JoinApiService extends ChangeNotifier {
       JoinInputData().resetData();
       print('회원탈퇴가 완료되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '회원탈퇴를 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '회원탈퇴를 실패하였습니다.';
     }
   }
 }

@@ -236,13 +236,13 @@ class _SupplementCardState extends State<SupplementCard> {
                                         '${globalData.selectedDate.toIso8601String().split('T')[0]} ${DateTime.now().toIso8601String().split('T')[1].substring(0, 12)}',
                                       );
 
-                                      int intakeId = await supplementApi
+                                      int? intakeId = await supplementApi
                                           .recordSupplementIntake(context,
                                               widget.name, currentTime);
                                       setState(() {
                                         widget.realCount++;
                                         widget.takeTimes.add(currentTime);
-                                        widget.recordIds.add(intakeId);
+                                        widget.recordIds.add(intakeId!);
                                       });
                                     },
                               child: Container(

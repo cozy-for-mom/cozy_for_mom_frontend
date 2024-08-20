@@ -21,16 +21,20 @@ class ImageApiService {
     request.headers['Authorization'] = 'Bearer $token';
     request.files.add(await MultipartFile.fromPath('image', imageFile.path,
         contentType: MediaType('image', 'jpg')));
-    final response = await request.send();
-    if (response.statusCode == 200) {
-      Map<String, dynamic> responseData =
-          jsonDecode(await response.stream.bytesToString());
-      String imageUrl = responseData['data']['imageUrl'];
+    final res = await request.send();
+    if (res.statusCode == 200) {
+      Map<String, dynamic> resData =
+          jsonDecode(await res.stream.bytesToString());
+      String imageUrl = resData['data']['imageUrl'];
       return imageUrl;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('이미지 등록을 실패하였습니다.');
+      if (context.mounted) {
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+      }
+      return null;
+      // throw Exception('이미지 등록을 실패하였습니다.');
     }
   }
 }

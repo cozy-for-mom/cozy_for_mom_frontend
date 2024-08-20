@@ -65,7 +65,9 @@ class UserApiService extends ChangeNotifier {
           'dDay': dDay
         };
       } else {
-        handleHttpResponse(res.statusCode, context);
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
         return {};
       }
     } catch (e) {
@@ -85,13 +87,17 @@ class UserApiService extends ChangeNotifier {
       'birth': birth,
       'email': email
     };
-    final Response response =
+    final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-      throw Exception('$name 산모 프로필 수정을 실패하였습니다.');
+      if (context.mounted) {
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+      }
+      // throw Exception('$name 산모 프로필 수정을 실패하였습니다.');
     }
   }
 
@@ -99,15 +105,18 @@ class UserApiService extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/me/baby/recent');
     final headers = await getHeaders();
     Map data = {'babyProfileId': id};
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
 
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('$id 메인 태아 프로필 변경을 실패하였습니다.');
+      if (context.mounted) {
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+      }
+      // throw Exception('$id 메인 태아 프로필 변경을 실패하였습니다.');
     }
   }
 
@@ -132,9 +141,11 @@ class UserApiService extends ChangeNotifier {
           'babies': babies
         };
       } else {
-        handleHttpResponse(res.statusCode, context);
-
-        throw Exception('$babyProfileId 태아 프로필 조회 실패: ${res.statusCode}');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return {};
+        // throw Exception('$babyProfileId 태아 프로필 조회 실패: ${res.statusCode}');
       }
     } catch (e) {
       // 에러 처리
@@ -147,7 +158,7 @@ class UserApiService extends ChangeNotifier {
       String? profileImageUrl, List<BabyForRegister> babies) async {
     final url = Uri.parse('$baseUrl/baby');
     final headers = await getHeaders();
-    final Response response = await post(url,
+    final Response res = await post(url,
         headers: headers,
         body: jsonEncode({
           'dueAt': dueAt,
@@ -155,12 +166,15 @@ class UserApiService extends ChangeNotifier {
           'babies': babies.map((e) => e.toJson()).toList(),
         }));
 
-    if (response.statusCode == 201) {
+    if (res.statusCode == 201) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('태아 추가를 실패하였습니다.');
+      if (context.mounted) {
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+      }
+      // throw Exception('태아 추가를 실패하였습니다.');
     }
   }
 
@@ -172,19 +186,22 @@ class UserApiService extends ChangeNotifier {
       List<BabyForRegister> babies) async {
     final url = Uri.parse('$baseUrl/baby/$babyProfileId');
     final headers = await getHeaders();
-    final Response response = await put(url,
+    final Response res = await put(url,
         headers: headers,
         body: jsonEncode({
           'dueAt': dueAt,
           'profileImageUrl': profileImageUrl,
           'babies': babies.map((e) => e.toJson()).toList(),
         }));
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       return;
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('태아 수정을 실패하였습니다.');
+      if (context.mounted) {
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+      }
+      // throw Exception('태아 수정을 실패하였습니다.');
     }
   }
 
@@ -196,9 +213,10 @@ class UserApiService extends ChangeNotifier {
     if (res.statusCode == 200) {
       print('$babyProfileId 태아 프로필이 삭제되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '$babyProfileId 태아 프로필 삭제를 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '$babyProfileId 태아 프로필 삭제를 실패하였습니다.';
     }
   }
 
@@ -206,15 +224,16 @@ class UserApiService extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/user/logout');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
-    Map<String, dynamic> responseData = jsonDecode(res.body);
+    Map<String, dynamic> resData = jsonDecode(res.body);
     if (res.statusCode == 200) {
       await tokenManager.deleteToken();
-      final id = responseData['data']['userId'];
+      final id = resData['data']['userId'];
       print('user $id 회원이 로그아웃되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '로그아웃을 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '로그아웃을 실패하였습니다.';
     }
   }
 }

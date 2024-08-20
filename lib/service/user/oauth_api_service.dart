@@ -14,7 +14,7 @@ enum OauthType { apple, kakao, none }
 
 class OauthApiService {
   final tokenManager = TokenManager.TokenManager();
-  Future<UserType> authenticateByOauth(
+  Future<UserType?> authenticateByOauth(
     BuildContext context,
     OauthType oauthType,
     String value,
@@ -24,9 +24,9 @@ class OauthApiService {
     final url = Uri.parse(urlString);
     final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
     final headers = await getHeaders();
-    dynamic response;
+    dynamic res;
 
-    response = await http.post(
+    res = await http.post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -37,9 +37,9 @@ class OauthApiService {
         },
       ),
     );
-    if (response.statusCode == 200) {
+    if (res.statusCode == 200) {
       final accessToken =
-          (response.headers['authorization'] as String).split(' ')[1];
+          (res.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
       print('at $accessToken');
       final decoded = JwtDecoder.decode(accessToken);
@@ -47,9 +47,11 @@ class OauthApiService {
 
       return UserType.findByString(decoded['info']['role']);
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception('코지로그 로그인 실패 (oauthType: $oauthType)');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception('코지로그 로그인 실패 (oauthType: $oauthType)');
     }
   }
 }

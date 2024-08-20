@@ -457,13 +457,13 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     daysOfWeek: daysOfWeek,
                   );
                   if (widget.notification != null) {
-                    int responseId = await notificationViewModel
-                        .modifyNotification(context, id, notification);
-                    widget.onModify!(responseId);
+                    int? resId = await notificationViewModel.modifyNotification(
+                        context, id, notification);
+                    widget.onModify!(resId!);
                   } else {
-                    int responseId = await notificationViewModel
-                        .recordNotification(context, notification);
-                    widget.onRegister!(responseId);
+                    int? resId = await notificationViewModel.recordNotification(
+                        context, notification);
+                    widget.onRegister!(resId!);
                   }
                   if (mounted) {
                     Navigator.pop(context);

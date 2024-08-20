@@ -21,7 +21,8 @@ void handleHttpResponse(int statusCode, BuildContext context) async {
       await tokenManager.deleteToken();
       // 다이얼로그를 먼저 보여준 후 사용자 확인 후 로그인 페이지로 이동
       if (context.mounted) {
-        if (route != null && context.widget.runtimeType != HomeFragment) {
+        var currentRoute = ModalRoute.of(context)?.settings.name;
+        if (route != null && currentRoute != '/login') {
           await showAlertDialog(context, "인증되지 않은 사용자입니다.");
           if (context.mounted) {
             Navigator.of(context).pushReplacementNamed('/login');

@@ -161,9 +161,9 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                         joinInputData.laseMensesDate.replaceAll('.', '-'),
                     babies: babies);
                 try {
-                  final response =
+                  final res =
                       await joinApiService.signUp(context, userInfo, babyInfo);
-                  if (mounted && response['status'] == 201) {
+                  if (mounted && res['status'] == 201) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                           builder: (context) => const WelcomeScreen()),

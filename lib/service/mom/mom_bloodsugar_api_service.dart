@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class BloodsugarApiService extends ChangeNotifier {
-  Future<List<dynamic>> getBloodsugars(
+  Future<List<dynamic>?> getBloodsugars(
       BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
@@ -26,14 +26,16 @@ class BloodsugarApiService extends ChangeNotifier {
         }).toList();
         return bloodsugars;
       } else {
-        handleHttpResponse(res.statusCode, context);
-
-        throw Exception('$formattedDate 혈당 조회를 실패하였습니다.');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return null;
+        // throw Exception('$formattedDate 혈당 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
       print('error $e');
-      throw e; // 예외 다시 던지기
+      rethrow; // 예외 다시 던지기
     }
   }
 
@@ -61,8 +63,11 @@ class BloodsugarApiService extends ChangeNotifier {
           'bloodsugars': bloodsugars,
         };
       } else {
-        handleHttpResponse(res.statusCode, context);
-        throw Exception('$formattedDate 혈당 기간별 조회를 실패하였습니다.');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return {};
+        // throw Exception('$formattedDate 혈당 기간별 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -71,7 +76,7 @@ class BloodsugarApiService extends ChangeNotifier {
     }
   }
 
-  Future<double> getAvgBloodsugar(BuildContext context, DateTime date) async {
+  Future<double?> getAvgBloodsugar(BuildContext context, DateTime date) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
       final headers = await getHeaders();
@@ -83,8 +88,11 @@ class BloodsugarApiService extends ChangeNotifier {
         double avgBloodsugar = body['data']['avgBloodSugar'];
         return avgBloodsugar;
       } else {
-        handleHttpResponse(res.statusCode, context);
-        throw Exception('$formattedDate 혈당 평균 조회를 실패하였습니다.');
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+        }
+        return null;
+        // throw Exception('$formattedDate 혈당 평균 조회를 실패하였습니다.');
       }
     } catch (e) {
       // 에러 처리
@@ -94,7 +102,7 @@ class BloodsugarApiService extends ChangeNotifier {
   }
 
   // TODO 혈당 수치 기록 api 연동
-  Future<int> recordBloodsugar(
+  Future<int?> recordBloodsugar(
       BuildContext context, DateTime dateTime, String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar');
     final headers = await getHeaders();
@@ -103,21 +111,23 @@ class BloodsugarApiService extends ChangeNotifier {
       'type': type,
       'level': level
     };
-    final Response response =
+    final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    Map<String, dynamic> responseData = jsonDecode(response.body);
-    if (response.statusCode == 201) {
-      return responseData['data']['bloodSugarRecordId'];
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if (res.statusCode == 201) {
+      return resData['data']['bloodSugarRecordId'];
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception(
-          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록을 실패하였습니다.');
+      if (context.mounted) {
+          handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception(
+      // '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록을 실패하였습니다.');
     }
   }
 
   // TODO 혈당 수치 기록 수정 api 연동
-  Future<int> modifyBloodsugar(BuildContext context, int id, DateTime dateTime,
+  Future<int?> modifyBloodsugar(BuildContext context, int id, DateTime dateTime,
       String type, int level) async {
     final url = Uri.parse('$baseUrl/bloodsugar/$id');
     final headers = await getHeaders();
@@ -126,16 +136,18 @@ class BloodsugarApiService extends ChangeNotifier {
       'type': type,
       'level': level
     };
-    final Response response =
+    final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
-    Map<String, dynamic> responseData = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      return responseData['data']['bloodSugarRecordId'];
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      return resData['data']['bloodSugarRecordId'];
     } else {
-      handleHttpResponse(response.statusCode, context);
-
-      throw Exception(
-          '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록 수정을 실패하였습니다.');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      return null;
+      // throw Exception(
+      //     '${DateFormat('yyyy-MM-dd HH:mm').format(dateTime)} $type 혈당 수치 기록 수정을 실패하였습니다.');
     }
   }
 
@@ -146,9 +158,10 @@ class BloodsugarApiService extends ChangeNotifier {
     if (res.statusCode == 204) {
       print('혈당 기록이 삭제되었습니다.');
     } else {
-      handleHttpResponse(res.statusCode, context);
-
-      throw '혈당 기록 삭제를 실패하였습니다.';
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context);
+      }
+      // throw '혈당 기록 삭제를 실패하였습니다.';
     }
   }
 }

@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  UserType userType = await kakaoLogin();
+                  UserType? userType = await kakaoLogin();
                   joinInputData.setOauthType(OauthType.kakao);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  UserType userType = await appleLogin();
+                  UserType? userType = await appleLogin();
                   joinInputData.setOauthType(OauthType.apple);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
@@ -239,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<UserType> kakaoLogin() async {
+  Future<UserType?> kakaoLogin() async {
     late String kakaoAccessToken;
     late String? email;
     if (await isKakaoTalkInstalled()) {
@@ -285,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
         context, OauthType.kakao, kakaoAccessToken);
   }
 
-  Future<UserType> appleLogin() async {
+  Future<UserType?> appleLogin() async {
     late String appleAuthCode;
     late String? email;
     try {
