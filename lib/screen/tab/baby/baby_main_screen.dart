@@ -107,11 +107,14 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                           "assets/images/icons/mypage.png",
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        final res = await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const MyPage()));
+                        if (res == true) {
+                          setState(() {});
+                        }
                       },
                     ),
                   ),
