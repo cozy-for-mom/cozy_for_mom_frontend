@@ -99,6 +99,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final searchController = TextEditingController(text: widget.searchKeyword);
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
         child: Column(

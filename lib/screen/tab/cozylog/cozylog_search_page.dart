@@ -98,6 +98,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                       color: Colors.white,
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: AppUtils.scaleSize(context, 17),
@@ -111,18 +112,24 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                         SizedBox(
                           width: AppUtils.scaleSize(context, 15),
                         ),
-                        Expanded(
+                        SizedBox(
+                          width: AppUtils.scaleSize(context, 255),
                           child: TextField(
                             keyboardType: TextInputType.text,
                             cursorColor: primaryColor,
                             cursorHeight: AppUtils.scaleSize(context, 15),
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: (AppUtils.scaleSize(context, 37) -
+                              contentPadding: EdgeInsets.only(bottom: (AppUtils.scaleSize(context, 37) -
                                           AppUtils.scaleSize(context, 14) *
                                               1.2) /
-                                      2 // 폰트 크기와 라인 높이 고려
-                                  ),
+                                      2 // 폰트 크기와 라인 높이 고려),
+                              ),
+                              // contentPadding: EdgeInsets.symmetric(
+                              //     vertical: (AppUtils.scaleSize(context, 37) -
+                              //             AppUtils.scaleSize(context, 14) *
+                              //                 1.2) /
+                              //         2 // 폰트 크기와 라인 높이 고려
+                              //     ),
                               focusColor: primaryColor,
                               fillColor: primaryColor,
                               border: InputBorder.none,
@@ -133,6 +140,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                               ),
                               hintText: "검색어를 입력해주세요",
                             ),
+                            maxLines: 1,
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,

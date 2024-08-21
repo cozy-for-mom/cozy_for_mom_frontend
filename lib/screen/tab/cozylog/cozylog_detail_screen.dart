@@ -71,6 +71,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
         if (snapshot.hasData) {
           final cozyLog = snapshot.data!;
           return Scaffold(
+            backgroundColor: backgroundColor,
             appBar: PreferredSize(
               preferredSize: const Size(400, 80),
               child: Padding(
@@ -580,7 +581,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(AppUtils.scaleSize(context, 25)),
+                  padding: EdgeInsets.only(
+                      left: AppUtils.scaleSize(context, 25),
+                      right: AppUtils.scaleSize(context, 25),
+                      bottom: AppUtils.scaleSize(context, 25),
+                      top: AppUtils.scaleSize(context, 15)),
                   decoration: const BoxDecoration(
                     color: Colors.white, // 배경색 설정
                   ),

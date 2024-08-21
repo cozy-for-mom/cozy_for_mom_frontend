@@ -12,6 +12,7 @@ class WelcomeScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Column(
         children: [
           SizedBox(
@@ -128,12 +129,6 @@ class WelcomeScreen extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (BuildContext buildContext) {
-                //     return const NotificationCheckModal();
-                //   },
-                // );
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -154,10 +149,4 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void main(List<String> args) {
-  runApp(const MaterialApp(
-    home: WelcomeScreen(),
-  ));
 }

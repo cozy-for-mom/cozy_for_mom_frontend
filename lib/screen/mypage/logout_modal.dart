@@ -102,12 +102,7 @@ class _LogoutModalState extends State<LogoutModal> {
                       Navigator.pop(context);
                       await userViewModel.logOut(context);
                       if (context.mounted) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
-                          (Route<dynamic> route) => false, // 모든 이전 화면을 제거
-                        );
+                        Navigator.of(context).pushReplacementNamed('/login');
                       }
                     },
                     child: Container(
