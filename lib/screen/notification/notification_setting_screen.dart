@@ -139,8 +139,12 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
               fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
-          color: Colors.black,
-          icon: const Icon(Icons.arrow_back_ios),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },

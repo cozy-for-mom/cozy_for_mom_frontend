@@ -89,8 +89,12 @@ class _BabyGrowthReportListScreenState
           ),
         ),
         leading: IconButton(
-          color: mainTextColor,
-          icon: const Icon(Icons.arrow_back_ios),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -480,7 +484,7 @@ class _BabyGrowthReportListScreenState
                                         vertical:
                                             AppUtils.scaleSize(context, 20),
                                         horizontal:
-                                            AppUtils.scaleSize(context, 25)),
+                                            AppUtils.scaleSize(context, 20)),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: contentBoxTwoColor,

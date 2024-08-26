@@ -84,12 +84,14 @@ class _MyScrapState extends State<MyScrap> {
               fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
         ),
         actions: [

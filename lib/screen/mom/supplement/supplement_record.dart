@@ -81,18 +81,28 @@ class _SupplementRecordState extends State<SupplementRecord> {
                           top: AppUtils.scaleSize(context, 47),
                           width: screenWidth,
                           child: Padding(
-                              padding: EdgeInsets.all(
-                                  AppUtils.scaleSize(context, 10)),
+                                              padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 10), right: AppUtils.scaleSize(context, 5)),
+
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_back_ios),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+                                   SizedBox(
+                              width: AppUtils.scaleSize(context, 30),
+                              height: AppUtils.scaleSize(context, 30),
+                            ),
+                            const Spacer(),
                                   Row(
                                     children: [
                                       Text(
@@ -124,6 +134,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       ),
                                     ],
                                   ),
+                                  const Spacer(),
                                   IconButton(
                                       icon: Image(
                                           image: const AssetImage(

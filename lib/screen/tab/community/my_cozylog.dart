@@ -18,8 +18,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dar
 
 class MyCozylog extends StatefulWidget {
   final bool isEditMode;
-  final bool ispop;
-  const MyCozylog({super.key, this.isEditMode = false, this.ispop = false});
+  const MyCozylog({super.key, this.isEditMode = false});
 
   @override
   State<MyCozylog> createState() => _MyCozylogState();
@@ -83,19 +82,15 @@ class _MyCozylogState extends State<MyCozylog> {
               fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          icon: Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
           ),
           onPressed: () {
-            widget.ispop
-                ? Navigator.pop(context)
-                : Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(selectedIndex: 2),
-                    ),
-                  );
+            Navigator.of(context).pop();
+
           },
         ),
         actions: [
@@ -177,7 +172,7 @@ class _MyCozylogState extends State<MyCozylog> {
                                   onTap: () {
                                     snapshot.data!.cozyLogs.isNotEmpty
                                         ? setState(() {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>

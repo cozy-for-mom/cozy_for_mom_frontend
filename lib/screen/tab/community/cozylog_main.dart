@@ -76,14 +76,22 @@ class _CozylogMainState extends State<CozylogMain> {
                   ),
                   Positioned(
                     top: AppUtils.scaleSize(context, 47),
-                    child: Padding(
-                        padding:
-                            EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                    child: Container(
+                        width: screenWidth,
+                        padding: EdgeInsets.only(
+                            top: AppUtils.scaleSize(context, 10),
+                            ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.arrow_back_ios),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -92,13 +100,17 @@ class _CozylogMainState extends State<CozylogMain> {
                                             const MainScreen())); // TODO depth가 복잡해져서 커뮤니티에서는 뒤로가기하면 메인페이지로 가도록 픽스
                               },
                             ),
-                            SizedBox(width: AppUtils.scaleSize(context, 110)),
+                            SizedBox(
+                              width: AppUtils.scaleSize(context, 20),
+                              height: AppUtils.scaleSize(context, 20),
+                            ),
+                            const Spacer(),
                             Text('커뮤니티',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 18))),
-                            SizedBox(width: AppUtils.scaleSize(context, 90)),
+                                    fontSize: AppUtils.scaleSize(context, 20))),
+                            const Spacer(),
                             Row(
                               children: [
                                 InkWell(

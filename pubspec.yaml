@@ -173,6 +173,8 @@ flutter:
     - assets/images/splash.png
     - assets/images/icons/baby_remove.png
     - assets/images/icons/babyprofile_modify_pen.png
+    - assets/images/icons/back_ios.png
+    - assets/images/icons/more_vert_outlined.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

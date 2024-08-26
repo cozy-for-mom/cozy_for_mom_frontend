@@ -243,8 +243,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
             color: mainTextColor,
           ),
           onPressed: () {

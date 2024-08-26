@@ -106,7 +106,13 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
+          
           onPressed: () {
             if (_currentPage > 0) {
               _pageController.previousPage(

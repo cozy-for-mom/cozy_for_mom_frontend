@@ -91,17 +91,27 @@ class _WeightRecordState extends State<WeightRecord> {
                         top: AppUtils.scaleSize(context, 47),
                         width: screenWidth,
                         child: Padding(
-                            padding:
-                                EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                                            padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 10), right: AppUtils.scaleSize(context, 5)),
+
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.arrow_back_ios),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+                                 SizedBox(
+                              width: AppUtils.scaleSize(context, 30),
+                              height: AppUtils.scaleSize(context, 30),
+                            ),
+                            const Spacer(),
                                 Row(
                                   children: [
                                     Text(
@@ -133,6 +143,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                     ),
                                   ],
                                 ),
+                                const Spacer(),
                                 IconButton(
                                     icon: Image(
                                         image: const AssetImage(
@@ -153,7 +164,7 @@ class _WeightRecordState extends State<WeightRecord> {
                             // }),
                             )),
                     Positioned(
-                        top: AppUtils.scaleSize(context, 103),
+                        top: AppUtils.scaleSize(context, 110),
                         left: AppUtils.scaleSize(context, 20),
                         child: SizedBox(
                           height: AppUtils.scaleSize(context, 100),
@@ -161,7 +172,7 @@ class _WeightRecordState extends State<WeightRecord> {
                           child: const WeeklyCalendar(),
                         )),
                     Positioned(
-                      top: AppUtils.scaleSize(context, 205),
+                      top: AppUtils.scaleSize(context, 212),
                       left: AppUtils.scaleSize(context, 20),
                       child: Container(
                         width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -300,7 +311,7 @@ class _WeightRecordState extends State<WeightRecord> {
                       ),
                     ),
                     Positioned(
-                      top: AppUtils.scaleSize(context, 331),
+                      top: AppUtils.scaleSize(context, 338),
                       left: AppUtils.scaleSize(context, 20),
                       child: const TimeLineChart(
                         recordType: RecordType.weight,
