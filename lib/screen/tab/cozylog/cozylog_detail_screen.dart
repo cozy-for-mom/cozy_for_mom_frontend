@@ -1,6 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
-import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_edit_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_component.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
@@ -75,7 +75,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
             appBar: PreferredSize(
               preferredSize: const Size(400, 80),
               child: Padding(
-                padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
+                padding: EdgeInsets.only(
+                    top: AppUtils.scaleSize(context, 8),
+                    bottom: AppUtils.scaleSize(context, 8),
+                    right: AppUtils.scaleSize(context, 8)),
                 child: Column(
                   children: [
                     SizedBox(
@@ -85,11 +88,18 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Image(
+                            image: const AssetImage(
+                                'assets/images/icons/back_ios.png'),
+                            width: AppUtils.scaleSize(context, 34),
+                            height: AppUtils.scaleSize(context, 34),
+                            color: mainTextColor,
+                          ),
                           onPressed: () {
-                            Navigator.pop(context, true);
+                            Navigator.of(context).pop(true);
                           },
                         ),
+                        const Spacer(),
                         Text(
                           isMyCozyLog ? '내 코지로그' : '코지로그',
                           style: TextStyle(
@@ -98,23 +108,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             fontSize: AppUtils.scaleSize(context, 20),
                           ),
                         ),
-                        IconButton(
-                          icon: Image(
-                            image: const AssetImage(
-                                'assets/images/icons/alert.png'),
-                            height: AppUtils.scaleSize(context, 32),
-                            width: AppUtils.scaleSize(context, 32),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AlarmSettingPage(
-                                  type: CardType.supplement,
-                                ),
-                              ),
-                            );
-                          },
+                        const Spacer(),
+                        SizedBox(
+                          width: AppUtils.scaleSize(context, 32),
+                          height: AppUtils.scaleSize(context, 32),
                         )
                       ],
                     ),
@@ -218,9 +215,17 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                               child: Column(
                                                 children: [
                                                   Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    8)),
                                                     width: screenWidth -
                                                         AppUtils.scaleSize(
                                                             context, 40),
+                                                    height: AppUtils.scaleSize(
+                                                        context, 128),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -229,6 +234,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                     ),
                                                     child: Center(
                                                       child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
                                                           children: <Widget>[
                                                             ListTile(
                                                               title: Center(
@@ -236,6 +244,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                 '수정하기',
                                                                 style:
                                                                     TextStyle(
+                                                                  color:
+                                                                      mainTextColor,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -273,9 +283,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                             ListTile(
                                                               title: Center(
                                                                   child: Text(
-                                                                '삭제하기',
+                                                                '글 삭제하기',
                                                                 style:
                                                                     TextStyle(
+                                                                  color:
+                                                                      mainTextColor,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -286,28 +298,60 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                 ),
                                                               )),
                                                               onTap: () async {
-                                                                await CozyLogApiService()
-                                                                    .deleteCozyLog(
-                                                                        context,
-                                                                        cozyLog
-                                                                            .cozyLogId!);
-
-                                                                if (mounted) {
-                                                                  Navigator.pop(
+                                                                showDialog(
+                                                                  context:
                                                                       context,
-                                                                      true);
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      true);
-                                                                }
-
-                                                                setState(() {
-                                                                  CompleteAlertModal
-                                                                      .showCompleteDialog(
-                                                                          context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return DeleteModal(
+                                                                      title:
                                                                           '코지로그가',
-                                                                          '삭제');
-                                                                });
+                                                                      text:
+                                                                          '삭제된 글은 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
+                                                                      tapFunc:
+                                                                          () async {
+                                                                        await CozyLogApiService().deleteCozyLog(
+                                                                            context,
+                                                                            cozyLog.cozyLogId!);
+                                                                        if (mounted) {
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              true);
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              true);
+                                                                        }
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  barrierDismissible:
+                                                                      false,
+                                                                );
+                                                                // await CozyLogApiService()
+                                                                //     .deleteCozyLog(
+                                                                //         context,
+                                                                //         cozyLog
+                                                                //             .cozyLogId!);
+
+                                                                // if (mounted) {
+                                                                //   Navigator.pop(
+                                                                //       context,
+                                                                //       true);
+                                                                //   Navigator.pop(
+                                                                //       context,
+                                                                //       true);
+                                                                // }
+
+                                                                // setState(() {
+                                                                //   CompleteAlertModal
+                                                                //       .showCompleteDialog(
+                                                                //           context,
+                                                                //           '코지로그가',
+                                                                //           '삭제');
+                                                                // });
                                                               },
                                                             ),
                                                           ]),
@@ -315,7 +359,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                   ),
                                                   SizedBox(
                                                     height: AppUtils.scaleSize(
-                                                        context, 20),
+                                                        context, 15),
                                                   ),
                                                   InkWell(
                                                     onTap: () {
@@ -355,9 +399,12 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                           },
                                         );
                                       },
-                                      icon: const Icon(
-                                        Icons.more_vert_outlined,
-                                        color: Color(0xff858998),
+                                      icon: Image(
+                                        image: const AssetImage(
+                                            'assets/images/icons/more_vert_outlined.png'),
+                                        color: const Color(0xff858998),
+                                        width: AppUtils.scaleSize(context, 3),
+                                        height: AppUtils.scaleSize(context, 17),
                                       ),
                                     )
                                   : IconButton(
@@ -513,61 +560,67 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                           const NeverScrollableScrollPhysics(),
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
-                                        return Column(
-                                          children: [
-                                            CozyLogCommentComponent(
-                                                cozyLog: cozyLog,
-                                                isMyCozyLog: isMyCozyLog,
-                                                comment: snapshot.data![index],
-                                                subComments: snapshot
-                                                        .data![index]
-                                                        .subComments ??
-                                                    [],
-                                                onReply: () {
-                                                  setState(() {
-                                                    parentCommentIdToReply =
-                                                        snapshot.data![index]
-                                                            .parentId;
-                                                    textController.text = '';
-                                                    submitIcon = const Image(
-                                                        image: AssetImage(
-                                                      "assets/images/icons/submit_inactive.png",
-                                                    ));
-                                                  });
-                                                },
-                                                requestCommentsUpdate: () {
-                                                  setState(() {
-                                                    futureCozyLog =
-                                                        CozyLogApiService()
-                                                            .getCozyLog(context,
-                                                                widget.id);
-                                                    futureComments =
-                                                        CozyLogCommentApiService()
-                                                            .getCozyLogComments(
-                                                                context,
-                                                                widget.id);
-                                                  });
-                                                },
-                                                onCommentUpdate:
-                                                    (CozyLogComment comment) {
-                                                  setState(() {
-                                                    commentIdToUpdate =
-                                                        comment.commentId;
-                                                    textController.text =
-                                                        comment.content;
-                                                    submitIcon = const Image(
-                                                        image: AssetImage(
-                                                      "assets/images/icons/submit_active.png",
-                                                    ));
-                                                  });
-                                                }),
-                                            Divider(
-                                              color: const Color(0xffE1E1E7),
-                                              height: AppUtils.scaleSize(
-                                                  context, 5),
-                                            ),
-                                          ],
-                                        );
+                                        if ((!snapshot.data![index].isDeleted) || (snapshot.data![index].isDeleted && snapshot.data![index].subComments!.isNotEmpty)) {
+                                          return Column(
+                                            children: [
+                                              CozyLogCommentComponent(
+                                                  cozyLog: cozyLog,
+                                                  isMyCozyLog: isMyCozyLog,
+                                                  comment:
+                                                      snapshot.data![index],
+                                                  subComments: snapshot
+                                                          .data![index]
+                                                          .subComments ??
+                                                      [],
+                                                  onReply: () {
+                                                    setState(() {
+                                                      parentCommentIdToReply =
+                                                          snapshot.data![index]
+                                                              .parentId;
+                                                      textController.text = '';
+                                                      submitIcon = const Image(
+                                                          image: AssetImage(
+                                                        "assets/images/icons/submit_inactive.png",
+                                                      ));
+                                                    });
+                                                  },
+                                                  requestCommentsUpdate: () {
+                                                    setState(() {
+                                                      futureCozyLog =
+                                                          CozyLogApiService()
+                                                              .getCozyLog(
+                                                                  context,
+                                                                  widget.id);
+                                                      futureComments =
+                                                          CozyLogCommentApiService()
+                                                              .getCozyLogComments(
+                                                                  context,
+                                                                  widget.id);
+                                                    });
+                                                  },
+                                                  onCommentUpdate:
+                                                      (CozyLogComment comment) {
+                                                    setState(() {
+                                                      commentIdToUpdate =
+                                                          comment.commentId;
+                                                      textController.text =
+                                                          comment.content;
+                                                      submitIcon = const Image(
+                                                          image: AssetImage(
+                                                        "assets/images/icons/submit_active.png",
+                                                      ));
+                                                    });
+                                                  }),
+                                              Divider(
+                                                color: const Color(0xffE1E1E7),
+                                                height: AppUtils.scaleSize(
+                                                    context, 5),
+                                              ),
+                                            ],
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
                                       },
                                     ),
                                   );
@@ -607,7 +660,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         fontWeight: FontWeight.w400,
                         fontSize: AppUtils.scaleSize(context, 14),
                       ),
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
+                      maxLines: 1,
                       controller: textController,
                       onChanged: (text) {
                         if (text != '') {
@@ -632,6 +686,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                       cursorWidth: 1,
                       cursorColor: primaryColor,
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                            bottom: (AppUtils.scaleSize(context, 36) -
+                                    AppUtils.scaleSize(context, 14) * 1.2) /
+                                2 // 폰트 크기와 라인 높이 고려),
+                            ),
                         hintText: parentCommentIdToReply != null
                             ? "답글을 남겨주세요."
                             : "댓글을 남겨주세요.",
@@ -659,6 +718,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                   parentCommentIdToReply,
                                   commentInput,
                                 );
+                              }
+                              if (mounted) {
+                                await CompleteAlertModal.showCompleteDialog(
+                                    context, '댓글이', '등록');
                               }
                               setState(() {
                                 textController.text = '';

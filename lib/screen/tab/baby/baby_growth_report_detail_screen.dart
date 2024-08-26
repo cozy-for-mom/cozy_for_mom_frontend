@@ -1,5 +1,6 @@
 import 'package:cozy_for_mom_frontend/common/extension/map_with_index.dart';
 import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
@@ -81,9 +82,14 @@ class _BabyGrowthReportDetailScreenState
             ),
           ),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: mainTextColor),
+            icon: Image(
+              image: const AssetImage('assets/images/icons/back_ios.png'),
+              width: AppUtils.scaleSize(context, 34),
+              height: AppUtils.scaleSize(context, 34),
+              color: mainTextColor,
+            ),
             onPressed: () {
-              Navigator.pop(context, true);
+              Navigator.of(context).pop(true);
             },
           ),
         ),
@@ -179,7 +185,7 @@ class _BabyGrowthReportDetailScreenState
                                         builder: (BuildContext context) {
                                           return SizedBox(
                                             height: AppUtils.scaleSize(
-                                                context, 230),
+                                                context, 220),
                                             child: Column(
                                               children: [
                                                 Container(
@@ -258,12 +264,24 @@ class _BabyGrowthReportDetailScreenState
                                                               ),
                                                             )),
                                                             onTap: () async {
-                                                              await babyGrowthApiService
-                                                                  .deleteBabyProfileGrowth(
-                                                                      context,
-                                                                      widget
-                                                                          .babyProfileGrowthId);
-                                                              if (mounted) {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return DeleteModal(
+                                                                    title:
+                                                                        '성장 보고서가',
+                                                                    text:
+                                                                        '등록된 성장 보고서를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                                                    tapFunc:
+                                                                        () async {
+                                                                      await babyGrowthApiService.deleteBabyProfileGrowth(
+                                                                          context,
+                                                                          widget
+                                                                              .babyProfileGrowthId);
+                                                                       if (mounted) {
                                                                 Navigator.pop(
                                                                     context,
                                                                     true);
@@ -271,13 +289,17 @@ class _BabyGrowthReportDetailScreenState
                                                                     context,
                                                                     true);
                                                               }
-                                                              setState(() {
-                                                                CompleteAlertModal
-                                                                    .showCompleteDialog(
-                                                                        context,
-                                                                        '성장 보고서가',
-                                                                        '삭제');
-                                                              });
+                                                                      setState(
+                                                                          () {
+                                                                        
+                                                                      });
+                                                                    },
+                                                                  );
+                                                                },
+                                                                barrierDismissible:
+                                                                    false,
+                                                              );
+                                                              
                                                             },
                                                           ),
                                                         ]),
@@ -285,7 +307,7 @@ class _BabyGrowthReportDetailScreenState
                                                 ),
                                                 SizedBox(
                                                   height: AppUtils.scaleSize(
-                                                      context, 16),
+                                                      context, 15),
                                                 ),
                                                 InkWell(
                                                   onTap: () {
@@ -324,9 +346,11 @@ class _BabyGrowthReportDetailScreenState
                                         },
                                       );
                                     },
-                                    icon: const Icon(
-                                      Icons.more_vert_outlined,
-                                      color: Color(0xff858998),
+                                    icon: Image(
+                                      image: const AssetImage('assets/images/icons/more_vert_outlined.png'),
+                                      color: const Color(0xff858998),
+                                      width: AppUtils.scaleSize(context, 3),
+                                      height: AppUtils.scaleSize(context, 17),
                                     ),
                                   )
                                 ],

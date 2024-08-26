@@ -37,7 +37,7 @@ class CompleteAlertModal extends StatelessWidget {
             color: const Color.fromRGBO(0, 0, 0, 0.7),
             borderRadius: BorderRadius.circular(10)),
         child: Text(
-          '${text} ${action} 되었습니다',
+          '${text} ${action}되었습니다.',
           style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,

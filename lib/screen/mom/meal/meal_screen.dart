@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -80,7 +81,7 @@ class _MealScreenState extends State<MealScreen> {
               tap1: () async {
                 Navigator.pop(context);
                 final selectedImage = await showImageSelectModal();
-                if (selectedImage != null) {
+                if (mounted && selectedImage != null) {
                   final imageUrl =
                       await imageApiService.uploadImage(context, selectedImage);
                   await momMealViewModel.modifyMeals(
@@ -98,10 +99,23 @@ class _MealScreenState extends State<MealScreen> {
               },
               tap2: () async {
                 Navigator.pop(context);
-                // 삭제 작업 수행
-                await momMealViewModel.deleteMeal(context, id);
-                // 상태 업데이트
-                setState(() {});
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext buildContext) {
+                    return DeleteModal(
+                      text: '등록된 식단을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                      title: '식단이',
+                      tapFunc: () async {
+                        await momMealViewModel.deleteMeal(context, id);
+                        setState(() {
+                        });
+
+                        return Future.value();
+                      },
+                    );
+                  },
+                );
               },
             );
           });
@@ -112,7 +126,7 @@ class _MealScreenState extends State<MealScreen> {
         appBar: PreferredSize(
           preferredSize: const Size(400, 60),
           child: Padding(
-            padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
+                padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 8), right: AppUtils.scaleSize(context, 5)),
             child: Column(
               children: [
                 SizedBox(
@@ -123,11 +137,21 @@ class _MealScreenState extends State<MealScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
+          icon:  Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: AppUtils.scaleSize(context, 34),
+            height: AppUtils.scaleSize(context, 34),
+            color: mainTextColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+                       SizedBox(
+                              width: AppUtils.scaleSize(context, 30),
+                              height: AppUtils.scaleSize(context, 30),
+                            ),
+                            const Spacer(),
                       Row(
                         children: [
                           Text(
@@ -155,6 +179,7 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ],
                       ),
+                      const Spacer(),
                       IconButton(
                           icon: Image(
                               image: const AssetImage(
@@ -246,9 +271,12 @@ class _MealScreenState extends State<MealScreen> {
                     children: [
                       Column(
                         children: [
-                          const WeeklyCalendar(),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: WeeklyCalendar(),
+                          ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: AppUtils.scaleSize(context, 30),
                           ),
                           containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
                               ? InkWell(
@@ -307,7 +335,7 @@ class _MealScreenState extends State<MealScreen> {
                                     setState(() {
                                       isBreakfastLoading = true; // 로딩 시작
                                     });
-                                    if (selectedImage != null) {
+                                    if (mounted &&selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
@@ -415,7 +443,7 @@ class _MealScreenState extends State<MealScreen> {
                                   ),
                                 ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: AppUtils.scaleSize(context, 15),
                           ),
                           containsLunch
                               ? InkWell(
@@ -474,7 +502,7 @@ class _MealScreenState extends State<MealScreen> {
                                     setState(() {
                                       isLunchLoading = true; // 로딩 시작
                                     });
-                                    if (selectedImage != null) {
+                                    if (mounted && selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
@@ -581,7 +609,7 @@ class _MealScreenState extends State<MealScreen> {
                                   ),
                                 ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: AppUtils.scaleSize(context, 15),
                           ),
                           containsDinner
                               ? InkWell(
@@ -640,7 +668,7 @@ class _MealScreenState extends State<MealScreen> {
                                     setState(() {
                                       isDinnerLoading = true; // 로딩 시작
                                     });
-                                    if (selectedImage != null) {
+                                    if (mounted && selectedImage != null) {
                                       final imageUrl = await imageApiService
                                           .uploadImage(context, selectedImage);
                                       await momMealViewModel.recordMeals(
