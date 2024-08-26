@@ -97,8 +97,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 : "assets/images/babyhome_dark.png")),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 66),
-                    left: AppUtils.scaleSize(context, 340),
+                    top: AppUtils.scaleSize(context, 46),
+                    left: AppUtils.scaleSize(context, 335),
                     child: IconButton(
                       icon: Image(
                         width: AppUtils.scaleSize(context, 30),
@@ -234,7 +234,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const MyCozylog(ispop: true),
+                                        const MyCozylog(),
                                   ),
                                 );
                               },

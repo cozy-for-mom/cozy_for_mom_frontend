@@ -137,7 +137,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                       SizedBox(width: AppUtils.scaleSize(context, 24)),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const MyCozylog()));

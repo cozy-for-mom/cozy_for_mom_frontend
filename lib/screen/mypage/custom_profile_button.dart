@@ -40,35 +40,36 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
             Stack(
               alignment: Alignment.center, // 모든 자식을 중앙에 배치
               children: <Widget>[
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    widget.isEditMode && !widget.isSelected
-                        ? Colors.black.withOpacity(0.5)
-                        : Colors.transparent,
-                    BlendMode.srcATop,
-                  ),
-                  child: Container(
+                  Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: widget.isSelected
                           ? Border.all(width: 2, color: primaryColor)
                           : null,
-                      color: widget.isSelected
+                      
+                    ),
+                    child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          widget.isEditMode ? Colors.black.withOpacity(0.5) : Colors.transparent,
+          BlendMode.srcATop,
+        ),
+                    child: 
+                        ClipOval(
+                            child: widget.imagePath == ''
+                        ? Container(
+                            color: widget.isSelected
                           ? profileColor
                           : widget.offBackColor,
-                    ),
-                    child: widget.imagePath == ''
-                        ? Padding(
-                            padding:
-                                EdgeInsets.all(AppUtils.scaleSize(context, 16)),
-                            child: Image.asset(
-                              'assets/images/icons/babyProfileOn.png',
-                              width: AppUtils.scaleSize(context, 45),
-                              height: AppUtils.scaleSize(context, 45),
-                            ),
-                          )
-                        : ClipOval(
-                            child: Image.network(
+                              padding:
+                                  EdgeInsets.all(AppUtils.scaleSize(context, 20)),
+                              child: Image.asset(
+                                'assets/images/icons/babyProfileOn.png',
+                                width: AppUtils.scaleSize(context, 45),
+                                height: AppUtils.scaleSize(context, 45),
+                              ),
+                            )
+                            :
+                            Image.network(
                               widget.imagePath,
                               fit: BoxFit.cover,
                               width: AppUtils.scaleSize(context, 82),
@@ -78,7 +79,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                   ),
                 ),
                 // `ColorFiltered`의 영향을 받지 않는 이미지 추가
-                widget.isEditMode && !widget.isSelected
+                widget.isEditMode
                     ? Positioned(
                         child: InkWell(
                           onTap: () async {
@@ -99,7 +100,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                             }
                           },
                           child: Image.asset(
-                            'assets/images/icons/babyprofile_modify_pen.png', // TODO 클릭했을떄 편집 화면으로..
+                            'assets/images/icons/babyprofile_modify_pen.png',
                             width: AppUtils.scaleSize(context, 20),
                             height: AppUtils.scaleSize(context, 20),
                           ),

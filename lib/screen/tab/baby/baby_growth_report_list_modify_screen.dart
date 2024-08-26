@@ -152,7 +152,7 @@ class _BabyGrowthReportListModifyState
                 height: screenHeight * (0.7),
                 padding: EdgeInsets.symmetric(
                     vertical: AppUtils.scaleSize(context, 20),
-                    horizontal: AppUtils.scaleSize(context, 25)),
+                    horizontal: AppUtils.scaleSize(context, 20)),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: contentBoxTwoColor),

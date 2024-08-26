@@ -197,11 +197,11 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                 ),
                                 SizedBox(width: AppUtils.scaleSize(context, 8)),
                                 Container(
-                                  height: AppUtils.scaleSize(context, 22),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
                                       horizontal:
-                                          AppUtils.scaleSize(context, 8)),
+                                          AppUtils.scaleSize(context, 8),
+                                      vertical: AppUtils.scaleSize(context, 2)),
                                   decoration: BoxDecoration(
                                       color: widget.notification.isActive
                                           ? const Color(0xffFEEEEE)
@@ -212,6 +212,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                         .map((day) {
                                           return Text(
                                             weekDayNames[day]!,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: widget
                                                         .notification.isActive

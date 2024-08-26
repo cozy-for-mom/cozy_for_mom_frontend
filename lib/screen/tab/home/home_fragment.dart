@@ -131,8 +131,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 66),
-                  left: AppUtils.scaleSize(context, 340),
+                 top: AppUtils.scaleSize(context, 46),
+                    left: AppUtils.scaleSize(context, 335),
                   child: IconButton(
                     icon: Image(
                       width: AppUtils.scaleSize(context, 30),

@@ -1,4 +1,5 @@
 import 'package:cozy_for_mom_frontend/app.dart';
+import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_meal_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
@@ -9,6 +10,7 @@ import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/rendering.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -30,6 +32,7 @@ void main() async {
     nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
     javaScriptAppKey: dotenv.env['KAKAO_JAVASCRIPT_APP_KEY']!,
   );
+  // debugPaintSizeEnabled = true; // 레이아웃 디버깅
 
   // 'ko_KR'는 한국어 로케일
   initializeDateFormatting('ko_KR', null).then((_) {
@@ -46,6 +49,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => BloodsugarApiService()),
           ChangeNotifierProvider(create: (context) => UserApiService()),
           ChangeNotifierProvider(create: (context) => NotificationApiService()),
+          ChangeNotifierProvider(create: (context) => CozyLogApiService()),
         ],
         child: const App(),
       ),

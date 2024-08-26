@@ -14,7 +14,7 @@ class BloodsugarRecord extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned(
-            top: AppUtils.scaleSize(context, 177),
+            top: AppUtils.scaleSize(context, 180),
             left: AppUtils.scaleSize(context, 20),
             child: SizedBox(
               height: AppUtils.scaleSize(context, 100),
@@ -32,7 +32,7 @@ class BloodsugarRecord extends StatelessWidget {
                   BloodsugarCard(time: time),
                   Padding(
                       padding: EdgeInsets.only(
-                          bottom: AppUtils.scaleSize(context, 10))),
+                          bottom: AppUtils.scaleSize(context, 5))),
                 ],
               );
             }).toList(),

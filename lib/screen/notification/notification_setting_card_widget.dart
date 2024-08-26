@@ -97,7 +97,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
 
     return Container(
       height: AppUtils.scaleSize(context, 78),
-      width: screenWidth - AppUtils.scaleSize(context, 20),
+      width: screenWidth,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -181,9 +181,13 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                 ],
               ),
             ),
-            SizedBox(
-              width: AppUtils.scaleSize(context, 90),
+            Container(
+              width: AppUtils.scaleSize(context, 89),
               height: AppUtils.scaleSize(context, 38),
+              alignment: Alignment.center,
+              // margin: EdgeInsets.symmetric(vertical: (AppUtils.scaleSize(context, 38) -
+              //                   AppUtils.scaleSize(context, 24) * 1.2) /
+              //               2),
               child: TextFormField(
                 autocorrect: true,
                 controller: textEditingController,
@@ -198,7 +202,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                         vertical: (AppUtils.scaleSize(context, 38) -
-                                AppUtils.scaleSize(context, 24) * 1.2) /
+                                AppUtils.scaleSize(context, 24)) * 1.2 /
                             2 // 폰트 크기와 라인 높이 고려
                         ),
                     border: InputBorder.none,
@@ -223,7 +227,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                     String time;
                     if (textEditingController.text.contains(':')) {
                       timeParts = textEditingController.text.split(':');
-
+              
                       if (timeParts[0].length + timeParts[1].length == 6) {
                         // 각각 공백 포함 3글자
                         time = convert24Time(
