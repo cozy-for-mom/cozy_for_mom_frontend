@@ -91,36 +91,28 @@ class _MomProfileModifyState extends State<MomProfileModify> {
             elevation: 0,
             backgroundColor: backgroundColor,
             scrolledUnderElevation: 0,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.zero,
-              title: Padding(
-                padding: EdgeInsets.only(
-                    left: AppUtils.scaleSize(context, 10),
-                    bottom: AppUtils.scaleSize(context, 10)),
-                child: Row(
-                  children: [
-                    IconButton(
-          icon:  Image(
-            image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
-            color: mainTextColor,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-                    SizedBox(width: AppUtils.scaleSize(context, 100)),
-                    Text('프로필 수정',
-                        style: TextStyle(
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 18))),
-                  ],
+            title: Container(
+              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 13)),
+              child: Text('프로필 수정',
+                  style: TextStyle(
+                      color: mainTextColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppUtils.scaleSize(context, 18))),
+            ),
+            leading: Container(
+              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 13)),
+              child: IconButton(
+                icon: Image(
+                  image: const AssetImage('assets/images/icons/back_ios.png'),
+                  width: AppUtils.scaleSize(context, 34),
+                  height: AppUtils.scaleSize(context, 34),
+                  color: mainTextColor,
                 ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
-            leading: Container(),
             actions: [
               InkWell(
                 child: Center(

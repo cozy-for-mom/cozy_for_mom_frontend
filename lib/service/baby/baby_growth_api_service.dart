@@ -64,7 +64,6 @@ class BabyGrowthApiService {
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['list'];
-      data = data.reversed.toList();
       DateTime? nextExaminationDate = body['data']['nextExaminationDate'] == ""
           ? null
           : DateTime.parse(body['data']['nextExaminationDate']);

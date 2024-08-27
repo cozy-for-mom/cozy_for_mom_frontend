@@ -73,7 +73,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
           return Scaffold(
             backgroundColor: backgroundColor,
             appBar: PreferredSize(
-              preferredSize: const Size(400, 80),
+              preferredSize: Size(AppUtils.scaleSize(context, 400),
+                  AppUtils.scaleSize(context, 80)),
               child: Padding(
                 padding: EdgeInsets.only(
                     top: AppUtils.scaleSize(context, 8),
@@ -125,7 +126,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: AppUtils.scaleSize(context, 15),
+                          horizontal: AppUtils.scaleSize(context, 20),
                           vertical: AppUtils.scaleSize(context, 8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,20 +142,30 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(
-                                    height: AppUtils.scaleSize(context, 50),
-                                    child: cozyLog.writer.imageUrl == null
-                                        ? Image.asset(
-                                            "assets/images/icons/momProfile.png")
-                                        : Image.network(
+                                  cozyLog.writer.imageUrl == null
+                                      ? Image.asset(
+                                          "assets/images/icons/momProfile.png",
+                                          width:
+                                              AppUtils.scaleSize(context, 50),
+                                          height:
+                                              AppUtils.scaleSize(context, 50),
+                                        )
+                                      : ClipOval(
+                                          child: Image.network(
                                             cozyLog.writer.imageUrl!,
+                                            fit: BoxFit.cover,
+                                            width:
+                                                AppUtils.scaleSize(context, 50),
+                                            height:
+                                                AppUtils.scaleSize(context, 50),
                                           ),
-                                  ),
+                                        ),
                                   SizedBox(
-                                    width: AppUtils.scaleSize(context, 12),
+                                    width: AppUtils.scaleSize(context, 15),
                                   ),
                                   Column(
                                     crossAxisAlignment:
@@ -203,240 +214,244 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                 ],
                               ),
                               isMyCozyLog
-                                  ? IconButton(
-                                      onPressed: () {
-                                        showModalBottomSheet<void>(
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SizedBox(
-                                              height: AppUtils.scaleSize(
-                                                  context, 220),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    8)),
-                                                    width: screenWidth -
-                                                        AppUtils.scaleSize(
-                                                            context, 40),
-                                                    height: AppUtils.scaleSize(
-                                                        context, 128),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Center(
-                                                      child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: <Widget>[
-                                                            ListTile(
-                                                              title: Center(
-                                                                  child: Text(
-                                                                '수정하기',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      mainTextColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: AppUtils
-                                                                      .scaleSize(
-                                                                          context,
-                                                                          16),
-                                                                ),
-                                                              )),
-                                                              onTap: () async {
-                                                                await Navigator
-                                                                    .push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            CozylogEditPage(
-                                                                      id: widget
-                                                                          .id,
-                                                                    ),
-                                                                  ),
-                                                                ).then((value) {
-                                                                  if (value ==
-                                                                      true) {
-                                                                    Navigator.pop(
-                                                                        context,
-                                                                        true);
-                                                                    Navigator.pop(
-                                                                        context,
-                                                                        true);
-                                                                  }
-                                                                });
-                                                              },
-                                                            ),
-                                                            ListTile(
-                                                              title: Center(
-                                                                  child: Text(
-                                                                '글 삭제하기',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      mainTextColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: AppUtils
-                                                                      .scaleSize(
-                                                                          context,
-                                                                          16),
-                                                                ),
-                                                              )),
-                                                              onTap: () async {
-                                                                showDialog(
-                                                                  context:
+                                  ? SizedBox(
+                                      width: AppUtils.scaleSize(context, 15),
+                                      height: AppUtils.scaleSize(context, 32),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          showModalBottomSheet<void>(
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SizedBox(
+                                                height: AppUtils.scaleSize(
+                                                    context, 220),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: AppUtils
+                                                                  .scaleSize(
                                                                       context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return DeleteModal(
-                                                                      title:
-                                                                          '코지로그가',
-                                                                      text:
-                                                                          '삭제된 글은 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
-                                                                      tapFunc:
-                                                                          () async {
-                                                                        await CozyLogApiService().deleteCozyLog(
-                                                                            context,
-                                                                            cozyLog.cozyLogId!);
-                                                                        if (mounted) {
-                                                                          Navigator.pop(
-                                                                              context,
-                                                                              true);
-                                                                          Navigator.pop(
-                                                                              context,
-                                                                              true);
-                                                                        }
-                                                                        setState(
-                                                                            () {});
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                  barrierDismissible:
-                                                                      false,
-                                                                );
-                                                                // await CozyLogApiService()
-                                                                //     .deleteCozyLog(
-                                                                //         context,
-                                                                //         cozyLog
-                                                                //             .cozyLogId!);
-
-                                                                // if (mounted) {
-                                                                //   Navigator.pop(
-                                                                //       context,
-                                                                //       true);
-                                                                //   Navigator.pop(
-                                                                //       context,
-                                                                //       true);
-                                                                // }
-
-                                                                // setState(() {
-                                                                //   CompleteAlertModal
-                                                                //       .showCompleteDialog(
-                                                                //           context,
-                                                                //           '코지로그가',
-                                                                //           '삭제');
-                                                                // });
-                                                              },
-                                                            ),
-                                                          ]),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 15),
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Container(
+                                                                      8)),
                                                       width: screenWidth -
                                                           AppUtils.scaleSize(
                                                               context, 40),
                                                       height:
                                                           AppUtils.scaleSize(
-                                                              context, 56),
+                                                              context, 128),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(12),
-                                                        color:
-                                                            induceButtonColor,
+                                                                .circular(20),
+                                                        color: Colors.white,
                                                       ),
                                                       child: Center(
-                                                          child: Text(
-                                                        "취소",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: AppUtils
-                                                              .scaleSize(
-                                                                  context, 16),
-                                                        ),
-                                                      )),
+                                                        child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: <Widget>[
+                                                              ListTile(
+                                                                title: Center(
+                                                                    child: Text(
+                                                                  '수정하기',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        mainTextColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            16),
+                                                                  ),
+                                                                )),
+                                                                onTap:
+                                                                    () async {
+                                                                  await Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              CozylogEditPage(
+                                                                        id: widget
+                                                                            .id,
+                                                                      ),
+                                                                    ),
+                                                                  ).then(
+                                                                      (value) {
+                                                                    if (value ==
+                                                                        true) {
+                                                                      Navigator.pop(
+                                                                          context,
+                                                                          true);
+                                                                      Navigator.pop(
+                                                                          context,
+                                                                          true);
+                                                                    }
+                                                                  });
+                                                                },
+                                                              ),
+                                                              ListTile(
+                                                                title: Center(
+                                                                    child: Text(
+                                                                  '글 삭제하기',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        mainTextColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            16),
+                                                                  ),
+                                                                )),
+                                                                onTap:
+                                                                    () async {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return DeleteModal(
+                                                                        title:
+                                                                            '코지로그가',
+                                                                        text:
+                                                                            '삭제된 글은 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
+                                                                        tapFunc:
+                                                                            () async {
+                                                                          await CozyLogApiService().deleteCozyLog(
+                                                                              context,
+                                                                              cozyLog.cozyLogId!);
+                                                                          if (mounted) {
+                                                                            Navigator.pop(context,
+                                                                                true);
+                                                                            Navigator.pop(context,
+                                                                                true);
+                                                                          }
+                                                                          setState(
+                                                                              () {});
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    barrierDismissible:
+                                                                        false,
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ]),
+                                                      ),
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: Image(
-                                        image: const AssetImage(
-                                            'assets/images/icons/more_vert_outlined.png'),
-                                        color: const Color(0xff858998),
-                                        width: AppUtils.scaleSize(context, 3),
-                                        height: AppUtils.scaleSize(context, 17),
+                                                    SizedBox(
+                                                      height:
+                                                          AppUtils.scaleSize(
+                                                              context, 15),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        width: screenWidth -
+                                                            AppUtils.scaleSize(
+                                                                context, 40),
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 56),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color:
+                                                              induceButtonColor,
+                                                        ),
+                                                        child: Center(
+                                                            child: Text(
+                                                          "취소",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    16),
+                                                          ),
+                                                        )),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/more_vert_outlined.png'),
+                                          color: const Color(0xff858998),
+                                          width: AppUtils.scaleSize(context, 3),
+                                          height:
+                                              AppUtils.scaleSize(context, 17),
+                                        ),
                                       ),
                                     )
-                                  : IconButton(
-                                      onPressed: () async {
-                                        // 스크랩 상태에 따른 API 호출
-                                        if (cozyLog.isScrapped) {
-                                          await CozyLogApiService()
-                                              .unscrapCozyLog(
-                                                  context, widget.id);
-                                        } else {
-                                          await CozyLogApiService()
-                                              .scrapCozyLog(context, widget.id);
-                                        }
+                                  : SizedBox(
+                                      width: AppUtils.scaleSize(context, 25),
+                                      height: AppUtils.scaleSize(context, 32),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () async {
+                                          // 스크랩 상태에 따른 API 호출
+                                          if (cozyLog.isScrapped) {
+                                            await CozyLogApiService()
+                                                .unscrapCozyLog(
+                                                    context, widget.id);
+                                          } else {
+                                            await CozyLogApiService()
+                                                .scrapCozyLog(
+                                                    context, widget.id);
+                                          }
 
-                                        // 상태 업데이트
-                                        setState(() {
-                                          futureCozyLog = CozyLogApiService()
-                                              .getCozyLog(context, widget.id);
-                                        });
-                                      },
-                                      icon: cozyLog.isScrapped
-                                          ? const Icon(
-                                              Icons.bookmark_rounded,
-                                              color: Color(0xff858998),
-                                            )
-                                          : const Icon(
-                                              Icons.bookmark_outline_rounded,
-                                              color: Color(0xff858998),
-                                            ),
-                                    ), // TODO 아이콘으로 수정 필요
+                                          // 상태 업데이트
+                                          setState(() {
+                                            futureCozyLog = CozyLogApiService()
+                                                .getCozyLog(context, widget.id);
+                                          });
+                                        },
+                                        icon: cozyLog.isScrapped
+                                            ? Image(
+                                                image: const AssetImage(
+                                                    'assets/images/icons/scrap_fill.png'),
+                                                width: AppUtils.scaleSize(
+                                                    context, 12.75),
+                                                height: AppUtils.scaleSize(
+                                                    context, 17),
+                                              )
+                                            : Image(
+                                                image: const AssetImage(
+                                                    'assets/images/icons/unscrap.png'),
+                                                width: AppUtils.scaleSize(
+                                                    context, 12.75),
+                                                height: AppUtils.scaleSize(
+                                                    context, 17),
+                                              ),
+                                      ),
+                                    ),
                             ],
                           ),
+                          SizedBox(height: AppUtils.scaleSize(context, 10)),
                           const Divider(
                             color: Color(0xffE1E1E7),
                           ),
@@ -513,7 +528,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     Text(
                                       '스크랩 ${cozyLog.scrapCount}',
                                       style: TextStyle(
-                                        color: Color(0xff8C909E),
+                                        color: const Color(0xff8C909E),
                                         fontWeight: FontWeight.w600,
                                         fontSize:
                                             AppUtils.scaleSize(context, 12),
@@ -560,7 +575,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                           const NeverScrollableScrollPhysics(),
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
-                                        if ((!snapshot.data![index].isDeleted) || (snapshot.data![index].isDeleted && snapshot.data![index].subComments!.isNotEmpty)) {
+                                        if ((!snapshot
+                                                .data![index].isDeleted) ||
+                                            (snapshot.data![index].isDeleted &&
+                                                snapshot.data![index]
+                                                    .subComments!.isNotEmpty)) {
                                           return Column(
                                             children: [
                                               CozyLogCommentComponent(

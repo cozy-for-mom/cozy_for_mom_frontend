@@ -238,7 +238,7 @@ class _MyScrapState extends State<MyScrap> {
                               ),
                             )
                           : SizedBox(
-                              width: AppUtils.scaleSize(context, 150),
+                              width: AppUtils.scaleSize(context, 160),
                               height: screenHeight * (0.6),
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

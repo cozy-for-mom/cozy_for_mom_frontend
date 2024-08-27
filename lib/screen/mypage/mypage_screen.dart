@@ -55,8 +55,6 @@ class _MyPageState extends State<MyPage> {
               ));
             }
 
-            // return Scaffold(
-            //   backgroundColor: backgroundColor,
             return Stack(
               children: [
                 Positioned(

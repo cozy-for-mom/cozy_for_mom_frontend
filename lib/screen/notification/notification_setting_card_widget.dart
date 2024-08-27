@@ -200,11 +200,11 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                   LengthLimitingTextInputFormatter(4),
                 ],
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: (AppUtils.scaleSize(context, 38) -
-                                AppUtils.scaleSize(context, 24)) * 1.2 /
-                            2 // 폰트 크기와 라인 높이 고려
-                        ),
+                    // contentPadding: EdgeInsets.symmetric(
+                    //     vertical: (AppUtils.scaleSize(context, 38) -
+                    //             AppUtils.scaleSize(context, 24)) * 1.2 /
+                    //         2 // 폰트 크기와 라인 높이 고려
+                    //     ),
                     border: InputBorder.none,
                     counterText: '',
                     hintText: '00 : 00',

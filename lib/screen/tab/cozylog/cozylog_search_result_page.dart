@@ -458,7 +458,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                       ),
                                                       Image(
                                                         image: const AssetImage(
-                                                            "assets/images/icons/icon_scrap.png"),
+                                                            "assets/images/icons/scrap_gray.png"),
                                                         width:
                                                             AppUtils.scaleSize(
                                                                 context, 13),

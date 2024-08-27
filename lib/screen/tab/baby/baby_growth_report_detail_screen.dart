@@ -35,18 +35,6 @@ class _BabyGrowthReportDetailScreenState
 
   final babyInfoType = ["체중", "머리 직경", "머리 둘레", "복부 둘레", "허벅지 길이"];
   final babyInfoUnit = ["g", "cm", "cm", "cm", "cm"];
-  double calculateHeight(BuildContext context, String text, double width) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(
-          text: text,
-          style: TextStyle(fontSize: AppUtils.scaleSize(context, 16))),
-      maxLines: null,
-      // textDirection: TextDirection.ltr,
-    );
-    textPainter.layout(maxWidth: width);
-    return AppUtils.scaleSize(
-        context, 50 + textPainter.height.toDouble() * 1.2);
-  }
 
   Future<void> initializeBabyInfo() async {
     userLocalStorageService = await UserLocalStorageService.getInstance();
@@ -102,10 +90,6 @@ class _BabyGrowthReportDetailScreenState
                 data.babies![selectedBabyIndex],
               );
               selectedBaby.value = data.babies![selectedBabyIndex];
-              var textFieldHeight = AppUtils.scaleSize(
-                  context, 50 + data.diary.length.toDouble());
-              // calculateHeight(context, data.diary,
-              //     screenWidth - AppUtils.scaleSize(context, 40));
 
               return ValueListenableBuilder<BabyGrowth?>(
                   valueListenable: selectedBaby,
@@ -145,27 +129,30 @@ class _BabyGrowthReportDetailScreenState
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppUtils.scaleSize(context, 20)),
                             child: SizedBox(
-                              width: screenWidth,
-                              child: Row(
+                              width:
+                                  screenWidth - AppUtils.scaleSize(context, 40),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  SizedBox(
+                                    width: screenWidth -
+                                        AppUtils.scaleSize(context, 80),
+                                    child: Text(
+                                      data.title,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 20),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        data.title,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 20),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: AppUtils.scaleSize(context, 5),
-                                      ),
                                       Text(
                                         "${DateFormat("yyyy. MM. dd HH:mm").format(data.date)} 작성",
                                         style: TextStyle(
@@ -175,184 +162,200 @@ class _BabyGrowthReportDetailScreenState
                                               AppUtils.scaleSize(context, 14),
                                         ),
                                       ),
+                                      SizedBox(
+                                        width: AppUtils.scaleSize(context, 15),
+                                        height: AppUtils.scaleSize(context, 32),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {
+                                            showModalBottomSheet<void>(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 220),
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        8)),
+                                                        width: screenWidth -
+                                                            AppUtils.scaleSize(
+                                                                context, 40),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Center(
+                                                          child: Column(
+                                                              children: <Widget>[
+                                                                ListTile(
+                                                                  title: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    '수정하기',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color:
+                                                                          mainTextColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize: AppUtils.scaleSize(
+                                                                          context,
+                                                                          16),
+                                                                    ),
+                                                                  )),
+                                                                  onTap:
+                                                                      () async {
+                                                                    await Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                GrowReportRegister(
+                                                                          babyProfileGrowth:
+                                                                              snapshot.data,
+                                                                        ),
+                                                                      ),
+                                                                    ).then(
+                                                                        (value) {
+                                                                      if (value ==
+                                                                          true) {
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            true);
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            true);
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                                ListTile(
+                                                                  title: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    '보고서 삭제하기',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color:
+                                                                          mainTextColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize: AppUtils.scaleSize(
+                                                                          context,
+                                                                          16),
+                                                                    ),
+                                                                  )),
+                                                                  onTap:
+                                                                      () async {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return DeleteModal(
+                                                                          title:
+                                                                              '성장 보고서가',
+                                                                          text:
+                                                                              '등록된 성장 보고서를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                                                          tapFunc:
+                                                                              () async {
+                                                                            await babyGrowthApiService.deleteBabyProfileGrowth(context,
+                                                                                widget.babyProfileGrowthId);
+                                                                            if (mounted) {
+                                                                              Navigator.pop(context, true);
+                                                                              Navigator.pop(context, true);
+                                                                            }
+                                                                            setState(() {});
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ]),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 15),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                          width: screenWidth -
+                                                              AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      40),
+                                                          height: AppUtils
+                                                              .scaleSize(
+                                                                  context, 56),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            color: const Color(
+                                                                0xffC2C4CB),
+                                                          ),
+                                                          child: Center(
+                                                              child: Text(
+                                                            "취소",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      16),
+                                                            ),
+                                                          )),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: Image(
+                                            image: const AssetImage(
+                                                'assets/images/icons/more_vert_outlined.png'),
+                                            color: const Color(0xff858998),
+                                            width:
+                                                AppUtils.scaleSize(context, 3),
+                                            height:
+                                                AppUtils.scaleSize(context, 17),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      showModalBottomSheet<void>(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return SizedBox(
-                                            height: AppUtils.scaleSize(
-                                                context, 220),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical:
-                                                          AppUtils.scaleSize(
-                                                              context, 8)),
-                                                  width: screenWidth -
-                                                      AppUtils.scaleSize(
-                                                          context, 40),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: Colors.white,
-                                                  ),
-                                                  child: Center(
-                                                    child: Column(
-                                                        children: <Widget>[
-                                                          ListTile(
-                                                            title: Center(
-                                                                child: Text(
-                                                              '수정하기',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    mainTextColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        16),
-                                                              ),
-                                                            )),
-                                                            onTap: () async {
-                                                              await Navigator
-                                                                  .push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          GrowReportRegister(
-                                                                    babyProfileGrowth:
-                                                                        snapshot
-                                                                            .data,
-                                                                  ),
-                                                                ),
-                                                              ).then((value) {
-                                                                if (value ==
-                                                                    true) {
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      true);
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      true);
-                                                                }
-                                                              });
-                                                            },
-                                                          ),
-                                                          ListTile(
-                                                            title: Center(
-                                                                child: Text(
-                                                              '보고서 삭제하기',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    mainTextColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        16),
-                                                              ),
-                                                            )),
-                                                            onTap: () async {
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return DeleteModal(
-                                                                    title:
-                                                                        '성장 보고서가',
-                                                                    text:
-                                                                        '등록된 성장 보고서를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                                                                    tapFunc:
-                                                                        () async {
-                                                                      await babyGrowthApiService.deleteBabyProfileGrowth(
-                                                                          context,
-                                                                          widget
-                                                                              .babyProfileGrowthId);
-                                                                       if (mounted) {
-                                                                Navigator.pop(
-                                                                    context,
-                                                                    true);
-                                                                Navigator.pop(
-                                                                    context,
-                                                                    true);
-                                                              }
-                                                                      setState(
-                                                                          () {
-                                                                        
-                                                                      });
-                                                                    },
-                                                                  );
-                                                                },
-                                                                barrierDismissible:
-                                                                    false,
-                                                              );
-                                                              
-                                                            },
-                                                          ),
-                                                        ]),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: AppUtils.scaleSize(
-                                                      context, 15),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Container(
-                                                    width: screenWidth -
-                                                        AppUtils.scaleSize(
-                                                            context, 40),
-                                                    height: AppUtils.scaleSize(
-                                                        context, 56),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      color: const Color(
-                                                          0xffC2C4CB),
-                                                    ),
-                                                    child: Center(
-                                                        child: Text(
-                                                      "취소",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize:
-                                                            AppUtils.scaleSize(
-                                                                context, 16),
-                                                      ),
-                                                    )),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Image(
-                                      image: const AssetImage('assets/images/icons/more_vert_outlined.png'),
-                                      color: const Color(0xff858998),
-                                      width: AppUtils.scaleSize(context, 3),
-                                      height: AppUtils.scaleSize(context, 17),
-                                    ),
-                                  )
                                 ],
                               ),
                             ),
@@ -360,9 +363,11 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 18),
-                                vertical: AppUtils.scaleSize(context, 20)),
+                            padding: EdgeInsets.only(
+                                left: AppUtils.scaleSize(context, 18),
+                                right: AppUtils.scaleSize(context, 18),
+                                bottom: AppUtils.scaleSize(context, 20),
+                                top: AppUtils.scaleSize(context, 10)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
@@ -389,11 +394,12 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 21)),
+                            padding: EdgeInsets.only(
+                                left: AppUtils.scaleSize(context, 21),
+                                right: AppUtils.scaleSize(context, 21),
+                                bottom: AppUtils.scaleSize(context, 50)),
                             child: SizedBox(
                               width: screenWidth,
-                              height: textFieldHeight,
                               child: Text(
                                 data.diary,
                               ),

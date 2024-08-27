@@ -79,19 +79,20 @@ class _CozylogMainState extends State<CozylogMain> {
                     child: Container(
                         width: screenWidth,
                         padding: EdgeInsets.only(
-                            top: AppUtils.scaleSize(context, 10),
-                            ),
+                          top: AppUtils.scaleSize(context, 10),
+                        ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-          icon:  Image(
-            image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
-            color: mainTextColor,
-          ),
+                              icon: Image(
+                                image: const AssetImage(
+                                    'assets/images/icons/back_ios.png'),
+                                width: AppUtils.scaleSize(context, 34),
+                                height: AppUtils.scaleSize(context, 34),
+                                color: mainTextColor,
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -109,7 +110,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 20))),
+                                    fontSize: AppUtils.scaleSize(context, 18))),
                             const Spacer(),
                             Row(
                               children: [
@@ -336,8 +337,6 @@ class _CozylogMainState extends State<CozylogMain> {
                       width: screenWidth - AppUtils.scaleSize(context, 40),
                       height: screenHeight * 0.34,
                       padding: EdgeInsets.only(
-                        top: AppUtils.scaleSize(context, 6),
-                        bottom: AppUtils.scaleSize(context, 30),
                         left: AppUtils.scaleSize(context, 22),
                         right: AppUtils.scaleSize(context, 22),
                       ),

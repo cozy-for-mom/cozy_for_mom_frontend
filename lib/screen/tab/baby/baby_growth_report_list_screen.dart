@@ -89,7 +89,7 @@ class _BabyGrowthReportListScreenState
           ),
         ),
         leading: IconButton(
-          icon:  Image(
+          icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
             width: AppUtils.scaleSize(context, 34),
             height: AppUtils.scaleSize(context, 34),
@@ -104,8 +104,8 @@ class _BabyGrowthReportListScreenState
             child: Center(
               child: Container(
                 margin: EdgeInsets.only(
-                    right: AppUtils.scaleSize(context, 20),
-                    bottom: AppUtils.scaleSize(context, 13)),
+                  right: AppUtils.scaleSize(context, 20),
+                ),
                 alignment: Alignment.center,
                 width: AppUtils.scaleSize(context, 53),
                 height: AppUtils.scaleSize(context, 29),
@@ -481,8 +481,6 @@ class _BabyGrowthReportListScreenState
                                     //     totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                                     height: screenHeight * (0.75),
                                     padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            AppUtils.scaleSize(context, 20),
                                         horizontal:
                                             AppUtils.scaleSize(context, 20)),
                                     decoration: BoxDecoration(
@@ -492,6 +490,7 @@ class _BabyGrowthReportListScreenState
                                     child:
                                         PagedListView<int, BabyProfileGrowth>(
                                       padding: EdgeInsets.only(
+                                          top: AppUtils.scaleSize(context, 14),
                                           bottom: screenHeight * 0.35),
                                       pagingController: pagingController,
                                       builderDelegate:
@@ -531,6 +530,7 @@ class _BabyGrowthReportListScreenState
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Flexible(
                                                         flex:
@@ -545,11 +545,14 @@ class _BabyGrowthReportListScreenState
                                                           children: [
                                                             Text(
                                                               report.title,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               style: TextStyle(
                                                                 fontSize: AppUtils
                                                                     .scaleSize(
                                                                         context,
-                                                                        15),
+                                                                        16),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -580,19 +583,25 @@ class _BabyGrowthReportListScreenState
                                                                       context,
                                                                       7),
                                                             ),
-                                                            Text(
-                                                              report.diary,
-                                                              maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        12),
-                                                                color: const Color(
-                                                                    0xff858998),
+                                                            SizedBox(
+                                                              height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          36),
+                                                              child: Text(
+                                                                report.diary,
+                                                                maxLines: 2,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                  fontSize: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          12),
+                                                                  color: const Color(
+                                                                      0xff858998),
+                                                                ),
                                                               ),
                                                             ),
                                                           ],

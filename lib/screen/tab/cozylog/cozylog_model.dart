@@ -155,7 +155,7 @@ class CozyLogWriter {
     return CozyLogWriter(
       id: json['id'],
       nickname: json['nickname'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['profileImageUrl'],
     );
   }
 }

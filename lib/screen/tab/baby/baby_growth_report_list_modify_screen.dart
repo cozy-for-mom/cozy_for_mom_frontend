@@ -151,13 +151,14 @@ class _BabyGrowthReportListModifyState
                 // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                 height: screenHeight * (0.7),
                 padding: EdgeInsets.symmetric(
-                    vertical: AppUtils.scaleSize(context, 20),
                     horizontal: AppUtils.scaleSize(context, 20)),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: contentBoxTwoColor),
                 child: PagedListView<int, BabyProfileGrowth>(
-                  padding: EdgeInsets.only(bottom: screenHeight * 0.35),
+                  padding: EdgeInsets.only(
+                      top: AppUtils.scaleSize(context, 10),
+                      bottom: screenHeight * 0.35),
                   pagingController: pagingController,
                   builderDelegate: PagedChildBuilderDelegate<BabyProfileGrowth>(
                       itemBuilder: (context, item, index) {
@@ -213,9 +214,10 @@ class _BabyGrowthReportListModifyState
                                           children: [
                                             Text(
                                               report.title,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: AppUtils.scaleSize(
-                                                    context, 15),
+                                                    context, 16),
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff2B2D35),
                                               ),
