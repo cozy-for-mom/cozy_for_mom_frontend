@@ -82,8 +82,6 @@ flutter:
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
     - assets/images/icons/babyProfileOff.png
-    - assets/images/icons/logout_agree_active.png
-    - assets/images/icons/logout_agree_inactive.png
     - assets/images/icons/scrap.png
     - assets/images/icons/pen.png
     - assets/images/icons/plus_blue.png
@@ -111,7 +109,6 @@ flutter:
     - assets/images/icons/icon_switch.png
     - assets/images/icons/icon_comment.png
     - assets/images/icons/photo_register.png
-    - assets/images/icons/icon_scrap.png
     - assets/images/icons/submit_inactive.png
     - assets/images/icons/submit_active.png
     - assets/images/baby.png
@@ -147,8 +144,6 @@ flutter:
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
     - assets/images/icons/supplement_off.png
-    - assets/images/icons/logout_agree_active.png
-    - assets/images/icons/logout_agree_inactive.png
     - assets/images/icons/babyProfile.png
     - assets/images/home_morning.png
     - assets/images/home_afternoon.png
@@ -165,8 +160,7 @@ flutter:
     - assets/images/icons/radio_unselected.png
     - assets/images/test_image.png
     - assets/images/test_image2.png
-    - assets/images/login_cozy_image.png
-    - assets/images/login_confetti_image.png
+    - assets/images/login_confetti_logo_group.png
     - assets/images/login_group_image.png
     - assets/images/icons/diary_inactive.png
     - assets/images/icons/notification_off.png
@@ -175,6 +169,9 @@ flutter:
     - assets/images/icons/babyprofile_modify_pen.png
     - assets/images/icons/back_ios.png
     - assets/images/icons/more_vert_outlined.png
+    - assets/images/icons/unscrap.png
+    - assets/images/icons/scrap_fill.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

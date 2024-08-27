@@ -83,148 +83,148 @@ class _LoginScreenState extends State<LoginScreen> {
     return Stack(
       children: [
         Positioned(
-          top: AppUtils.scaleSize(context, -230),
+          top: AppUtils.scaleSize(context, -180),
           child: Image(
-            image: const AssetImage('assets/images/login_confetti_image.png'),
+            image:
+                const AssetImage('assets/images/login_confetti_logo_group.png'),
             width: screenWidth,
             height: screenHeight,
           ),
         ),
         Positioned(
-          top: AppUtils.scaleSize(context, 180),
-          child: Column(
-            children: [
-              Image(
-                image: const AssetImage('assets/images/login_cozy_image.png'),
-                width: screenWidth,
-                height: AppUtils.scaleSize(context, 69),
-              ),
-              SizedBox(
-                height: AppUtils.scaleSize(context, 45),
-              ),
-              InkWell(
-                onTap: () async {
-                  UserType? userType = await kakaoLogin();
-                  joinInputData.setOauthType(OauthType.kakao);
+          top: AppUtils.scaleSize(context, 331),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppUtils.scaleSize(context, 20)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    UserType? userType = await kakaoLogin();
+                    joinInputData.setOauthType(OauthType.kakao);
 
-                  if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
+                    if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
 
-                  if (userType == UserType.guest) {
-                    // UserType이 guest이면 회원가입 페이지로 이동
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const JoinInfoInputScreen()));
-                  } else {
-                    // UserType이 user이면 MainScreen으로 이동
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const MainScreen()));
-                  }
-                },
-                child: Container(
-                  height: AppUtils.scaleSize(context, 60),
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xffFEE500),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "카카오로 시작하기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: AppUtils.scaleSize(context, 18),
-                      ),
+                    if (userType == UserType.guest) {
+                      // UserType이 guest이면 회원가입 페이지로 이동
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const JoinInfoInputScreen()));
+                    } else {
+                      // UserType이 user이면 MainScreen으로 이동
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const MainScreen()));
+                    }
+                  },
+                  child: Container(
+                    height: AppUtils.scaleSize(context, 60),
+                    width: screenWidth - AppUtils.scaleSize(context, 40),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xffFEE500),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: AppUtils.scaleSize(context, 13),
-              ),
-              InkWell(
-                onTap: () async {
-                  UserType? userType = await appleLogin();
-                  joinInputData.setOauthType(OauthType.apple);
-
-                  if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
-
-                  if (userType == UserType.guest) {
-                    // UserType이 guest이면 회원가입 페이지로 이동
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const JoinInfoInputScreen()));
-                  } else {
-                    // UserType이 user이면 MainScreen으로 이동
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const MainScreen()));
-                  }
-                },
-                child: Container(
-                  height: AppUtils.scaleSize(context, 60),
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xff393939),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Apple로 시작하기",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: AppUtils.scaleSize(context, 18),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: AppUtils.scaleSize(context, 25),
-              ),
-              Text(
-                "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
-                style: TextStyle(
-                  color: const Color(0xff858998),
-                  fontSize: AppUtils.scaleSize(context, 12),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: AppUtils.scaleSize(context, 8),
-              ),
-              Row(
-                children: [
-                  InkWell(
+                    child: Center(
                       child: Text(
-                        "개인정보처리방침",
+                        "카카오로 시작하기",
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: AppUtils.scaleSize(context, 12),
-                          color: const Color(0xff858998),
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 18),
                         ),
                       ),
-                      onTap: () {
-                        launchUrl(Uri.parse(
-                            'https://glitter-stealer-46b.notion.site/59242de9773b49ba8cef776e14fdd498?pvs=4'));
-                      }),
-                  SizedBox(
-                    width: AppUtils.scaleSize(context, 30),
+                    ),
                   ),
-                  InkWell(
+                ),
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 16),
+                ),
+                InkWell(
+                  onTap: () async {
+                    UserType? userType = await appleLogin();
+                    joinInputData.setOauthType(OauthType.apple);
+
+                    if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
+
+                    if (userType == UserType.guest) {
+                      // UserType이 guest이면 회원가입 페이지로 이동
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const JoinInfoInputScreen()));
+                    } else {
+                      // UserType이 user이면 MainScreen으로 이동
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const MainScreen()));
+                    }
+                  },
+                  child: Container(
+                    height: AppUtils.scaleSize(context, 60),
+                    width: screenWidth - AppUtils.scaleSize(context, 40),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xff393939),
+                    ),
+                    child: Center(
                       child: Text(
-                        "이용약관",
+                        "Apple로 시작하기",
                         style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 26),
+                ),
+                Text(
+                  "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
+                  style: TextStyle(
+                    color: const Color(0xff858998),
+                    fontSize: AppUtils.scaleSize(context, 12),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 6),
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                        child: Text(
+                          "개인정보처리방침",
+                          style: TextStyle(
                             decoration: TextDecoration.underline,
+                            decorationColor: const Color(0xff858998),
                             fontSize: AppUtils.scaleSize(context, 12),
                             color: const Color(0xff858998),
-                            fontWeight: FontWeight.w400),
-                      ),
-                      onTap: () {
-                        launchUrl(Uri.parse(
-                            'https://glitter-stealer-46b.notion.site/7d7b29f16fdb4ce6ae9160f2d754c6be?pvs=4'));
-                      }),
-                ],
-              )
-            ],
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onTap: () {
+                          launchUrl(Uri.parse(
+                              'https://glitter-stealer-46b.notion.site/59242de9773b49ba8cef776e14fdd498?pvs=4'));
+                        }),
+                    SizedBox(
+                      width: AppUtils.scaleSize(context, 30),
+                    ),
+                    InkWell(
+                        child: Text(
+                          "이용약관",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationColor: const Color(0xff858998),
+                              fontSize: AppUtils.scaleSize(context, 12),
+                              color: const Color(0xff858998),
+                              fontWeight: FontWeight.w400),
+                        ),
+                        onTap: () {
+                          launchUrl(Uri.parse(
+                              'https://glitter-stealer-46b.notion.site/7d7b29f16fdb4ce6ae9160f2d754c6be?pvs=4'));
+                        }),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
         Positioned(
