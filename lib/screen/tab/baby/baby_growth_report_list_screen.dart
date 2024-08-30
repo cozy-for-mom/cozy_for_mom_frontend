@@ -258,7 +258,8 @@ class _BabyGrowthReportListScreenState
                                                   return SingleChildScrollView(
                                                     child: Column(
                                                       children: [
-                                                        MonthCalendarModal(),
+                                                        MonthCalendarModal(
+                                                            firstToday: true),
                                                         Container(
                                                           color: Colors.white,
                                                           child: Column(
