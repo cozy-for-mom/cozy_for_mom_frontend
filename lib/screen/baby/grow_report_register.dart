@@ -143,6 +143,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     final babyGrowthApiService = BabyGrowthApiService();
     var id = widget.babyProfileGrowth?.id;
 
@@ -229,6 +230,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -243,7 +245,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           ),
         ),
         leading: IconButton(
-          icon:  Image(
+          icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
             width: AppUtils.scaleSize(context, 34),
             height: AppUtils.scaleSize(context, 34),
@@ -492,6 +494,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     SliverToBoxAdapter(
                       child: SizedBox(height: AppUtils.scaleSize(context, 120)),
                     ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: keyboardPadding),
+                    ),
                   ],
                 );
               },
@@ -501,67 +506,81 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppUtils.scaleSize(context, 20),
-                  vertical: AppUtils.scaleSize(context, 20)),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter, // 그라데이션 시작점
+                  end: Alignment.topCenter, // 그라데이션 끝점
+                  colors: [
+                    Colors.white, // 시작 색상
+                    Colors.white.withOpacity(0.0), // 끝 색상
+                  ],
+                ),
+              ),
+              padding: EdgeInsets.only(
+                  top: AppUtils.scaleSize(context, 20),
+                  bottom: AppUtils.scaleSize(context, 34)),
               child: InkWell(
                 onTap: () {
-                  babyGrowthApiService
-                      .registerBabyProfileGrowth(
-                        context,
-                        BabyProfileGrowth(
-                          id: id,
-                          babyProfileId: babyProfileId!,
-                          date: DateTime.now(),
-                          growthImageUrl: growthImageUrl,
-                          diary: diaryController.text,
-                          title: titleController.text,
-                          babies: babies.map(
-                            (baby) {
-                              final infoControllers =
-                                  infoControllersByBabies[baby] ?? [];
-                              return BabyGrowth(
-                                name: baby.name,
-                                babyId: baby.id,
-                                babyGrowthInfo: BabyGrowthInfo(
-                                  weight: parseDouble(infoControllers[0].text),
-                                  headDiameter:
-                                      parseDouble(infoControllers[1].text),
-                                  headCircum:
-                                      parseDouble(infoControllers[2].text),
-                                  abdomenCircum:
-                                      parseDouble(infoControllers[3].text),
-                                  thighLength:
-                                      parseDouble(infoControllers[4].text),
+                  if (isRegisterButtonEnabled()) {
+                    babyGrowthApiService
+                        .registerBabyProfileGrowth(
+                          context,
+                          BabyProfileGrowth(
+                            id: id,
+                            babyProfileId: babyProfileId!,
+                            date: DateTime.now(),
+                            growthImageUrl: growthImageUrl,
+                            diary: diaryController.text,
+                            title: titleController.text,
+                            babies: babies.map(
+                              (baby) {
+                                final infoControllers =
+                                    infoControllersByBabies[baby] ?? [];
+                                return BabyGrowth(
+                                  name: baby.name,
+                                  babyId: baby.id,
+                                  babyGrowthInfo: BabyGrowthInfo(
+                                    weight:
+                                        parseDouble(infoControllers[0].text),
+                                    headDiameter:
+                                        parseDouble(infoControllers[1].text),
+                                    headCircum:
+                                        parseDouble(infoControllers[2].text),
+                                    abdomenCircum:
+                                        parseDouble(infoControllers[3].text),
+                                    thighLength:
+                                        parseDouble(infoControllers[4].text),
+                                  ),
+                                );
+                              },
+                            ).toList(),
+                          ),
+                        )
+                        .then(
+                          (reportId) => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BabyGrowthReportDetailScreen(
+                                  babyProfileGrowthId: reportId!,
                                 ),
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      )
-                      .then(
-                        (reportId) => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  BabyGrowthReportDetailScreen(
-                                babyProfileGrowthId: reportId!,
                               ),
-                            ),
-                          ).then((value) {
-                            if (value == true) {
-                              Navigator.pop(context,
-                                  true); // true를 반환하여 목록 화면에서 업데이트를 트리거
-                            }
-                          })
-                        },
-                      );
+                            ).then((value) {
+                              if (value == true) {
+                                Navigator.pop(context,
+                                    true); // true를 반환하여 목록 화면에서 업데이트를 트리거
+                              }
+                            })
+                          },
+                        );
+                  }
                 },
                 child: Container(
-                  width: screenWidth,
                   height: AppUtils.scaleSize(context, 56),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: AppUtils.scaleSize(context, 20)),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: isRegisterButtonEnabled()

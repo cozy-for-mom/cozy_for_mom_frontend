@@ -40,42 +40,46 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
             Stack(
               alignment: Alignment.center, // 모든 자식을 중앙에 배치
               children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: widget.isSelected
-                          ? Border.all(width: 2, color: primaryColor)
-                          : null,
-                      
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    border: widget.isSelected
+                        ? Border.all(width: 2, color: primaryColor)
+                        : widget.isEditMode
+                            ? Border.all(
+                                width: 2, color: const Color(0xffC0C0C0))
+                            : null,
+                  ),
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      widget.isEditMode
+                          ? Colors.black.withOpacity(0.5)
+                          : Colors.transparent,
+                      BlendMode.srcATop,
                     ),
-                    child: ColorFiltered(
-        colorFilter: ColorFilter.mode(
-          widget.isEditMode ? Colors.black.withOpacity(0.5) : Colors.transparent,
-          BlendMode.srcATop,
-        ),
-                    child: 
-                        ClipOval(
-                            child: widget.imagePath == ''
-                        ? Container(
-                            color: widget.isSelected
-                          ? profileColor
-                          : widget.offBackColor,
-                              padding:
-                                  EdgeInsets.all(AppUtils.scaleSize(context, 20)),
+                    child: ClipOval(
+                      child: widget.imagePath == ''
+                          ? Container(
+                              color: widget.isSelected
+                                  ? profileColor
+                                  : widget.offBackColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppUtils.scaleSize(context, 20),
+                                  vertical: AppUtils.scaleSize(context, 23)),
                               child: Image.asset(
                                 'assets/images/icons/babyProfileOn.png',
-                                width: AppUtils.scaleSize(context, 45),
-                                height: AppUtils.scaleSize(context, 45),
+                                fit: BoxFit.fill,
+                                width: AppUtils.scaleSize(context, 40),
+                                height: AppUtils.scaleSize(context, 35),
                               ),
                             )
-                            :
-                            Image.network(
+                          : Image.network(
                               widget.imagePath,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               width: AppUtils.scaleSize(context, 82),
                               height: AppUtils.scaleSize(context, 82),
                             ),
-                          ),
+                    ),
                   ),
                 ),
                 // `ColorFiltered`의 영향을 받지 않는 이미지 추가

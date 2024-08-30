@@ -23,8 +23,6 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,148 +45,177 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "코지포맘",
-              style: TextStyle(
-                fontSize: AppUtils.scaleSize(context, 26),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              "탈퇴 사유를 알려주세요.",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: AppUtils.scaleSize(context, 26),
-              ),
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 10),
-            ),
-            Text(
-              "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
-              style: TextStyle(
-                color: const Color(0xff8C909E),
-                height: AppUtils.scaleSize(context, 1.3),
-                fontWeight: FontWeight.w500,
-                fontSize: AppUtils.scaleSize(context, 14),
-              ),
-            ),
-            SizedBox(
-              height: AppUtils.scaleSize(context, 40),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: deletedReasons.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 8),
-                    ),
-                    child: Container(
-                      height: AppUtils.scaleSize(context, 48),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF7F7FA),
-                        borderRadius: BorderRadius.circular(10),
-                        border: selectedIndex == index
-                            ? Border.all(
-                                color: primaryColor,
-                                width: AppUtils.scaleSize(context, 2),
-                              )
-                            : null,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          if (selectedIndex == index) {
-                            setState(() {
-                              selectedIndex = null;
-                            });
-                          } else {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          }
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: AppUtils.scaleSize(context, 10),
-                                horizontal: AppUtils.scaleSize(context, 20)),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: selectedIndex == index
-                                      ? primaryColor
-                                      : const Color(0xffD9D9D9),
-                                  size: 18,
-                                  weight: 5,
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "코지포맘",
+                  style: TextStyle(
+                    fontSize: AppUtils.scaleSize(context, 26),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  "탈퇴 사유를 알려주세요.",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: AppUtils.scaleSize(context, 26),
+                  ),
+                ),
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 10),
+                ),
+                Text(
+                  "회원 탈퇴 사유를 알려주세요. 추후 서비스 개선에 중요한\n자료로 참고하겠습니다.",
+                  style: TextStyle(
+                    color: const Color(0xff8C909E),
+                    height: AppUtils.scaleSize(context, 1.3),
+                    fontWeight: FontWeight.w500,
+                    fontSize: AppUtils.scaleSize(context, 14),
+                  ),
+                ),
+                SizedBox(
+                  height: AppUtils.scaleSize(context, 40),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: deletedReasons.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppUtils.scaleSize(context, 8),
+                        ),
+                        child: Container(
+                          height: AppUtils.scaleSize(context, 48),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF7F7FA),
+                            borderRadius: BorderRadius.circular(10),
+                            border: selectedIndex == index
+                                ? Border.all(
+                                    color: primaryColor,
+                                    width: AppUtils.scaleSize(context, 2),
+                                  )
+                                : null,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              if (selectedIndex == index) {
+                                setState(() {
+                                  selectedIndex = null;
+                                });
+                              } else {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              }
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppUtils.scaleSize(context, 10),
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 20)),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: selectedIndex == index
+                                          ? primaryColor
+                                          : const Color(0xffD9D9D9),
+                                      size: 18,
+                                      weight: 5,
+                                    ),
+                                    SizedBox(
+                                      width: AppUtils.scaleSize(context, 10),
+                                    ),
+                                    Text(
+                                      deletedReasons[index],
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: selectedIndex == index
+                                            ? Colors.black
+                                            : const Color(0xff858998),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 14),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: AppUtils.scaleSize(context, 10),
-                                ),
-                                Text(
-                                  deletedReasons[index],
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: selectedIndex == index
-                                        ? Colors.black
-                                        : const Color(0xff858998),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: AppUtils.scaleSize(context, 14),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (selectedIndex != null) {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext buildContext) {
-                      return UserDeleteModal(
-                          reason: deletedReasons[selectedIndex!]);
+                      );
                     },
-                  );
-                }
-              },
-              child: Container(
-                width: screenWidth - AppUtils.scaleSize(context, 40),
-                height: AppUtils.scaleSize(context, 56),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: selectedIndex == null
-                        ? Colors.black.withOpacity(0.5)
-                        : Colors.black,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Text(
-                  "회원 탈퇴",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: AppUtils.scaleSize(context, 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0.2),
+                  ],
+                ),
+              ),
+              padding: EdgeInsets.only(
+                top: AppUtils.scaleSize(context, 20),
+                bottom: AppUtils.scaleSize(context, 34),
+              ),
+              child: InkWell(
+                onTap: () {
+                  if (selectedIndex != null) {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return UserDeleteModal(
+                            reason: deletedReasons[selectedIndex!]);
+                      },
+                    );
+                  }
+                },
+                child: Container(
+                  height: AppUtils.scaleSize(context, 56),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AppUtils.scaleSize(context, 20),
+                  ),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: selectedIndex == null
+                          ? const Color(0xffC2C4CB)
+                          : Colors.black,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Text(
+                    "회원 탈퇴",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: AppUtils.scaleSize(context, 16),
+                    ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: AppUtils.scaleSize(context, 10)),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

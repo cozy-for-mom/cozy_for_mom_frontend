@@ -73,6 +73,10 @@ class _BabyGrowthReportListScreenState
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    ListModifyState babyGrowthReportListModifyState =
+        context.watch<ListModifyState>();
+    int selectedCount = babyGrowthReportListModifyState.selectedCount;
+    bool isAnySelected = selectedCount > 0;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -151,486 +155,542 @@ class _BabyGrowthReportListScreenState
               },
             ),
       body: Consumer<MyDataModel>(builder: (context, globalData, _) {
-        return FutureBuilder(
-            future: data,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.nextExaminationDate != null) {
-                  nextCheckUpDate =
-                      dateFormat.format(snapshot.data.nextExaminationDate);
-                }
-                return isEditMode
-                    ? BabyGrowthReportListModify(
-                        babyProfileGrowths: snapshot.data!.growths,
-                        totalCount: snapshot.data!.totalCount,
-                      )
-                    : Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 20)),
-                        child: Column(
-                          children: [
-                            Container(
-                              width:
-                                  screenWidth - AppUtils.scaleSize(context, 40),
-                              height: AppUtils.scaleSize(context, 53),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 24)),
-                              decoration: BoxDecoration(
-                                color: const Color(0xffF0F0F5),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "다음 검진일",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: primaryColor,
-                                      fontSize: AppUtils.scaleSize(context, 14),
-                                    ),
+        return Stack(
+          children: [
+            FutureBuilder(
+                future: data,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data.nextExaminationDate != null) {
+                      nextCheckUpDate =
+                          dateFormat.format(snapshot.data.nextExaminationDate);
+                    }
+                    return isEditMode
+                        ? BabyGrowthReportListModify(
+                            babyProfileGrowths: snapshot.data!.growths,
+                            totalCount: snapshot.data!.totalCount,
+                          )
+                        : Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 20)),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: screenWidth -
+                                      AppUtils.scaleSize(context, 40),
+                                  height: AppUtils.scaleSize(context, 53),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 24)),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xffF0F0F5),
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 0.0,
-                                        context: context,
-                                        builder: (context) {
-                                          List<String> selectedNotifications =
-                                              [];
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "다음 검진일",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: primaryColor,
+                                          fontSize:
+                                              AppUtils.scaleSize(context, 14),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            elevation: 0.0,
+                                            context: context,
+                                            builder: (context) {
+                                              List<String>
+                                                  selectedNotifications = [];
 
-                                          return StatefulBuilder(
-                                            builder: (context, setState) {
-                                              void toggleOffNotification(
-                                                  String notification) {
-                                                setState(() {
-                                                  if (selectedNotifications
-                                                      .contains(notification)) {
-                                                    selectedNotifications
-                                                        .remove(notification);
+                                              return StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  void toggleOffNotification(
+                                                      String notification) {
+                                                    setState(() {
+                                                      if (selectedNotifications
+                                                          .contains(
+                                                              notification)) {
+                                                        selectedNotifications
+                                                            .remove(
+                                                                notification);
+                                                      }
+                                                    });
                                                   }
-                                                });
-                                              }
 
-                                              void toggleNotification(
-                                                  String notification) {
-                                                setState(() {
-                                                  if (selectedNotifications
-                                                      .contains(notification)) {
-                                                    selectedNotifications
-                                                        .remove(notification);
-                                                  } else {
-                                                    selectedNotifications
-                                                        .add(notification);
-                                                    if (notification !=
-                                                        'none') {
-                                                      toggleOffNotification(
-                                                          "none");
-                                                    } else {
-                                                      toggleOffNotification(
-                                                          "on day");
-                                                      toggleOffNotification(
-                                                          "one day ago");
-                                                      toggleOffNotification(
-                                                          "two day ago");
-                                                      toggleOffNotification(
-                                                          "one week ago");
-                                                    }
+                                                  void toggleNotification(
+                                                      String notification) {
+                                                    setState(() {
+                                                      if (selectedNotifications
+                                                          .contains(
+                                                              notification)) {
+                                                        selectedNotifications
+                                                            .remove(
+                                                                notification);
+                                                      } else {
+                                                        selectedNotifications
+                                                            .add(notification);
+                                                        if (notification !=
+                                                            'none') {
+                                                          toggleOffNotification(
+                                                              "none");
+                                                        } else {
+                                                          toggleOffNotification(
+                                                              "on day");
+                                                          toggleOffNotification(
+                                                              "one day ago");
+                                                          toggleOffNotification(
+                                                              "two day ago");
+                                                          toggleOffNotification(
+                                                              "one week ago");
+                                                        }
+                                                      }
+                                                    });
                                                   }
-                                                });
-                                              }
 
-                                              return SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    MonthCalendarModal(),
-                                                    Container(
-                                                      color: Colors.white,
-                                                      child: Column(
-                                                        children: [
-                                                          Padding(
-                                                            padding: EdgeInsets
-                                                                .all(AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        8)),
-                                                            child: Divider(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      30),
-                                                              thickness: 1,
-                                                              color: const Color(
-                                                                  0xffE2E2E2),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "알림",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  mainTextColor,
-                                                              fontSize: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      16),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      20)),
-                                                          Padding(
-                                                            padding: EdgeInsets.symmetric(
-                                                                horizontal: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        10)),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                NotificationOption(
-                                                                    title:
-                                                                        '당일 정오',
-                                                                    isSelected:
-                                                                        selectedNotifications.contains(
-                                                                            "on day"),
-                                                                    onTap:
-                                                                        () => {
-                                                                              toggleNotification("on day")
-                                                                            }),
-                                                                NotificationOption(
-                                                                  title: '하루 전',
-                                                                  isSelected: selectedNotifications
-                                                                      .contains(
-                                                                          "one day ago"),
-                                                                  onTap: () =>
-                                                                      toggleNotification(
-                                                                          "one day ago"),
-                                                                ),
-                                                                NotificationOption(
-                                                                  title: '이틀 전',
-                                                                  isSelected: selectedNotifications
-                                                                      .contains(
-                                                                          "two day ago"),
-                                                                  onTap: () =>
-                                                                      toggleNotification(
-                                                                          "two day ago"),
-                                                                ),
-                                                                NotificationOption(
-                                                                  title:
-                                                                      '일주일 전',
-                                                                  isSelected: selectedNotifications
-                                                                      .contains(
-                                                                          "one week ago"),
-                                                                  onTap: () =>
-                                                                      toggleNotification(
-                                                                          "one week ago"),
-                                                                ),
-                                                                NotificationOption(
-                                                                  title:
-                                                                      '설정 안 함',
-                                                                  isSelected: selectedNotifications
-                                                                      .contains(
-                                                                          "none"),
-                                                                  onTap: () =>
-                                                                      toggleNotification(
-                                                                          "none"),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      30)),
-                                                          InkWell(
-                                                            onTap: () async {
-                                                              if (selectedNotifications
-                                                                  .isNotEmpty) {
-                                                                await BabyGrowthApiService().registerNotificationExaminationDate(
-                                                                    context,
-                                                                    dateFormatForString
-                                                                        .format(
-                                                                            globalData.selectedDate),
-                                                                    selectedNotifications);
-                                                                if (mounted) {
-                                                                  // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      true);
-                                                                }
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              width: screenWidth -
-                                                                  AppUtils
-                                                                      .scaleSize(
-                                                                          context,
-                                                                          40),
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      56),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                                color: selectedNotifications
-                                                                        .isNotEmpty
-                                                                    ? primaryColor
-                                                                    : const Color(
-                                                                        0xffC9DFF9),
-                                                              ),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  "등록하기",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize: AppUtils
+                                                  return SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        MonthCalendarModal(),
+                                                        Container(
+                                                          color: Colors.white,
+                                                          child: Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(AppUtils
                                                                         .scaleSize(
                                                                             context,
-                                                                            16),
+                                                                            8)),
+                                                                child: Divider(
+                                                                  height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          30),
+                                                                  thickness: 1,
+                                                                  color: const Color(
+                                                                      0xffE2E2E2),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "알림",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainTextColor,
+                                                                  fontSize: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          16),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                  height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          20)),
+                                                              Padding(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        AppUtils.scaleSize(
+                                                                            context,
+                                                                            10)),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    NotificationOption(
+                                                                        title:
+                                                                            '당일 정오',
+                                                                        isSelected:
+                                                                            selectedNotifications.contains(
+                                                                                "on day"),
+                                                                        onTap: () =>
+                                                                            {
+                                                                              toggleNotification("on day")
+                                                                            }),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '하루 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("one day ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "one day ago"),
+                                                                    ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '이틀 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("two day ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "two day ago"),
+                                                                    ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '일주일 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("one week ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "one week ago"),
+                                                                    ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '설정 안 함',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("none"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "none"),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                  height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          30)),
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  gradient:
+                                                                      LinearGradient(
+                                                                    begin: Alignment
+                                                                        .bottomCenter,
+                                                                    end: Alignment
+                                                                        .topCenter,
+                                                                    colors: [
+                                                                      Colors
+                                                                          .white,
+                                                                      Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              0.2),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          20),
+                                                                  bottom: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          34),
+                                                                ),
+                                                                child: InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    if (selectedNotifications
+                                                                        .isNotEmpty) {
+                                                                      await BabyGrowthApiService().registerNotificationExaminationDate(
+                                                                          context,
+                                                                          dateFormatForString
+                                                                              .format(globalData.selectedDate),
+                                                                          selectedNotifications);
+                                                                      if (mounted) {
+                                                                        // 비동기에서 context 관련 메소드 쓸 때, mounted로 한번 체크
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            true);
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    height: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            56),
+                                                                    margin: EdgeInsets
+                                                                        .symmetric(
+                                                                      horizontal:
+                                                                          AppUtils.scaleSize(
+                                                                              context,
+                                                                              20),
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              12),
+                                                                      color: selectedNotifications
+                                                                              .isNotEmpty
+                                                                          ? primaryColor
+                                                                          : const Color(
+                                                                              0xffC9DFF9),
+                                                                    ),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        "등록하기",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize: AppUtils.scaleSize(
+                                                                              context,
+                                                                              16),
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
+                                                            ],
                                                           ),
-                                                          SizedBox(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      20)),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  );
+                                                },
                                               );
                                             },
-                                          );
-                                        },
-                                      ).then((value) {
-                                        if (value == true) {
-                                          setState(() {
-                                            pagingController.refresh();
-                                          });
-                                        }
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: AppUtils.scaleSize(context, 5),
-                                        ),
-                                        nextCheckUpDate == ""
-                                            ? Text(
-                                                "검진일 등록하기",
-                                                style: TextStyle(
-                                                    color:
-                                                        const Color(0xff858998),
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize:
-                                                        AppUtils.scaleSize(
-                                                            context, 14)),
-                                              )
-                                            : Text(
-                                                dateFormat.format(snapshot
-                                                    .data.nextExaminationDate),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize:
-                                                        AppUtils.scaleSize(
-                                                            context, 14)),
-                                              ),
-                                        const Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 13,
-                                          color: Color(0xff858998),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: AppUtils.scaleSize(context, 22),
-                            ),
-                            snapshot.data.growths.isNotEmpty
-                                ? Container(
-                                    width: screenWidth -
-                                        AppUtils.scaleSize(context, 40),
-                                    // height:
-                                    //     totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                                    height: screenHeight * (0.75),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            AppUtils.scaleSize(context, 20)),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: contentBoxTwoColor,
-                                    ),
-                                    child:
-                                        PagedListView<int, BabyProfileGrowth>(
-                                      padding: EdgeInsets.only(
-                                          top: AppUtils.scaleSize(context, 14),
-                                          bottom: screenHeight * 0.35),
-                                      pagingController: pagingController,
-                                      builderDelegate:
-                                          PagedChildBuilderDelegate<
-                                                  BabyProfileGrowth>(
-                                              itemBuilder:
-                                                  (context, item, index) {
-                                        final report = item;
-                                        final dateTime = report.date;
-                                        return InkWell(
-                                          onTap: () async {
-                                            final res = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BabyGrowthReportDetailScreen(
-                                                  babyProfileGrowthId:
-                                                      report.id!,
-                                                ),
-                                              ),
-                                            );
-
-                                            if (res == true) {
+                                          ).then((value) {
+                                            if (value == true) {
                                               setState(() {
                                                 pagingController.refresh();
                                               });
                                             }
-                                          },
-                                          child: SizedBox(
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: AppUtils.scaleSize(
-                                                      context, 10)),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: AppUtils.scaleSize(
+                                                  context, 5),
+                                            ),
+                                            nextCheckUpDate == ""
+                                                ? Text(
+                                                    "검진일 등록하기",
+                                                    style: TextStyle(
+                                                        color: const Color(
+                                                            0xff858998),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 14)),
+                                                  )
+                                                : Text(
+                                                    dateFormat.format(snapshot
+                                                        .data
+                                                        .nextExaminationDate),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize:
+                                                            AppUtils.scaleSize(
+                                                                context, 14)),
+                                                  ),
+                                            const Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 13,
+                                              color: Color(0xff858998),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: AppUtils.scaleSize(context, 22),
+                                ),
+                                snapshot.data.growths.isNotEmpty
+                                    ? Container(
+                                        width: screenWidth -
+                                            AppUtils.scaleSize(context, 40),
+                                        // height:
+                                        //     totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+                                        height: screenHeight * (0.75),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: AppUtils.scaleSize(
+                                                context, 20)),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: contentBoxTwoColor,
+                                        ),
+                                        child: PagedListView<int,
+                                            BabyProfileGrowth>(
+                                          padding: EdgeInsets.only(
+                                              top: AppUtils.scaleSize(
+                                                  context, 14),
+                                              bottom: screenHeight * 0.35),
+                                          pagingController: pagingController,
+                                          builderDelegate:
+                                              PagedChildBuilderDelegate<
+                                                      BabyProfileGrowth>(
+                                                  itemBuilder:
+                                                      (context, item, index) {
+                                            final report = item;
+                                            final dateTime = report.date;
+                                            return InkWell(
+                                              onTap: () async {
+                                                final res =
+                                                    await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BabyGrowthReportDetailScreen(
+                                                      babyProfileGrowthId:
+                                                          report.id!,
+                                                    ),
+                                                  ),
+                                                );
+
+                                                if (res == true) {
+                                                  setState(() {
+                                                    pagingController.refresh();
+                                                  });
+                                                }
+                                              },
+                                              child: SizedBox(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          AppUtils.scaleSize(
+                                                              context, 10)),
+                                                  child: Column(
                                                     children: [
-                                                      Flexible(
-                                                        flex:
-                                                            report.growthImageUrl ==
-                                                                    null
-                                                                ? 10
-                                                                : 7,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              report.title,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        16),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: const Color(
-                                                                    0xff2B2D35),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      5),
-                                                            ),
-                                                            Text(
-                                                              "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
-                                                              style: TextStyle(
-                                                                fontSize: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        13),
-                                                                color: const Color(
-                                                                    0xffAAAAAA),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      7),
-                                                            ),
-                                                            SizedBox(
-                                                              height: AppUtils
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Flexible(
+                                                            flex:
+                                                                report.growthImageUrl ==
+                                                                        null
+                                                                    ? 10
+                                                                    : 7,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  report.title,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            16),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: const Color(
+                                                                        0xff2B2D35),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          5),
+                                                                ),
+                                                                Text(
+                                                                  "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            13),
+                                                                    color: const Color(
+                                                                        0xffAAAAAA),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          7),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: AppUtils
                                                                       .scaleSize(
                                                                           context,
                                                                           36),
-                                                              child: Text(
-                                                                report.diary,
-                                                                maxLines: 2,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: TextStyle(
-                                                                  fontSize: AppUtils
-                                                                      .scaleSize(
+                                                                  child: Text(
+                                                                    report
+                                                                        .diary,
+                                                                    maxLines: 2,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize: AppUtils.scaleSize(
                                                                           context,
                                                                           12),
-                                                                  color: const Color(
-                                                                      0xff858998),
+                                                                      color: const Color(
+                                                                          0xff858998),
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                              ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Flexible(
-                                                        flex:
-                                                            report.growthImageUrl ==
-                                                                    null
-                                                                ? 0
-                                                                : 3,
-                                                        child: Padding(
-                                                          padding: EdgeInsets
-                                                              .all(AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      3)),
-                                                          child: Container(
-                                                            clipBehavior:
-                                                                Clip.hardEdge,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            child:
+                                                          ),
+                                                          Flexible(
+                                                            flex:
                                                                 report.growthImageUrl ==
+                                                                        null
+                                                                    ? 0
+                                                                    : 3,
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .all(AppUtils
+                                                                      .scaleSize(
+                                                                          context,
+                                                                          3)),
+                                                              child: Container(
+                                                                clipBehavior:
+                                                                    Clip.hardEdge,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: report
+                                                                            .growthImageUrl ==
                                                                         null
                                                                     ? Container()
                                                                     : Image
@@ -646,117 +706,123 @@ class _BabyGrowthReportListScreenState
                                                                         fit: BoxFit
                                                                             .cover,
                                                                       ),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 10),
+                                                      ),
+                                                      const Divider(
+                                                        color:
+                                                            Color(0xffE1E1E7),
+                                                        thickness: 1.0,
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(
-                                                    height: AppUtils.scaleSize(
-                                                        context, 10),
-                                                  ),
-                                                  const Divider(
-                                                    color: Color(0xffE1E1E7),
-                                                    thickness: 1.0,
-                                                  ),
-                                                ],
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      )
+                                    : Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image(
+                                              image: const AssetImage(
+                                                  "assets/images/icons/diary_inactive.png"),
+                                              width: AppUtils.scaleSize(
+                                                  context, 45.31),
+                                              height: AppUtils.scaleSize(
+                                                  context, 44.35),
+                                            ),
+                                            SizedBox(
+                                              height: AppUtils.scaleSize(
+                                                  context, 15),
+                                            ),
+                                            const Text(
+                                              "태아의 검진기록을 입력해보세요!",
+                                              style: TextStyle(
+                                                color: Color(0xff9397A4),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  )
-                                : Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image(
-                                          image: const AssetImage(
-                                              "assets/images/icons/diary_inactive.png"),
-                                          width: AppUtils.scaleSize(
-                                              context, 45.31),
-                                          height: AppUtils.scaleSize(
-                                              context, 44.35),
+                                            SizedBox(
+                                              height: AppUtils.scaleSize(
+                                                  context, 140),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          height:
-                                              AppUtils.scaleSize(context, 15),
-                                        ),
-                                        const Text(
-                                          "태아의 검진기록을 입력해보세요!",
-                                          style: TextStyle(
-                                            color: Color(0xff9397A4),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              AppUtils.scaleSize(context, 140),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                              ],
+                            ),
+                          );
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      backgroundColor: primaryColor,
+                      color: Colors.white,
+                    ));
+                  }
+                }),
+            isEditMode
+                ? Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.white,
+                            Colors.white.withOpacity(0.2),
                           ],
                         ),
-                      );
-              } else {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: Colors.white,
-                ));
-              }
-            });
-      }),
-      bottomSheet: isEditMode
-          ? SizedBox(
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              child: BottomSheet(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onClosing: () {},
-                builder: (BuildContext context) {
-                  ListModifyState BabyGrowthReportListModifyState =
-                      context.watch<ListModifyState>();
-                  int selectedCount =
-                      BabyGrowthReportListModifyState.selectedCount;
-
-                  bool isAnySelected = selectedCount > 0;
-
-                  return BottomButtonWidget(
-                    isActivated: isAnySelected,
-                    text: '성장 보고서 삭제',
-                    tapped: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeleteModal(
-                            title: '성장 보고서가',
-                            text: '등록된 성장 보고서를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                            tapFunc: () async {
-                              await BabyGrowthApiService()
-                                  .bulkDeleteBabyProfileGrowth(
-                                      context,
-                                      BabyGrowthReportListModifyState
-                                          .selectedIds);
-                              setState(() {
-                                data = BabyGrowthApiService()
-                                    .getBabyProfileGrowths(context, null, 10);
-                                BabyGrowthReportListModifyState
-                                    .clearSelection();
-                              });
+                      ),
+                      child: BottomButtonWidget(
+                        isActivated: isAnySelected,
+                        text: '성장보고서 삭제',
+                        tapped: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteModal(
+                                title: '성장 보고서가',
+                                text:
+                                    '등록된 성장 보고서를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                tapFunc: () async {
+                                  await BabyGrowthApiService()
+                                      .bulkDeleteBabyProfileGrowth(
+                                          context,
+                                          babyGrowthReportListModifyState
+                                              .selectedIds);
+                                  setState(() {
+                                    data = BabyGrowthApiService()
+                                        .getBabyProfileGrowths(
+                                            context, null, 10);
+                                    babyGrowthReportListModifyState
+                                        .clearSelection();
+                                  });
+                                },
+                              );
                             },
+                            barrierDismissible: false,
                           );
                         },
-                        barrierDismissible: false,
-                      );
-                    },
-                  );
-                },
-              ),
-            )
-          : null,
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
+        );
+      }),
     );
   }
 }

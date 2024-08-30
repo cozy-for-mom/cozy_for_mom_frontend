@@ -123,8 +123,9 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: GestureDetector(
         onTap: () {
@@ -239,14 +240,16 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
+                            Container(
                               height: screenHeight * 0.48,
+                              padding:
+                                  EdgeInsets.only(bottom: keyboardPadding / 2),
                               child: Scrollbar(
                                 // 스크롤바 표현
+                                controller: scrollController,
                                 trackVisibility: true,
                                 thickness: 5.0,
                                 radius: const Radius.circular(10),
-
                                 child: SingleChildScrollView(
                                   controller: scrollController,
                                   scrollDirection: Axis.vertical,
@@ -255,7 +258,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                                       Container(
                                         padding: EdgeInsets.only(
                                             bottom: AppUtils.scaleSize(
-                                                context, 20)),
+                                                context, 10)),
                                         width: screenWidth -
                                             AppUtils.scaleSize(context, 80),
                                         child: TextFormField(
@@ -415,8 +418,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                       ),
                     )),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 755),
-                  left: AppUtils.scaleSize(context, 20),
+                  bottom: AppUtils.scaleSize(context, 0),
                   child: InkWell(
                     onTap: () {
                       cozyLogApiService
@@ -441,19 +443,36 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                           );
                     },
                     child: Container(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 56),
-                      alignment: Alignment.center,
+                      width: screenWidth,
                       decoration: BoxDecoration(
-                          color: isRegisterButtonEnabled()
-                              ? primaryColor
-                              : const Color(0xffC9DFF9),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Text("작성 완료",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: AppUtils.scaleSize(context, 16))),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter, // 그라데이션 시작점
+                          end: Alignment.topCenter, // 그라데이션 끝점
+                          colors: [
+                            Colors.white, // 시작 색상
+                            Colors.white.withOpacity(0.0), // 끝 색상
+                          ],
+                        ),
+                      ),
+                      padding: EdgeInsets.only(
+                          top: AppUtils.scaleSize(context, 20),
+                          bottom: AppUtils.scaleSize(context, 34)),
+                      child: Container(
+                        height: AppUtils.scaleSize(context, 56),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 20)),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: isRegisterButtonEnabled()
+                                ? primaryColor
+                                : const Color(0xffC9DFF9),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text("작성 완료",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: AppUtils.scaleSize(context, 16))),
+                      ),
                     ),
                   ),
                 )

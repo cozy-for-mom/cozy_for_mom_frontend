@@ -390,8 +390,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     final joinInputData = Provider.of<JoinInputData>(context, listen: false);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
           backgroundColor: backgroundColor,
@@ -409,259 +411,296 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                   Navigator.of(context).pop();
                 }),
           ]),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: AppUtils.scaleSize(context, 20),
-                    right: AppUtils.scaleSize(context, 20),
-                    bottom: AppUtils.scaleSize(context, 40),
-                    top: AppUtils.scaleSize(context, 25)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: AppUtils.scaleSize(context, 20),
+                        right: AppUtils.scaleSize(context, 20),
+                        bottom: AppUtils.scaleSize(context, keyboardPadding),
+                        top: AppUtils.scaleSize(context, 25)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Stack(
-                          children: [
-                            Center(
-                              child: babyProfileImageUrl == null
-                                  ? Image(
-                                      image: const AssetImage(
-                                          "assets/images/icons/babyProfile.png"),
-                                      width: AppUtils.scaleSize(context, 100),
-                                      height: AppUtils.scaleSize(context, 100))
-                                  : ClipOval(
-                                      // 원형
-                                      child: Image.network(
-                                        babyProfileImageUrl!,
-                                        fit: BoxFit.cover,
-                                        width: AppUtils.scaleSize(context, 100),
-                                        height:
-                                            AppUtils.scaleSize(context, 100),
-                                      ),
-                                    ),
-                            ),
-                            Positioned(
-                              left: AppUtils.scaleSize(context, 206),
-                              top: AppUtils.scaleSize(context, 72),
-                              child: InkWell(
-                                onTap: () async {
-                                  if (babyProfileImageUrl == null) {
-                                    final selectedImage =
-                                        await showImageSelectModal();
-                                    if (mounted && selectedImage != null) {
-                                      final imageUrl = await imageApiService
-                                          .uploadImage(context, selectedImage);
-                                      setState(() {
-                                        babyProfileImageUrl = imageUrl;
-                                      });
-                                    } else {
-                                      print('No image selected.');
-                                    }
-                                  } else {
-                                    showSelectModal();
-                                  }
-                                },
-                                child: Image(
-                                  image: const AssetImage(
-                                      "assets/images/icons/circle_pen.png"),
-                                  width: AppUtils.scaleSize(context, 24),
-                                  height: AppUtils.scaleSize(context, 24),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: AppUtils.scaleSize(context, 30),
-                        ),
-                        Text(
-                          "출산예정일",
-                          style: TextStyle(
-                              color: labelTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14)),
-                        ),
-                        SizedBox(
-                          height: AppUtils.scaleSize(context, 14),
-                        ),
-                        Container(
-                            width:
-                                screenWidth - AppUtils.scaleSize(context, 40),
-                            height: AppUtils.scaleSize(context, 48),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 20)),
-                            decoration: BoxDecoration(
-                                color: contentBoxTwoColor,
-                                borderRadius: BorderRadius.circular(30)),
-                            child: TextFormField(
-                              controller: dueDateController,
-                              keyboardType: TextInputType.datetime,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              textAlign: TextAlign.start,
-                              maxLength: 10,
-                              cursorColor: primaryColor,
-                              cursorHeight: AppUtils.scaleSize(context, 14),
-                              cursorWidth: AppUtils.scaleSize(context, 1.2),
-                              style: TextStyle(
-                                  color: mainTextColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: AppUtils.scaleSize(context, 16)),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: (AppUtils.scaleSize(context, 48) -
-                                            AppUtils.scaleSize(context, 16) *
-                                                1.2) /
-                                        2 // 폰트 크기와 라인 높이 고려
-                                    ),
-                                border: InputBorder.none,
-                                hintText: 'YYYY.MM.DD',
-                                hintStyle: TextStyle(
-                                    color: beforeInputColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppUtils.scaleSize(context, 16)),
-                                counterText: '',
-                              ),
-                              onChanged: (value) {
-                                if (mounted) {
-                                  setState(() {
-                                    // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
-                                    String parsedDate;
-                                    if (value.length == 8 &&
-                                        _isNumeric(value)) {
-                                      parsedDate = DateFormat('yyyy.MM.dd')
-                                          .format(DateTime.parse(value));
-                                    } else {
-                                      parsedDate = value;
-                                    }
-                                    dueDateController.text = parsedDate;
-                                    dueDate = parsedDate;
-                                  });
-                                }
-                              },
-                            )),
                         Column(
-                            children: List.generate(babyCount, (index) {
-                          return _buildBabyField(index);
-                        })),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: AppUtils.scaleSize(context, 20),
-                              bottom: AppUtils.scaleSize(context, 60)),
-                          child: widget.babyProfileId! > -1
-                              ? InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext buildContext) {
-                                        return DeleteModal(
-                                          text:
-                                              '등록된 데이터는 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
-                                          title: '프로필이',
-                                          tapFunc: () async {
-                                            await UserApiService()
-                                                .deleteBabyProfile(context,
-                                                    widget.babyProfileId!);
-                                            if (mounted) {
-                                              Navigator.of(context).pop(true);
-                                            }
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: babyProfileImageUrl == null
+                                      ? Image(
+                                          image: const AssetImage(
+                                              "assets/images/icons/babyProfile.png"),
+                                          width:
+                                              AppUtils.scaleSize(context, 100),
+                                          height:
+                                              AppUtils.scaleSize(context, 100))
+                                      : ClipOval(
+                                          // 원형
+                                          child: Image.network(
+                                            babyProfileImageUrl!,
+                                            fit: BoxFit.cover,
+                                            width: AppUtils.scaleSize(
+                                                context, 100),
+                                            height: AppUtils.scaleSize(
+                                                context, 100),
+                                          ),
+                                        ),
+                                ),
+                                Positioned(
+                                  left: AppUtils.scaleSize(context, 206),
+                                  top: AppUtils.scaleSize(context, 72),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (babyProfileImageUrl == null) {
+                                        final selectedImage =
+                                            await showImageSelectModal();
+                                        if (mounted && selectedImage != null) {
+                                          final imageUrl =
+                                              await imageApiService.uploadImage(
+                                                  context, selectedImage);
+                                          setState(() {
+                                            babyProfileImageUrl = imageUrl;
+                                          });
+                                        } else {
+                                          print('No image selected.');
+                                        }
+                                      } else {
+                                        showSelectModal();
+                                      }
+                                    },
+                                    child: Image(
+                                      image: const AssetImage(
+                                          "assets/images/icons/circle_pen.png"),
+                                      width: AppUtils.scaleSize(context, 24),
+                                      height: AppUtils.scaleSize(context, 24),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: AppUtils.scaleSize(context, 30),
+                            ),
+                            Text(
+                              "출산예정일",
+                              style: TextStyle(
+                                  color: labelTextColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: AppUtils.scaleSize(context, 14)),
+                            ),
+                            SizedBox(
+                              height: AppUtils.scaleSize(context, 14),
+                            ),
+                            Container(
+                                width: screenWidth -
+                                    AppUtils.scaleSize(context, 40),
+                                height: AppUtils.scaleSize(context, 48),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        AppUtils.scaleSize(context, 20)),
+                                decoration: BoxDecoration(
+                                    color: contentBoxTwoColor,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: TextFormField(
+                                  controller: dueDateController,
+                                  keyboardType: TextInputType.datetime,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  textAlign: TextAlign.start,
+                                  maxLength: 10,
+                                  cursorColor: primaryColor,
+                                  cursorHeight: AppUtils.scaleSize(context, 14),
+                                  cursorWidth: AppUtils.scaleSize(context, 1.2),
+                                  style: TextStyle(
+                                      color: mainTextColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 16)),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical:
+                                            (AppUtils.scaleSize(context, 48) -
+                                                    AppUtils.scaleSize(
+                                                            context, 16) *
+                                                        1.2) /
+                                                2 // 폰트 크기와 라인 높이 고려
+                                        ),
+                                    border: InputBorder.none,
+                                    hintText: 'YYYY.MM.DD',
+                                    hintStyle: TextStyle(
+                                        color: beforeInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize:
+                                            AppUtils.scaleSize(context, 16)),
+                                    counterText: '',
+                                  ),
+                                  onChanged: (value) {
+                                    if (mounted) {
+                                      setState(() {
+                                        // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
+                                        String parsedDate;
+                                        if (value.length == 8 &&
+                                            _isNumeric(value)) {
+                                          parsedDate = DateFormat('yyyy.MM.dd')
+                                              .format(DateTime.parse(value));
+                                        } else {
+                                          parsedDate = value;
+                                        }
+                                        dueDateController.text = parsedDate;
+                                        dueDate = parsedDate;
+                                      });
+                                    }
+                                  },
+                                )),
+                            Column(
+                                children: List.generate(babyCount, (index) {
+                              return _buildBabyField(index);
+                            })),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: AppUtils.scaleSize(context, 20),
+                                  bottom: AppUtils.scaleSize(context, 60)),
+                              child: widget.babyProfileId! > -1
+                                  ? InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext buildContext) {
+                                            return DeleteModal(
+                                              text:
+                                                  '등록된 데이터는 다시 복구할 수 없습니다.\n삭제하시겠습니까?',
+                                              title: '프로필이',
+                                              tapFunc: () async {
+                                                await UserApiService()
+                                                    .deleteBabyProfile(context,
+                                                        widget.babyProfileId!);
+                                                if (mounted) {
+                                                  Navigator.of(context)
+                                                      .pop(true);
+                                                }
 
-                                            return Future.value();
+                                                return Future.value();
+                                              },
+                                            );
                                           },
                                         );
                                       },
-                                    );
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      '프로필 삭제하기',
-                                      style: TextStyle(
-                                          color: primaryColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14)),
+                                      child: Center(
+                                        child: Text(
+                                          '프로필 삭제하기',
+                                          style: TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14)),
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        if (mounted) {
+                                          setState(() {
+                                            babyCount += 1;
+                                            isOpenGenderModal.add(false);
+                                          });
+                                        }
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          '+ 다태아 추가하기',
+                                          style: TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14)),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    if (mounted) {
-                                      setState(() {
-                                        babyCount += 1;
-                                        isOpenGenderModal.add(false);
-                                      });
-                                    }
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      '+ 다태아 추가하기',
-                                      style: TextStyle(
-                                          color: primaryColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14)),
-                                    ),
-                                  ),
-                                ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0.2),
                   ],
                 ),
               ),
-            ),
-          ),
-          InkWell(
-            onTap: () async {
-              if (_validateFields()) {
-                if (widget.babyProfileId! > -1) {
-                  await UserApiService().modifyBabyProfile(
-                      context,
-                      widget.babyProfileId!,
-                      dueDate.replaceAll('.', '-'),
-                      babyProfileImageUrl,
-                      babies);
-                  if (mounted) {
-                    await CompleteAlertModal.showCompleteDialog(
-                        context, '프로필이', '변경');
-                    Navigator.pop(context, true);
-                  }
-                } else {
-                  await UserApiService().addBabyProfile(
-                      context,
-                      dueDate.replaceAll('.', '-'),
-                      babyProfileImageUrl,
-                      babies);
-                }
-
-                if (mounted) {
-                  Navigator.pop(context, true);
-                }
-              }
-            },
-            child: Container(
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 56),
-              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 20)),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color:
-                    _validateFields() ? primaryColor : const Color(0xffC9DFF9),
+              padding: EdgeInsets.only(
+                top: AppUtils.scaleSize(context, 20),
+                bottom: AppUtils.scaleSize(context, 34),
               ),
-              child: Center(
-                child: Text(
-                  widget.babyProfileId! > -1 ? "수정하기" : "등록하기",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: AppUtils.scaleSize(context, 16),
+              child: InkWell(
+                onTap: () async {
+                  if (_validateFields()) {
+                    if (widget.babyProfileId! > -1) {
+                      await UserApiService().modifyBabyProfile(
+                          context,
+                          widget.babyProfileId!,
+                          dueDate.replaceAll('.', '-'),
+                          babyProfileImageUrl,
+                          babies);
+                      if (mounted) {
+                        await CompleteAlertModal.showCompleteDialog(
+                            context, '프로필이', '변경');
+                        Navigator.pop(context, true);
+                      }
+                    } else {
+                      await UserApiService().addBabyProfile(
+                          context,
+                          dueDate.replaceAll('.', '-'),
+                          babyProfileImageUrl,
+                          babies);
+                    }
+                    if (mounted) {
+                      Navigator.pop(context, true);
+                    }
+                  }
+                },
+                child: Container(
+                  height: AppUtils.scaleSize(context, 56),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AppUtils.scaleSize(context, 20),
+                  ),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: _validateFields()
+                        ? primaryColor
+                        : const Color(0xffC9DFF9),
+                  ),
+                  child: Center(
+                    child: Text(
+                      widget.babyProfileId! > -1 ? "수정하기" : "등록하기",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppUtils.scaleSize(context, 16),
+                      ),
+                    ),
                   ),
                 ),
               ),
