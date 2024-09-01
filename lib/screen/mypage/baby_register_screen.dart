@@ -550,6 +550,14 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                             _isNumeric(value)) {
                                           parsedDate = DateFormat('yyyy.MM.dd')
                                               .format(DateTime.parse(value));
+                                          // 오늘 날짜보다 과거인 경우 내일 날짜로 변경
+                                          if (DateTime.parse(value)
+                                              .isBefore(DateTime.now())) {
+                                            parsedDate = DateFormat(
+                                                    'yyyy.MM.dd')
+                                                .format(DateTime.now().add(
+                                                    const Duration(days: 1)));
+                                          }
                                         } else {
                                           parsedDate = value;
                                         }

@@ -77,6 +77,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     return date.replaceAll(RegExp(r'\-'), '.');
   }
 
+  bool areAllFieldsFilled(Map<String, TextEditingController> controllers) {
+    return controllers.values.every((controller) => controller.text.isNotEmpty);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -124,7 +128,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     width: AppUtils.scaleSize(context, 53),
                     height: AppUtils.scaleSize(context, 29),
                     decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: areAllFieldsFilled(controllers)
+                          ? primaryColor
+                          : induceButtonColor,
                       borderRadius: BorderRadius.circular(33),
                     ),
                     child: Text(
@@ -137,16 +143,18 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   ),
                 ),
                 onTap: () async {
-                  await userApiService.modifyUserProfile(
-                      context,
-                      controllers['이름']!.text,
-                      controllers['닉네임']!.text,
-                      introduceController.text,
-                      imageUrl,
-                      sendFormatUsingRegex(controllers['생년월일']!.text),
-                      controllers['이메일']!.text);
-                  if (mounted) {
-                    Navigator.pop(context, true);
+                  if (areAllFieldsFilled(controllers)) {
+                    await userApiService.modifyUserProfile(
+                        context,
+                        controllers['이름']!.text,
+                        controllers['닉네임']!.text,
+                        introduceController.text,
+                        imageUrl,
+                        sendFormatUsingRegex(controllers['생년월일']!.text),
+                        controllers['이메일']!.text);
+                    if (mounted) {
+                      Navigator.pop(context, true);
+                    }
                   }
                 },
               ),

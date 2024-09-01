@@ -112,12 +112,15 @@ class _MyPageState extends State<MyPage> {
                     ),
                     SizedBox(height: AppUtils.scaleSize(context, 4)),
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final res = await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     const MomProfileModify()));
+                        if (res == true) {
+                          setState(() {});
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

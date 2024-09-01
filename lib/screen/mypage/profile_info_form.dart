@@ -1,6 +1,7 @@
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:intl/intl.dart';
 
 class ProfileInfoForm extends StatefulWidget {
   final String title;
@@ -112,14 +113,31 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                   });
                 },
                 onChanged: (text) {
-                  setState(() {
-                    if (text.isEmpty) {
-                      widget.controller!.clear();
-                      _isSuffixVisible = false;
-                    } else {
-                      _isSuffixVisible = true;
-                    }
-                  });
+                  widget.title == '생년월일'
+                      ? setState(() {
+                          String parsedDate;
+                          if (text.length == 8 && _isNumeric(text)) {
+                            parsedDate = DateFormat('yyyy.MM.dd')
+                                .format(DateTime.parse(text));
+                            // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
+                            if (DateTime.parse(text).isAfter(DateTime.now())) {
+                              parsedDate = DateFormat('yyyy.MM.dd').format(
+                                  DateTime.now()
+                                      .subtract(const Duration(days: 1)));
+                            }
+                          } else {
+                            parsedDate = text;
+                          }
+                          widget.controller!.text = parsedDate;
+                        })
+                      : setState(() {
+                          if (text.isEmpty) {
+                            widget.controller!.clear();
+                            _isSuffixVisible = false;
+                          } else {
+                            _isSuffixVisible = true;
+                          }
+                        });
                 },
               )),
           (widget.title == '닉네임' || widget.title == '이메일') && _isSuffixVisible
@@ -157,7 +175,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
 
 bool checkNicknameLength(String nickName) {
   if (nickName.isEmpty) return false;
-  return nickName.length < 8;
+  return nickName.length < 9;
 }
 
 bool _validateEmail(String email) {
@@ -167,4 +185,9 @@ bool _validateEmail(String email) {
   );
 
   return emailRegExp.hasMatch(email);
+}
+
+bool _isNumeric(String value) {
+  final numericRegex = RegExp(r'^[0-9]+$');
+  return numericRegex.hasMatch(value);
 }

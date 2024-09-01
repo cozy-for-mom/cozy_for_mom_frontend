@@ -100,6 +100,12 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                           if (value.length == 8 && _isNumeric(value)) {
                             parsedDate = DateFormat('yyyy.MM.dd')
                                 .format(DateTime.parse(value));
+                            // 오늘 날짜보다 과거인 경우 내일 날짜로 변경
+                            if (DateTime.parse(value)
+                                .isBefore(DateTime.now())) {
+                              parsedDate = DateFormat('yyyy.MM.dd').format(
+                                  DateTime.now().add(const Duration(days: 1)));
+                            }
                           } else {
                             parsedDate = value;
                           }
@@ -169,6 +175,12 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                           if (value.length == 8 && _isNumeric(value)) {
                             parsedDate = DateFormat('yyyy.MM.dd')
                                 .format(DateTime.parse(value));
+                            // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
+                            if (DateTime.parse(value).isAfter(DateTime.now())) {
+                              parsedDate = DateFormat('yyyy.MM.dd').format(
+                                  DateTime.now()
+                                      .subtract(const Duration(days: 1)));
+                            }
                           } else {
                             parsedDate = value;
                           }

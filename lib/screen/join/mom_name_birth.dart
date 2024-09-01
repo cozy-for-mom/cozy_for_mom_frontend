@@ -95,7 +95,7 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                           joinInputData.setName(value);
                         });
                       }
-                      widget.updateValidity(nameController.text.isNotEmpty &
+                      widget.updateValidity(nameController.text.isNotEmpty &&
                           birthController.text.isNotEmpty);
                     },
                   )),
@@ -157,12 +157,19 @@ class _MomNameBirthInputScreenState extends State<MomNameBirthInputScreen> {
                           if (value.length == 8 && _isNumeric(value)) {
                             parsedDate = DateFormat('yyyy.MM.dd')
                                 .format(DateTime.parse(value));
+                            // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
+                            if (DateTime.parse(value).isAfter(DateTime.now())) {
+                              parsedDate = DateFormat('yyyy.MM.dd').format(
+                                  DateTime.now()
+                                      .subtract(const Duration(days: 1)));
+                            }
                           } else {
                             parsedDate = value;
                           }
-                          joinInputData.birth = parsedDate;
-                          widget.updateValidity(nameController.text.isNotEmpty &
-                              birthController.text.isNotEmpty);
+                          joinInputData.setBirth(parsedDate);
+                          widget.updateValidity(
+                              nameController.text.isNotEmpty &&
+                                  birthController.text.isNotEmpty);
                         });
                       }
                     },
