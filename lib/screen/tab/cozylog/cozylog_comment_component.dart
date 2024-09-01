@@ -106,12 +106,49 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.comment.writerNickname,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: AppUtils.scaleSize(context, 14),
+                            SizedBox(
+                              width: AppUtils.scaleSize(context, 240),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.comment.writerNickname,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: AppUtils.scaleSize(context, 14),
+                                    ),
+                                  ),
+                                  widget.cozyLog.writer.nickname ==
+                                          widget.comment.writerNickname
+                                      ? Container(
+                                          width:
+                                              AppUtils.scaleSize(context, 46),
+                                          height:
+                                              AppUtils.scaleSize(context, 19),
+                                          margin: EdgeInsets.only(
+                                              left: AppUtils.scaleSize(
+                                                  context, 7)),
+                                          decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '작성자',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 10),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                ],
                               ),
                             ),
                             SizedBox(
@@ -151,8 +188,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                     style: TextStyle(
                                       color: const Color(0xffAAAAAA),
                                       fontWeight: FontWeight.w500,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 12),
+                                      fontSize: AppUtils.scaleSize(context, 12),
                                     ),
                                   ),
                                 ),
@@ -426,8 +462,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                           ),
                           !subComment.isDeleted
                               ? Row(
-                                crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -471,14 +506,60 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              subComment.writerNickname,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 14),
-                                              ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  subComment.writerNickname,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 14),
+                                                  ),
+                                                ),
+                                                widget.cozyLog.writer
+                                                            .nickname ==
+                                                        subComment
+                                                            .writerNickname
+                                                    ? Container(
+                                                        width:
+                                                            AppUtils.scaleSize(
+                                                                context, 46),
+                                                        height:
+                                                            AppUtils.scaleSize(
+                                                                context, 19),
+                                                        margin: EdgeInsets.only(
+                                                            left: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    7)),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primaryColor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '작성자',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      10),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
                                             ),
                                             SizedBox(
                                               height: AppUtils.scaleSize(
@@ -745,9 +826,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                         : Container(),
                                   ],
                                 )
-                              : Container(
-                                  
-                                ),
+                              : Container(),
                         ],
                       );
                     }).toList(),
