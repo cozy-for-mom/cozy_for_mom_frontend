@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
-import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart'
+    as DeviceTokenManager;
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
@@ -14,18 +15,19 @@ enum OauthType { apple, kakao, none }
 
 class OauthApiService {
   final tokenManager = TokenManager.TokenManager();
+  final deviceTokenManager = DeviceTokenManager.DeviceTokenManager();
   Future<UserType?> authenticateByOauth(
     BuildContext context,
     OauthType oauthType,
     String value,
   ) async {
-    // TODO 일단 device token은 일단 빈값을 담아 요청한다.
     var urlString = '$baseUrl/authenticate/oauth';
     final url = Uri.parse(urlString);
-    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
+    String? deviceToken =
+        await deviceTokenManager.getDeviceToken() ?? 'unknown';
     final headers = await getHeaders();
     dynamic res;
-
+    print('dt $deviceToken');
     res = await http.post(
       url,
       headers: headers,

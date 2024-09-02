@@ -2,7 +2,6 @@ import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
-import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
@@ -37,9 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
-    print('dt $deviceToken');
 
     return Scaffold(
       backgroundColor: backgroundColor,

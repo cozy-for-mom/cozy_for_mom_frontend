@@ -1,7 +1,9 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class DeviceTokenManager {
   static final DeviceTokenManager _instance = DeviceTokenManager._internal();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   static const MethodChannel _channel =
       MethodChannel('com.cozyformom.deviceTokenChannel');
 
@@ -13,22 +15,32 @@ class DeviceTokenManager {
 
   DeviceTokenManager._internal();
 
-  Future<void> initialize() async {
-    _deviceToken = await _getDeviceTokenFromNative();
+  Future<Map<String, dynamic>> initialize() async {
+    var result = await _getDeviceTokenFromNative();
+    if (result != null && result['token'] != null) {
+      await saveDeviceToken(result['token']);
+    }
+    return result ?? {};
   }
 
-  Future<String?> _getDeviceTokenFromNative() async {
-    var token;
+  Future<Map<String, dynamic>?> _getDeviceTokenFromNative() async {
     try {
-      token = await _channel
-          .invokeMethod('getDeviceToken')
-          .timeout(const Duration(milliseconds: 500));
+      final result = await _channel.invokeMethod('getDeviceToken');
+      bool permissionGranted = result['permissionGranted'];
+      String token = result['token'];
+      return {'permissionGranted': permissionGranted, 'token': token};
     } catch (e) {
       print("exception 발생 $e");
       return null;
     }
+  }
 
-    return token;
+  Future<void> saveDeviceToken(String token) async {
+    await _storage.write(key: 'deviceToken', value: token);
+  }
+
+  Future<String?> getDeviceToken() async {
+    return await _storage.read(key: 'deviceToken');
   }
 
   String? get deviceToken => _deviceToken;

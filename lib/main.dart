@@ -8,7 +8,6 @@ import 'package:cozy_for_mom_frontend/service/notification/notification_domain_a
 import 'package:cozy_for_mom_frontend/service/user/join_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
-import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,14 +18,8 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  await dotenv.load(fileName: 'assets/configs/.env'); // 이 코드를 추가한다.
+  await dotenv.load(fileName: 'assets/configs/.env');
 
-  DeviceTokenManager manager = DeviceTokenManager();
-  try {
-    await manager.initialize();
-  } catch (e) {
-    print("Failed to initialize device token: $e");
-  }
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
     nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
