@@ -31,9 +31,10 @@ class _LineChartState extends State<LineChart> {
   @override
   void initState() {
     _zoomPanBehavior = ZoomPanBehavior(
-      enablePinching: true,
-      enablePanning: true,
-    );
+        enablePanning: true, // 패닝 활성화
+        enablePinching: false, // 핀치 줌 비활성화
+        enableDoubleTapZooming: false // 더블 탭 줌 비활성화
+        );
     super.initState();
   }
 
