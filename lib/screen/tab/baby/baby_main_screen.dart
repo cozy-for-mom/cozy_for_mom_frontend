@@ -148,7 +148,8 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                       )),
                   Positioned(
                     top: AppUtils.scaleSize(context, 255),
-                    left: AppUtils.scaleSize(context, 120),
+                    left: AppUtils.scaleSize(context, 0),
+                    right: AppUtils.scaleSize(context, 0),
                     child: Image(
                         width: AppUtils.scaleSize(context, 167),
                         height: AppUtils.scaleSize(context, 125),
@@ -233,8 +234,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MyCozylog(),
+                                    builder: (context) => const MyCozylog(),
                                   ),
                                 );
                               },
