@@ -154,7 +154,8 @@ class _SupplementCardState extends State<SupplementCard> {
                       Container(
                         height: AppUtils.scaleSize(context, 22),
                         alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 8)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 8)),
                         decoration: BoxDecoration(
                             color: const Color(0xffFEEEEE),
                             borderRadius: BorderRadius.circular(8)),
@@ -188,6 +189,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                               tap1: () {
                                                 Navigator.pop(context);
                                                 showDialog(
+                                                  barrierDismissible: true,
                                                   context: context,
                                                   builder: (context) {
                                                     return SupplementModal(

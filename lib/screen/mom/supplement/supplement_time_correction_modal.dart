@@ -44,6 +44,7 @@ class _SupplementModalState extends State<SupplementModal> {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(

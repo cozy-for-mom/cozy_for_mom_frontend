@@ -29,6 +29,7 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(

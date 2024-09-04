@@ -44,6 +44,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
