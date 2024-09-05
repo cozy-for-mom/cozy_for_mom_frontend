@@ -54,7 +54,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     );
     textPainter.layout(maxWidth: width);
     return AppUtils.scaleSize(
-        context, 50 + textPainter.height.toDouble() * 1.2);
+        context, 22 + textPainter.height.toDouble() * 1.2);
   }
 
   @override
@@ -148,8 +148,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     var id = widget.babyProfileGrowth?.id;
 
     bool isRegisterButtonEnabled() {
-      return titleController.text.isNotEmpty ||
-          diaryController.text.isNotEmpty ||
+      return titleController.text.isNotEmpty &&
+              diaryController.text.isNotEmpty &&
           infoControllersByBabies.values.any(
               (element) => element.any((element) => element.text.isNotEmpty));
     }
@@ -479,7 +479,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                               InfoInputForm(
                                 title: type,
                                 hint: "0 $unit",
-                                suffix: unit,
+                                unit: unit,
                                 controller: controller,
                                 onChanged: () {
                                   setState(() {});
