@@ -134,48 +134,139 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
   }
 
   Future<dynamic> showSelectModal() {
-    return showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext context) {
-          return SelectBottomModal(
-            selec1: '수정하기',
-            selec2: '사진 삭제하기',
-            tap1: () async {
-              Navigator.pop(context);
-              final selectedImage = await showImageSelectModal();
-              if (mounted && selectedImage != null) {
-                final imageUrl =
-                    await imageApiService.uploadImage(context, selectedImage);
-                setState(() {
-                  babyProfileImageUrl = imageUrl;
-                });
-              } else {
-                print('No image selected.');
-              }
-            },
-            tap2: () {
-              Navigator.pop(context);
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext buildContext) {
-                  return DeleteModal(
-                    text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                    title: '사진이',
-                    tapFunc: () {
-                      setState(() {
-                        babyProfileImageUrl = null;
-                      });
+    final screenWidth = MediaQuery.of(context).size.width;
+    return showModalBottomSheet<void>(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: AppUtils.scaleSize(context, 272 + 15),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: AppUtils.scaleSize(context, 8)),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Column(children: <Widget>[
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '직접 찍기',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final selectedImage = await ImagePicker()
+                            .pickImage(source: ImageSource.camera);
+                        if (mounted && selectedImage != null) {
+                          final imageUrl = await imageApiService.uploadImage(
+                              context, selectedImage);
+                          setState(() {
+                            babyProfileImageUrl = imageUrl;
+                          });
+                        } else {
+                          print('No image selected.');
+                        }
+                      },
+                    ),
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '앨범에서 선택',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final selectedImage = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (mounted && selectedImage != null) {
+                          final imageUrl = await imageApiService.uploadImage(
+                              context, selectedImage);
+                          setState(() {
+                            babyProfileImageUrl = imageUrl;
+                          });
+                        } else {
+                          print('No image selected.');
+                        }
+                      },
+                    ),
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '삭제하기',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return DeleteModal(
+                              text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              title: '사진이',
+                              tapFunc: () {
+                                setState(() {
+                                  babyProfileImageUrl = null;
+                                });
 
-                      return Future.value();
-                    },
-                  );
+                                return Future.value();
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ]),
+                ),
+              ),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
                 },
-              );
-            },
-          );
-        });
+                child: Container(
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  height: AppUtils.scaleSize(context, 56),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: const Color(0xffC2C4CB),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "취소",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppUtils.scaleSize(context, 16),
+                    ),
+                  )),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildBabyField(int index) {
@@ -421,7 +512,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                     padding: EdgeInsets.only(
                         left: AppUtils.scaleSize(context, 20),
                         right: AppUtils.scaleSize(context, 20),
-                        bottom: AppUtils.scaleSize(context, keyboardPadding),
+                        bottom:
+                            AppUtils.scaleSize(context, 70 + keyboardPadding),
                         top: AppUtils.scaleSize(context, 25)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

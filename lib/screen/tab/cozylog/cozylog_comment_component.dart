@@ -216,17 +216,26 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return SizedBox(
-                                      height: AppUtils.scaleSize(context, 220),
+                                      height: isMyComment
+                                          ? AppUtils.scaleSize(context, 234)
+                                          : AppUtils.scaleSize(
+                                              context, 234 - 64),
                                       child: Column(
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: AppUtils.scaleSize(
-                                                    context, 8)),
+                                            padding: isMyComment
+                                                ? EdgeInsets.symmetric(
+                                                    vertical:
+                                                        AppUtils.scaleSize(
+                                                            context, 8))
+                                                : EdgeInsets.zero,
                                             width: screenWidth -
                                                 AppUtils.scaleSize(context, 40),
-                                            height: AppUtils.scaleSize(
-                                                context, 128),
+                                            height: isMyComment
+                                                ? AppUtils.scaleSize(
+                                                    context, 128)
+                                                : AppUtils.scaleSize(
+                                                    context, 64),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -320,26 +329,10 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                   )
                                                 : Center(
                                                     child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
                                                         children: <Widget>[
-                                                          ListTile(
-                                                            title: Center(
-                                                                child: Text(
-                                                              '답글',
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      mainTextColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: AppUtils
-                                                                      .scaleSize(
-                                                                          context,
-                                                                          16)),
-                                                            )),
-                                                            onTap: () {
-                                                              widget.onReply;
-                                                            },
-                                                          ),
                                                           ListTile(
                                                             title: Center(
                                                                 child: Text(
@@ -634,26 +627,43 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                   builder:
                                                       (BuildContext context) {
                                                     return SizedBox(
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 220),
+                                                      height: subComment
+                                                                  .writerId ==
+                                                              userId
+                                                          ? AppUtils.scaleSize(
+                                                              context, 234)
+                                                          : AppUtils.scaleSize(
+                                                              context,
+                                                              234 - 64),
                                                       child: Column(
                                                         children: [
                                                           Container(
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        8)),
+                                                            padding: subComment
+                                                                        .writerId ==
+                                                                    userId
+                                                                ? EdgeInsets.symmetric(
+                                                                    vertical: AppUtils
+                                                                        .scaleSize(
+                                                                            context,
+                                                                            8))
+                                                                : EdgeInsets
+                                                                    .zero,
                                                             width: screenWidth -
                                                                 AppUtils
                                                                     .scaleSize(
                                                                         context,
                                                                         40),
-                                                            height: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    128),
+                                                            height: subComment
+                                                                        .writerId ==
+                                                                    userId
+                                                                ? AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        128)
+                                                                : AppUtils
+                                                                    .scaleSize(
+                                                                        context,
+                                                                        64),
                                                             decoration:
                                                                 BoxDecoration(
                                                               borderRadius:
@@ -716,21 +726,9 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                                   )
                                                                 : Center(
                                                                     child: Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
                                                                         children: <Widget>[
-                                                                          ListTile(
-                                                                            title: const Center(
-                                                                                child: Text(
-                                                                              '답글',
-                                                                              style: TextStyle(
-                                                                                fontWeight: FontWeight.w600,
-                                                                              ),
-                                                                            )),
-                                                                            onTap:
-                                                                                () {
-                                                                              widget.onReply;
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                          ),
                                                                           ListTile(
                                                                             title: const Center(
                                                                                 child: Text(
