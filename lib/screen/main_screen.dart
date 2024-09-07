@@ -32,61 +32,105 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/navigation_baby.png', // 사용할 이미지 파일의 경로
-              width: AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 40),
-              color:
-                  selectedIndex == 0 ? primaryColor : const Color(0xffBCC0C7),
-            ),
-            label: '태아',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.6),
-                  blurRadius: 5.0,
-                  spreadRadius: 0.0,
-                  offset: const Offset(0, 5),
-                )
-              ]),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: AppUtils.scaleSize(context, 8),
-                  ),
-                  Image.asset(
-                    'assets/images/icons/navigation_home.png', // 사용할 이미지 파일의 경로
-                    width: AppUtils.scaleSize(context, 50),
-                    height: AppUtils.scaleSize(context, 50),
-                  ),
-                ],
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: Color(0xffE8ECF1))),
+          color: Colors.white,
+        ),
+        height: 87,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: AppUtils.scaleSize(context, 54),
+              child: InkWell(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(
+                      'assets/images/icons/navigation_baby.png', // 사용할 이미지 파일의 경로
+                      width: AppUtils.scaleSize(context, 32),
+                      height: AppUtils.scaleSize(context, 32),
+                      color: selectedIndex == 0
+                          ? primaryColor
+                          : const Color(0xffBCC0C7),
+                    ),
+                    Text(
+                      '태아',
+                      style: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 12),
+                          color: selectedIndex == 0
+                              ? primaryColor
+                              : const Color(0xffBCC0C7),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                onTap: () => setState(() {
+                  selectedIndex = 0;
+                }),
               ),
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/navigation_community.png', // 사용할 이미지 파일의 경로
-              width: AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 40),
-              color:
-                  selectedIndex == 2 ? primaryColor : const Color(0xffBCC0C7),
+            Padding(
+              padding: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 12)),
+              child: IconButton(
+                icon: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xff5CA6F8).withOpacity(0.5),
+                        blurRadius: 5.0,
+                        spreadRadius: 0.0,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    'assets/images/icons/navigation_home.png', // 사용할 이미지 파일의 경로
+                    width: AppUtils.scaleSize(context, 47),
+                    height: AppUtils.scaleSize(context, 50),
+                  ),
+                ),
+                onPressed: () => setState(() {
+                  selectedIndex = 1;
+                }),
+              ),
             ),
-            label: '커뮤니티',
-          ),
-        ],
-        currentIndex: selectedIndex, // 지정 인덱스로 이동
-        selectedItemColor: primaryColor,
-        onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
+            SizedBox(
+              height: AppUtils.scaleSize(context, 54),
+              child: InkWell(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(
+                      'assets/images/icons/navigation_community.png', // 사용할 이미지 파일의 경로
+                      width: AppUtils.scaleSize(context, 32),
+                      height: AppUtils.scaleSize(context, 32),
+                      color: selectedIndex == 2
+                          ? primaryColor
+                          : const Color(0xffBCC0C7),
+                    ),
+                    Text(
+                      '커뮤니티',
+                      style: TextStyle(
+                          fontSize: AppUtils.scaleSize(context, 12),
+                          color: selectedIndex == 2
+                              ? primaryColor
+                              : const Color(0xffBCC0C7),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                onTap: () => setState(() {
+                  selectedIndex = 2;
+                }),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
