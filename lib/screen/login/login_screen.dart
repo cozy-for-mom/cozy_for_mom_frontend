@@ -227,10 +227,16 @@ class _LoginScreenState extends State<LoginScreen> {
           // top: 700,
           bottom: AppUtils.scaleSize(context, -125),
           left: AppUtils.scaleSize(context, -170),
-          child: Image(
-            image: const AssetImage('assets/images/login_group_image.png'),
-            width: screenWidth + 250,
-            height: AppUtils.scaleSize(context, 471),
+          child: ClipRect(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              heightFactor: 0.9, // 이미지의 하단 80%만 보여줍니다
+              child: Image(
+                image: const AssetImage('assets/images/login_group_image.png'),
+                width: screenWidth + 250,
+                height: AppUtils.scaleSize(context, 471),
+              ),
+            ),
           ),
         ),
       ],
