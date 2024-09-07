@@ -102,25 +102,27 @@ class _BabyGrowthReportDetailScreenState
                                 top: AppUtils.scaleSize(context, 20),
                                 left: AppUtils.scaleSize(context, 10),
                                 bottom: AppUtils.scaleSize(context, 32)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: snapshot.data!.babies!
-                                  .mapWithIndex((baby, index) {
-                                return CustomProfileButton(
-                                  text: baby.name,
-                                  imagePath: babyProfileImageUrl ?? '',
-                                  offBackColor: const Color(0xffF0F0F5),
-                                  isSelected: activeProfile == baby,
-                                  onPressed: () {
-                                    setState(
-                                      () {
+                            child: SizedBox(
+                              height: AppUtils.scaleSize(context, 111),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data!.babies!.length,
+                                itemBuilder: (context, index) {
+                                  var baby = snapshot.data!.babies![index];
+                                  return CustomProfileButton(
+                                    text: baby.name,
+                                    imagePath: babyProfileImageUrl ?? '',
+                                    offBackColor: const Color(0xffF0F0F5),
+                                    isSelected: activeProfile == baby,
+                                    onPressed: () {
+                                      setState(() {
                                         selectedBabyIndex = index;
                                         selectedBaby.value = baby;
-                                      },
-                                    );
-                                  },
-                                );
-                              }).toList(),
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -397,7 +399,7 @@ class _BabyGrowthReportDetailScreenState
                             padding: EdgeInsets.only(
                                 left: AppUtils.scaleSize(context, 21),
                                 right: AppUtils.scaleSize(context, 21),
-                                bottom: AppUtils.scaleSize(context, 50)),
+                                bottom: AppUtils.scaleSize(context, 22)),
                             child: SizedBox(
                               width: screenWidth,
                               child: Text(

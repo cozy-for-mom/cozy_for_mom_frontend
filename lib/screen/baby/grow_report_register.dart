@@ -148,10 +148,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     var id = widget.babyProfileGrowth?.id;
 
     bool isRegisterButtonEnabled() {
-      return titleController.text.isNotEmpty &&
-              diaryController.text.isNotEmpty &&
-          infoControllersByBabies.values.any(
-              (element) => element.any((element) => element.text.isNotEmpty));
+      return titleController.text.isNotEmpty && diaryController.text.isNotEmpty;
     }
 
     Future<XFile?> showImageSelectModal() async {
@@ -273,19 +270,24 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             top: AppUtils.scaleSize(context, 20),
                             left: AppUtils.scaleSize(context, 10),
                             bottom: AppUtils.scaleSize(context, 32)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: babies.map((baby) {
-                            return CustomProfileButton(
-                              text: baby.name,
-                              imagePath: baby.image,
-                              offBackColor: const Color(0xffF0F0F5),
-                              isSelected: activeBaby == baby,
-                              onPressed: () {
-                                selectedBaby.value = baby;
-                              },
-                            );
-                          }).toList(),
+                        child: SizedBox(
+                          height: AppUtils.scaleSize(context, 111),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: babies.length,
+                            itemBuilder: (context, index) {
+                              var baby = babies[index];
+                              return CustomProfileButton(
+                                text: baby.name,
+                                imagePath: baby.image,
+                                offBackColor: const Color(0xffF0F0F5),
+                                isSelected: activeBaby == baby,
+                                onPressed: () {
+                                  selectedBaby.value = baby;
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

@@ -67,8 +67,9 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                                   horizontal: AppUtils.scaleSize(context, 20),
                                   vertical: AppUtils.scaleSize(context, 23)),
                               child: Image.asset(
-                                'assets/images/icons/babyProfileOn.png',
-                                fit: BoxFit.fill,
+                                widget.isSelected
+                                    ? 'assets/images/icons/babyProfileOn.png'
+                                    : 'assets/images/icons/babyProfileOff.png',
                                 width: AppUtils.scaleSize(context, 40),
                                 height: AppUtils.scaleSize(context, 35),
                               ),

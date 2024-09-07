@@ -355,10 +355,10 @@ class _MyPageState extends State<MyPage> {
                                                     child: Image.asset(
                                                       'assets/images/icons/plusDotted.png',
                                                       width: AppUtils.scaleSize(
-                                                          context, 80),
+                                                          context, 82),
                                                       height:
                                                           AppUtils.scaleSize(
-                                                              context, 80),
+                                                              context, 82),
                                                       alignment:
                                                           Alignment.center,
                                                     ),
