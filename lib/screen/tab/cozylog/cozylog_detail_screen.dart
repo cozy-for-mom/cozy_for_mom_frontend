@@ -561,7 +561,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           SizedBox(height: AppUtils.scaleSize(context, 30)),
                           // 댓글 목록
                           Divider(
-                            height: AppUtils.scaleSize(context, 5),
+                            height: AppUtils.scaleSize(context, 30),
                             color: mainLineColor,
                           ),
                           FutureBuilder(
@@ -630,11 +630,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                       ));
                                                     });
                                                   }),
-                                              Divider(
-                                                color: const Color(0xffE1E1E7),
-                                                height: AppUtils.scaleSize(
-                                                    context, 5),
-                                              ),
+                                              SizedBox(
+                                                  height: AppUtils.scaleSize(
+                                                      context, 15)),
                                             ],
                                           );
                                         } else {
