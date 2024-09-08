@@ -73,9 +73,10 @@ class _MyPageState extends State<MyPage> {
                   top: AppUtils.scaleSize(context, 47),
                   left: AppUtils.scaleSize(context, 340),
                   child: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         color: Colors.black,
+                        size: AppUtils.scaleSize(context, 28),
                       ),
                       onPressed: () {
                         Navigator.pop(context, true);
@@ -85,61 +86,68 @@ class _MyPageState extends State<MyPage> {
                   top: AppUtils.scaleSize(context, 119),
                   left: 0,
                   right: 0,
-                  child: Column(children: [
-                    pregnantInfo['imageUrl'] == null
-                        ? Image.asset(
-                            'assets/images/icons/momProfile.png',
-                            fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                            width: AppUtils.scaleSize(context, 100),
-                            height: AppUtils.scaleSize(context, 100),
-                            alignment: Alignment.center,
-                          )
-                        : ClipOval(
-                            child: Image.network(
-                              pregnantInfo['imageUrl'],
-                              fit: BoxFit.cover,
-                              width: AppUtils.scaleSize(context, 100),
-                              height: AppUtils.scaleSize(context, 100),
+                  child: SizedBox(
+                    height: AppUtils.scaleSize(context, 161),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          pregnantInfo['imageUrl'] == null
+                              ? Image.asset(
+                                  'assets/images/icons/momProfile.png',
+                                  fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
+                                  width: AppUtils.scaleSize(context, 100),
+                                  height: AppUtils.scaleSize(context, 100),
+                                  alignment: Alignment.center,
+                                )
+                              : ClipOval(
+                                  child: Image.network(
+                                    pregnantInfo['imageUrl'],
+                                    fit: BoxFit.cover,
+                                    width: AppUtils.scaleSize(context, 100),
+                                    height: AppUtils.scaleSize(context, 100),
+                                  ),
+                                ),
+                          SizedBox(height: AppUtils.scaleSize(context, 8)),
+                          Text(
+                            "${pregnantInfo['nickname']} 산모님",
+                            style: TextStyle(
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: AppUtils.scaleSize(context, 20)),
+                          ),
+                          SizedBox(height: AppUtils.scaleSize(context, 4)),
+                          InkWell(
+                            onTap: () async {
+                              final res = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MomProfileModify()));
+                              if (res == true) {
+                                setState(() {});
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "프로필 수정",
+                                  style: TextStyle(
+                                      color: offButtonTextColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 12)),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(width: AppUtils.scaleSize(context, 2)),
+                                Image.asset('assets/images/icons/pen.png',
+                                    width: AppUtils.scaleSize(context, 12)),
+                              ],
                             ),
                           ),
-                    SizedBox(height: AppUtils.scaleSize(context, 8)),
-                    Text(
-                      "${pregnantInfo['nickname']} 산모님",
-                      style: TextStyle(
-                          color: mainTextColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 20)),
-                    ),
-                    SizedBox(height: AppUtils.scaleSize(context, 4)),
-                    InkWell(
-                      onTap: () async {
-                        final res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const MomProfileModify()));
-                        if (res == true) {
-                          setState(() {});
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "프로필 수정",
-                            style: TextStyle(
-                                color: offButtonTextColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: AppUtils.scaleSize(context, 12)),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(width: AppUtils.scaleSize(context, 4)),
-                          Image.asset('assets/images/icons/pen.png',
-                              width: AppUtils.scaleSize(context, 12)),
-                        ],
-                      ),
-                    ),
-                  ]),
+                        ]),
+                  ),
                 ),
                 Positioned(
                   top: AppUtils.scaleSize(context, 303),

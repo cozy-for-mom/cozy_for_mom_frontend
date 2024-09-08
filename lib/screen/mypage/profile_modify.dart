@@ -1,16 +1,13 @@
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
-import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/profile_info_form.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
-import 'package:camera/camera.dart';
 
 class MomProfileModify extends StatefulWidget {
   final Function(bool)? onUpdate;
@@ -28,6 +25,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
 
   bool _isSuffixVisible = false;
+  bool _isEmailValid = false;
+  bool _isNicknameValid = false;
+  bool _isBirthValid = false;
   String? imageUrl;
   UserApiService userApiService = UserApiService();
   ImageApiService imageApiService = ImageApiService();
@@ -55,7 +55,11 @@ class _MomProfileModifyState extends State<MomProfileModify> {
       controllers['생년월일']!.text =
           receiveFormatUsingRegex(pregnantInfo['birth']);
       imageUrl = imageUrl ?? pregnantInfo['imageUrl'];
-      setState(() {}); // UI 갱신
+      setState(() {
+        _isNicknameValid = true;
+        _isEmailValid = true;
+        _isBirthValid = true;
+      }); // UI 갱신
     } catch (e) {
       print('Data loading failed: $e');
     }
@@ -75,6 +79,36 @@ class _MomProfileModifyState extends State<MomProfileModify> {
 
   String receiveFormatUsingRegex(String date) {
     return date.replaceAll(RegExp(r'\-'), '.');
+  }
+
+  void _updateEmailValidity(bool isValid) {
+    if (mounted) {
+      setState(() {
+        _isEmailValid = isValid;
+      });
+    }
+  }
+
+  void _updateNicknameValidity(bool isValid) {
+    if (mounted) {
+      setState(() {
+        _isNicknameValid = isValid;
+      });
+    }
+  }
+
+  void _updateBirthValidity(bool isValid) {
+    if (mounted) {
+      setState(() {
+        _isBirthValid = isValid;
+      });
+    }
+  }
+
+  void _updateNameValidity(bool isValid) {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   bool areAllFieldsFilled(Map<String, TextEditingController> controllers) {
@@ -128,7 +162,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     width: AppUtils.scaleSize(context, 53),
                     height: AppUtils.scaleSize(context, 29),
                     decoration: BoxDecoration(
-                      color: areAllFieldsFilled(controllers)
+                      color: areAllFieldsFilled(controllers) &&
+                              _isEmailValid &&
+                              _isNicknameValid &&
+                              _isBirthValid
                           ? primaryColor
                           : induceButtonColor,
                       borderRadius: BorderRadius.circular(33),
@@ -143,7 +180,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   ),
                 ),
                 onTap: () async {
-                  if (areAllFieldsFilled(controllers)) {
+                  if (areAllFieldsFilled(controllers) &&
+                      _isEmailValid &&
+                      _isNicknameValid &&
+                      _isBirthValid) {
                     await userApiService.modifyUserProfile(
                         context,
                         controllers['이름']!.text,
@@ -161,81 +201,76 @@ class _MomProfileModifyState extends State<MomProfileModify> {
             ],
           ),
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: AppUtils.scaleSize(context, 140),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: AppUtils.scaleSize(context, 10),
-                    left: AppUtils.scaleSize(context, 145),
-                    child: imageUrl == null
-                        ? Image(
-                            image: const AssetImage(
-                                "assets/images/icons/momProfile.png"),
-                            width: AppUtils.scaleSize(context, 100),
-                            height: AppUtils.scaleSize(context, 100))
-                        : ClipOval(
-                            // 원형
-                            child: Image.network(
-                              imageUrl!,
-                              fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () async {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 18)),
+                        child: SelectBottomModal(
+                            selec1: '직접 찍기',
+                            selec2: '앨범에서 선택',
+                            tap1: () async {
+                              Navigator.pop(
+                                  context); // TODO 이미지 업로드 방식 조건문으로 고치기(코드 중복 줄이기 위해)
+                              final selectedImage = await ImagePicker()
+                                  .pickImage(source: ImageSource.camera);
+                              if (mounted && selectedImage != null) {
+                                final selectedImageUrl = await imageApiService
+                                    .uploadImage(context, selectedImage);
+                                setState(() {
+                                  imageUrl = selectedImageUrl;
+                                });
+                              } else {
+                                print('No image selected.');
+                              }
+                            },
+                            tap2: () async {
+                              Navigator.pop(context);
+                              final selectedImage = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              if (mounted && selectedImage != null) {
+                                final selectedImageUrl = await imageApiService
+                                    .uploadImage(context, selectedImage);
+                                setState(() {
+                                  imageUrl = selectedImageUrl;
+                                });
+                              } else {
+                                print('No image selected.');
+                              }
+                            }));
+                  },
+                );
+              },
+              child: SizedBox(
+                height: AppUtils.scaleSize(context, 140),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: AppUtils.scaleSize(context, 10),
+                      left: AppUtils.scaleSize(context, 145),
+                      child: imageUrl == null
+                          ? Image(
+                              image: const AssetImage(
+                                  "assets/images/icons/momProfile.png"),
                               width: AppUtils.scaleSize(context, 100),
-                              height: AppUtils.scaleSize(context, 100),
+                              height: AppUtils.scaleSize(context, 100))
+                          : ClipOval(
+                              // 원형
+                              child: Image.network(
+                                imageUrl!,
+                                fit: BoxFit.cover,
+                                width: AppUtils.scaleSize(context, 100),
+                                height: AppUtils.scaleSize(context, 100),
+                              ),
                             ),
-                          ),
-                  ),
-                  Positioned(
-                    top: AppUtils.scaleSize(context, 181 - 109),
-                    left: AppUtils.scaleSize(context, 229),
-                    child: InkWell(
-                      onTap: () async {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppUtils.scaleSize(context, 18)),
-                                child: SelectBottomModal(
-                                    selec1: '직접 찍기',
-                                    selec2: '앨범에서 선택',
-                                    tap1: () async {
-                                      Navigator.pop(
-                                          context); // TODO 이미지 업로드 방식 조건문으로 고치기(코드 중복 줄이기 위해)
-                                      final selectedImage = await ImagePicker()
-                                          .pickImage(
-                                              source: ImageSource.camera);
-                                      if (mounted && selectedImage != null) {
-                                        final selectedImageUrl =
-                                            await imageApiService.uploadImage(
-                                                context, selectedImage);
-                                        setState(() {
-                                          imageUrl = selectedImageUrl;
-                                        });
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    },
-                                    tap2: () async {
-                                      Navigator.pop(context);
-                                      final selectedImage = await ImagePicker()
-                                          .pickImage(
-                                              source: ImageSource.gallery);
-                                      if (mounted && selectedImage != null) {
-                                        final selectedImageUrl =
-                                            await imageApiService.uploadImage(
-                                                context, selectedImage);
-                                        setState(() {
-                                          imageUrl = selectedImageUrl;
-                                        });
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    }));
-                          },
-                        );
-                      },
+                    ),
+                    Positioned(
+                      top: AppUtils.scaleSize(context, 181 - 109),
+                      left: AppUtils.scaleSize(context, 229),
                       child: Image(
                         image: const AssetImage(
                             "assets/images/icons/circle_pen.png"),
@@ -243,8 +278,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         height: AppUtils.scaleSize(context, 24),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -334,10 +369,16 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 return Column(
                   children: [
                     ProfileInfoForm(
-                      title: type,
-                      hint: hint,
-                      controller: controllers[type],
-                    ),
+                        title: type,
+                        hint: hint,
+                        controller: controllers[type],
+                        updateValidity: type == '닉네임'
+                            ? _updateNicknameValidity
+                            : type == '이메일'
+                                ? _updateEmailValidity
+                                : type == '생년월일'
+                                    ? _updateBirthValidity
+                                    : _updateNameValidity),
                     SizedBox(height: AppUtils.scaleSize(context, 24)),
                   ],
                 );

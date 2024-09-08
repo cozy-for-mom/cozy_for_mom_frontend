@@ -494,9 +494,10 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
           actions: [
             IconButton(
                 color: Colors.black,
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   color: Colors.black,
+                  size: AppUtils.scaleSize(context, 28),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -521,51 +522,50 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Stack(
-                              children: [
-                                Center(
-                                  child: babyProfileImageUrl == null
-                                      ? Image(
-                                          image: const AssetImage(
-                                              "assets/images/icons/babyProfile.png"),
-                                          width:
-                                              AppUtils.scaleSize(context, 100),
-                                          height:
-                                              AppUtils.scaleSize(context, 100))
-                                      : ClipOval(
-                                          // 원형
-                                          child: Image.network(
-                                            babyProfileImageUrl!,
-                                            fit: BoxFit.cover,
+                            InkWell(
+                              onTap: () async {
+                                if (babyProfileImageUrl == null) {
+                                  final selectedImage =
+                                      await showImageSelectModal();
+                                  if (mounted && selectedImage != null) {
+                                    final imageUrl = await imageApiService
+                                        .uploadImage(context, selectedImage);
+                                    setState(() {
+                                      babyProfileImageUrl = imageUrl;
+                                    });
+                                  } else {
+                                    print('No image selected.');
+                                  }
+                                } else {
+                                  showSelectModal();
+                                }
+                              },
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: babyProfileImageUrl == null
+                                        ? Image(
+                                            image: const AssetImage(
+                                                "assets/images/icons/babyProfile.png"),
                                             width: AppUtils.scaleSize(
                                                 context, 100),
                                             height: AppUtils.scaleSize(
-                                                context, 100),
+                                                context, 100))
+                                        : ClipOval(
+                                            // 원형
+                                            child: Image.network(
+                                              babyProfileImageUrl!,
+                                              fit: BoxFit.cover,
+                                              width: AppUtils.scaleSize(
+                                                  context, 100),
+                                              height: AppUtils.scaleSize(
+                                                  context, 100),
+                                            ),
                                           ),
-                                        ),
-                                ),
-                                Positioned(
-                                  left: AppUtils.scaleSize(context, 206),
-                                  top: AppUtils.scaleSize(context, 72),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      if (babyProfileImageUrl == null) {
-                                        final selectedImage =
-                                            await showImageSelectModal();
-                                        if (mounted && selectedImage != null) {
-                                          final imageUrl =
-                                              await imageApiService.uploadImage(
-                                                  context, selectedImage);
-                                          setState(() {
-                                            babyProfileImageUrl = imageUrl;
-                                          });
-                                        } else {
-                                          print('No image selected.');
-                                        }
-                                      } else {
-                                        showSelectModal();
-                                      }
-                                    },
+                                  ),
+                                  Positioned(
+                                    left: AppUtils.scaleSize(context, 206),
+                                    top: AppUtils.scaleSize(context, 72),
                                     child: Image(
                                       image: const AssetImage(
                                           "assets/images/icons/circle_pen.png"),
@@ -573,8 +573,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                       height: AppUtils.scaleSize(context, 24),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: AppUtils.scaleSize(context, 30),
