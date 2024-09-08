@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cozy_for_mom_frontend/model/user_model.dart';
-import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
@@ -22,6 +21,7 @@ class UserApiService extends ChangeNotifier {
       final headers = await getHeaders();
       final url = Uri.parse('$baseUrl/me');
       Response res = await get(url, headers: headers);
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         final body = jsonDecode(utf8.decode(res.bodyBytes));
         final userData = body['data'];
@@ -66,7 +66,7 @@ class UserApiService extends ChangeNotifier {
         };
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return {};
       }
@@ -89,12 +89,14 @@ class UserApiService extends ChangeNotifier {
     };
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+
     if (res.statusCode == 200) {
       return;
     } else {
       if (context.mounted) {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
       }
       // throw Exception('$name 산모 프로필 수정을 실패하였습니다.');
@@ -107,13 +109,13 @@ class UserApiService extends ChangeNotifier {
     Map data = {'babyProfileId': id};
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return;
     } else {
       if (context.mounted) {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
       }
       // throw Exception('$id 메인 태아 프로필 변경을 실패하였습니다.');
@@ -126,7 +128,7 @@ class UserApiService extends ChangeNotifier {
       final url = Uri.parse('$baseUrl/baby/$babyProfileId');
       final headers = await getHeaders();
       Response res = await get(url, headers: headers);
-
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         String dueAt = body['data']['dueAt'];
@@ -142,7 +144,7 @@ class UserApiService extends ChangeNotifier {
         };
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return {};
         // throw Exception('$babyProfileId 태아 프로필 조회 실패: ${res.statusCode}');
@@ -165,13 +167,13 @@ class UserApiService extends ChangeNotifier {
           'profileImageUrl': profileImageUrl,
           'babies': babies.map((e) => e.toJson()).toList(),
         }));
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return;
     } else {
       if (context.mounted) {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
       }
       // throw Exception('태아 추가를 실패하였습니다.');
@@ -193,12 +195,13 @@ class UserApiService extends ChangeNotifier {
           'profileImageUrl': profileImageUrl,
           'babies': babies.map((e) => e.toJson()).toList(),
         }));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return;
     } else {
       if (context.mounted) {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
       }
       // throw Exception('태아 수정을 실패하였습니다.');
@@ -214,7 +217,7 @@ class UserApiService extends ChangeNotifier {
       print('$babyProfileId 태아 프로필이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$babyProfileId 태아 프로필 삭제를 실패하였습니다.';
     }
@@ -231,7 +234,7 @@ class UserApiService extends ChangeNotifier {
       print('user $id 회원이 로그아웃되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '로그아웃을 실패하였습니다.';
     }

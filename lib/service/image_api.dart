@@ -30,7 +30,7 @@ class ImageApiService {
     } else {
       if (context.mounted) {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, '이미지 등록에 실패하였습니다.');
         }
       }
       return null;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cozy_for_mom_frontend/common/extension/pair.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
@@ -13,6 +12,8 @@ class BabyGrowthApiService {
   Future<int?> registerBabyProfileGrowth(
       BuildContext context, BabyProfileGrowth growth) async {
     final headers = await getHeaders();
+    String? message;
+
     if (growth.id != null) {
       final url = Uri.parse("$baseUrl/growth/${growth.id}");
       final res = await put(
@@ -20,6 +21,7 @@ class BabyGrowthApiService {
         headers: headers,
         body: jsonEncode(growth.toJson()),
       );
+      message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200 || res.statusCode == 201) {
         return jsonDecode(res.body)['data']['growthReportId'];
       } else {
@@ -32,12 +34,13 @@ class BabyGrowthApiService {
         headers: headers,
         body: jsonEncode(growth.toJson()),
       );
+      message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200 || res.statusCode == 201) {
         return jsonDecode(res.body)['data']['growthReportId'];
       } else {
         if (context.mounted) {
           if (context.mounted) {
-            handleHttpResponse(res.statusCode, context);
+            handleHttpResponse(res.statusCode, context, message);
           }
         }
         return null;
@@ -61,6 +64,8 @@ class BabyGrowthApiService {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['list'];
@@ -78,7 +83,7 @@ class BabyGrowthApiService {
           totalCount: totalCount);
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('성장 보고서 목록 조회 실패');
@@ -97,6 +102,7 @@ class BabyGrowthApiService {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -106,7 +112,7 @@ class BabyGrowthApiService {
       return growth;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('성장 보고서 조회 실패 - id: $id');
@@ -132,11 +138,12 @@ class BabyGrowthApiService {
           'examinationAt': examinationAt,
           'notifyAt': notificationOptions,
         }));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 201) {
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       // throw Exception('다음검진일 설정 실패');
     }
@@ -159,12 +166,13 @@ class BabyGrowthApiService {
         },
       ),
     );
+
     if (res.statusCode == 204) {
       print("성장보고서 삭제왼료");
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw Exception('성장보고서(ids: $growthIds) 삭제 실패');
     }
@@ -175,11 +183,12 @@ class BabyGrowthApiService {
     final url = Uri.parse('$baseUrl/growth/all/$babyProfileId');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
+
     if (res.statusCode == 204) {
       print('$babyProfileId 성장보고서 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '모든 성장보고서 기록 삭제를 실패하였습니다.';
     }
@@ -189,11 +198,12 @@ class BabyGrowthApiService {
     final url = Uri.parse('$baseUrl/growth/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
+
     if (res.statusCode == 204) {
       print('$id 성장보고서 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$id 성장보고서 기록 삭제를 실패하였습니다.';
     }

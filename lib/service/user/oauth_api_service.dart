@@ -39,6 +39,7 @@ class OauthApiService {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       final accessToken =
           (res.headers['authorization'] as String).split(' ')[1];
@@ -50,7 +51,7 @@ class OauthApiService {
       return UserType.findByString(decoded['info']['role']);
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 로그인 실패 (oauthType: $oauthType)');

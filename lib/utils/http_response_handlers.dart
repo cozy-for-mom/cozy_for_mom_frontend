@@ -1,18 +1,20 @@
 import 'dart:async';
 
-import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';
 
-void handleHttpResponse(int statusCode, BuildContext context) async {
+void handleHttpResponse(
+    int statusCode, BuildContext context, String? message) async {
   final tokenManager = TokenManager.TokenManager();
   ModalRoute? route = ModalRoute.of(context);
-
   switch (statusCode) {
     case 200:
       // 성공 로직
+      break;
+    case 400:
+      showAlertDialog(context, message ?? '잘못된 형식의 입력값입니다.');
       break;
     case 401:
     // 인증 실패
@@ -23,7 +25,7 @@ void handleHttpResponse(int statusCode, BuildContext context) async {
       if (context.mounted) {
         var currentRoute = ModalRoute.of(context)?.settings.name;
         if (route != null && currentRoute != '/login') {
-          await showAlertDialog(context, "인증되지 않은 사용자입니다.");
+          await showAlertDialog(context, '인증되지 않은 사용자입니다.');
           if (context.mounted) {
             Navigator.of(context).pushReplacementNamed('/login');
           }
@@ -32,15 +34,15 @@ void handleHttpResponse(int statusCode, BuildContext context) async {
       break;
     case 500:
       // 서버 내부 오류
-      showAlertDialog(context, "알 수 없는 오류가 발생했습니다.");
+      showAlertDialog(context, '알 수 없는 오류가 발생했습니다.');
       break;
     default:
       // 기타 오류
-      showAlertDialog(context, "알 수 없는 오류가 발생했습니다.");
+      showAlertDialog(context, message ?? '알 수 없는 오류가 발생했습니다.');
   }
 }
 
-Future<void> showAlertDialog(BuildContext context, String message) {
+Future<void> showAlertDialog(BuildContext context, String? message) {
   return showDialog<void>(
     context: context,
     barrierDismissible: true,

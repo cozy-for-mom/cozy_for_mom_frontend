@@ -4,17 +4,18 @@ import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
 import 'package:cozy_for_mom_frontend/model/user_join_model.dart';
+import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class JoinApiService extends ChangeNotifier {
   final tokenManager = TokenManager.TokenManager();
+  final DeviceTokenManager deviceTokenManager = DeviceTokenManager();
 
   Future<Map<String, dynamic>> signUp(
       BuildContext context, UserInfo userInfo, BabyInfo babyInfo) async {
@@ -26,7 +27,7 @@ class JoinApiService extends ChangeNotifier {
     };
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
-    print(utf8.decode(res.bodyBytes));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       final accessToken =
           (res.headers['authorization'] as String).split(' ')[1];
@@ -36,7 +37,7 @@ class JoinApiService extends ChangeNotifier {
       return jsonDecode(utf8.decode(res.bodyBytes));
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return {};
       // throw Exception('회원가입을 실패하였습니다.');
@@ -50,13 +51,14 @@ class JoinApiService extends ChangeNotifier {
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return true;
     } else if (res.statusCode == 409) {
       return false;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('닉네임 중복 확인 실패');
@@ -69,13 +71,14 @@ class JoinApiService extends ChangeNotifier {
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return true;
     } else if (res.statusCode == 409) {
       return false;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('이메일 중복 확인 실패');
@@ -89,11 +92,12 @@ class JoinApiService extends ChangeNotifier {
     Response res = await delete(url, headers: headers, body: jsonEncode(data));
     if (res.statusCode == 204) {
       await tokenManager.deleteToken();
+      await deviceTokenManager.deleteDeviceToken();
       JoinInputData().resetData();
       print('회원탈퇴가 완료되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '회원탈퇴를 실패하였습니다.';
     }

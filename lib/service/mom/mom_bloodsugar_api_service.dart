@@ -16,7 +16,7 @@ class BloodsugarApiService extends ChangeNotifier {
       final url = Uri.parse('$baseUrl/bloodsugar?date=$formattedDate');
       final headers = await getHeaders();
       Response res = await get(url, headers: headers);
-
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> bloodsugarsData = body['data']['bloodSugars'];
@@ -27,7 +27,7 @@ class BloodsugarApiService extends ChangeNotifier {
         return bloodsugars;
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('$formattedDate 혈당 조회를 실패하였습니다.');
@@ -48,7 +48,7 @@ class BloodsugarApiService extends ChangeNotifier {
       final url = Uri.parse(
           '$baseUrl/bloodsugar/period?date=$formattedDate&type=$type');
       Response res = await get(url, headers: headers);
-
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> bloodsugarsData = body['data']['bloodsugars'];
@@ -64,7 +64,7 @@ class BloodsugarApiService extends ChangeNotifier {
         };
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return {};
         // throw Exception('$formattedDate 혈당 기간별 조회를 실패하였습니다.');
@@ -83,13 +83,14 @@ class BloodsugarApiService extends ChangeNotifier {
       final url =
           Uri.parse('$baseUrl/bloodsugar/avg/postprandial?date=$formattedDate');
       Response res = await get(url, headers: headers);
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         double avgBloodsugar = body['data']['avgBloodSugar'];
         return avgBloodsugar;
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('$formattedDate 혈당 평균 조회를 실패하였습니다.');
@@ -114,11 +115,12 @@ class BloodsugarApiService extends ChangeNotifier {
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(res.body);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return resData['data']['bloodSugarRecordId'];
     } else {
       if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception(
@@ -139,11 +141,12 @@ class BloodsugarApiService extends ChangeNotifier {
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(res.body);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return resData['data']['bloodSugarRecordId'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception(
@@ -159,7 +162,7 @@ class BloodsugarApiService extends ChangeNotifier {
       print('혈당 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '혈당 기록 삭제를 실패하였습니다.';
     }

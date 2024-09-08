@@ -16,7 +16,7 @@ class SupplementApiService extends ChangeNotifier {
       final url = Uri.parse('$baseUrl/supplement/intake?date=$formattedDate');
       final headers = await getHeaders();
       Response res = await get(url, headers: headers);
-
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> supplementsData = body['data']['supplements'];
@@ -27,7 +27,7 @@ class SupplementApiService extends ChangeNotifier {
         return supplements;
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('$formattedDate 영양제 목록 조회를 실패하였습니다.');
@@ -50,11 +50,12 @@ class SupplementApiService extends ChangeNotifier {
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(utf8.decode(res.bodyBytes));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return resData['data']['supplementRecordId'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$name 섭취 기록 등록을 실패하였습니다.');
@@ -70,11 +71,12 @@ class SupplementApiService extends ChangeNotifier {
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(utf8.decode(res.bodyBytes));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return resData['data']['supplementRecordId'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$name 섭취 기록 수정을 실패하였습니다.');
@@ -85,12 +87,11 @@ class SupplementApiService extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/supplement/intake/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
-
     if (res.statusCode == 204) {
       print('$id 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$id 기록 삭제를 실패하였습니다.';
     }
@@ -104,11 +105,12 @@ class SupplementApiService extends ChangeNotifier {
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(utf8.decode(res.bodyBytes));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return resData['data']['supplementId'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$name 영양제 등록을 실패하였습니다.');
@@ -124,11 +126,12 @@ class SupplementApiService extends ChangeNotifier {
 
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return PregnantSupplement.fromJson(json.decode(res.body));
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$name 섭취 기록 등록을 실패하였습니다.');
@@ -139,12 +142,11 @@ class SupplementApiService extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/supplement/$id');
     final headers = await getHeaders();
     Response res = await delete(url, headers: headers);
-
     if (res.statusCode == 204) {
       print('$id 영양제가 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$id 영양제 삭제를 실패하였습니다.';
     }

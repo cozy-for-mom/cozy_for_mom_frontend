@@ -16,7 +16,7 @@ class MealApiService extends ChangeNotifier {
       final headers = await getHeaders();
       // TODO api 실제 테스트 시 위의 코드 주석 처리 및 아래 코드 주석 해제
       Response res = await get(url, headers: headers);
-
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> mealsData = body['data']['mealRecordList'];
@@ -26,7 +26,7 @@ class MealApiService extends ChangeNotifier {
         return meals;
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('$formattedDate 식단 조회를 실패하였습니다.');
@@ -52,11 +52,12 @@ class MealApiService extends ChangeNotifier {
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(res.body);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return resData['data']['id'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$dateTime $mealType 식사 기록 등록을 실패하였습니다.');
@@ -77,11 +78,12 @@ class MealApiService extends ChangeNotifier {
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(res.body);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return resData['data']['id'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('$dateTime $mealType 식사 기록 수정을 실패하였습니다.');
@@ -96,7 +98,7 @@ class MealApiService extends ChangeNotifier {
       print('$id 식사 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$id 식사 기록 삭제를 실패하였습니다.';
     }

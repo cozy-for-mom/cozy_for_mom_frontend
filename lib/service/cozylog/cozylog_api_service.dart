@@ -15,10 +15,13 @@ class CozyLogApiService extends ChangeNotifier {
   ) async {
     var urlString = '$baseUrl/me/cozy-log?size=$size';
     final headers = await getHeaders();
-    if (lastId != null) urlString += '&lastId=$lastId';
+    if (lastId != null && lastId != 0) urlString += '&lastId=$lastId';
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    print(url);
+    print(utf8.decode(res.bodyBytes));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -31,7 +34,7 @@ class CozyLogApiService extends ChangeNotifier {
       return MyCozyLogListWrapper(cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 목록 조회 실패');
@@ -51,6 +54,7 @@ class CozyLogApiService extends ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -63,7 +67,7 @@ class CozyLogApiService extends ChangeNotifier {
           cozyLogs: cozyLogs, totalCount: totalCount);
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 목록 조회 실패');
@@ -87,6 +91,7 @@ class CozyLogApiService extends ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -97,7 +102,7 @@ class CozyLogApiService extends ChangeNotifier {
       return cozyLogs;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 목록 조회 실패');
@@ -130,6 +135,7 @@ class CozyLogApiService extends ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -144,7 +150,7 @@ class CozyLogApiService extends ChangeNotifier {
       );
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 검색 조회 실패');
@@ -160,14 +166,14 @@ class CozyLogApiService extends ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       dynamic data = body['data'];
       return CozyLog.fromJson(data);
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그(id: $id) 조회 실패');
@@ -206,6 +212,7 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -213,7 +220,7 @@ class CozyLogApiService extends ChangeNotifier {
       return data['cozyLogId'] as int;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그 작성 실패');
@@ -254,6 +261,7 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
@@ -261,7 +269,7 @@ class CozyLogApiService extends ChangeNotifier {
       return data['modifiedCozyLogId'] as int;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그(id: $id) 수정 실패');
@@ -285,7 +293,7 @@ class CozyLogApiService extends ChangeNotifier {
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw Exception('코지로그(id: $id) 삭제 실패');
     }
@@ -309,12 +317,13 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 201) {
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       // throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
@@ -338,12 +347,13 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 201) {
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       // throw Exception('코지로그(id: $cozyLogId) 스크랩 실패');
     }
@@ -366,12 +376,13 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+
     if (res.statusCode == 204) {
       print("코지로그 삭제왼료");
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
@@ -394,12 +405,13 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 204) {
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       // throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
     }
@@ -422,12 +434,13 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 204) {
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       // throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
     }

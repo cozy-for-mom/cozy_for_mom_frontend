@@ -15,6 +15,7 @@ class NotificationApiService extends ChangeNotifier {
 
       final headers = await getHeaders();
       Response res = await get(url, headers: headers);
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
         List<dynamic> notificationsData = body['data']['notification'];
@@ -25,7 +26,7 @@ class NotificationApiService extends ChangeNotifier {
         return notifications;
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('$type 알림 목록 조회를 실패하였습니다.');
@@ -44,13 +45,14 @@ class NotificationApiService extends ChangeNotifier {
 
       final headers = await getHeaders();
       Response res = await get(url, headers: headers);
+      String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
       if (res.statusCode == 200) {
         Map<String, dynamic> upcomingNotification =
             jsonDecode(utf8.decode(res.bodyBytes));
         return upcomingNotification['data'];
       } else {
         if (context.mounted) {
-          handleHttpResponse(res.statusCode, context);
+          handleHttpResponse(res.statusCode, context, message);
         }
         return null;
         // throw Exception('가장 가까운 알림을 불러오는데 실패하였습니다.');
@@ -76,13 +78,14 @@ class NotificationApiService extends ChangeNotifier {
 
     final Response res =
         await post(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     Map<String, dynamic> resData = jsonDecode(res.body);
     if (res.statusCode == 201) {
       notifyListeners();
       return resData['data']['id'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception(
@@ -103,12 +106,13 @@ class NotificationApiService extends ChangeNotifier {
 
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     Map<String, dynamic> resData = jsonDecode(res.body);
     if (res.statusCode == 200) {
       return resData['data']['id'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception(
@@ -125,11 +129,12 @@ class NotificationApiService extends ChangeNotifier {
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
     Map<String, dynamic> resData = jsonDecode(res.body);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return resData['data']['id'];
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('알림 활성화 수정을 실패하였습니다.');
@@ -144,7 +149,7 @@ class NotificationApiService extends ChangeNotifier {
       print('$id 알림 기록이 삭제되었습니다.');
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw '$id 알림 기록 삭제를 실패하였습니다.';
     }

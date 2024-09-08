@@ -17,10 +17,11 @@ class CozyLogCommentApiService with ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['comments'];
+      print(data);
       List<CozyLogComment> cozyLogs = data.map((comment) {
         return CozyLogComment.fromJson(comment);
       }).toList();
@@ -28,7 +29,7 @@ class CozyLogCommentApiService with ChangeNotifier {
       return cozyLogs;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그(id: $id) 댓글 조회 실패');
@@ -55,12 +56,12 @@ class CozyLogCommentApiService with ChangeNotifier {
         },
       ),
     );
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 201) {
       return true;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그(id: $cozyLogId) 댓글 작성 실패');
@@ -80,12 +81,11 @@ class CozyLogCommentApiService with ChangeNotifier {
       url,
       headers: headers,
     );
-
     if (res.statusCode == 204) {
       return true;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, null);
       }
       return null;
       // throw Exception('코지로그(id: $cozyLogId) 댓글 삭제 실패');
@@ -114,12 +114,12 @@ class CozyLogCommentApiService with ChangeNotifier {
         },
       ),
     );
-
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
     if (res.statusCode == 200) {
       return true;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context);
+        handleHttpResponse(res.statusCode, context, message);
       }
       return null;
       // throw Exception('코지로그(id: $cozyLogId) 댓글 수정 실패');
