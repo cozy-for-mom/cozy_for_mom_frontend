@@ -191,7 +191,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                   ),
                   widget.isMyCozyLog || isMyComment
                       ? SizedBox(
-                          width: AppUtils.scaleSize(context, 3),
+                          width: AppUtils.scaleSize(context, 15),
                           child: IconButton(
                             icon: Image(
                               image: const AssetImage(
@@ -413,11 +413,8 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                       : Container(),
                 ],
               )
-            : Container(
-                child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("댓글이 삭제되었습니다.")),
-              ),
+            : const Align(
+                alignment: Alignment.centerLeft, child: Text("댓글이 삭제되었습니다.")),
         widget.subComments.isNotEmpty
             ? Column(
                 children: [
@@ -611,7 +608,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                   ),
                                                   SizedBox(
                                                     height: AppUtils.scaleSize(
-                                                        context, 10),
+                                                        context, 15),
                                                   ),
                                                 ],
                                               ),
@@ -621,7 +618,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                   subComment.writerId == userId
                                               ? SizedBox(
                                                   width: AppUtils.scaleSize(
-                                                      context, 3),
+                                                      context, 15),
                                                   child: IconButton(
                                                     icon: Image(
                                                       image: const AssetImage(
