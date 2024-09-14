@@ -515,7 +515,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         right: AppUtils.scaleSize(context, 20),
                         bottom:
                             AppUtils.scaleSize(context, 70 + keyboardPadding),
-                        top: AppUtils.scaleSize(context, 25)),
+                        top: AppUtils.scaleSize(context, 9)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -564,8 +564,8 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                           ),
                                   ),
                                   Positioned(
+                                    top: AppUtils.scaleSize(context, 181 - 117),
                                     left: AppUtils.scaleSize(context, 206),
-                                    top: AppUtils.scaleSize(context, 72),
                                     child: Image(
                                       image: const AssetImage(
                                           "assets/images/icons/circle_pen.png"),

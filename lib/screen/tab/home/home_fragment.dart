@@ -131,8 +131,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                 top: AppUtils.scaleSize(context, 46),
-                    left: AppUtils.scaleSize(context, 335),
+                  top: AppUtils.scaleSize(context, 46),
+                  left: screenWidth - AppUtils.scaleSize(context, 55),
                   child: IconButton(
                     icon: Image(
                       width: AppUtils.scaleSize(context, 30),
@@ -233,7 +233,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                           ],
                         ),
                         SizedBox(
-                          height: AppUtils.scaleSize(context, 38),
+                          height: AppUtils.scaleSize(context, 40),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -86,7 +86,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: AppUtils.scaleSize(context, -10),
+                    top: AppUtils.scaleSize(context, -5),
                     child: Image(
                         width: screenWidth,
                         fit: BoxFit.cover,
@@ -98,7 +98,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                   ),
                   Positioned(
                     top: AppUtils.scaleSize(context, 46),
-                    left: AppUtils.scaleSize(context, 335),
+                    left: screenWidth - AppUtils.scaleSize(context, 55),
                     child: IconButton(
                       icon: Image(
                         width: AppUtils.scaleSize(context, 30),
@@ -119,7 +119,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 120),
+                      top: AppUtils.scaleSize(context, 126),
                       left: 0,
                       right: 0,
                       child: Column(
@@ -199,7 +199,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                               height: AppUtils.scaleSize(context, 20),
                               decoration: BoxDecoration(
                                 color: nowHour >= 8 && nowHour < 18
-                                    ? const Color(0xffFE8282)
+                                    ? const Color(0xffFFB4BE)
                                     : const Color(0xff9D8DFF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
@@ -210,7 +210,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 470),
+                    top: AppUtils.scaleSize(context, 478),
                     left: AppUtils.scaleSize(context, 20),
                     child: SizedBox(
                       width: screenWidth - AppUtils.scaleSize(context, 40),
@@ -247,7 +247,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 575),
+                      top: AppUtils.scaleSize(context, 585),
                       left: AppUtils.scaleSize(context, 20),
                       child: InkWell(
                         onTap: () {

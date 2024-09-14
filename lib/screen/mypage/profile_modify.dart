@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
@@ -28,7 +29,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   bool _isEmailValid = false;
   bool _isNicknameValid = false;
   bool _isBirthValid = false;
-  String? imageUrl;
+  String? userProfileImageUrl;
   UserApiService userApiService = UserApiService();
   ImageApiService imageApiService = ImageApiService();
 
@@ -54,7 +55,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
       controllers['이메일']!.text = pregnantInfo['email'];
       controllers['생년월일']!.text =
           receiveFormatUsingRegex(pregnantInfo['birth']);
-      imageUrl = imageUrl ?? pregnantInfo['imageUrl'];
+      userProfileImageUrl = pregnantInfo['imageUrl'];
       setState(() {
         _isNicknameValid = true;
         _isEmailValid = true;
@@ -113,6 +114,170 @@ class _MomProfileModifyState extends State<MomProfileModify> {
 
   bool areAllFieldsFilled(Map<String, TextEditingController> controllers) {
     return controllers.values.every((controller) => controller.text.isNotEmpty);
+  }
+
+  Future<XFile?> showImageSelectModal() async {
+    XFile? selectedImage;
+
+    String? choice = await showModalBottomSheet<String>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return SelectBottomModal(
+            selec1: '직접 찍기',
+            selec2: '앨범에서 선택',
+            tap1: () {
+              Navigator.pop(context, 'camera');
+            },
+            tap2: () {
+              Navigator.pop(context, 'gallery');
+            },
+          );
+        });
+
+    if (choice != null) {
+      ImageSource source =
+          choice == 'camera' ? ImageSource.camera : ImageSource.gallery;
+      selectedImage = await ImagePicker().pickImage(source: source);
+    }
+
+    return selectedImage;
+  }
+
+  Future<dynamic> showSelectModal() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return showModalBottomSheet<void>(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: AppUtils.scaleSize(context, 272 + 15),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: AppUtils.scaleSize(context, 8)),
+                width: screenWidth - AppUtils.scaleSize(context, 40),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Column(children: <Widget>[
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '직접 찍기',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final selectedImage = await ImagePicker()
+                            .pickImage(source: ImageSource.camera);
+                        if (mounted && selectedImage != null) {
+                          final imageUrl = await imageApiService.uploadImage(
+                              context, selectedImage);
+                          setState(() {
+                            userProfileImageUrl = imageUrl;
+                          });
+                        } else {
+                          print('No image selected.');
+                        }
+                      },
+                    ),
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '앨범에서 선택',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final selectedImage = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (mounted && selectedImage != null) {
+                          final imageUrl = await imageApiService.uploadImage(
+                              context, selectedImage);
+                          setState(() {
+                            userProfileImageUrl = imageUrl;
+                          });
+                        } else {
+                          print('No image selected.');
+                        }
+                      },
+                    ),
+                    ListTile(
+                      title: Center(
+                          child: Text(
+                        '삭제하기',
+                        style: TextStyle(
+                          color: mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppUtils.scaleSize(context, 16),
+                        ),
+                      )),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return DeleteModal(
+                              text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              title: '사진이',
+                              tapFunc: () {
+                                setState(() {
+                                  userProfileImageUrl = null;
+                                });
+
+                                return Future.value();
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ]),
+                ),
+              ),
+              SizedBox(
+                height: AppUtils.scaleSize(context, 15),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  height: AppUtils.scaleSize(context, 56),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: const Color(0xffC2C4CB),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "취소",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppUtils.scaleSize(context, 16),
+                    ),
+                  )),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -189,7 +354,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         controllers['이름']!.text,
                         controllers['닉네임']!.text,
                         introduceController.text,
-                        imageUrl,
+                        userProfileImageUrl,
                         sendFormatUsingRegex(controllers['생년월일']!.text),
                         controllers['이메일']!.text);
                     if (mounted) {
@@ -203,47 +368,20 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           SliverToBoxAdapter(
             child: InkWell(
               onTap: () async {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 18)),
-                        child: SelectBottomModal(
-                            selec1: '직접 찍기',
-                            selec2: '앨범에서 선택',
-                            tap1: () async {
-                              Navigator.pop(
-                                  context); // TODO 이미지 업로드 방식 조건문으로 고치기(코드 중복 줄이기 위해)
-                              final selectedImage = await ImagePicker()
-                                  .pickImage(source: ImageSource.camera);
-                              if (mounted && selectedImage != null) {
-                                final selectedImageUrl = await imageApiService
-                                    .uploadImage(context, selectedImage);
-                                setState(() {
-                                  imageUrl = selectedImageUrl;
-                                });
-                              } else {
-                                print('No image selected.');
-                              }
-                            },
-                            tap2: () async {
-                              Navigator.pop(context);
-                              final selectedImage = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                              if (mounted && selectedImage != null) {
-                                final selectedImageUrl = await imageApiService
-                                    .uploadImage(context, selectedImage);
-                                setState(() {
-                                  imageUrl = selectedImageUrl;
-                                });
-                              } else {
-                                print('No image selected.');
-                              }
-                            }));
-                  },
-                );
+                if (userProfileImageUrl == null) {
+                  final selectedImage = await showImageSelectModal();
+                  if (mounted && selectedImage != null) {
+                    final imageUrl = await imageApiService.uploadImage(
+                        context, selectedImage);
+                    setState(() {
+                      userProfileImageUrl = imageUrl;
+                    });
+                  } else {
+                    print('No image selected.');
+                  }
+                } else {
+                  showSelectModal();
+                }
               },
               child: SizedBox(
                 height: AppUtils.scaleSize(context, 140),
@@ -252,7 +390,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     Positioned(
                       top: AppUtils.scaleSize(context, 10),
                       left: AppUtils.scaleSize(context, 145),
-                      child: imageUrl == null
+                      child: userProfileImageUrl == null
                           ? Image(
                               image: const AssetImage(
                                   "assets/images/icons/momProfile.png"),
@@ -261,7 +399,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                           : ClipOval(
                               // 원형
                               child: Image.network(
-                                imageUrl!,
+                                userProfileImageUrl!,
                                 fit: BoxFit.cover,
                                 width: AppUtils.scaleSize(context, 100),
                                 height: AppUtils.scaleSize(context, 100),

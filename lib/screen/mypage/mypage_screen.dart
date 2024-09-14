@@ -116,7 +116,7 @@ class _MyPageState extends State<MyPage> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: AppUtils.scaleSize(context, 20)),
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 4)),
+                          SizedBox(height: AppUtils.scaleSize(context, 6)),
                           InkWell(
                             onTap: () async {
                               final res = await Navigator.push(
