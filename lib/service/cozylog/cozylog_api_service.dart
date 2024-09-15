@@ -19,8 +19,6 @@ class CozyLogApiService extends ChangeNotifier {
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
-    print(url);
-    print(utf8.decode(res.bodyBytes));
     String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
 
     if (res.statusCode == 200) {
@@ -41,16 +39,37 @@ class CozyLogApiService extends ChangeNotifier {
     }
   }
 
+  Future<List<int>> getAllCozyLogIds(
+    BuildContext context,
+  ) async {
+    var urlString = '$baseUrl/me/cozy-log/all';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic res;
+    res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+      List<int> ids = List<int>.from(
+          body['data']['ids'].map((id) => int.parse(id.toString())));
+      return ids;
+    } else {
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return [];
+      // throw Exception('모든 내 코지로그 id 목록 조회 실패');
+    }
+  }
+
   Future<ScrapCozyLogListWrapper?> getScrapCozyLogs(
     BuildContext context,
     int? lastId,
     int size,
   ) async {
-    var urlString = '$baseUrl/scrap?userId=1&size=$size';
+    var urlString = '$baseUrl/scrap?size=$size';
     final headers = await getHeaders();
-    if (lastId != null) {
-      urlString += '&lastId=$lastId';
-    }
+    if (lastId != null && lastId != 0) urlString += '&lastId=$lastId';
     final url = Uri.parse(urlString);
     dynamic res;
     res = await get(url, headers: headers);
@@ -71,6 +90,29 @@ class CozyLogApiService extends ChangeNotifier {
       }
       return null;
       // throw Exception('코지로그 목록 조회 실패');
+    }
+  }
+
+  Future<List<int>> getAllScrapIds(
+    BuildContext context,
+  ) async {
+    var urlString = '$baseUrl/scrap/all';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic res;
+    res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+      List<int> ids = List<int>.from(
+          body['data']['ids'].map((id) => int.parse(id.toString())));
+      return ids;
+    } else {
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return [];
+      // throw Exception('모든 스크랩 id 목록 조회 실패');
     }
   }
 
@@ -348,7 +390,6 @@ class CozyLogApiService extends ChangeNotifier {
       ),
     );
     String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
-
     if (res.statusCode == 201) {
       return;
     } else {
@@ -388,40 +429,11 @@ class CozyLogApiService extends ChangeNotifier {
     }
   }
 
-  Future<void> bulkAllDeleteCozyLog(
-    BuildContext context,
-    List<int> cozyLogIds,
-  ) async {
-    var urlString = '$baseUrl/me/cozy-log/all';
-    final headers = await getHeaders();
-    final url = Uri.parse(urlString);
-    dynamic res;
-    res = await post(
-      url,
-      headers: headers,
-      body: jsonEncode(
-        {
-          'cozyLogIds': cozyLogIds,
-        },
-      ),
-    );
-    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
-
-    if (res.statusCode == 204) {
-      return;
-    } else {
-      if (context.mounted) {
-        handleHttpResponse(res.statusCode, context, message);
-      }
-      // throw Exception('코지로그(ids: $cozyLogIds) 삭제 실패');
-    }
-  }
-
   Future<void> bulkUnscrapCozyLog(
     BuildContext context,
     List<int> cozyLogIds,
   ) async {
-    var urlString = '$baseUrl/scrap/unscraps?userId=1';
+    var urlString = '$baseUrl/scrap/unscraps';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic res;
@@ -434,13 +446,12 @@ class CozyLogApiService extends ChangeNotifier {
         },
       ),
     );
-    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
-
     if (res.statusCode == 204) {
+      print("스크랩 삭제왼료");
       return;
     } else {
       if (context.mounted) {
-        handleHttpResponse(res.statusCode, context, message);
+        handleHttpResponse(res.statusCode, context, null);
       }
       // throw Exception('코지로그(ids: $cozyLogIds) unscrap 실패');
     }

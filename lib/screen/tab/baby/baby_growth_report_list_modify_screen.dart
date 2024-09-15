@@ -39,13 +39,12 @@ class _BabyGrowthReportListModifyState
         this.data = Future.value(data);
       });
       final growths = data!.growths;
-      final isLastPage = growths.length <= 10; // 10개 미만이면 마지막 페이지로 간주
+      final isLastPage = growths.length < 10; // 10개 미만이면 마지막 페이지로 간주
 
       if (isLastPage) {
         pagingController.appendLastPage(growths);
       } else {
-        // final nextPageKey = pageKey + growths.length; // 다음 페이지 키 설정
-        final nextPageKey = growths.last.id! + 1; // 다음 페이지 키 설정
+        final nextPageKey = data.lastId!; // 다음 페이지 키 설정
         pagingController.appendPage(growths, nextPageKey);
       }
     } catch (error) {
@@ -70,9 +69,10 @@ class _BabyGrowthReportListModifyState
 
   @override
   void didUpdateWidget(oldWidget) {
-    // 성장보고서 개수가 달라졌을 때(= 삭제했을 때), 리스트를 바로 업데이트할 수 있도록 구현한 코드(위젯의 구성이 변경될 때마다 호출)
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.babyProfileGrowths != widget.babyProfileGrowths) {
+    // totalCount 사용하여 데이터 변경 감지
+    // oldWidget.babyProfileGrowths.length와 widget.babyProfileGrowths.length를 비교하면 pagingController에 10개씩 불러오기때문에 변화 감지 못함
+    if (oldWidget.totalCount != widget.totalCount) {
       pagingController.refresh();
     }
   }
@@ -120,12 +120,16 @@ class _BabyGrowthReportListModifyState
                   Row(
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          var allIds =
+                              await BabyGrowthApiService().getAllGrowthIds(
+                            context,
+                          );
+                          print(widget.babyProfileGrowths.length);
                           babyGrowthReportListModifyState.selectedCount > 0
                               ? babyGrowthReportListModifyState.clearSelection()
                               : babyGrowthReportListModifyState
-                                  .setGrowthAllSelected(
-                                      widget.babyProfileGrowths);
+                                  .setGrowthAllSelected(allIds);
                           setState(() {
                             isAllSelected = !isAllSelected;
                           });
@@ -157,8 +161,8 @@ class _BabyGrowthReportListModifyState
                     color: contentBoxTwoColor),
                 child: PagedListView<int, BabyProfileGrowth>(
                   padding: EdgeInsets.only(
-                      top: AppUtils.scaleSize(context, 10),
-                      bottom: screenHeight * 0.35),
+                    top: AppUtils.scaleSize(context, 10),
+                  ),
                   pagingController: pagingController,
                   builderDelegate: PagedChildBuilderDelegate<BabyProfileGrowth>(
                       itemBuilder: (context, item, index) {
@@ -296,32 +300,30 @@ class _BabyGrowthReportListModifyState
                   }),
                 ),
               )
-            : SizedBox(
-                width: AppUtils.scaleSize(context, 150),
-                height: screenHeight * (0.6),
+            : Expanded(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image(
-                        image: const AssetImage(
-                            "assets/images/icons/diary_inactive.png"),
-                        width: AppUtils.scaleSize(context, 45.31),
-                        height: AppUtils.scaleSize(context, 44.35),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image(
+                      image: const AssetImage(
+                          "assets/images/icons/diary_inactive.png"),
+                      width: AppUtils.scaleSize(context, 45.31),
+                      height: AppUtils.scaleSize(context, 44.35),
+                    ),
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 15),
+                    ),
+                    const Text(
+                      "태아의 검진기록을 입력해보세요!",
+                      style: TextStyle(
+                        color: Color(0xff9397A4),
                       ),
-                      SizedBox(
-                        height: AppUtils.scaleSize(context, 15),
-                      ),
-                      const Text(
-                        "태아의 검진기록을 입력해보세요!",
-                        style: TextStyle(
-                          color: Color(0xff9397A4),
-                        ),
-                      ),
-                      SizedBox(
-                        height: AppUtils.scaleSize(context, 140),
-                      ),
-                    ]),
+                    ),
+                    SizedBox(
+                      height: AppUtils.scaleSize(context, 140),
+                    ),
+                  ],
+                ),
               ),
       ],
     );

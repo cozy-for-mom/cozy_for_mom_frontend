@@ -62,6 +62,7 @@ class BabyGrowthApiService {
     if (lastId != null && lastId != 0) urlString += '&lastId=$lastId';
     // if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
+    print(url);
     dynamic res;
     res = await get(url, headers: headers);
     String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
@@ -72,6 +73,7 @@ class BabyGrowthApiService {
       DateTime? nextExaminationDate = body['data']['nextExaminationDate'] == ""
           ? null
           : DateTime.parse(body['data']['nextExaminationDate']);
+      int lastId = body['data']['lastId'];
       int? totalCount = body['data']['totalCount'] ?? 0;
 
       List<BabyProfileGrowth> growths = data.map((growth) {
@@ -80,6 +82,7 @@ class BabyGrowthApiService {
       return BabyProfileGrowthResult(
           growths: growths,
           nextExaminationDate: nextExaminationDate,
+          lastId: lastId,
           totalCount: totalCount);
     } else {
       if (context.mounted) {
@@ -87,6 +90,32 @@ class BabyGrowthApiService {
       }
       return null;
       // throw Exception('성장 보고서 목록 조회 실패');
+    }
+  }
+
+  Future<List<int>> getAllGrowthIds(
+    BuildContext context,
+  ) async {
+    UserLocalStorageService userStorageService =
+        await UserLocalStorageService.getInstance();
+    final babyProfileId = await userStorageService.getBabyProfileId();
+    var urlString = '$baseUrl/growth/all/$babyProfileId';
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic res;
+    res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
+      List<int> ids = List<int>.from(
+          body['data']['ids'].map((id) => int.parse(id.toString())));
+      return ids;
+    } else {
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return [];
+      // throw Exception('모든 성장보고서 id 목록 조회 실패');
     }
   }
 

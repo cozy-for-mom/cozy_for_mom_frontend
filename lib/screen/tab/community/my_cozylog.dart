@@ -1,4 +1,3 @@
-import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
@@ -42,7 +41,7 @@ class _MyCozylogState extends State<MyCozylog> {
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
       } else {
-        final nextPageKey = cozyLogs.last.cozyLogId + 1; // 다음 페이지 키 설정
+        final nextPageKey = cozyLogs.lastOrNull?.cozyLogId;
         pagingController.appendPage(cozyLogs, nextPageKey);
       }
     } catch (error) {
@@ -136,7 +135,7 @@ class _MyCozylogState extends State<MyCozylog> {
                 return widget.isEditMode
                     ? CozylogListModify(
                         // TODO 왜 바로 CozylogListModify로 안가고 MyCozyLog를 거쳐가는거지? 데이터 사용하려고?!
-                        cozyLogs: snapshot.data!.cozyLogs,
+                        // cozyLogs: snapshot.data!.cozyLogs,
                         totalCount: snapshot.data!.totalCount,
                       )
                     : Column(
@@ -224,23 +223,27 @@ class _MyCozylogState extends State<MyCozylog> {
                                       color: contentBoxTwoColor,
                                     ),
                                     child: PagedListView<int, CozyLogForList>(
-                                      padding: EdgeInsets.only(
-                                          bottom: screenHeight * 0.35),
                                       pagingController: pagingController,
                                       builderDelegate:
                                           PagedChildBuilderDelegate<
                                               CozyLogForList>(
-                                        itemBuilder: (context, item, index) =>
-                                            CozylogViewWidget(
-                                          cozylog: item,
-                                          isEditMode: false,
-                                          isMyCozyLog: true,
-                                          onUpdate: () {
-                                            setState(() {
-                                              pagingController.refresh();
-                                            });
-                                          },
-                                        ),
+                                        itemBuilder: (context, item, index) {
+                                          bool isLast = index ==
+                                              pagingController
+                                                      .itemList!.length -
+                                                  1;
+                                          return CozylogViewWidget(
+                                            isLast: isLast,
+                                            cozylog: item,
+                                            isEditMode: false,
+                                            isMyCozyLog: true,
+                                            onUpdate: () {
+                                              setState(() {
+                                                pagingController.refresh();
+                                              });
+                                            },
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),

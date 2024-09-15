@@ -64,7 +64,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
     final screenWidth = MediaQuery.of(context).size.width;
     setIsMyComment();
 
-    DateFormat dateFormat = DateFormat('yyyy. MM. dd hh:mm');
+    DateFormat dateFormat = DateFormat('yyyy. MM. dd HH:mm');
 
     return Column(
       children: [

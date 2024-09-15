@@ -10,11 +10,11 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dart';
 
 class CozylogListModify extends StatefulWidget {
-  final List<CozyLogForList> cozyLogs;
+  // final List<CozyLogForList> cozyLogs;
   final int totalCount;
   const CozylogListModify({
     super.key,
-    this.cozyLogs = const [],
+    // this.cozyLogs = const [],
     required this.totalCount,
   });
 
@@ -62,9 +62,9 @@ class _CozylogListModifyState extends State<CozylogListModify> {
 
   @override
   void didUpdateWidget(oldWidget) {
-    // 코지로그 개수가 달라졌을 때(= 삭제했을 때), 리스트를 바로 업데이트할 수 있도록 구현한 코드(위젯의 구성이 변경될 때마다 호출)
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.cozyLogs != widget.cozyLogs) {
+    // totalCount 사용하여 데이터 변경 감지
+    if (oldWidget.totalCount != widget.totalCount) {
       pagingController.refresh();
     }
   }
@@ -74,141 +74,170 @@ class _CozylogListModifyState extends State<CozylogListModify> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
-    final totalHeight = boxHeight * widget.cozyLogs.length + 20;
-
     ListModifyState cozylogListModifyState = context.watch<ListModifyState>();
 
-    return Column(
-      children: [
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 24)),
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            height: AppUtils.scaleSize(context, 53),
-            decoration: BoxDecoration(
-                color: const Color(0xffF0F0F5),
-                borderRadius: BorderRadius.circular(30)),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(children: [
-                    Image(
-                        image:
-                            const AssetImage('assets/images/icons/cozylog.png'),
-                        width: AppUtils.scaleSize(context, 25.02),
-                        height: AppUtils.scaleSize(context, 23.32)),
-                    SizedBox(width: AppUtils.scaleSize(context, 8)),
-                    Consumer<ListModifyState>(
-                      builder: (context, cozylogListModifyState, child) {
-                        return Text(
-                          '${cozylogListModifyState.selectedCount}/${widget.totalCount}',
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14)),
-                        );
-                      },
-                    ),
-                  ]),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          cozylogListModifyState.selectedCount > 0
-                              ? cozylogListModifyState.clearSelection()
-                              : cozylogListModifyState
-                                  .setCozylogAllSelected(widget.cozyLogs);
-                          setState(() {
-                            isAllSelected = !isAllSelected;
-                          });
-                        },
-                        child: Text(
-                            cozylogListModifyState.selectedCount > 0
-                                ? '전체해제'
-                                : '전체선택',
-                            style: TextStyle(
-                                color: offButtonTextColor,
-                                fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14))),
-                      ),
-                      SizedBox(width: AppUtils.scaleSize(context, 24)),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MyCozylog()));
-                        },
-                        child: Text('편집완료',
-                            style: TextStyle(
-                                color: offButtonTextColor,
-                                fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14))),
-                      ),
-                    ],
-                  ),
-                ]),
-          ),
-        ),
-        SizedBox(height: AppUtils.scaleSize(context, 22)),
-        widget.cozyLogs.isNotEmpty
-            ? Padding(
-                padding: EdgeInsets.only(
-                    left: AppUtils.scaleSize(context, 20),
-                    right: AppUtils.scaleSize(context, 20),
-                    bottom: AppUtils.scaleSize(context, 60)),
+    return FutureBuilder(
+      future: cozyLogWrapper,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final totalHeight = boxHeight * snapshot.data!.cozyLogs.length + 20;
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppUtils.scaleSize(context, 20)),
                 child: Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                  height: screenHeight * (0.7),
                   padding: EdgeInsets.symmetric(
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                      horizontal: AppUtils.scaleSize(context, 24)),
+                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  height: AppUtils.scaleSize(context, 53),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: contentBoxTwoColor),
-                  child: PagedListView<int, CozyLogForList>(
-                    // physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(bottom: screenHeight * 0.35),
-                    pagingController: pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<CozyLogForList>(
-                      itemBuilder: (context, item, index) => CozylogViewWidget(
-                        cozylog: item,
-                        isEditMode: true,
-                        isMyCozyLog: true,
-                        listModifyState: cozylogListModifyState,
-                        onSelectedChanged: (isAllSelected) {
-                          cozylogListModifyState.toggleSelected(item.cozyLogId);
-                          setState(() {});
-                        },
+                      color: const Color(0xffF0F0F5),
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: [
+                          Image(
+                              image: const AssetImage(
+                                  'assets/images/icons/cozylog.png'),
+                              width: AppUtils.scaleSize(context, 25.02),
+                              height: AppUtils.scaleSize(context, 23.32)),
+                          SizedBox(width: AppUtils.scaleSize(context, 8)),
+                          Consumer<ListModifyState>(
+                            builder: (context, cozylogListModifyState, child) {
+                              return Text(
+                                '${cozylogListModifyState.selectedCount}/${widget.totalCount}',
+                                style: TextStyle(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: AppUtils.scaleSize(context, 14)),
+                              );
+                            },
+                          ),
+                        ]),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                var allIds = await CozyLogApiService()
+                                    .getAllCozyLogIds(context);
+                                cozylogListModifyState.selectedCount > 0
+                                    ? cozylogListModifyState.clearSelection()
+                                    : cozylogListModifyState
+                                        .setCozylogAllSelected(allIds);
+                                setState(() {
+                                  isAllSelected = !isAllSelected;
+                                });
+                              },
+                              child: Text(
+                                  cozylogListModifyState.selectedCount > 0
+                                      ? '전체해제'
+                                      : '전체선택',
+                                  style: TextStyle(
+                                      color: offButtonTextColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 14))),
+                            ),
+                            SizedBox(width: AppUtils.scaleSize(context, 24)),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyCozylog()));
+                              },
+                              child: Text('편집완료',
+                                  style: TextStyle(
+                                      color: offButtonTextColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize:
+                                          AppUtils.scaleSize(context, 14))),
+                            ),
+                          ],
+                        ),
+                      ]),
+                ),
+              ),
+              SizedBox(height: AppUtils.scaleSize(context, 22)),
+              snapshot.data!.cozyLogs.isNotEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                          left: AppUtils.scaleSize(context, 20),
+                          right: AppUtils.scaleSize(context, 20),
+                          bottom: AppUtils.scaleSize(context, 60)),
+                      child: Container(
+                        width: screenWidth - AppUtils.scaleSize(context, 40),
+                        // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+                        height: screenHeight * (0.7),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppUtils.scaleSize(context, 20)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: contentBoxTwoColor),
+                        child: PagedListView<int, CozyLogForList>(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          pagingController: pagingController,
+                          builderDelegate:
+                              PagedChildBuilderDelegate<CozyLogForList>(
+                            itemBuilder: (context, item, index) {
+                              bool isLast = index ==
+                                  pagingController.itemList!.length - 1;
+                              return CozylogViewWidget(
+                                isLast: isLast,
+                                cozylog: item,
+                                isEditMode: true,
+                                isMyCozyLog: true,
+                                listModifyState: cozylogListModifyState,
+                                onSelectedChanged: (isAllSelected) {
+                                  cozylogListModifyState
+                                      .toggleSelected(item.cozyLogId);
+                                  setState(() {});
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                  : Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                              image: const AssetImage(
+                                  'assets/images/icons/scrap_off.png'),
+                              width: AppUtils.scaleSize(context, 34.54),
+                              height: AppUtils.scaleSize(context, 45.05)),
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 12),
+                          ),
+                          Text('코지로그를 스크랩 해보세요!',
+                              style: TextStyle(
+                                  color: const Color(0xff9397A4),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppUtils.scaleSize(context, 14))),
+                          SizedBox(
+                            height: AppUtils.scaleSize(context, 140),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              )
-            : SizedBox(
-                width: AppUtils.scaleSize(context, 150),
-                height: screenHeight * (0.6),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image(
-                          image: const AssetImage(
-                              'assets/images/icons/scrap_off.png'),
-                          width: AppUtils.scaleSize(context, 34.54),
-                          height: AppUtils.scaleSize(context, 45.05)),
-                      SizedBox(height: AppUtils.scaleSize(context, 12)),
-                      Text('코지로그를 스크랩 해보세요!',
-                          style: TextStyle(
-                              color: const Color(0xff9397A4),
-                              fontWeight: FontWeight.w500,
-                              fontSize: AppUtils.scaleSize(context, 14))),
-                    ]),
-              ),
-      ],
+            ],
+          );
+        } else {
+          return SizedBox(
+            height: screenHeight * (3 / 4),
+            child: const Center(
+                child: CircularProgressIndicator(
+              backgroundColor: primaryColor,
+              color: Colors.white,
+            )),
+          );
+        }
+      },
     );
   }
 }

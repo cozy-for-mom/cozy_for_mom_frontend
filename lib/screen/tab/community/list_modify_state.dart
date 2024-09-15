@@ -22,13 +22,13 @@ class ListModifyState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCozylogAllSelected(List<CozyLogForList> cozyLogs) {
-    _selectedIds = cozyLogs.map((cozyLog) => cozyLog.cozyLogId).toList();
+  void setCozylogAllSelected(List<int> ids) {
+    _selectedIds = ids.map((id) => id).toList();
     notifyListeners();
   }
 
-  void setGrowthAllSelected(List<BabyProfileGrowth> growths) {
-    _selectedIds = growths.map((growth) => growth.id!).toList();
+  void setGrowthAllSelected(List<int> ids) {
+    _selectedIds = ids.map((id) => id).toList();
     notifyListeners();
   }
 
