@@ -77,8 +77,8 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                           : Image.network(
                               widget.imagePath,
                               fit: BoxFit.fill,
-                              width: AppUtils.scaleSize(context, 82),
-                              height: AppUtils.scaleSize(context, 82),
+                              width: AppUtils.scaleSize(context, 80),
+                              height: AppUtils.scaleSize(context, 80),
                             ),
                     ),
                   ),

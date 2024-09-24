@@ -43,5 +43,9 @@ class DeviceTokenManager {
     return await _storage.read(key: 'deviceToken');
   }
 
+  Future<void> deleteDeviceToken() async {
+    await _storage.delete(key: 'deviceToken');
+  }
+
   String? get deviceToken => _deviceToken;
 }

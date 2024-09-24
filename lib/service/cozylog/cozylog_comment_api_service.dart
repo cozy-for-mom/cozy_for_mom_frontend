@@ -21,7 +21,6 @@ class CozyLogCommentApiService with ChangeNotifier {
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['comments'];
-      print(data);
       List<CozyLogComment> cozyLogs = data.map((comment) {
         return CozyLogComment.fromJson(comment);
       }).toList();

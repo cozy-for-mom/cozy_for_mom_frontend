@@ -34,9 +34,10 @@ class _UserDeleteScreenState extends State<UserDeleteScreen> {
           Padding(
             padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.close,
                 color: Colors.black,
+                size: AppUtils.scaleSize(context, 28),
               ),
               onPressed: () {
                 Navigator.pop(context);

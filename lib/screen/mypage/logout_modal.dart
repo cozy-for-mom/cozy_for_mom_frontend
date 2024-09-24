@@ -82,7 +82,7 @@ class _LogoutModalState extends State<LogoutModal> {
                     height: AppUtils.scaleSize(context, 10),
                   ),
                   Text(
-                    "해당 아이디는 간편 아이디로 계속 유지되며, 원하지 않을 경우 삭제 할 수 있습니다.",
+                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.",
                     style: TextStyle(
                       color: offButtonTextColor,
                       height: AppUtils.scaleSize(context, 1.3),

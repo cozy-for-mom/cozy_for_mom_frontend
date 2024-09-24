@@ -108,8 +108,7 @@ class _MealScreenState extends State<MealScreen> {
                       title: '식단이',
                       tapFunc: () async {
                         await momMealViewModel.deleteMeal(context, id);
-                        setState(() {
-                        });
+                        setState(() {});
 
                         return Future.value();
                       },
@@ -126,7 +125,10 @@ class _MealScreenState extends State<MealScreen> {
         appBar: PreferredSize(
           preferredSize: const Size(400, 60),
           child: Padding(
-                padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 8), right: AppUtils.scaleSize(context, 5)),
+            padding: EdgeInsets.only(
+                top: AppUtils.scaleSize(context, 10),
+                bottom: AppUtils.scaleSize(context, 8),
+                right: AppUtils.scaleSize(context, 5)),
             child: Column(
               children: [
                 SizedBox(
@@ -137,21 +139,22 @@ class _MealScreenState extends State<MealScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-          icon:  Image(
-            image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
-            color: mainTextColor,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-                       SizedBox(
-                              width: AppUtils.scaleSize(context, 30),
-                              height: AppUtils.scaleSize(context, 30),
-                            ),
-                            const Spacer(),
+                        icon: Image(
+                          image: const AssetImage(
+                              'assets/images/icons/back_ios.png'),
+                          width: AppUtils.scaleSize(context, 34),
+                          height: AppUtils.scaleSize(context, 34),
+                          color: mainTextColor,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      SizedBox(
+                        width: AppUtils.scaleSize(context, 30),
+                        height: AppUtils.scaleSize(context, 30),
+                      ),
+                      const Spacer(),
                       Row(
                         children: [
                           Text(
@@ -266,101 +269,25 @@ class _MealScreenState extends State<MealScreen> {
                     color: Colors.white,
                   ));
                 }
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: WeeklyCalendar(),
-                          ),
-                          SizedBox(
-                            height: AppUtils.scaleSize(context, 30),
-                          ),
-                          containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
-                              ? InkWell(
-                                  onTap: () {
-                                    showSelectModal(breakfastId!,
-                                        MealType.breakfast.korName);
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      SizedBox(
-                                        width: screenWidth -
-                                            AppUtils.scaleSize(context, 40),
-                                        height:
-                                            AppUtils.scaleSize(context, 216),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.network(
-                                            breakfastImageUrl!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: AppUtils.scaleSize(context, 20),
-                                        left: AppUtils.scaleSize(context, 20),
-                                        child: Container(
-                                          width:
-                                              AppUtils.scaleSize(context, 58),
-                                          height:
-                                              AppUtils.scaleSize(context, 23),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Colors.white,
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              MealType.breakfast.korName,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 12),
-                                                color: primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ))
-                              : InkWell(
-                                  onTap: () async {
-                                    final selectedImage =
-                                        await showImageSelectModal();
-                                    setState(() {
-                                      isBreakfastLoading = true; // 로딩 시작
-                                    });
-                                    if (mounted &&selectedImage != null) {
-                                      final imageUrl = await imageApiService
-                                          .uploadImage(context, selectedImage);
-                                      await momMealViewModel.recordMeals(
-                                        context,
-                                        globalData.selectedDate,
-                                        MealType.breakfast.korName
-                                            .substring(0, 2),
-                                        imageUrl,
-                                      );
-                                      setState(() {
-                                        breakfastImageUrl = imageUrl;
-                                        isBreakfastLoading = false; // 로딩 완료
-                                      });
-                                    } else {
-                                      print('No image selected.');
-                                      setState(() {
-                                        isBreakfastLoading = false; // 로딩 완료
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
+                return Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: WeeklyCalendar(),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: AppUtils.scaleSize(context, 30),
+                            ),
+                            containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
+                                ? InkWell(
+                                    onTap: () {
+                                      showSelectModal(breakfastId!,
+                                          MealType.breakfast.korName);
+                                    },
                                     child: Stack(
                                       children: [
                                         SizedBox(
@@ -369,47 +296,13 @@ class _MealScreenState extends State<MealScreen> {
                                           height:
                                               AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: isBreakfastLoading
-                                                    ? [
-                                                        const Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              primaryColor,
-                                                          color: Colors.white,
-                                                        ))
-                                                      ]
-                                                    : [
-                                                        Image(
-                                                          image:
-                                                              const AssetImage(
-                                                            "assets/images/icons/default_meal.png",
-                                                          ),
-                                                          height: AppUtils
-                                                              .scaleSize(
-                                                                  context, 43),
-                                                          width: AppUtils
-                                                              .scaleSize(
-                                                                  context, 19),
-                                                        ),
-                                                        Text(
-                                                          "클릭하여 식사를 기록해 보세요",
-                                                          style: TextStyle(
-                                                            color: const Color(
-                                                                0xff9397A4),
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14),
-                                                          ),
-                                                        )
-                                                      ],
-                                              )),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.network(
+                                              breakfastImageUrl!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                         Positioned(
                                           top: AppUtils.scaleSize(context, 20),
@@ -422,7 +315,7 @@ class _MealScreenState extends State<MealScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              color: const Color(0xffF7F7FA),
+                                              color: Colors.white,
                                             ),
                                             child: Center(
                                               child: Text(
@@ -431,102 +324,143 @@ class _MealScreenState extends State<MealScreen> {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: AppUtils.scaleSize(
                                                       context, 12),
-                                                  color:
-                                                      const Color(0xff858998),
+                                                  color: primaryColor,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ),
-                          SizedBox(
-                            height: AppUtils.scaleSize(context, 15),
-                          ),
-                          containsLunch
-                              ? InkWell(
-                                  onTap: () {
-                                    showSelectModal(
-                                        lunchId!, MealType.lunch.korName);
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      SizedBox(
-                                        width: screenWidth -
-                                            AppUtils.scaleSize(context, 40),
-                                        height:
-                                            AppUtils.scaleSize(context, 216),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.network(
-                                            lunchImageUrl!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                    ))
+                                : InkWell(
+                                    onTap: () async {
+                                      final selectedImage =
+                                          await showImageSelectModal();
+                                      setState(() {
+                                        isBreakfastLoading = true; // 로딩 시작
+                                      });
+                                      if (mounted && selectedImage != null) {
+                                        final imageUrl =
+                                            await imageApiService.uploadImage(
+                                                context, selectedImage);
+                                        await momMealViewModel.recordMeals(
+                                          context,
+                                          globalData.selectedDate,
+                                          MealType.breakfast.korName
+                                              .substring(0, 2),
+                                          imageUrl,
+                                        );
+                                        setState(() {
+                                          breakfastImageUrl = imageUrl;
+                                          isBreakfastLoading = false; // 로딩 완료
+                                        });
+                                      } else {
+                                        print('No image selected.');
+                                        setState(() {
+                                          isBreakfastLoading = false; // 로딩 완료
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
                                       ),
-                                      Positioned(
-                                        top: AppUtils.scaleSize(context, 20),
-                                        left: AppUtils.scaleSize(context, 20),
-                                        child: Container(
-                                          width:
-                                              AppUtils.scaleSize(context, 58),
-                                          height:
-                                              AppUtils.scaleSize(context, 23),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Colors.white,
+                                      child: Stack(
+                                        children: [
+                                          SizedBox(
+                                            width: screenWidth -
+                                                AppUtils.scaleSize(context, 40),
+                                            height: AppUtils.scaleSize(
+                                                context, 216),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: isBreakfastLoading
+                                                      ? [
+                                                          const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                primaryColor,
+                                                            color: Colors.white,
+                                                          ))
+                                                        ]
+                                                      : [
+                                                          Image(
+                                                            image:
+                                                                const AssetImage(
+                                                              "assets/images/icons/default_meal.png",
+                                                            ),
+                                                            height: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    43),
+                                                            width: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    19),
+                                                          ),
+                                                          Text(
+                                                            "클릭하여 식사를 기록해 보세요",
+                                                            style: TextStyle(
+                                                              color: const Color(
+                                                                  0xff9397A4),
+                                                              fontSize: AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      14),
+                                                            ),
+                                                          )
+                                                        ],
+                                                )),
                                           ),
-                                          child: Center(
-                                            child: Text(
-                                              MealType.lunch.korName,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 12),
-                                                color: primaryColor,
+                                          Positioned(
+                                            top:
+                                                AppUtils.scaleSize(context, 20),
+                                            left:
+                                                AppUtils.scaleSize(context, 20),
+                                            child: Container(
+                                              width: AppUtils.scaleSize(
+                                                  context, 58),
+                                              height: AppUtils.scaleSize(
+                                                  context, 23),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: const Color(0xffF7F7FA),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  MealType.breakfast.korName,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 12),
+                                                    color:
+                                                        const Color(0xff858998),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ))
-                              : InkWell(
-                                  onTap: () async {
-                                    final selectedImage =
-                                        await showImageSelectModal();
-                                    setState(() {
-                                      isLunchLoading = true; // 로딩 시작
-                                    });
-                                    if (mounted && selectedImage != null) {
-                                      final imageUrl = await imageApiService
-                                          .uploadImage(context, selectedImage);
-                                      await momMealViewModel.recordMeals(
-                                        context,
-                                        globalData.selectedDate,
-                                        MealType.lunch.korName.substring(0, 2),
-                                        imageUrl,
-                                      );
-                                      setState(() {
-                                        containsLunch = !containsLunch;
-                                        isLunchLoading = false; // 로딩 완료
-                                      });
-                                    } else {
-                                      print('No image selected.');
-                                      setState(() {
-                                        isLunchLoading = false; // 로딩 완료
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
                                     ),
+                                  ),
+                            SizedBox(
+                              height: AppUtils.scaleSize(context, 15),
+                            ),
+                            containsLunch
+                                ? InkWell(
+                                    onTap: () {
+                                      showSelectModal(
+                                          lunchId!, MealType.lunch.korName);
+                                    },
                                     child: Stack(
                                       children: [
                                         SizedBox(
@@ -535,47 +469,13 @@ class _MealScreenState extends State<MealScreen> {
                                           height:
                                               AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: isLunchLoading
-                                                    ? [
-                                                        const Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              primaryColor,
-                                                          color: Colors.white,
-                                                        ))
-                                                      ]
-                                                    : [
-                                                        Image(
-                                                          image:
-                                                              const AssetImage(
-                                                            "assets/images/icons/default_meal.png",
-                                                          ),
-                                                          height: AppUtils
-                                                              .scaleSize(
-                                                                  context, 43),
-                                                          width: AppUtils
-                                                              .scaleSize(
-                                                                  context, 19),
-                                                        ),
-                                                        Text(
-                                                          "클릭하여 식사를 기록해 보세요",
-                                                          style: TextStyle(
-                                                            color: const Color(
-                                                                0xff9397A4),
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14),
-                                                          ),
-                                                        )
-                                                      ],
-                                              )),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.network(
+                                              lunchImageUrl!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                         Positioned(
                                           top: AppUtils.scaleSize(context, 20),
@@ -588,7 +488,7 @@ class _MealScreenState extends State<MealScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              color: const Color(0xffF7F7FA),
+                                              color: Colors.white,
                                             ),
                                             child: Center(
                                               child: Text(
@@ -597,102 +497,143 @@ class _MealScreenState extends State<MealScreen> {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: AppUtils.scaleSize(
                                                       context, 12),
-                                                  color:
-                                                      const Color(0xff858998),
+                                                  color: primaryColor,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ),
-                          SizedBox(
-                            height: AppUtils.scaleSize(context, 15),
-                          ),
-                          containsDinner
-                              ? InkWell(
-                                  onTap: () {
-                                    showSelectModal(
-                                        dinnerId!, MealType.dinner.korName);
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      SizedBox(
-                                        width: screenWidth -
-                                            AppUtils.scaleSize(context, 40),
-                                        height:
-                                            AppUtils.scaleSize(context, 216),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.network(
-                                            dinnerImageUrl!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                    ))
+                                : InkWell(
+                                    onTap: () async {
+                                      final selectedImage =
+                                          await showImageSelectModal();
+                                      setState(() {
+                                        isLunchLoading = true; // 로딩 시작
+                                      });
+                                      if (mounted && selectedImage != null) {
+                                        final imageUrl =
+                                            await imageApiService.uploadImage(
+                                                context, selectedImage);
+                                        await momMealViewModel.recordMeals(
+                                          context,
+                                          globalData.selectedDate,
+                                          MealType.lunch.korName
+                                              .substring(0, 2),
+                                          imageUrl,
+                                        );
+                                        setState(() {
+                                          containsLunch = !containsLunch;
+                                          isLunchLoading = false; // 로딩 완료
+                                        });
+                                      } else {
+                                        print('No image selected.');
+                                        setState(() {
+                                          isLunchLoading = false; // 로딩 완료
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
                                       ),
-                                      Positioned(
-                                        top: AppUtils.scaleSize(context, 20),
-                                        left: AppUtils.scaleSize(context, 20),
-                                        child: Container(
-                                          width:
-                                              AppUtils.scaleSize(context, 58),
-                                          height:
-                                              AppUtils.scaleSize(context, 23),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Colors.white,
+                                      child: Stack(
+                                        children: [
+                                          SizedBox(
+                                            width: screenWidth -
+                                                AppUtils.scaleSize(context, 40),
+                                            height: AppUtils.scaleSize(
+                                                context, 216),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: isLunchLoading
+                                                      ? [
+                                                          const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                primaryColor,
+                                                            color: Colors.white,
+                                                          ))
+                                                        ]
+                                                      : [
+                                                          Image(
+                                                            image:
+                                                                const AssetImage(
+                                                              "assets/images/icons/default_meal.png",
+                                                            ),
+                                                            height: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    43),
+                                                            width: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    19),
+                                                          ),
+                                                          Text(
+                                                            "클릭하여 식사를 기록해 보세요",
+                                                            style: TextStyle(
+                                                              color: const Color(
+                                                                  0xff9397A4),
+                                                              fontSize: AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      14),
+                                                            ),
+                                                          )
+                                                        ],
+                                                )),
                                           ),
-                                          child: Center(
-                                            child: Text(
-                                              MealType.dinner.korName,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 12),
-                                                color: primaryColor,
+                                          Positioned(
+                                            top:
+                                                AppUtils.scaleSize(context, 20),
+                                            left:
+                                                AppUtils.scaleSize(context, 20),
+                                            child: Container(
+                                              width: AppUtils.scaleSize(
+                                                  context, 58),
+                                              height: AppUtils.scaleSize(
+                                                  context, 23),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: const Color(0xffF7F7FA),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  MealType.lunch.korName,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 12),
+                                                    color:
+                                                        const Color(0xff858998),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ))
-                              : InkWell(
-                                  onTap: () async {
-                                    final selectedImage =
-                                        await showImageSelectModal();
-                                    setState(() {
-                                      isDinnerLoading = true; // 로딩 시작
-                                    });
-                                    if (mounted && selectedImage != null) {
-                                      final imageUrl = await imageApiService
-                                          .uploadImage(context, selectedImage);
-                                      await momMealViewModel.recordMeals(
-                                        context,
-                                        globalData.selectedDate,
-                                        MealType.dinner.korName.substring(0, 2),
-                                        imageUrl,
-                                      );
-                                      setState(() {
-                                        containsDinner = !containsDinner;
-                                        isDinnerLoading = false; // 로딩 완료
-                                      });
-                                    } else {
-                                      print('No image selected.');
-                                      setState(() {
-                                        isDinnerLoading = false; // 로딩 완료
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
                                     ),
+                                  ),
+                            SizedBox(
+                              height: AppUtils.scaleSize(context, 15),
+                            ),
+                            containsDinner
+                                ? InkWell(
+                                    onTap: () {
+                                      showSelectModal(
+                                          dinnerId!, MealType.dinner.korName);
+                                    },
                                     child: Stack(
                                       children: [
                                         SizedBox(
@@ -701,47 +642,13 @@ class _MealScreenState extends State<MealScreen> {
                                           height:
                                               AppUtils.scaleSize(context, 216),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: isDinnerLoading
-                                                    ? [
-                                                        const Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          backgroundColor:
-                                                              primaryColor,
-                                                          color: Colors.white,
-                                                        ))
-                                                      ]
-                                                    : [
-                                                        Image(
-                                                          image:
-                                                              const AssetImage(
-                                                            "assets/images/icons/default_meal.png",
-                                                          ),
-                                                          height: AppUtils
-                                                              .scaleSize(
-                                                                  context, 43),
-                                                          width: AppUtils
-                                                              .scaleSize(
-                                                                  context, 19),
-                                                        ),
-                                                        Text(
-                                                          "클릭하여 식사를 기록해 보세요",
-                                                          style: TextStyle(
-                                                            color: const Color(
-                                                                0xff9397A4),
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14),
-                                                          ),
-                                                        )
-                                                      ],
-                                              )),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.network(
+                                              dinnerImageUrl!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                         Positioned(
                                           top: AppUtils.scaleSize(context, 20),
@@ -754,7 +661,7 @@ class _MealScreenState extends State<MealScreen> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              color: const Color(0xffF7F7FA),
+                                              color: Colors.white,
                                             ),
                                             child: Center(
                                               child: Text(
@@ -763,22 +670,140 @@ class _MealScreenState extends State<MealScreen> {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: AppUtils.scaleSize(
                                                       context, 12),
-                                                  color:
-                                                      const Color(0xff858998),
+                                                  color: primaryColor,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ],
+                                    ))
+                                : InkWell(
+                                    onTap: () async {
+                                      final selectedImage =
+                                          await showImageSelectModal();
+                                      setState(() {
+                                        isDinnerLoading = true; // 로딩 시작
+                                      });
+                                      if (mounted && selectedImage != null) {
+                                        final imageUrl =
+                                            await imageApiService.uploadImage(
+                                                context, selectedImage);
+                                        await momMealViewModel.recordMeals(
+                                          context,
+                                          globalData.selectedDate,
+                                          MealType.dinner.korName
+                                              .substring(0, 2),
+                                          imageUrl,
+                                        );
+                                        setState(() {
+                                          containsDinner = !containsDinner;
+                                          isDinnerLoading = false; // 로딩 완료
+                                        });
+                                      } else {
+                                        print('No image selected.');
+                                        setState(() {
+                                          isDinnerLoading = false; // 로딩 완료
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          SizedBox(
+                                            width: screenWidth -
+                                                AppUtils.scaleSize(context, 40),
+                                            height: AppUtils.scaleSize(
+                                                context, 216),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: isDinnerLoading
+                                                      ? [
+                                                          const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                primaryColor,
+                                                            color: Colors.white,
+                                                          ))
+                                                        ]
+                                                      : [
+                                                          Image(
+                                                            image:
+                                                                const AssetImage(
+                                                              "assets/images/icons/default_meal.png",
+                                                            ),
+                                                            height: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    43),
+                                                            width: AppUtils
+                                                                .scaleSize(
+                                                                    context,
+                                                                    19),
+                                                          ),
+                                                          Text(
+                                                            "클릭하여 식사를 기록해 보세요",
+                                                            style: TextStyle(
+                                                              color: const Color(
+                                                                  0xff9397A4),
+                                                              fontSize: AppUtils
+                                                                  .scaleSize(
+                                                                      context,
+                                                                      14),
+                                                            ),
+                                                          )
+                                                        ],
+                                                )),
+                                          ),
+                                          Positioned(
+                                            top:
+                                                AppUtils.scaleSize(context, 20),
+                                            left:
+                                                AppUtils.scaleSize(context, 20),
+                                            child: Container(
+                                              width: AppUtils.scaleSize(
+                                                  context, 58),
+                                              height: AppUtils.scaleSize(
+                                                  context, 23),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: const Color(0xffF7F7FA),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  MealType.dinner.korName,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize:
+                                                        AppUtils.scaleSize(
+                                                            context, 12),
+                                                    color:
+                                                        const Color(0xff858998),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
-                      SizedBox(height: screenHeight * 0.05)
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05)
+                  ],
                 );
               });
         }));

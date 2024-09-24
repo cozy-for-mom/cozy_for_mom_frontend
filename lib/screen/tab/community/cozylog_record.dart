@@ -161,7 +161,10 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Icon(Icons.close, size: 32),
+                          child: Icon(
+                            Icons.close,
+                            size: AppUtils.scaleSize(context, 28),
+                          ),
                         ),
                       ],
                     ),
