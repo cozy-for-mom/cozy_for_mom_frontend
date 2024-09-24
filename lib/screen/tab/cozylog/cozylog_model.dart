@@ -65,7 +65,7 @@ class MyCozyLogListWrapper {
 }
 
 class ScrapCozyLogListWrapper {
-  final List<CozyLogForList> cozyLogs;
+  final List<ScrapForList> cozyLogs;
   final int totalCount;
 
   ScrapCozyLogListWrapper({
@@ -106,6 +106,52 @@ class CozyLogForList {
     }
     return CozyLogForList(
       cozyLogId: json['id'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      mode: mode,
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+}
+
+class ScrapForList {
+  final int id;
+  final int cozyLogId;
+  final String title;
+  final String summary;
+  final CozyLogModeType mode;
+  final DateTime date; // 생성일? 수정일?
+  final int commentCount;
+  final int scrapCount;
+  final int imageCount;
+  final String imageUrl;
+
+  ScrapForList({
+    required this.id,
+    required this.cozyLogId,
+    required this.title,
+    required this.summary,
+    required this.mode,
+    required this.date,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageCount,
+    required this.imageUrl,
+  });
+  factory ScrapForList.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    return ScrapForList(
+      id: json['id'],
+      cozyLogId: json['cozyLogId'],
       date: DateTime.parse(json['date']),
       title: json['title'],
       summary: json['summary'],

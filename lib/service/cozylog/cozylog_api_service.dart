@@ -78,9 +78,9 @@ class CozyLogApiService extends ChangeNotifier {
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       int totalCount = body['data']['totalCount'];
-      List<CozyLogForList> cozyLogs =
+      List<ScrapForList> cozyLogs =
           (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
-        return CozyLogForList.fromJson(cozyLog);
+        return ScrapForList.fromJson(cozyLog);
       }).toList();
       return ScrapCozyLogListWrapper(
           cozyLogs: cozyLogs, totalCount: totalCount);
@@ -373,7 +373,7 @@ class CozyLogApiService extends ChangeNotifier {
 
   Future<void> unscrapCozyLog(
     BuildContext context,
-    int cozyLogId,
+    int id,
   ) async {
     var urlString = '$baseUrl/scrap';
     final headers = await getHeaders();
@@ -384,7 +384,7 @@ class CozyLogApiService extends ChangeNotifier {
       headers: headers,
       body: jsonEncode(
         {
-          'cozyLogId': cozyLogId,
+          'cozyLogId': id,
           'isScraped': false,
         },
       ),
@@ -431,7 +431,7 @@ class CozyLogApiService extends ChangeNotifier {
 
   Future<void> bulkUnscrapCozyLog(
     BuildContext context,
-    List<int> cozyLogIds,
+    List<int> ids,
   ) async {
     var urlString = '$baseUrl/scrap/unscraps';
     final headers = await getHeaders();
@@ -442,7 +442,7 @@ class CozyLogApiService extends ChangeNotifier {
       headers: headers,
       body: jsonEncode(
         {
-          'cozyLogIds': cozyLogIds,
+          'scrapIds': ids,
         },
       ),
     );

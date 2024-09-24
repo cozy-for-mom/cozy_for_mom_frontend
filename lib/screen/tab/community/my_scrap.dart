@@ -1,5 +1,4 @@
-import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/community/recent_scrap_view.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/scrap_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
@@ -28,7 +27,7 @@ class _MyScrapState extends State<MyScrap> {
   late Future<ScrapCozyLogListWrapper?> cozyLogWrapper;
   bool isAllSelected = false;
 
-  PagingController<int, CozyLogForList> pagingController =
+  PagingController<int, ScrapForList> pagingController =
       PagingController(firstPageKey: 0);
 
   Future<void> _fetchPage(int pageKey) async {
@@ -41,7 +40,7 @@ class _MyScrapState extends State<MyScrap> {
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
       } else {
-        final nextPageKey = pageKey + cozyLogs.length; // 데이터 길이를 이용한 페이지 키 증가
+        final nextPageKey = cozyLogs.lastOrNull?.id;
         pagingController.appendPage(cozyLogs, nextPageKey);
       }
     } catch (error) {
@@ -49,13 +48,15 @@ class _MyScrapState extends State<MyScrap> {
     }
   }
 
+  // 새로운 데이터를 가져와 cozyLogWrapper 갱신하는 함수
+  Future<void> fetchCozyLogs() async {
+    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(context, null, 10);
+  }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ListModifyState>(context, listen: false).clearSelection();
-    });
-    cozyLogWrapper = CozyLogApiService().getScrapCozyLogs(context, null, 10);
+    fetchCozyLogs();
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -67,6 +68,9 @@ class _MyScrapState extends State<MyScrap> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
+    ListModifyState scrapListModifyState = context.watch<ListModifyState>();
+    int selectedCount = scrapListModifyState.selectedCount;
+    bool isAnySelected = selectedCount > 0;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -84,7 +88,7 @@ class _MyScrapState extends State<MyScrap> {
               fontSize: AppUtils.scaleSize(context, 20)),
         ),
         leading: IconButton(
-          icon:  Image(
+          icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
             width: AppUtils.scaleSize(context, 34),
             height: AppUtils.scaleSize(context, 34),
@@ -124,157 +128,219 @@ class _MyScrapState extends State<MyScrap> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: cozyLogWrapper,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final totalHeight = boxHeight * snapshot.data!.cozyLogs.length + 20;
-            return widget.isEditMode
-                ? ScrapListModify(
-                    // TODO 왜 바로 ScrapListModify 안가고 MyScrap를 거쳐가는거지? 데이터 사용하려고?!
-                    cozyLogs: snapshot.data!.cozyLogs,
-                    totalCount: snapshot.data!.totalCount,
-                  )
-                : Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 20)),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 24)),
-                          width: screenWidth - AppUtils.scaleSize(context, 40),
-                          height: AppUtils.scaleSize(context, 53),
-                          decoration: BoxDecoration(
-                              color: const Color(0xffF0F0F5),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  Image(
-                                      image: const AssetImage(
-                                          'assets/images/icons/scrap.png'),
-                                      width: AppUtils.scaleSize(context, 18.4),
-                                      height: AppUtils.scaleSize(context, 24)),
-                                  SizedBox(
-                                      width: AppUtils.scaleSize(context, 8)),
-                                  Text(
-                                    '${snapshot.data!.totalCount}개의 스크랩',
-                                    style: TextStyle(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 14)),
-                                  ),
-                                ]),
-                                InkWell(
-                                  onTap: () {
-                                    snapshot.data!.cozyLogs.isNotEmpty
-                                        ? setState(() {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MyScrap(
-                                                  isEditMode: true,
-                                                ),
-                                              ),
-                                            );
-                                          })
-                                        : setState(() {});
-                                  },
-                                  child: Text(
-                                    '편집',
-                                    style: TextStyle(
-                                        color: offButtonTextColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 14)),
-                                  ),
-                                ),
-                              ]),
-                        ),
-                      ),
-                      SizedBox(height: AppUtils.scaleSize(context, 22)),
-                      snapshot.data!.cozyLogs.isNotEmpty
-                          ? Padding(
+      body: Stack(
+        children: [
+          FutureBuilder(
+            future: cozyLogWrapper,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final totalHeight =
+                    boxHeight * snapshot.data!.cozyLogs.length + 20;
+                return widget.isEditMode
+                    ? ScrapListModify(
+                        // TODO 왜 바로 ScrapListModify 안가고 MyScrap를 거쳐가는거지? 데이터 사용하려고?!
+                        cozyLogs: snapshot.data!.cozyLogs,
+                        totalCount: snapshot.data!.totalCount,
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppUtils.scaleSize(context, 20)),
+                            child: Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 20)),
-                              child: Container(
-                                width: screenWidth -
-                                    AppUtils.scaleSize(context, 40),
-                                // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                                height: screenHeight * (0.75),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppUtils.scaleSize(context, 20)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: contentBoxTwoColor,
-                                ),
-                                child: PagedListView<int, CozyLogForList>(
-                                  padding: EdgeInsets.only(
-                                      bottom: screenHeight * 0.35),
-                                  pagingController: pagingController,
-                                  builderDelegate:
-                                      PagedChildBuilderDelegate<CozyLogForList>(
-                                    itemBuilder: (context, item, index) =>
-                                        CozylogViewWidget(
-                                      cozylog: item,
-                                      isEditMode: false,
-                                      isMyCozyLog: true,
-                                      onUpdate: () {
-                                        setState(() {
-                                          pagingController.refresh();
-                                          cozyLogWrapper = CozyLogApiService()
-                                              .getScrapCozyLogs(
-                                                  context, null, 10);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : SizedBox(
-                              width: AppUtils.scaleSize(context, 160),
-                              height: screenHeight * (0.6),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  horizontal: AppUtils.scaleSize(context, 24)),
+                              width:
+                                  screenWidth - AppUtils.scaleSize(context, 40),
+                              height: AppUtils.scaleSize(context, 53),
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffF0F0F5),
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Image(
-                                        image: const AssetImage(
-                                            'assets/images/icons/scrap_off.png'),
-                                        width:
-                                            AppUtils.scaleSize(context, 34.54),
-                                        height:
-                                            AppUtils.scaleSize(context, 45.05)),
-                                    SizedBox(
-                                        height:
-                                            AppUtils.scaleSize(context, 12)),
-                                    Text('코지로그를 스크랩 해보세요!',
+                                    Row(children: [
+                                      Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/scrap.png'),
+                                          width:
+                                              AppUtils.scaleSize(context, 18.4),
+                                          height:
+                                              AppUtils.scaleSize(context, 24)),
+                                      SizedBox(
+                                          width:
+                                              AppUtils.scaleSize(context, 8)),
+                                      Text(
+                                        '${snapshot.data!.totalCount}개의 스크랩',
                                         style: TextStyle(
-                                            color: const Color(0xff9397A4),
-                                            fontWeight: FontWeight.w500,
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.w600,
                                             fontSize: AppUtils.scaleSize(
-                                                context, 14))),
+                                                context, 14)),
+                                      ),
+                                    ]),
+                                    InkWell(
+                                      onTap: () {
+                                        snapshot.data!.cozyLogs.isNotEmpty
+                                            ? setState(() {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MyScrap(
+                                                      isEditMode: true,
+                                                    ),
+                                                  ),
+                                                );
+                                              })
+                                            : setState(() {});
+                                      },
+                                      child: Text(
+                                        '편집',
+                                        style: TextStyle(
+                                            color: offButtonTextColor,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: AppUtils.scaleSize(
+                                                context, 14)),
+                                      ),
+                                    ),
                                   ]),
                             ),
-                    ],
-                  );
-          } else {
-            return SizedBox(
-              height: screenHeight * (3 / 4),
-              child: const Center(
-                  child: CircularProgressIndicator(
-                backgroundColor: primaryColor,
-                color: Colors.white,
-              )),
-            );
-          }
-        },
+                          ),
+                          SizedBox(height: AppUtils.scaleSize(context, 22)),
+                          snapshot.data!.cozyLogs.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppUtils.scaleSize(context, 20)),
+                                  child: Container(
+                                    width: screenWidth -
+                                        AppUtils.scaleSize(context, 40),
+                                    // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+                                    height: screenHeight * (0.75),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            AppUtils.scaleSize(context, 20)),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: contentBoxTwoColor,
+                                    ),
+                                    child: PagedListView<int, ScrapForList>(
+                                      pagingController: pagingController,
+                                      builderDelegate:
+                                          PagedChildBuilderDelegate<
+                                              ScrapForList>(
+                                        itemBuilder: (context, item, index) {
+                                          bool isLast = index ==
+                                              pagingController
+                                                      .itemList!.length -
+                                                  1;
+                                          return ScrapViewWidget(
+                                            isLast: isLast,
+                                            cozylog: item,
+                                            isEditMode: false,
+                                            isMyCozyLog: true,
+                                            onUpdate: () {
+                                              setState(() {
+                                                pagingController.refresh();
+                                                fetchCozyLogs();
+                                              });
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/scrap_off.png'),
+                                          width: AppUtils.scaleSize(
+                                              context, 34.54),
+                                          height: AppUtils.scaleSize(
+                                              context, 45.05)),
+                                      SizedBox(
+                                        height: AppUtils.scaleSize(context, 12),
+                                      ),
+                                      Text('코지로그를 스크랩 해보세요!',
+                                          style: TextStyle(
+                                              color: const Color(0xff9397A4),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: AppUtils.scaleSize(
+                                                  context, 14))),
+                                      SizedBox(
+                                        height:
+                                            AppUtils.scaleSize(context, 140),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ],
+                      );
+              } else {
+                return SizedBox(
+                  height: screenHeight * (3 / 4),
+                  child: const Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: primaryColor,
+                    color: Colors.white,
+                  )),
+                );
+              }
+            },
+          ),
+          widget.isEditMode
+              ? Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.white,
+                          Colors.white.withOpacity(0.2),
+                        ],
+                      ),
+                    ),
+                    child: BottomButtonWidget(
+                      isActivated: isAnySelected,
+                      text: '스크랩 삭제',
+                      tapped: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DeleteModal(
+                              title: '스크랩이',
+                              text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                              tapFunc: () async {
+                                await CozyLogApiService().bulkUnscrapCozyLog(
+                                  context,
+                                  scrapListModifyState.selectedIds,
+                                );
+                                setState(() {
+                                  cozyLogWrapper = CozyLogApiService()
+                                      .getScrapCozyLogs(context, null, 10);
+                                  scrapListModifyState.clearSelection();
+                                });
+                              },
+                            );
+                          },
+                          barrierDismissible: false,
+                        );
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
+        ],
       ),
       floatingActionButton: widget.isEditMode
           ? null
@@ -286,51 +352,6 @@ class _MyScrapState extends State<MyScrap> {
                         builder: (context) => const CozylogRecordPage()));
               },
             ),
-      bottomSheet: widget.isEditMode
-          ? SizedBox(
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              child: BottomSheet(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onClosing: () {},
-                builder: (BuildContext context) {
-                  ListModifyState scrapListModifyState =
-                      context.watch<ListModifyState>();
-                  int selectedCount = scrapListModifyState.selectedCount;
-
-                  bool isAnySelected = selectedCount > 0;
-
-                  return BottomButtonWidget(
-                    isActivated: isAnySelected,
-                    text: '스크랩 삭제',
-                    tapped: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeleteModal(
-                            title: '스크랩이',
-                            text: '등록된 스크랩을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                            tapFunc: () async {
-                              await CozyLogApiService().bulkUnscrapCozyLog(
-                                context,
-                                scrapListModifyState.selectedIds,
-                              );
-                              setState(() {
-                                cozyLogWrapper = CozyLogApiService()
-                                    .getScrapCozyLogs(context, null, 10);
-                                scrapListModifyState.clearSelection();
-                              });
-                            },
-                          );
-                        },
-                        barrierDismissible: false,
-                      );
-                    },
-                  );
-                },
-              ),
-            )
-          : null,
     );
   }
 }
