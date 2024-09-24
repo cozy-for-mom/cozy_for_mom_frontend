@@ -45,47 +45,45 @@ class _DeleteModalState extends State<DeleteModal> {
             ),
             Container(
                 width: screenWidth, height: 1, color: const Color(0xffD9D9D9)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: AppUtils.scaleSize(context, 56),
-                    child: Text('취소',
-                        style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 14))),
-                  ),
-                ),
-                Container(
-                    width: 1,
-                    height: AppUtils.scaleSize(context, 65),
-                    color: const Color(0xffD9D9D9)),
-                InkWell(
-                  onTap: () async {
-                    await widget.tapFunc!();
-                    if (mounted) {
-                      Navigator.of(context).pop(true);
-                      await CompleteAlertModal.showCompleteDialog(
-                          context, widget.title, '삭제');
-                    }
-                  },
-                  child: Container(
-                    width: AppUtils.scaleSize(context, 56),
-                    alignment: Alignment.center,
-                    child: Text('삭제하기',
-                        style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 14))),
-                  ),
-                ),
-              ],
+            Expanded(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: AppUtils.scaleSize(context, 56),
+                        child: Text('취소',
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: AppUtils.scaleSize(context, 14))),
+                      ),
+                    ),
+                    Container(width: 1, color: const Color(0xffD9D9D9)),
+                    InkWell(
+                      onTap: () async {
+                        await widget.tapFunc!();
+                        if (mounted) {
+                          Navigator.of(context).pop(true);
+                          await CompleteAlertModal.showCompleteDialog(
+                              context, widget.title, '삭제');
+                        }
+                      },
+                      child: Container(
+                        width: AppUtils.scaleSize(context, 56),
+                        alignment: Alignment.center,
+                        child: Text('삭제하기',
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: AppUtils.scaleSize(context, 14))),
+                      ),
+                    ),
+                  ]),
             ),
           ],
         ),

@@ -115,21 +115,14 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                         SizedBox(
                           width: AppUtils.scaleSize(context, 255),
                           child: TextField(
+                            textAlignVertical: TextAlignVertical.bottom,
                             keyboardType: TextInputType.text,
                             cursorColor: primaryColor,
                             cursorHeight: AppUtils.scaleSize(context, 15),
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(bottom: (AppUtils.scaleSize(context, 37) -
-                                          AppUtils.scaleSize(context, 14) *
-                                              1.2) /
-                                      2 // 폰트 크기와 라인 높이 고려),
-                              ),
-                              // contentPadding: EdgeInsets.symmetric(
-                              //     vertical: (AppUtils.scaleSize(context, 37) -
-                              //             AppUtils.scaleSize(context, 14) *
-                              //                 1.2) /
-                              //         2 // 폰트 크기와 라인 높이 고려
-                              //     ),
+                              // underline과의 기본 패딩값 없애기(텍스트 중앙정렬 위해)
+                              isCollapsed: true,
+                              contentPadding: EdgeInsets.zero,
                               focusColor: primaryColor,
                               fillColor: primaryColor,
                               border: InputBorder.none,

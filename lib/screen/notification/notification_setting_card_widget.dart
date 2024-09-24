@@ -105,141 +105,137 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
         ),
       ),
       padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
-      child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: AppUtils.scaleSize(context, 96),
-              height: AppUtils.scaleSize(context, 35),
-              decoration: BoxDecoration(
-                  color: offButtonColor,
-                  borderRadius: BorderRadius.circular(20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isBeforeButtonEnabled = true;
-                        isAfterButtonEnabled = false;
-                        if (widget.initialTime != null) {
-                          widget.targetTimeAt(convert24Time(timeParts));
-                        }
-                      });
-                    },
-                    child: Container(
-                        width: AppUtils.scaleSize(context, 45),
-                        height: AppUtils.scaleSize(context, 29),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Container(
+          width: AppUtils.scaleSize(context, 96),
+          height: AppUtils.scaleSize(context, 35),
+          decoration: BoxDecoration(
+              color: offButtonColor, borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isBeforeButtonEnabled = true;
+                    isAfterButtonEnabled = false;
+                    if (widget.initialTime != null) {
+                      widget.targetTimeAt(convert24Time(timeParts));
+                    }
+                  });
+                },
+                child: Container(
+                    width: AppUtils.scaleSize(context, 45),
+                    height: AppUtils.scaleSize(context, 29),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: isBeforeButtonEnabled
+                            ? primaryColor
+                            : offButtonColor),
+                    child: Center(
+                      child: Text('오전',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
                             color: isBeforeButtonEnabled
-                                ? primaryColor
-                                : offButtonColor),
-                        child: Center(
-                          child: Text('오전',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isBeforeButtonEnabled
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppUtils.scaleSize(context, 14),
-                              )),
-                        )),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isBeforeButtonEnabled = false;
-                        isAfterButtonEnabled = true;
-                        if (widget.initialTime != null) {
-                          widget.targetTimeAt(convert24Time(timeParts));
-                        }
-                      });
-                    },
-                    child: Container(
-                        width: AppUtils.scaleSize(context, 45),
-                        height: AppUtils.scaleSize(context, 29),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: isAfterButtonEnabled
-                                ? primaryColor
-                                : offButtonColor),
-                        child: Center(
-                          child: Text('오후',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isAfterButtonEnabled
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppUtils.scaleSize(context, 14),
-                              )),
-                        )),
-                  ),
-                ],
+                                ? Colors.white
+                                : offButtonTextColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppUtils.scaleSize(context, 14),
+                          )),
+                    )),
               ),
-            ),
-            Container(
-              width: AppUtils.scaleSize(context, 89),
-              height: AppUtils.scaleSize(context, 38),
-              alignment: Alignment.center,
-              // margin: EdgeInsets.symmetric(vertical: (AppUtils.scaleSize(context, 38) -
-              //                   AppUtils.scaleSize(context, 24) * 1.2) /
-              //               2),
-              child: TextFormField(
-                autocorrect: true,
-                controller: textEditingController,
-                textAlign: TextAlign.center,
-                maxLength: 7,
-                showCursor: false,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4),
-                ],
-                decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.symmetric(
-                    //     vertical: (AppUtils.scaleSize(context, 38) -
-                    //             AppUtils.scaleSize(context, 24)) * 1.2 /
-                    //         2 // 폰트 크기와 라인 높이 고려
-                    //     ),
-                    border: InputBorder.none,
-                    counterText: '',
-                    hintText: '00 : 00',
-                    hintStyle: TextStyle(
-                        color: offButtonTextColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: AppUtils.scaleSize(context, 24))),
-                style: TextStyle(
-                    color: mainTextColor,
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isBeforeButtonEnabled = false;
+                    isAfterButtonEnabled = true;
+                    if (widget.initialTime != null) {
+                      widget.targetTimeAt(convert24Time(timeParts));
+                    }
+                  });
+                },
+                child: Container(
+                    width: AppUtils.scaleSize(context, 45),
+                    height: AppUtils.scaleSize(context, 29),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: isAfterButtonEnabled
+                            ? primaryColor
+                            : offButtonColor),
+                    child: Center(
+                      child: Text('오후',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: isAfterButtonEnabled
+                                ? Colors.white
+                                : offButtonTextColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppUtils.scaleSize(context, 14),
+                          )),
+                    )),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: AppUtils.scaleSize(context, 89),
+          alignment: Alignment.center,
+          child: Center(
+            child: TextFormField(
+              autocorrect: true,
+              controller: textEditingController,
+              textAlignVertical: TextAlignVertical.bottom,
+              textAlign: TextAlign.center,
+              maxLength: 7,
+              showCursor: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(4),
+              ],
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                // underline과의 기본 패딩값 없애기(텍스트 중앙정렬 위해)
+                isCollapsed: true,
+                contentPadding: EdgeInsets.zero,
+                counterText: '',
+                hintText: '00 : 00',
+                hintStyle: TextStyle(
+                    color: offButtonTextColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: AppUtils.scaleSize(context, 24)),
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    textEditingController.value =
-                        textEditingController.value.copyWith(
-                      text: formatTime(value),
-                      selection: TextSelection.collapsed(
-                          offset: formatTime(value).length),
-                    );
-                    String time;
-                    if (textEditingController.text.contains(':')) {
-                      timeParts = textEditingController.text.split(':');
-              
-                      if (timeParts[0].length + timeParts[1].length == 6) {
-                        // 각각 공백 포함 3글자
-                        time = convert24Time(
-                            timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
-                        widget.targetTimeAt(time);
-                      }
+                    fontSize: AppUtils.scaleSize(context, 24),
+                    height: AppUtils.scaleSize(context, 1)),
+              ),
+              style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: AppUtils.scaleSize(context, 24),
+                  height: AppUtils.scaleSize(context, 1)),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  textEditingController.value =
+                      textEditingController.value.copyWith(
+                    text: formatTime(value),
+                    selection: TextSelection.collapsed(
+                        offset: formatTime(value).length),
+                  );
+                  String time;
+                  if (textEditingController.text.contains(':')) {
+                    timeParts = textEditingController.text.split(':');
+
+                    if (timeParts[0].length + timeParts[1].length == 6) {
+                      // 각각 공백 포함 3글자
+                      time = convert24Time(
+                          timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
+                      widget.targetTimeAt(time);
                     }
                   }
-                },
-              ),
+                }
+              },
             ),
-          ]),
+          ),
+        ),
+      ]),
     );
   }
 }

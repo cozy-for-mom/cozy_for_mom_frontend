@@ -169,8 +169,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                       padding: EdgeInsets.only(
                           left: AppUtils.scaleSize(context, 20),
                           right: AppUtils.scaleSize(context, 20),
-                          bottom: AppUtils.scaleSize(context, keyboardPadding),
-                          top: AppUtils.scaleSize(context, 25)),
+                          bottom: AppUtils.scaleSize(context, keyboardPadding)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
