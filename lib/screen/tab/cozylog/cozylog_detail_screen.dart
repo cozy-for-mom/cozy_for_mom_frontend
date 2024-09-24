@@ -74,7 +74,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
             backgroundColor: backgroundColor,
             appBar: PreferredSize(
               preferredSize: Size(AppUtils.scaleSize(context, 400),
-                  AppUtils.scaleSize(context, 80)),
+                  AppUtils.scaleSize(context, 57.4)),
               child: Padding(
                 padding: EdgeInsets.only(
                     top: AppUtils.scaleSize(context, 8),
