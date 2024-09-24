@@ -7,6 +7,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/community/list_modify_state.dar
 import 'package:intl/intl.dart';
 
 class CozylogViewWidget extends StatefulWidget {
+  final bool isLast;
   final bool isEditMode;
   final bool isMyCozyLog;
   final CozyLogForList cozylog;
@@ -16,6 +17,7 @@ class CozylogViewWidget extends StatefulWidget {
 
   const CozylogViewWidget({
     super.key,
+    this.isLast = false,
     this.isEditMode = false,
     required this.cozylog,
     this.isMyCozyLog = false,
@@ -32,7 +34,7 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+  final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: screenWidth - AppUtils.scaleSize(context, 40),
       child: Column(
@@ -219,14 +221,16 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                                                 0, 0, 0, 0.4),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
-                                        child: Text(
-                                          '${widget.cozylog.imageCount}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 12)),
+                                        child: Center(
+                                          child: Text(
+                                            '${widget.cozylog.imageCount}',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: AppUtils.scaleSize(
+                                                    context, 12)),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -284,14 +288,14 @@ class _CozylogViewWidgetState extends State<CozylogViewWidget> {
                         ],
                       ),
                     ),
-                    SizedBox(height: AppUtils.scaleSize(context, 20)),
-                    const Divider(color: lineTwoColor, height: 1),
+                    if (!widget.isLast)
+                      SizedBox(height: AppUtils.scaleSize(context, 20)),
                   ],
                 ),
               ),
             ],
           ),
-          const Divider(color: mainLineColor, height: 1),
+          if (!widget.isLast) const Divider(color: mainLineColor, height: 1),
         ],
       ),
     );

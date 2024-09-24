@@ -44,17 +44,15 @@ class _BabyGrowthReportListScreenState
         this.data = Future.value(data);
       });
       final growths = data!.growths;
-      final isLastPage = growths.length <= 10; // 10개 미만이면 마지막 페이지로 간주
+      final isLastPage = growths.length < 10; // 10개 미만이면 마지막 페이지로 간주
 
       if (isLastPage) {
         pagingController.appendLastPage(growths);
       } else {
-        // final nextPageKey = pageKey + growths.length; // 다음 페이지 키 설정
-        final nextPageKey = growths.last.id! + 1; // 다음 페이지 키 설정
+        final nextPageKey = data.lastId!; // 다음 페이지 키 설정
         pagingController.appendPage(growths, nextPageKey);
       }
     } catch (error) {
-      print(error);
       pagingController.error = error;
     }
   }
@@ -543,9 +541,9 @@ class _BabyGrowthReportListScreenState
                                         child: PagedListView<int,
                                             BabyProfileGrowth>(
                                           padding: EdgeInsets.only(
-                                              top: AppUtils.scaleSize(
-                                                  context, 14),
-                                              bottom: screenHeight * 0.35),
+                                            top:
+                                                AppUtils.scaleSize(context, 14),
+                                          ),
                                           pagingController: pagingController,
                                           builderDelegate:
                                               PagedChildBuilderDelegate<
@@ -554,6 +552,10 @@ class _BabyGrowthReportListScreenState
                                                       (context, item, index) {
                                             final report = item;
                                             final dateTime = report.date;
+                                            bool isLast = index ==
+                                                pagingController
+                                                        .itemList!.length -
+                                                    1;
                                             return InkWell(
                                               onTap: () async {
                                                 final res =
@@ -717,11 +719,12 @@ class _BabyGrowthReportListScreenState
                                                             AppUtils.scaleSize(
                                                                 context, 10),
                                                       ),
-                                                      const Divider(
-                                                        color:
-                                                            Color(0xffE1E1E7),
-                                                        thickness: 1.0,
-                                                      ),
+                                                      if (!isLast) // 마지막 요소가 아닐때만 구분선 출력
+                                                        const Divider(
+                                                          color:
+                                                              Color(0xffE1E1E7),
+                                                          thickness: 1.0,
+                                                        ),
                                                     ],
                                                   ),
                                                 ),

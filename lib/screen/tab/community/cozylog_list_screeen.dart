@@ -190,13 +190,14 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                               ),
                               child: PagedListView<int, CozyLogForList>(
                                 // physics: const NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                    bottom: screenHeight * 0.35),
                                 pagingController: pagingController,
                                 builderDelegate:
                                     PagedChildBuilderDelegate<CozyLogForList>(
                                         itemBuilder: (context, item, index) {
+                                  bool isLast = index ==
+                                      pagingController.itemList!.length - 1;
                                   return CozylogViewWidget(
+                                    isLast: isLast,
                                     cozylog: item,
                                     isEditMode: false,
                                     isMyCozyLog: true, // TODO 수정 필요

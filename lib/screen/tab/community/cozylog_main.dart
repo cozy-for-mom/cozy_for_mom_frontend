@@ -110,7 +110,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 18))),
+                                    fontSize: AppUtils.scaleSize(context, 20))),
                             const Spacer(),
                             Row(
                               children: [
@@ -331,11 +331,11 @@ class _CozylogMainState extends State<CozylogMain> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 430),
+                    top: AppUtils.scaleSize(context, 434),
                     left: AppUtils.scaleSize(context, 20),
                     child: Container(
                       width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: screenHeight * 0.34,
+                      height: screenHeight * 0.375,
                       padding: EdgeInsets.only(
                         left: AppUtils.scaleSize(context, 22),
                         right: AppUtils.scaleSize(context, 22),
@@ -359,22 +359,28 @@ class _CozylogMainState extends State<CozylogMain> {
                             } else {
                               return SingleChildScrollView(
                                 child: Column(
-                                  children: snapshot.data!
-                                      .map((cozylog) => CozylogViewWidget(
-                                            cozylog: cozylog,
-                                            isMyCozyLog: false,
-                                            onUpdate: () {
-                                              setState(() {
-                                                cozyLogs = CozyLogApiService()
-                                                    .getCozyLogs(
-                                                  context,
-                                                  null,
-                                                  10,
-                                                );
-                                              });
-                                            },
-                                          ))
-                                      .toList(),
+                                  children: <Widget>[
+                                    ...snapshot.data!
+                                        .map((cozylog) => CozylogViewWidget(
+                                              isLast: cozylog ==
+                                                  snapshot.data!
+                                                      .last, // 마지막 아이템인지 판단
+                                              cozylog: cozylog,
+                                              isMyCozyLog: false,
+                                              onUpdate: () {
+                                                setState(() {
+                                                  cozyLogs = CozyLogApiService()
+                                                      .getCozyLogs(
+                                                    context,
+                                                    null,
+                                                    10,
+                                                  );
+                                                });
+                                              },
+                                            ))
+                                        .toList(),
+                                    const SizedBox(height: 24),
+                                  ],
                                 ),
                               );
                             }
