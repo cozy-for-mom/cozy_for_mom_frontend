@@ -106,7 +106,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
             color: mainTextColor,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
         actions: [

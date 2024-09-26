@@ -39,6 +39,14 @@ class _CozylogMainState extends State<CozylogMain> {
     );
   }
 
+  void reloadCozyLogs() {
+    cozyLogs = CozyLogApiService().getCozyLogs(
+      context,
+      null,
+      10,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -247,12 +255,17 @@ class _CozylogMainState extends State<CozylogMain> {
                                 imagePath: 'assets/images/icons/cozylog.png',
                                 imageWidth: 27.3,
                                 imageHeight: 24.34,
-                                onPressed: () {
-                                  Navigator.push(
+                                onPressed: () async {
+                                  final res = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const MyCozylog()));
+                                  if (res == true) {
+                                    setState(() {
+                                      reloadCozyLogs();
+                                    });
+                                  }
                                 }),
                             Container(
                               width: 1,
@@ -295,14 +308,19 @@ class _CozylogMainState extends State<CozylogMain> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              final res = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       const CozyLogListScreen(),
                                 ),
                               );
+                              if (res == true) {
+                                setState(() {
+                                  reloadCozyLogs();
+                                });
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(

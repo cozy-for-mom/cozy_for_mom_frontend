@@ -48,7 +48,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   void initState() {
     super.initState();
     futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
-    futureCozyLog.then((value) => setIsMyCozyLog(value!));
+    futureCozyLog.then((value) {
+      if (value != null) {
+        setIsMyCozyLog(value);
+      }
+    });
 
     futureComments =
         CozyLogCommentApiService().getCozyLogComments(context, widget.id);
@@ -56,8 +60,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
 
   void setIsMyCozyLog(CozyLog cozyLog) async {
     final userId = await tokenManager.getUserId();
-    if (cozyLog.writer.id == userId) {
-      isMyCozyLog = true;
+    bool newIsMyCozyLog = cozyLog.writer.id == userId;
+    if (newIsMyCozyLog != isMyCozyLog) {
+      setState(() {
+        isMyCozyLog = newIsMyCozyLog;
+      });
     }
   }
 

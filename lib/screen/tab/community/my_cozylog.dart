@@ -91,7 +91,7 @@ class _MyCozylogState extends State<MyCozylog> {
             color: mainTextColor,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
         actions: [
