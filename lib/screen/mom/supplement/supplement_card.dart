@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
@@ -43,8 +45,7 @@ class _SupplementCardState extends State<SupplementCard> {
   double calculateCardHeight(BuildContext context, int itemCount) {
     double buttonHeight = 36;
     double spacingHeight = 8;
-    return AppUtils.scaleSize(
-        context, itemCount * (buttonHeight + spacingHeight) + 40);
+    return (itemCount * (buttonHeight + spacingHeight) + 40).w;
   }
 
   @override
@@ -53,6 +54,8 @@ class _SupplementCardState extends State<SupplementCard> {
     late DateTime currentTime;
     SupplementApiService supplementApi = SupplementApiService();
     final globalData = Provider.of<MyDataModel>(context, listen: false);
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     List<DateTime> sortedTakeTimes = widget.takeTimes
       ..sort((a, b) => a.compareTo(b));
@@ -60,7 +63,7 @@ class _SupplementCardState extends State<SupplementCard> {
       child: Card(
         elevation: 0.0,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
           controller: _slidableController,
           actionPane: const SlidableDrawerActionPane(),
@@ -69,12 +72,12 @@ class _SupplementCardState extends State<SupplementCard> {
               color: Colors.transparent,
               foregroundColor: Colors.transparent,
               iconWidget: Container(
-                width: AppUtils.scaleSize(context, 120),
-                decoration: const BoxDecoration(
+                width: 120.w,
+                decoration: BoxDecoration(
                   color: deleteButtonColor,
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
+                    topRight: Radius.circular(20.w),
+                    bottomRight: Radius.circular(20.w),
                   ),
                 ),
                 child: InkWell(
@@ -105,16 +108,16 @@ class _SupplementCardState extends State<SupplementCard> {
                         Image(
                           image: const AssetImage(
                               'assets/images/icons/delete.png'),
-                          width: AppUtils.scaleSize(context, 17.5),
-                          height: AppUtils.scaleSize(context, 18),
+                          width: min(17.5.w, 27.5),
+                          height: min(18.w, 28),
                         ),
-                        SizedBox(height: AppUtils.scaleSize(context, 5)),
+                        SizedBox(height: 5.w),
                         Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 14),
+                            fontSize: min(14.sp, 24),
                           ),
                         ),
                       ]),
@@ -123,13 +126,11 @@ class _SupplementCardState extends State<SupplementCard> {
             ),
           ],
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(20.w),
             child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppUtils.scaleSize(context, 24),
-                  vertical: AppUtils.scaleSize(context, 20)),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.w),
               color: contentBoxTwoColor,
-              width: screenWidth - AppUtils.scaleSize(context, 40),
+              width: screenWidth - 2 * paddingValue,
               height: calculateCardHeight(context, widget.targetCount),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,29 +143,28 @@ class _SupplementCardState extends State<SupplementCard> {
                                 ? 'assets/images/icons/take_on.png'
                                 : 'assets/images/icons/take_off.png',
                           ),
-                          width: AppUtils.scaleSize(context, 20),
-                          height: AppUtils.scaleSize(context, 20)),
-                      SizedBox(width: AppUtils.scaleSize(context, 10)),
+                          width: min(20.w, 30),
+                          height: min(20.w, 30)),
+                      SizedBox(width: 10.w),
                       Text(widget.name,
                           style: TextStyle(
                               color: afterInputColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 18))),
-                      SizedBox(width: AppUtils.scaleSize(context, 7)),
+                              fontSize: min(18.sp, 28))),
+                      SizedBox(width: 7.w),
                       Container(
-                        height: AppUtils.scaleSize(context, 22),
+                        height: 22.w,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 8)),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
                             color: const Color(0xffFEEEEE),
-                            borderRadius: BorderRadius.circular(8)),
+                            borderRadius: BorderRadius.circular(8.w)),
                         child: Text(
                           '하루 ${widget.targetCount}회',
                           style: TextStyle(
                               color: const Color(0xffFF9797),
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 12)),
+                              fontSize: min(12.sp, 22)),
                         ),
                       )
                     ]),
@@ -173,14 +173,14 @@ class _SupplementCardState extends State<SupplementCard> {
                         children: List.generate(
                           widget.targetCount,
                           (index) => Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: AppUtils.scaleSize(context, 4)),
+                            padding: EdgeInsets.symmetric(vertical: 4.w),
                             child: InkWell(
                               onTap: widget.realCount > index
                                   ? () {
                                       int id = widget.recordIds[index];
                                       showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
+                                          elevation: 0.0,
                                           context: context,
                                           builder: (BuildContext context) {
                                             return SelectBottomModal(
@@ -248,14 +248,14 @@ class _SupplementCardState extends State<SupplementCard> {
                                       });
                                     },
                               child: Container(
-                                width: AppUtils.scaleSize(context, 106),
-                                height: AppUtils.scaleSize(context, 36),
+                                width: 126.w - paddingValue,
+                                height: 36.w,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: widget.realCount > index
                                         ? primaryColor
                                         : offButtonColor,
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(20.w)),
                                 child: Text(
                                     widget.realCount > index
                                         ? DateFormat('HH:mm')
@@ -266,8 +266,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                             ? Colors.white
                                             : offButtonTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 16))),
+                                        fontSize: min(16.sp, 26))),
                               ),
                             ),
                           ),

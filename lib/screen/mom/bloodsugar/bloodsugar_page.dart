@@ -1,4 +1,6 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -28,35 +30,41 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: AppUtils.scaleSize(context, 47),
+              top: isTablet ? 0.w : 50.w,
               width: screenWidth,
               child: Padding(
-                padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 10), right: AppUtils.scaleSize(context, 5)),
+                padding: EdgeInsets.only(
+                    top: paddingValue - 20.w,
+                    bottom: paddingValue - 20.w,
+                    right: 8.w),
                 child: Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-          icon:  Image(
-            image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
-            color: mainTextColor,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+                        icon: Image(
+                          image: const AssetImage(
+                              'assets/images/icons/back_ios.png'),
+                          width: min(34.w, 44),
+                          height: min(34.w, 44),
+                          color: mainTextColor,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                       SizedBox(
-                              width: AppUtils.scaleSize(context, 30),
-                              height: AppUtils.scaleSize(context, 30),
-                            ),
+                        width: min(30.w, 40),
+                        height: min(30.w, 40),
+                      ),
                       const Spacer(),
                       Row(
                         children: [
@@ -66,7 +74,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                             style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 20),
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           IconButton(
@@ -75,10 +83,11 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                             onPressed: () {
                               showModalBottomSheet(
                                 backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
                                 elevation: 0.0,
                                 context: context,
                                 builder: (context) {
-                                  return MonthCalendarModal(limitToday: true);
+                                  return Wrap(children : [MonthCalendarModal(limitToday: true)]);
                                 },
                               );
                             },
@@ -90,8 +99,8 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                           icon: Image(
                               image: const AssetImage(
                                   'assets/images/icons/alert.png'),
-                              height: AppUtils.scaleSize(context, 32),
-                              width: AppUtils.scaleSize(context, 32)),
+                              height: min(32.w, 42),
+                              width: min(32.w, 42)),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -106,14 +115,14 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 }),
               )),
           Positioned(
-              top: AppUtils.scaleSize(context, 110),
-              left: AppUtils.scaleSize(context, 20),
+              top: isTablet ? 80.h : 100.h,
+              left: paddingValue,
               child: Container(
-                width: screenWidth - AppUtils.scaleSize(context, 40),
-                height: AppUtils.scaleSize(context, 53),
+                width: screenWidth - 2 * paddingValue,
+                height: min(53.w, 93),
                 decoration: BoxDecoration(
                     color: offButtonColor,
-                    borderRadius: BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(30.w)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -121,49 +130,49 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
                           width: isRecordActive
-                              ? AppUtils.scaleSize(context, 173)
-                              : AppUtils.scaleSize(context, 153),
-                          height: AppUtils.scaleSize(context, 41),
-                          padding:
-                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기록하기',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isRecordActive
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppUtils.scaleSize(context, 16),
-                              ))),
+                          child: Center(
+                            child: Text('기록하기',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isRecordActive
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
                           width: !isRecordActive
-                              ? AppUtils.scaleSize(context, 173)
-                              : AppUtils.scaleSize(context, 153),
-                          height: AppUtils.scaleSize(context, 41),
-                          padding:
-                              EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: !isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기간별 조회',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: !isRecordActive
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppUtils.scaleSize(context, 16),
-                              ))),
+                          child: Center(
+                            child: Text('기간별 조회',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: !isRecordActive
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                   ],
                 ),

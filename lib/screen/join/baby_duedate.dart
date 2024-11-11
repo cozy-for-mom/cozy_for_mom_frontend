@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -21,32 +24,34 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     final joinInputData = Provider.of<JoinInputData>(context);
     dueDateController.text = joinInputData.dueDate;
     lastMensesController.text = joinInputData.laseMensesDate;
     return Stack(
       children: [
         Positioned(
-          top: AppUtils.scaleSize(context, 50),
-          left: AppUtils.scaleSize(context, 20),
+          top: 50.h,
+          left: paddingValue,
           child: Text('출산 예정일을 입력해주세요',
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: AppUtils.scaleSize(context, 26))),
+                  fontSize: min(26.sp, 36))),
         ),
         Positioned(
-          top: AppUtils.scaleSize(context, 95),
-          left: AppUtils.scaleSize(context, 20),
+          top: 95.h,
+          left: paddingValue,
           child: Text('출산 예정일은 마이로그에서 수정할 수 있어요.',
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: AppUtils.scaleSize(context, 14))),
+                  fontSize: min(14.sp, 24))),
         ),
         Positioned(
-          top: AppUtils.scaleSize(context, 150),
-          left: AppUtils.scaleSize(context, 20),
+          top: 150.h,
+          left: paddingValue,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -54,75 +59,75 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: AppUtils.scaleSize(context, 14))),
-              SizedBox(height: AppUtils.scaleSize(context, 10)),
+                      fontSize: min(14.sp, 24))),
+              SizedBox(height: 10.w),
               Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: AppUtils.scaleSize(context, 48),
-                  padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 10),
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(48.w, 78),
+                  padding: EdgeInsets.symmetric(horizontal: min(20.w, 30)),
                   decoration: BoxDecoration(
                       color: contentBoxTwoColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextFormField(
-                    controller: dueDateController,
-                    keyboardType: TextInputType.datetime,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.center,
-                    maxLength: 10,
-                    cursorColor: primaryColor,
-                    cursorHeight: AppUtils.scaleSize(context, 14),
-                    cursorWidth: AppUtils.scaleSize(context, 1.2),
-                    style: TextStyle(
-                        color: mainTextColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppUtils.scaleSize(context, 14)),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: AppUtils.scaleSize(context, 10)),
-                      border: InputBorder.none,
-                      hintText: 'YYYY.MM.DD',
-                      hintStyle: TextStyle(
-                          color: beforeInputColor,
+                      borderRadius: BorderRadius.circular(10.w)),
+                  alignment: Alignment.center,
+                  child: Center(
+                    child: TextFormField(
+                      controller: dueDateController,
+                      keyboardType: TextInputType.datetime,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      textAlign: TextAlign.start,
+                      maxLength: 10,
+                      cursorColor: primaryColor,
+                      cursorHeight: min(14.sp, 24),
+                      cursorWidth: 1.2.w,
+                      style: TextStyle(
+                          color: mainTextColor,
                           fontWeight: FontWeight.w400,
-                          fontSize: AppUtils.scaleSize(context, 14)),
-                      counterText: '',
-                    ),
-                    onChanged: (value) {
-                      if (mounted) {
-                        setState(() {
-                          // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
-                          String parsedDate;
-                          if (value.length == 8 && _isNumeric(value)) {
-                            parsedDate = DateFormat('yyyy.MM.dd')
-                                .format(DateTime.parse(value));
-                            // 오늘 날짜보다 과거인 경우 내일 날짜로 변경
-                            if (DateTime.parse(value)
-                                .isBefore(DateTime.now())) {
-                              parsedDate = DateFormat('yyyy.MM.dd').format(
-                                  DateTime.now().add(const Duration(days: 1)));
+                          fontSize: min(14.sp, 24)),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 8.w),
+                        border: InputBorder.none,
+                        hintText: 'YYYY.MM.DD',
+                        hintStyle: TextStyle(
+                            color: beforeInputColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: min(14.sp, 24)),
+                        counterText: '',
+                      ),
+                      onChanged: (value) {
+                        if (mounted) {
+                          setState(() {
+                            // TODO 자동완성 후, 지웠다가 다시 입력할때 자동완성 안됨
+                            String parsedDate;
+                            if (value.length == 8 && _isNumeric(value)) {
+                              parsedDate = DateFormat('yyyy.MM.dd')
+                                  .format(DateTime.parse(value));
+                              // 오늘 날짜보다 과거인 경우 내일 날짜로 변경
+                              if (DateTime.parse(value)
+                                  .isBefore(DateTime.now())) {
+                                parsedDate = DateFormat('yyyy.MM.dd').format(
+                                    DateTime.now()
+                                        .add(const Duration(days: 1)));
+                              }
+                            } else {
+                              parsedDate = value;
                             }
-                          } else {
-                            parsedDate = value;
-                          }
-                          joinInputData.dueDate = parsedDate;
-                          widget.updateValidity(
-                              dueDateController.text.isNotEmpty &
-                                  lastMensesController.text.isNotEmpty);
-                        });
-                      }
-                    },
+                            joinInputData.dueDate = parsedDate;
+                            widget.updateValidity(
+                                dueDateController.text.isNotEmpty &
+                                    lastMensesController.text.isNotEmpty);
+                          });
+                        }
+                      },
+                    ),
                   )),
             ],
           ),
         ),
         Positioned(
-          top: AppUtils.scaleSize(context, 254),
-          left: AppUtils.scaleSize(context, 20),
+          top: isTablet ? (254 + 25).h : 254.h,
+          left: paddingValue,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -130,67 +135,66 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                   style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: AppUtils.scaleSize(context, 14))),
-              SizedBox(height: AppUtils.scaleSize(context, 10)),
+                      fontSize: min(14.sp, 24))),
+              SizedBox(height: 10.w),
               Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: AppUtils.scaleSize(context, 48),
-                  padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 10),
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(48.w, 78),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: min(20.w, 30)),
                   decoration: BoxDecoration(
                       color: contentBoxTwoColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextFormField(
-                    controller: lastMensesController,
-                    keyboardType: TextInputType.datetime,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.center,
-                    maxLength: 10,
-                    cursorColor: primaryColor,
-                    cursorHeight: AppUtils.scaleSize(context, 14),
-                    cursorWidth: AppUtils.scaleSize(context, 1.2),
-                    style: TextStyle(
-                        color: mainTextColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppUtils.scaleSize(context, 14)),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: AppUtils.scaleSize(context, 10)),
-                      border: InputBorder.none,
-                      hintText: 'YYYY.MM.DD',
-                      hintStyle: TextStyle(
-                          color: beforeInputColor,
+                      borderRadius: BorderRadius.circular(10.w)),
+                  child: Center(
+                    child: TextFormField(
+                      controller: lastMensesController,
+                      keyboardType: TextInputType.datetime,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      textAlign: TextAlign.start,
+                      maxLength: 10,
+                      cursorColor: primaryColor,
+                      cursorHeight: min(14.sp, 24),
+                      cursorWidth: 1.2.w,
+                      style: TextStyle(
+                          color: mainTextColor,
                           fontWeight: FontWeight.w400,
-                          fontSize: AppUtils.scaleSize(context, 14)),
-                      counterText: '',
-                    ),
-                    onChanged: (value) {
-                      if (mounted) {
-                        setState(() {
-                          String parsedDate;
-                          if (value.length == 8 && _isNumeric(value)) {
-                            parsedDate = DateFormat('yyyy.MM.dd')
-                                .format(DateTime.parse(value));
-                            // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
-                            if (DateTime.parse(value).isAfter(DateTime.now())) {
-                              parsedDate = DateFormat('yyyy.MM.dd').format(
-                                  DateTime.now()
-                                      .subtract(const Duration(days: 1)));
+                          fontSize: min(14.sp, 24)),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 8.w),
+                        border: InputBorder.none,
+                        hintText: 'YYYY.MM.DD',
+                        hintStyle: TextStyle(
+                            color: beforeInputColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: min(14.sp, 24)),
+                        counterText: '',
+                      ),
+                      onChanged: (value) {
+                        if (mounted) {
+                          setState(() {
+                            String parsedDate;
+                            if (value.length == 8 && _isNumeric(value)) {
+                              parsedDate = DateFormat('yyyy.MM.dd')
+                                  .format(DateTime.parse(value));
+                              // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
+                              if (DateTime.parse(value).isAfter(DateTime.now())) {
+                                parsedDate = DateFormat('yyyy.MM.dd').format(
+                                    DateTime.now()
+                                        .subtract(const Duration(days: 1)));
+                              }
+                            } else {
+                              parsedDate = value;
                             }
-                          } else {
-                            parsedDate = value;
-                          }
-                          joinInputData.laseMensesDate = parsedDate;
-                          widget.updateValidity(
-                              dueDateController.text.isNotEmpty &
-                                  lastMensesController.text.isNotEmpty);
-                        });
-                      }
-                    },
+                            joinInputData.laseMensesDate = parsedDate;
+                            widget.updateValidity(
+                                dueDateController.text.isNotEmpty &
+                                    lastMensesController.text.isNotEmpty);
+                          });
+                        }
+                      },
+                    ),
                   )),
             ],
           ),

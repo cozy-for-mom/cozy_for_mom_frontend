@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/home_fragment.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_main.dart';
 
@@ -38,21 +40,21 @@ class _MainScreenState extends State<MainScreen> {
           border: Border(top: BorderSide(color: Color(0xffE8ECF1))),
           color: Colors.white,
         ),
-        height: 87,
+        height: min(87.w, 117),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: AppUtils.scaleSize(context, 54),
+              height: min(54.w, 84),
               child: InkWell(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Image.asset(
                       'assets/images/icons/navigation_baby.png', // 사용할 이미지 파일의 경로
-                      width: AppUtils.scaleSize(context, 32),
-                      height: AppUtils.scaleSize(context, 32),
+                      width: min(32.w, 52),
+                      height: min(32.w, 52),
                       color: selectedIndex == 0
                           ? primaryColor
                           : const Color(0xffBCC0C7),
@@ -60,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '태아',
                       style: TextStyle(
-                          fontSize: AppUtils.scaleSize(context, 12),
+                          fontSize: min(12.sp, 22),
                           color: selectedIndex == 0
                               ? primaryColor
                               : const Color(0xffBCC0C7),
@@ -74,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 12)),
+              padding: EdgeInsets.only(bottom: 12.h),
               child: IconButton(
                 icon: Container(
                   decoration: BoxDecoration(
@@ -90,8 +92,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   child: Image.asset(
                     'assets/images/icons/navigation_home.png', // 사용할 이미지 파일의 경로
-                    width: AppUtils.scaleSize(context, 47),
-                    height: AppUtils.scaleSize(context, 50),
+                    width: min(47.w, 57),
+                    height: min(50.w, 60),
                   ),
                 ),
                 onPressed: () => setState(() {
@@ -100,15 +102,15 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             SizedBox(
-              height: AppUtils.scaleSize(context, 54),
+              height: min(54.w, 84),
               child: InkWell(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Image.asset(
                       'assets/images/icons/navigation_community.png', // 사용할 이미지 파일의 경로
-                      width: AppUtils.scaleSize(context, 32),
-                      height: AppUtils.scaleSize(context, 32),
+                      width: min(32.w, 52),
+                      height: min(32.w, 52),
                       color: selectedIndex == 2
                           ? primaryColor
                           : const Color(0xffBCC0C7),
@@ -116,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '커뮤니티',
                       style: TextStyle(
-                          fontSize: AppUtils.scaleSize(context, 12),
+                          fontSize: min(12.sp, 22),
                           color: selectedIndex == 2
                               ? primaryColor
                               : const Color(0xffBCC0C7),

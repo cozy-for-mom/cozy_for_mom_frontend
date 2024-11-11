@@ -1,11 +1,13 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_cozylog_view.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CozyLogListScreen extends StatefulWidget {
@@ -82,7 +84,8 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    const boxHeight = 20 + 143.0; //screenHeight * (0.6);
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
+    final boxHeight = (20 + 143.0).w; //screenHeight * (0.6);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
@@ -96,13 +99,13 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
           style: TextStyle(
               color: mainTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 20)),
+              fontSize: min(18.sp, 28)),
         ),
         leading: IconButton(
           icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
             color: mainTextColor,
           ),
           onPressed: () {
@@ -120,14 +123,14 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
               );
             },
             child: Image(
-                width: AppUtils.scaleSize(context, 20),
-                height: AppUtils.scaleSize(context, 20),
+                width: min(20.w, 30),
+                height: min(20.w, 30),
                 image: const AssetImage("assets/images/icons/icon_search.png")),
           ),
           IconButton(
             icon: Image(
-              width: AppUtils.scaleSize(context, 24),
-              height: AppUtils.scaleSize(context, 24),
+              width: min(24.w, 34),
+              height: min(24.w, 34),
               image: const AssetImage(
                 "assets/images/icons/mypage.png",
               ),
@@ -142,19 +145,21 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 20)),
+            padding: EdgeInsets.only(
+                left: paddingValue,
+                right: paddingValue,
+                top: screenWidth > 600 ? 15.w : 0.w),
             child: TabBar(
               controller: tabController,
               labelColor: primaryColor,
               indicatorColor: primaryColor,
               labelStyle: TextStyle(
-                fontSize: AppUtils.scaleSize(context, 18),
+                fontSize: min(18.sp, 28),
                 fontWeight: FontWeight.w600,
               ),
               dividerColor: mainLineColor,
               unselectedLabelStyle: TextStyle(
-                fontSize: AppUtils.scaleSize(context, 18),
+                fontSize: min(18.sp, 28),
                 fontWeight: FontWeight.w600,
                 color: mainTextColor,
               ),
@@ -169,23 +174,22 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
             future: cozyLogListFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final totalHeight = boxHeight * snapshot.data!.length + 20;
+                final totalHeight =
+                    boxHeight * snapshot.data!.length + paddingValue;
                 return Column(
                   children: [
-                    SizedBox(height: AppUtils.scaleSize(context, 22)),
+                    SizedBox(height: 22.w),
                     snapshot.data!.isNotEmpty
                         ? Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 20)),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: paddingValue),
                             child: Container(
-                              width:
-                                  screenWidth - AppUtils.scaleSize(context, 40),
+                              width: screenWidth - 40.w,
                               // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                               height: screenHeight * (0.75),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 20)),
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(20.w),
                                 color: contentBoxTwoColor,
                               ),
                               child: PagedListView<int, CozyLogForList>(
@@ -212,7 +216,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                             ),
                           )
                         : SizedBox(
-                            width: AppUtils.scaleSize(context, 150),
+                            width: 150.w,
                             height: screenHeight * (0.6),
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -221,17 +225,14 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                                   Image(
                                       image: const AssetImage(
                                           'assets/images/icons/cozylog_off.png'),
-                                      width: AppUtils.scaleSize(context, 45.31),
-                                      height:
-                                          AppUtils.scaleSize(context, 40.77)),
-                                  SizedBox(
-                                      height: AppUtils.scaleSize(context, 12)),
+                                      width: min(45.31.w, 90.62),
+                                      height: min(40.77.w, 40.77*2)),
+                                  SizedBox(height: 12.w),
                                   Text('코지로그를 작성해 보세요!',
                                       style: TextStyle(
                                           color: const Color(0xff9397A4),
                                           fontWeight: FontWeight.w500,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14))),
+                                          fontSize: min(14.sp, 24))),
                                 ]),
                           ),
                   ],

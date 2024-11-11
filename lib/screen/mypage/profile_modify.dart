@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/logout_modal.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/user_delete_screen.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -121,6 +124,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
 
     String? choice = await showModalBottomSheet<String>(
         backgroundColor: Colors.transparent,
+        elevation: 0.0,
         context: context,
         builder: (BuildContext context) {
           return SelectBottomModal(
@@ -146,120 +150,125 @@ class _MomProfileModifyState extends State<MomProfileModify> {
 
   Future<dynamic> showSelectModal() {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
+
     return showModalBottomSheet<void>(
       backgroundColor: Colors.transparent,
+      elevation: 0.0,
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: AppUtils.scaleSize(context, 272 + 15),
+          height: isTablet? 214.w : 280.w,
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: AppUtils.scaleSize(context, 8)),
-                width: screenWidth - AppUtils.scaleSize(context, 40),
+                width: screenWidth - 2 * paddingValue,
+                height: min(172.w, 272),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.w),
                   color: Colors.white,
                 ),
                 child: Center(
-                  child: Column(children: <Widget>[
-                    ListTile(
-                      title: Center(
-                          child: Text(
-                        '직접 찍기',
-                        style: TextStyle(
-                          color: mainTextColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: AppUtils.scaleSize(context, 16),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ListTile(
+                          title: Center(
+                              child: Text(
+                            '직접 찍기',
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: min(16.sp, 26),
+                            ),
+                          )),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            final selectedImage = await ImagePicker()
+                                .pickImage(source: ImageSource.camera);
+                            if (mounted && selectedImage != null) {
+                              final imageUrl = await imageApiService
+                                  .uploadImage(context, selectedImage);
+                              setState(() {
+                                userProfileImageUrl = imageUrl;
+                              });
+                            } else {
+                              print('No image selected.');
+                            }
+                          },
                         ),
-                      )),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        final selectedImage = await ImagePicker()
-                            .pickImage(source: ImageSource.camera);
-                        if (mounted && selectedImage != null) {
-                          final imageUrl = await imageApiService.uploadImage(
-                              context, selectedImage);
-                          setState(() {
-                            userProfileImageUrl = imageUrl;
-                          });
-                        } else {
-                          print('No image selected.');
-                        }
-                      },
-                    ),
-                    ListTile(
-                      title: Center(
-                          child: Text(
-                        '앨범에서 선택',
-                        style: TextStyle(
-                          color: mainTextColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: AppUtils.scaleSize(context, 16),
+                        ListTile(
+                          title: Center(
+                              child: Text(
+                            '앨범에서 선택',
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: min(16.sp, 26),
+                            ),
+                          )),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            final selectedImage = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            if (mounted && selectedImage != null) {
+                              final imageUrl = await imageApiService
+                                  .uploadImage(context, selectedImage);
+                              setState(() {
+                                userProfileImageUrl = imageUrl;
+                              });
+                            } else {
+                              print('No image selected.');
+                            }
+                          },
                         ),
-                      )),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        final selectedImage = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        if (mounted && selectedImage != null) {
-                          final imageUrl = await imageApiService.uploadImage(
-                              context, selectedImage);
-                          setState(() {
-                            userProfileImageUrl = imageUrl;
-                          });
-                        } else {
-                          print('No image selected.');
-                        }
-                      },
-                    ),
-                    ListTile(
-                      title: Center(
-                          child: Text(
-                        '삭제하기',
-                        style: TextStyle(
-                          color: mainTextColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: AppUtils.scaleSize(context, 16),
-                        ),
-                      )),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext buildContext) {
-                            return DeleteModal(
-                              text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                              title: '사진이',
-                              tapFunc: () {
-                                setState(() {
-                                  userProfileImageUrl = null;
-                                });
+                        ListTile(
+                          title: Center(
+                              child: Text(
+                            '삭제하기',
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: min(16.sp, 26),
+                            ),
+                          )),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext buildContext) {
+                                return DeleteModal(
+                                  text: '등록된 사진을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                                  title: '사진이',
+                                  tapFunc: () {
+                                    setState(() {
+                                      userProfileImageUrl = null;
+                                    });
 
-                                return Future.value();
+                                    return Future.value();
+                                  },
+                                );
                               },
                             );
                           },
-                        );
-                      },
-                    ),
-                  ]),
+                        ),
+                      ]),
                 ),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 15),
+                height: 15.w,
               ),
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: AppUtils.scaleSize(context, 56),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(56.w, 96),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                     color: const Color(0xffC2C4CB),
                   ),
                   child: Center(
@@ -268,7 +277,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: AppUtils.scaleSize(context, 16),
+                      fontSize: min(16.sp, 26),
                     ),
                   )),
                 ),
@@ -283,6 +292,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -294,38 +305,32 @@ class _MomProfileModifyState extends State<MomProfileModify> {
             elevation: 0,
             backgroundColor: backgroundColor,
             scrolledUnderElevation: 0,
-            title: Container(
-              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 13)),
-              child: Text('프로필 수정',
-                  style: TextStyle(
-                      color: mainTextColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppUtils.scaleSize(context, 18))),
-            ),
-            leading: Container(
-              margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 13)),
-              child: IconButton(
-                icon: Image(
-                  image: const AssetImage('assets/images/icons/back_ios.png'),
-                  width: AppUtils.scaleSize(context, 34),
-                  height: AppUtils.scaleSize(context, 34),
-                  color: mainTextColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+            title: Text('프로필 수정',
+                style: TextStyle(
+                    color: mainTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: min(18.sp, 28))),
+            leading: IconButton(
+              icon: Image(
+                image: const AssetImage('assets/images/icons/back_ios.png'),
+                width: min(34.w, 44),
+                height: min(34.w, 44),
+                color: mainTextColor,
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
             actions: [
               InkWell(
                 child: Center(
                   child: Container(
                     margin: EdgeInsets.only(
-                        right: AppUtils.scaleSize(context, 20),
-                        bottom: AppUtils.scaleSize(context, 13)),
+                      right: 10.w,
+                    ),
                     alignment: Alignment.center,
-                    width: AppUtils.scaleSize(context, 53),
-                    height: AppUtils.scaleSize(context, 29),
+                    width: min(53.w, 93),
+                    height: min(29.w, 49),
                     decoration: BoxDecoration(
                       color: areAllFieldsFilled(controllers) &&
                               _isEmailValid &&
@@ -333,14 +338,14 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                               _isBirthValid
                           ? primaryColor
                           : induceButtonColor,
-                      borderRadius: BorderRadius.circular(33),
+                      borderRadius: BorderRadius.circular(33.w),
                     ),
                     child: Text(
                       '완료',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: AppUtils.scaleSize(context, 12)),
+                          fontSize: min(12.sp, 22)),
                     ),
                   ),
                 ),
@@ -384,36 +389,37 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 }
               },
               child: SizedBox(
-                height: AppUtils.scaleSize(context, 140),
+                height: min(140.w, 280),
                 child: Stack(
                   children: [
                     Positioned(
-                      top: AppUtils.scaleSize(context, 10),
-                      left: AppUtils.scaleSize(context, 145),
+                      top: isTablet ? 30.h : 10.h,
+                      left: 145.w,
                       child: userProfileImageUrl == null
                           ? Image(
                               image: const AssetImage(
                                   "assets/images/icons/momProfile.png"),
-                              width: AppUtils.scaleSize(context, 100),
-                              height: AppUtils.scaleSize(context, 100))
+                              width: min(100.w, 200),
+                              height: min(100.w, 200),
+                            )
                           : ClipOval(
                               // 원형
                               child: Image.network(
                                 userProfileImageUrl!,
                                 fit: BoxFit.cover,
-                                width: AppUtils.scaleSize(context, 100),
-                                height: AppUtils.scaleSize(context, 100),
+                                width: min(100.w, 200),
+                                height: min(100.w, 200),
                               ),
                             ),
                     ),
                     Positioned(
-                      top: AppUtils.scaleSize(context, 181 - 109),
-                      left: AppUtils.scaleSize(context, 229),
+                      top: isTablet ? 122.h : 72.h,
+                      left: 249.w - paddingValue,
                       child: Image(
                         image: const AssetImage(
                             "assets/images/icons/circle_pen.png"),
-                        width: AppUtils.scaleSize(context, 24),
-                        height: AppUtils.scaleSize(context, 24),
+                        width: min(24.w, 48),
+                        height: min(24.w, 48),
                       ),
                     ),
                   ],
@@ -423,10 +429,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppUtils.scaleSize(context, 20)),
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 96),
+              padding: EdgeInsets.symmetric(horizontal: paddingValue),
+              width: screenWidth - 2 * paddingValue,
+              height: min(96.w, 146),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -435,39 +440,39 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     style: TextStyle(
                         color: offButtonTextColor,
                         fontWeight: FontWeight.w600,
-                        fontSize: AppUtils.scaleSize(context, 14)),
+                        fontSize: min(14.sp, 24)),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     controller: introduceController,
                     textAlign: TextAlign.start,
                     cursorColor: primaryColor,
-                    cursorHeight: AppUtils.scaleSize(context, 17),
-                    cursorWidth: AppUtils.scaleSize(context, 1.5),
+                    cursorHeight: min(16.sp, 26),
+                    cursorWidth: 1.5.w,
                     maxLength: 30,
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: AppUtils.scaleSize(context, 16)),
+                        fontSize: min(16.sp, 26)),
                     decoration: InputDecoration(
                       counterText: '',
                       counterStyle: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 14)),
+                          fontSize: min(14.sp, 24)),
                       border: InputBorder.none,
                       hintText: "자기소개를 입력해주세요",
                       hintStyle: TextStyle(
                           color: beforeInputColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                       suffixIcon: introduceController.text.isNotEmpty &&
                               _isSuffixVisible
                           ? IconButton(
                               icon: Image.asset(
                                 'assets/images/icons/text_delete.png',
-                                width: AppUtils.scaleSize(context, 16),
-                                height: AppUtils.scaleSize(context, 16),
+                                width: min(16.w, 26),
+                                height: min(16.w, 26),
                               ),
                               onPressed: () {
                                 introduceController.clear();
@@ -482,8 +487,8 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     },
                   ),
                   Container(
-                    width: screenWidth - AppUtils.scaleSize(context, 40),
-                    height: 1,
+                    width: screenWidth - 2 * paddingValue,
+                    height: 1.w,
                     color: mainLineColor,
                   ),
                 ],
@@ -517,7 +522,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                                 : type == '생년월일'
                                     ? _updateBirthValidity
                                     : _updateNameValidity),
-                    SizedBox(height: AppUtils.scaleSize(context, 24)),
+                    SizedBox(height: 24.w),
                   ],
                 );
               },
@@ -525,62 +530,59 @@ class _MomProfileModifyState extends State<MomProfileModify> {
             ),
           ),
           SliverToBoxAdapter(
-            child: SizedBox(
-              width: AppUtils.scaleSize(context, 132),
-              height: AppUtils.scaleSize(context, 21),
-              child: Stack(
+            child: Container(
+              margin: EdgeInsets.only(bottom: isTablet? 30.w : 0.w),
+              width: 132.w,
+              height: 21.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext buildContext) {
-                              return const LogoutModal();
-                            },
-                          );
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                          return const LogoutModal();
                         },
-                        child: Text(
-                          '로그아웃',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 14),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: AppUtils.scaleSize(context, 10),
-                      ),
-                      Container(
-                        width: 1,
-                        height: AppUtils.scaleSize(context, 11),
+                      );
+                    },
+                    child: Text(
+                      '로그아웃',
+                      style: TextStyle(
                         color: primaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: min(14.sp, 24),
                       ),
-                      SizedBox(
-                        width: AppUtils.scaleSize(context, 10),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const UserDeleteScreen(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          '회원탈퇴',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 14),
-                          ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Container(
+                    width: 1.w,
+                    height: 11.w,
+                    color: primaryColor,
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserDeleteScreen(),
                         ),
+                      );
+                    },
+                    child: Text(
+                      '회원탈퇴',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: min(14.sp, 24),
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

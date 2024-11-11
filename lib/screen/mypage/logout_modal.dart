@@ -1,7 +1,8 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/login/login_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,9 @@ class _LogoutModalState extends State<LogoutModal> {
   @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
+
     return FutureBuilder(
       future: userViewModel.getUserInfo(context),
       builder: (context, snapshot) {
@@ -37,28 +41,24 @@ class _LogoutModalState extends State<LogoutModal> {
           backgroundColor: Colors.white,
           elevation: 0.0,
           child: Container(
-            height: AppUtils.scaleSize(context, 252),
+            width: screenWidth - 2 * paddingValue,
+            height: min(252.w, 452),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.w),
             ),
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: AppUtils.scaleSize(context, 30),
-                  left: AppUtils.scaleSize(context, 20),
-                  right: AppUtils.scaleSize(context, 20)),
+              padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.w),
               child: Column(
                 children: [
                   Text(
                     "로그아웃",
                     style: TextStyle(
                       color: mainTextColor,
-                      fontSize: AppUtils.scaleSize(context, 20),
+                      fontSize: min(20.sp, 30),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(
-                    height: AppUtils.scaleSize(context, 15),
-                  ),
+                  SizedBox(height: 15.w),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -67,35 +67,31 @@ class _LogoutModalState extends State<LogoutModal> {
                         style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 14)),
+                            fontSize: min(14.sp, 24)),
                       ),
                       Text(
                         " 아이디가 로그아웃됩니다.",
                         style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 14)),
+                            fontSize: min(14.sp, 24)),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: AppUtils.scaleSize(context, 10),
+                    height: 10.w,
                   ),
                   Text(
-                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.",
+                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.",  // TODO 삭제 기능이 빠져서 문구 다시 수정해야할 듯
                     style: TextStyle(
                       color: offButtonTextColor,
-                      height: AppUtils.scaleSize(context, 1.3),
                       fontWeight: FontWeight.w500,
-                      fontSize: AppUtils.scaleSize(context, 12),
+                      fontSize: min(12.sp, 22),
                     ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: AppUtils.scaleSize(context, 10),
-                  ),
-                  SizedBox(
-                    height: AppUtils.scaleSize(context, 20),
+                    height: 30.w,
                   ),
                   InkWell(
                     onTap: () async {
@@ -106,17 +102,17 @@ class _LogoutModalState extends State<LogoutModal> {
                       }
                     },
                     child: Container(
-                      height: AppUtils.scaleSize(context, 56),
+                      height: min(56.w, 96),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: primaryColor,
-                          borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(12.w)),
                       child: Text(
                         "확인",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 16),
+                          fontSize: min(16.sp, 26),
                         ),
                       ),
                     ),

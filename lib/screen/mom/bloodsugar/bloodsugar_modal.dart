@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -32,14 +35,15 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
   @override
   Widget build(BuildContext context) {
     textController.text = widget.bloodsugarValue;
-    // BloodsugarApiService momBloodsugarViewModel =
-    //     Provider.of<BloodsugarApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     final globalData = Provider.of<MyDataModel>(context,
         listen: false); // record -> false 초기화, modify -> true 초기화
     ValueNotifier<bool> isButtonEnabled =
         ValueNotifier<bool>(widget.bloodsugarValue != '');
     BloodsugarApiService bloodsugarApi = BloodsugarApiService();
+
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
@@ -48,13 +52,12 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            height: AppUtils.scaleSize(context, 207),
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 20)),
+            width: screenWidth - 2 * paddingValue,
+            height: min(207.w, 307),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.w),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,17 +66,14 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: AppUtils.scaleSize(context, 20))),
+                        fontSize: min(20.sp, 30))),
                 Container(
-                  width: AppUtils.scaleSize(context, 312),
-                  height: AppUtils.scaleSize(context, 80),
-                  padding: EdgeInsets.only(
-                      left: AppUtils.scaleSize(context, 24),
-                      right: AppUtils.scaleSize(context, 24),
-                      top: AppUtils.scaleSize(context, 12)),
+                  width: 312.w,
+                  height: min(80.w, 120),
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 12.h),
                   decoration: BoxDecoration(
                     color: backgroundColor,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                   ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,10 +84,10 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                               style: TextStyle(
                                   color: offButtonTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: AppUtils.scaleSize(context, 12))),
+                                  fontSize: min(12.sp, 22))),
                         ),
                         SizedBox(
-                          height: AppUtils.scaleSize(context, 32),
+                          height: 32.w,
                           child: TextFormField(
                             controller: textController,
                             onChanged: (text) {
@@ -100,7 +100,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                             maxLength: 3,
                             textAlign: TextAlign.start,
                             cursorWidth: AppUtils.scaleSize(context, 0.8),
-                            cursorHeight: AppUtils.scaleSize(context, 15),
+                            cursorHeight: min(14.sp, 24),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -113,17 +113,17 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                                 suffixStyle: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: AppUtils.scaleSize(context, 14)),
+                                    fontSize: min(14.sp, 24)),
                                 hintText: _isHintVisible ? 'mg / dL' : null,
                                 hintStyle: TextStyle(
                                     color: beforeInputColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: AppUtils.scaleSize(context, 16))),
+                                    fontSize: min(16.sp, 26))),
                             cursorColor: primaryColor,
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(context, 16)),
+                                fontSize: min(16.sp, 26)),
                             onTap: () {
                               setState(() {
                                 _isHintVisible = false;
@@ -136,23 +136,23 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
               ],
             ),
           ),
-          SizedBox(height: AppUtils.scaleSize(context, 18)),
+          SizedBox(height: 18.w),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: AppUtils.scaleSize(context, 56),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(56.w, 96),
                   padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 18),
-                      horizontal: AppUtils.scaleSize(context, 50)),
+                      vertical: min(18.w, 28), horizontal: 50.w),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.w)),
                   child: InkWell(
                     onTap: () async {
                       if (isEnabled) {
                         late int? bloodsugarId;
+                        print(widget.id);
                         widget.id > 0
                             ? bloodsugarId =
                                 await bloodsugarApi.modifyBloodsugar(
@@ -177,7 +177,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -186,7 +186,5 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
         ],
       ),
     );
-    //       });
-    // });
   }
 }

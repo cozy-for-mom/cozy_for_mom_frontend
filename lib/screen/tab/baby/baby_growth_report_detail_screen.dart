@@ -1,11 +1,11 @@
-import 'package:cozy_for_mom_frontend/common/extension/map_with_index.dart';
-import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/baby/grow_report_register.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_profile_button.dart';
@@ -53,6 +53,8 @@ class _BabyGrowthReportDetailScreenState
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     final babyGrowthApiService = BabyGrowthApiService();
 
     return Scaffold(
@@ -66,14 +68,14 @@ class _BabyGrowthReportDetailScreenState
             style: TextStyle(
               color: mainTextColor,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 20),
+              fontSize: min(18.sp, 28),
             ),
           ),
           leading: IconButton(
             icon: Image(
               image: const AssetImage('assets/images/icons/back_ios.png'),
-              width: AppUtils.scaleSize(context, 34),
-              height: AppUtils.scaleSize(context, 34),
+              width: min(34.w, 44),
+              height: min(34.w, 44),
               color: mainTextColor,
             ),
             onPressed: () {
@@ -99,11 +101,9 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                top: AppUtils.scaleSize(context, 20),
-                                left: AppUtils.scaleSize(context, 10),
-                                bottom: AppUtils.scaleSize(context, 32)),
+                                top: 20.w, left: 10.w, bottom: 32.w),
                             child: SizedBox(
-                              height: AppUtils.scaleSize(context, 111),
+                              height: 111.w,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: snapshot.data!.babies!.length,
@@ -128,26 +128,23 @@ class _BabyGrowthReportDetailScreenState
                         ),
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 20)),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: paddingValue),
                             child: SizedBox(
-                              width:
-                                  screenWidth - AppUtils.scaleSize(context, 40),
+                              width: screenWidth - 2 * paddingValue,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width: screenWidth -
-                                        AppUtils.scaleSize(context, 80),
+                                    width: screenWidth - 4 * paddingValue,
                                     child: Text(
                                       data.title,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 20),
+                                        fontSize: min(20.sp, 30),
                                       ),
                                     ),
                                   ),
@@ -158,47 +155,49 @@ class _BabyGrowthReportDetailScreenState
                                       Text(
                                         "${DateFormat("yyyy. MM. dd HH:mm").format(data.date)} 작성",
                                         style: TextStyle(
-                                          color: const Color(0xffAAAAAA),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14),
-                                        ),
+                                            color: const Color(0xffAAAAAA),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: min(14.sp, 24)),
                                       ),
                                       SizedBox(
-                                        width: AppUtils.scaleSize(context, 15),
-                                        height: AppUtils.scaleSize(context, 32),
+                                        width: min(15.w, 25),
+                                        height: min(32.w, 42),
                                         child: IconButton(
                                           padding: EdgeInsets.zero,
                                           onPressed: () {
                                             showModalBottomSheet<void>(
                                               backgroundColor:
                                                   Colors.transparent,
+                                              elevation: 0.0,
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return SizedBox(
-                                                  height: AppUtils.scaleSize(
-                                                      context, 220),
+                                                  width: screenWidth -
+                                                      2 * paddingValue,
+                                                  height: isTablet
+                                                      ? 234.w - paddingValue
+                                                      : 234.w,
                                                   child: Column(
                                                     children: [
                                                       Container(
                                                         padding: EdgeInsets
                                                             .symmetric(
-                                                                vertical: AppUtils
-                                                                    .scaleSize(
-                                                                        context,
-                                                                        8)),
-                                                        width: screenWidth -
-                                                            AppUtils.scaleSize(
-                                                                context, 40),
+                                                                vertical: 8.h),
+                                                        height: 148.w -
+                                                            paddingValue,
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(20),
+                                                                  .circular(
+                                                                      20.w),
                                                           color: Colors.white,
                                                         ),
                                                         child: Center(
                                                           child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
                                                               children: <Widget>[
                                                                 ListTile(
                                                                   title: Center(
@@ -212,9 +211,9 @@ class _BabyGrowthReportDetailScreenState
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
-                                                                      fontSize: AppUtils.scaleSize(
-                                                                          context,
-                                                                          16),
+                                                                      fontSize: min(
+                                                                          16.sp,
+                                                                          26),
                                                                     ),
                                                                   )),
                                                                   onTap:
@@ -256,9 +255,9 @@ class _BabyGrowthReportDetailScreenState
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
-                                                                      fontSize: AppUtils.scaleSize(
-                                                                          context,
-                                                                          16),
+                                                                      fontSize: min(
+                                                                          16.sp,
+                                                                          26),
                                                                     ),
                                                                   )),
                                                                   onTap:
@@ -295,9 +294,7 @@ class _BabyGrowthReportDetailScreenState
                                                         ),
                                                       ),
                                                       SizedBox(
-                                                        height:
-                                                            AppUtils.scaleSize(
-                                                                context, 15),
+                                                        height: 15.w,
                                                       ),
                                                       InkWell(
                                                         onTap: () {
@@ -305,20 +302,13 @@ class _BabyGrowthReportDetailScreenState
                                                               context);
                                                         },
                                                         child: Container(
-                                                          width: screenWidth -
-                                                              AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      40),
-                                                          height: AppUtils
-                                                              .scaleSize(
-                                                                  context, 56),
+                                                          height: min(56.w, 96),
                                                           decoration:
                                                               BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        12),
+                                                                        12.w),
                                                             color: const Color(
                                                                 0xffC2C4CB),
                                                           ),
@@ -331,10 +321,8 @@ class _BabyGrowthReportDetailScreenState
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600,
-                                                              fontSize: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      16),
+                                                              fontSize: min(
+                                                                  16.sp, 26),
                                                             ),
                                                           )),
                                                         ),
@@ -349,10 +337,8 @@ class _BabyGrowthReportDetailScreenState
                                             image: const AssetImage(
                                                 'assets/images/icons/more_vert_outlined.png'),
                                             color: const Color(0xff858998),
-                                            width:
-                                                AppUtils.scaleSize(context, 3),
-                                            height:
-                                                AppUtils.scaleSize(context, 17),
+                                            width: min(3.w, 6),
+                                            height: min(17.w, 34),
                                           ),
                                         ),
                                       ),
@@ -366,15 +352,15 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: AppUtils.scaleSize(context, 18),
-                                right: AppUtils.scaleSize(context, 18),
-                                bottom: AppUtils.scaleSize(context, 20),
-                                top: AppUtils.scaleSize(context, 10)),
+                                left: -2.w + paddingValue,
+                                right: -2.w + paddingValue,
+                                bottom: 20.w,
+                                top: 10.w),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(20.w),
                               child: Container(
                                 width: screenWidth,
-                                height: AppUtils.scaleSize(context, 216),
+                                height: 216.w,
                                 decoration: const BoxDecoration(
                                   color: offButtonColor,
                                 ),
@@ -388,8 +374,7 @@ class _BabyGrowthReportDetailScreenState
                                             style: TextStyle(
                                                 color: const Color(0xff9397A4),
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 16)))),
+                                                fontSize: min(16.sp, 26)))),
                               ),
                             ),
                           ),
@@ -397,13 +382,18 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: AppUtils.scaleSize(context, 21),
-                                right: AppUtils.scaleSize(context, 21),
-                                bottom: AppUtils.scaleSize(context, 22)),
+                                left: 1.w + paddingValue,
+                                right: 1.w + paddingValue,
+                                bottom: 22.w),
                             child: SizedBox(
                               width: screenWidth,
                               child: Text(
                                 data.diary,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: min(16.sp, 26),
+                                ),
                               ),
                             ),
                           ),
@@ -411,11 +401,10 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 20),
-                                vertical: AppUtils.scaleSize(context, 10)),
+                                horizontal: paddingValue, vertical: 10.w),
                             child: Container(
                               width: screenWidth,
-                              height: 1,
+                              height: 1.w,
                               color: mainLineColor,
                             ),
                           ),
@@ -423,10 +412,11 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 20),
-                              vertical: AppUtils.scaleSize(context, 15),
+                              horizontal: paddingValue,
+                              vertical: 15.w,
                             ),
                             child: Column(
+                              // TODO 중복 위젯 -> 따로 빼서 리스트로 가져다 쓰기
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -434,33 +424,33 @@ class _BabyGrowthReportDetailScreenState
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14),
+                                    fontSize: min(14.sp, 24),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: AppUtils.scaleSize(context, 14)),
+                                SizedBox(height: 14.w),
                                 Container(
-                                  width: screenWidth -
-                                      AppUtils.scaleSize(context, 40),
-                                  height: AppUtils.scaleSize(context, 48),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 20)),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: min(48.w, 78),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: TextEditingController(
-                                        text:
-                                            "${selectedBaby.value!.babyGrowthInfo.weight} g"),
-                                    style: TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: AppUtils.scaleSize(context, 16),
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
+                                      borderRadius:
+                                          BorderRadius.circular(30.w)),
+                                  child: Center(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                          text:
+                                              "${selectedBaby.value!.babyGrowthInfo.weight} g"),
+                                      style: TextStyle(
+                                        color: afterInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(16.sp, 26),
+                                      ),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -471,8 +461,8 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 20),
-                              vertical: AppUtils.scaleSize(context, 15),
+                              horizontal: paddingValue,
+                              vertical: 15.w,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,33 +472,33 @@ class _BabyGrowthReportDetailScreenState
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14),
+                                    fontSize: min(14.sp, 24),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: AppUtils.scaleSize(context, 14)),
+                                SizedBox(height: 14.w),
                                 Container(
-                                  width: screenWidth -
-                                      AppUtils.scaleSize(context, 40),
-                                  height: AppUtils.scaleSize(context, 48),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 20)),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: min(48.w, 78),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: TextEditingController(
-                                        text:
-                                            "${selectedBaby.value!.babyGrowthInfo.headCircum} cm"),
-                                    style: TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: AppUtils.scaleSize(context, 16),
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
+                                      borderRadius:
+                                          BorderRadius.circular(30.w)),
+                                  child: Center(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                          text:
+                                              "${selectedBaby.value!.babyGrowthInfo.headCircum} cm"),
+                                      style: TextStyle(
+                                        color: afterInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(16.sp, 26),
+                                      ),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -519,8 +509,8 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 20),
-                              vertical: AppUtils.scaleSize(context, 15),
+                              horizontal: paddingValue,
+                              vertical: 15.w,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -530,33 +520,33 @@ class _BabyGrowthReportDetailScreenState
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14),
+                                    fontSize: min(14.sp, 24),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: AppUtils.scaleSize(context, 14)),
+                                SizedBox(height: 14.w),
                                 Container(
-                                  width: screenWidth -
-                                      AppUtils.scaleSize(context, 40),
-                                  height: AppUtils.scaleSize(context, 48),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 20)),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: min(48.w, 78),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: TextEditingController(
-                                        text:
-                                            "${selectedBaby.value!.babyGrowthInfo.headDiameter} cm"),
-                                    style: TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: AppUtils.scaleSize(context, 16),
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
+                                      borderRadius:
+                                          BorderRadius.circular(30.w)),
+                                  child: Center(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                          text:
+                                              "${selectedBaby.value!.babyGrowthInfo.headDiameter} cm"),
+                                      style: TextStyle(
+                                        color: afterInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(16.sp, 26),
+                                      ),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -567,8 +557,8 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 20),
-                              vertical: AppUtils.scaleSize(context, 15),
+                              horizontal: paddingValue,
+                              vertical: 15.w,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -578,33 +568,33 @@ class _BabyGrowthReportDetailScreenState
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14),
+                                    fontSize: min(14.sp, 24),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: AppUtils.scaleSize(context, 14)),
+                                SizedBox(height: 14.w),
                                 Container(
-                                  width: screenWidth -
-                                      AppUtils.scaleSize(context, 40),
-                                  height: AppUtils.scaleSize(context, 48),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 20)),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: min(48.w, 78),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: TextEditingController(
-                                        text:
-                                            "${selectedBaby.value!.babyGrowthInfo.abdomenCircum} cm"),
-                                    style: TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: AppUtils.scaleSize(context, 16),
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
+                                      borderRadius:
+                                          BorderRadius.circular(30.w)),
+                                  child: Center(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                          text:
+                                              "${selectedBaby.value!.babyGrowthInfo.abdomenCircum} cm"),
+                                      style: TextStyle(
+                                        color: afterInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(16.sp, 26),
+                                      ),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -615,8 +605,7 @@ class _BabyGrowthReportDetailScreenState
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: AppUtils.scaleSize(context, 20),
-                                vertical: AppUtils.scaleSize(context, 15)),
+                                horizontal: paddingValue, vertical: 15.w),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -625,33 +614,33 @@ class _BabyGrowthReportDetailScreenState
                                   style: TextStyle(
                                     color: offButtonTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14),
+                                    fontSize: min(14.sp, 24),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: AppUtils.scaleSize(context, 14)),
+                                SizedBox(height: 14.w),
                                 Container(
-                                  width: screenWidth -
-                                      AppUtils.scaleSize(context, 40),
-                                  height: AppUtils.scaleSize(context, 48),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 20)),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: min(48.w, 78),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: TextEditingController(
-                                        text:
-                                            "${selectedBaby.value!.babyGrowthInfo.thighLength} cm"),
-                                    style: TextStyle(
-                                      color: afterInputColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: AppUtils.scaleSize(context, 16),
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
+                                      borderRadius:
+                                          BorderRadius.circular(30.w)),
+                                  child: Center(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                          text:
+                                              "${selectedBaby.value!.babyGrowthInfo.thighLength} cm"),
+                                      style: TextStyle(
+                                        color: afterInputColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(16.sp, 26),
+                                      ),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -660,8 +649,7 @@ class _BabyGrowthReportDetailScreenState
                           ),
                         ),
                         SliverToBoxAdapter(
-                          child:
-                              SizedBox(height: AppUtils.scaleSize(context, 60)),
+                          child: SizedBox(height: 60.w),
                         ),
                       ],
                     );

@@ -1,7 +1,9 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DeleteModal extends StatefulWidget {
   final String text;
@@ -20,31 +22,35 @@ class _DeleteModalState extends State<DeleteModal> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Container(
-        width: screenWidth,
-        height: AppUtils.scaleSize(context, 173),
+        width: screenWidth - 2 * paddingValue,
+        height: min(173.w, 273),
         decoration: BoxDecoration(
-            color: contentBoxTwoColor, borderRadius: BorderRadius.circular(20)),
+            color: contentBoxTwoColor,
+            borderRadius: BorderRadius.circular(20.w)),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: AppUtils.scaleSize(context, 30),
-                  horizontal: AppUtils.scaleSize(context, 20)),
+                  vertical: 50.w - paddingValue),
               child: Text(widget.text,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: AppUtils.scaleSize(context, 16))),
+                      fontSize: min(16.sp, 26))),
             ),
-            Container(
-                width: screenWidth, height: 1, color: const Color(0xffD9D9D9)),
+             Container(
+                  width: screenWidth,
+                  height: 1.w,
+                  color: const Color(0xffD9D9D9)),
             Expanded(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -55,15 +61,15 @@ class _DeleteModalState extends State<DeleteModal> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        width: AppUtils.scaleSize(context, 56),
+                        width: 100.w,
                         child: Text('취소',
                             style: TextStyle(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: AppUtils.scaleSize(context, 14))),
+                                fontSize: min(14.sp, 24))),
                       ),
                     ),
-                    Container(width: 1, color: const Color(0xffD9D9D9)),
+                    Container(width: 1.w, color: const Color(0xffD9D9D9)),
                     InkWell(
                       onTap: () async {
                         await widget.tapFunc!();
@@ -74,13 +80,13 @@ class _DeleteModalState extends State<DeleteModal> {
                         }
                       },
                       child: Container(
-                        width: AppUtils.scaleSize(context, 56),
+                        width: 100.w,
                         alignment: Alignment.center,
                         child: Text('삭제하기',
                             style: TextStyle(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: AppUtils.scaleSize(context, 14))),
+                                fontSize: min(14.sp, 24))),
                       ),
                     ),
                   ]),

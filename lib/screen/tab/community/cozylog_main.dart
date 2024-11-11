@@ -1,10 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_list_screeen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/cozylog_record.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_page.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
@@ -15,6 +16,7 @@ import 'package:cozy_for_mom_frontend/screen/mypage/profile_modify.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class CozylogMain extends StatefulWidget {
@@ -51,6 +53,8 @@ class _CozylogMainState extends State<CozylogMain> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
         future: userViewModel.getUserInfo(context),
@@ -75,20 +79,18 @@ class _CozylogMainState extends State<CozylogMain> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 0,
-                    left: 0,
+                    top: isTablet ? -100.h : 0.h,
+                    left: 0.w,
                     child: Image(
-                        width: screenWidth + AppUtils.scaleSize(context, 20),
+                        width: screenWidth + paddingValue,
                         fit: BoxFit.cover,
                         image: const AssetImage("assets/images/subtract2.png")),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 47),
+                    top: isTablet ? 17.h : 34.h,
                     child: Container(
                         width: screenWidth,
-                        padding: EdgeInsets.only(
-                          top: AppUtils.scaleSize(context, 10),
-                        ),
+                        padding: EdgeInsets.only(top: 10.w),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,8 +99,8 @@ class _CozylogMainState extends State<CozylogMain> {
                               icon: Image(
                                 image: const AssetImage(
                                     'assets/images/icons/back_ios.png'),
-                                width: AppUtils.scaleSize(context, 34),
-                                height: AppUtils.scaleSize(context, 34),
+                                width: min(34.w, 44),
+                                height: min(34.w, 44),
                                 color: mainTextColor,
                               ),
                               onPressed: () {
@@ -110,15 +112,15 @@ class _CozylogMainState extends State<CozylogMain> {
                               },
                             ),
                             SizedBox(
-                              width: AppUtils.scaleSize(context, 20),
-                              height: AppUtils.scaleSize(context, 20),
+                              width: min(20.w, 30),
+                              height: min(20.w, 30),
                             ),
                             const Spacer(),
                             Text('커뮤니티',
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 20))),
+                                    fontSize: min(18.sp, 28))),
                             const Spacer(),
                             Row(
                               children: [
@@ -133,15 +135,15 @@ class _CozylogMainState extends State<CozylogMain> {
                                     );
                                   },
                                   child: Image(
-                                      width: AppUtils.scaleSize(context, 20),
-                                      height: AppUtils.scaleSize(context, 20),
+                                      width: min(20.w, 30),
+                                      height: min(20.w, 30),
                                       image: const AssetImage(
                                           "assets/images/icons/icon_search.png")),
                                 ),
                                 IconButton(
                                   icon: Image(
-                                    width: AppUtils.scaleSize(context, 24),
-                                    height: AppUtils.scaleSize(context, 24),
+                                    width: min(24.w, 34),
+                                    height: min(24.w, 34),
                                     image: const AssetImage(
                                       "assets/images/icons/mypage.png",
                                     ),
@@ -160,28 +162,28 @@ class _CozylogMainState extends State<CozylogMain> {
                         )),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 138),
-                    left: AppUtils.scaleSize(context, 30),
+                    top: isTablet? 104.h : 134.h,
+                    left: isTablet? 32.w : 28.w,
                     child: pregnantInfo['imageUrl'] == null
                         ? Image.asset(
                             'assets/images/icons/momProfile.png',
                             fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                            width: AppUtils.scaleSize(context, 90),
-                            height: AppUtils.scaleSize(context, 90),
+                            width: min(90.w, 180),
+                            height: min(90.w, 180),
                             alignment: Alignment.center,
                           )
                         : ClipOval(
                             child: Image.network(
                               pregnantInfo['imageUrl'],
                               fit: BoxFit.cover,
-                              width: AppUtils.scaleSize(context, 90),
-                              height: AppUtils.scaleSize(context, 90),
+                              width: min(90.w, 180),
+                              height: min(90.w, 180),
                             ),
                           ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 174),
-                    left: AppUtils.scaleSize(context, 135),
+                    top: 167.h,
+                    left: 135.w,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,12 +195,10 @@ class _CozylogMainState extends State<CozylogMain> {
                                   style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 18))),
+                                      fontSize: min(18.sp, 28))),
                               Padding(
-                                padding: EdgeInsets.only(
-                                    left: AppUtils.scaleSize(context, 8),
-                                    bottom: AppUtils.scaleSize(context, 4)),
+                                padding:
+                                    EdgeInsets.only(left: 8.w, bottom: 4.w),
                                 child: InkWell(
                                     onTap: () async {
                                       final res = await Navigator.push(
@@ -213,38 +213,37 @@ class _CozylogMainState extends State<CozylogMain> {
                                     child: Image(
                                         image: const AssetImage(
                                             'assets/images/icons/pen.png'),
-                                        width: AppUtils.scaleSize(context, 14),
-                                        height:
-                                            AppUtils.scaleSize(context, 14))),
+                                        width: min(14.w, 24),
+                                        height: min(14.w, 24))),
                               ),
                             ],
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 5)),
+                          SizedBox(height: 5.w),
                           SizedBox(
-                            width: AppUtils.scaleSize(context, 230),
+                            width: 230.w,
                             child: Text(
                               pregnantInfo['introduce'],
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color: Color(0xff8A8A8A),
+                                  color: const Color(0xff8A8A8A),
                                   fontWeight: FontWeight.w600,
-                                  fontSize: AppUtils.scaleSize(context, 14)),
+                                  fontSize: min(14.sp, 24)),
                             ),
                           ),
                         ]),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 255),
-                    left: AppUtils.scaleSize(context, 10),
+                    top: 255.h,
                     child: Card(
                       elevation: 0.0,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                          borderRadius: BorderRadius.circular(20.w)),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: paddingValue, vertical: 10.w),
                       color: contentBoxTwoColor,
                       child: SizedBox(
-                        width: screenWidth - AppUtils.scaleSize(context, 40),
-                        height: AppUtils.scaleSize(context, 102),
+                        width: screenWidth - 2 * paddingValue,
+                        height: min(102.w, 152),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -253,8 +252,8 @@ class _CozylogMainState extends State<CozylogMain> {
                                 textColor: mainTextColor,
                                 textWeight: FontWeight.w600,
                                 imagePath: 'assets/images/icons/cozylog.png',
-                                imageWidth: 27.3,
-                                imageHeight: 24.34,
+                                imageWidth: min(27.3.w, 47.3),
+                                imageHeight: min(24.34.w, 44.34),
                                 onPressed: () async {
                                   final res = await Navigator.push(
                                       context,
@@ -268,8 +267,8 @@ class _CozylogMainState extends State<CozylogMain> {
                                   }
                                 }),
                             Container(
-                              width: 1,
-                              height: AppUtils.scaleSize(context, 42),
+                              width: 1.w,
+                              height: 42.w,
                               color: const Color(0xffE8E8ED),
                             ),
                             CustomTextButton(
@@ -277,8 +276,8 @@ class _CozylogMainState extends State<CozylogMain> {
                                 textColor: mainTextColor,
                                 textWeight: FontWeight.w600,
                                 imagePath: 'assets/images/icons/scrap.png',
-                                imageWidth: 18.4,
-                                imageHeight: 24,
+                                imageWidth: min(18.4.w, 38.4),
+                                imageHeight: min(24.w, 44),
                                 onPressed: () {
                                   Navigator.push(
                                       context,
@@ -292,10 +291,10 @@ class _CozylogMainState extends State<CozylogMain> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 393.4),
-                    left: AppUtils.scaleSize(context, 21),
+                    top: 393.4.h,
+                    left: paddingValue,
                     child: SizedBox(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      width: screenWidth - 2 * paddingValue,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -304,7 +303,7 @@ class _CozylogMainState extends State<CozylogMain> {
                             style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w700,
-                              fontSize: AppUtils.scaleSize(context, 18),
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           InkWell(
@@ -326,18 +325,18 @@ class _CozylogMainState extends State<CozylogMain> {
                               decoration: BoxDecoration(
                                   color: const Color(0xffA9ABB7),
                                   borderRadius: BorderRadius.circular(
-                                    21,
+                                    21.w,
                                   )),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 8),
-                                  vertical: AppUtils.scaleSize(context, 2),
+                                  horizontal: 8.w,
+                                  vertical: 2.w,
                                 ),
                                 child: Text(
                                   "더보기",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: AppUtils.scaleSize(context, 12),
+                                    fontSize: min(12.sp, 22),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -349,18 +348,17 @@ class _CozylogMainState extends State<CozylogMain> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 434),
-                    left: AppUtils.scaleSize(context, 20),
+                    top: 434.h,
+                    left: paddingValue,
                     child: Container(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                      width: screenWidth - 2 * paddingValue,
                       height: screenHeight * 0.375,
-                      padding: EdgeInsets.only(
-                        left: AppUtils.scaleSize(context, 22),
-                        right: AppUtils.scaleSize(context, 22),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
                       ),
                       decoration: BoxDecoration(
                         color: contentBoxTwoColor,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.w),
                       ),
                       child: FutureBuilder(
                         future: cozyLogs,
@@ -372,8 +370,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                       style: TextStyle(
                                           color: const Color(0xff9397A4),
                                           fontWeight: FontWeight.w500,
-                                          fontSize: AppUtils.scaleSize(
-                                              context, 16))));
+                                          fontSize: min(16.sp, 26))));
                             } else {
                               return SingleChildScrollView(
                                 child: Column(
@@ -397,7 +394,6 @@ class _CozylogMainState extends State<CozylogMain> {
                                               },
                                             ))
                                         .toList(),
-                                    const SizedBox(height: 24),
                                   ],
                                 ),
                               );

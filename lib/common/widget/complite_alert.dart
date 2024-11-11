@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 class CompleteAlertModal extends StatelessWidget {
@@ -26,22 +27,21 @@ class CompleteAlertModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // 여기에 필요한 UI를 구성
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        width: screenWidth * (1 / 3),
-        height: AppUtils.scaleSize(context, 41),
+        width: screenWidth * (0.45),
+        height: 41.w,
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: const Color.fromRGBO(0, 0, 0, 0.7),
-            borderRadius: BorderRadius.circular(10)),
+            borderRadius: BorderRadius.circular(10.w)),
         child: Text(
           '${text} ${action}되었습니다.',
           style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
-              fontSize: AppUtils.scaleSize(context, 16)),
+              fontSize: min(16.sp, 26)),
           textAlign: TextAlign.center,
         ),
       ),

@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_card_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -115,6 +117,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
@@ -138,13 +142,13 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
-              fontSize: AppUtils.scaleSize(context, 20)),
+              fontSize: min(18.sp, 28)),
         ),
         leading: IconButton(
           icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
             color: mainTextColor,
           ),
           onPressed: () {
@@ -167,14 +171,12 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     scrollDirection: Axis.vertical,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: AppUtils.scaleSize(context, 20),
-                          right: AppUtils.scaleSize(context, 20),
-                          bottom: AppUtils.scaleSize(context, keyboardPadding)),
+                          left: paddingValue, right: paddingValue, bottom: keyboardPadding.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 30),
+                            height: 30.w,
                           ),
                           TextField(
                             cursorColor: primaryColor,
@@ -183,19 +185,19 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w500,
-                              fontSize: AppUtils.scaleSize(context, 20),
+                              fontSize: min(20.sp, 30),
                             ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               labelStyle: TextStyle(
                                 color: const Color(0xff2B2D35),
-                                fontSize: AppUtils.scaleSize(context, 20),
+                                fontSize: min(20.sp, 30),
                               ),
                               hintText: "일정의 제목을 입력해주세요",
                               hintStyle: TextStyle(
                                 color: const Color(0xff858998),
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(context, 20),
+                                fontSize: min(20.sp, 30),
                               ),
                             ),
                             onChanged: (text) {
@@ -206,13 +208,13 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                           ),
                           Container(
                             width: screenWidth,
-                            height: AppUtils.scaleSize(context, 1.5),
+                            height: 1.5.w,
                             color: titleController.text.isNotEmpty
                                 ? primaryColor
                                 : mainLineColor,
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 50),
+                            height: 50.w,
                           ),
                           Text(
                             type == CardType.bloodsugar.name
@@ -221,20 +223,17 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             style: TextStyle(
                               color: const Color(0xff2B2D35),
                               fontWeight: FontWeight.bold,
-                              fontSize: AppUtils.scaleSize(context, 18),
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 10),
+                            height: 10.w,
                           ),
                           ...targetTimeWidgets
-                              .expand((widget) => [
-                                    widget,
-                                    SizedBox(
-                                        height: AppUtils.scaleSize(context, 10))
-                                  ])
+                              .expand(
+                                  (widget) => [widget, SizedBox(height: 10.w)])
                               .toList(),
-                          SizedBox(height: AppUtils.scaleSize(context, 10)),
+                          SizedBox(height: 10.w),
                           type == CardType.bloodsugar.name
                               ? Container()
                               : GestureDetector(
@@ -245,24 +244,23 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                       style: TextStyle(
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14)),
+                                          fontSize: min(14.sp, 24)),
                                     ),
                                   ),
                                 ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: 20.w,
                           ),
                           Text(
                             "알림",
                             style: TextStyle(
                               color: const Color(0xff2B2D35),
                               fontWeight: FontWeight.bold,
-                              fontSize: AppUtils.scaleSize(context, 18),
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: 20.w,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -279,19 +277,16 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: AppUtils.scaleSize(context, 100),
+                                  width: 100.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.w),
                                     color: selectedOneHourAgo
                                         ? selectedBackgroundColor
                                         : unselectedBackgroundColor,
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            AppUtils.scaleSize(context, 20),
-                                        vertical:
-                                            AppUtils.scaleSize(context, 15)),
+                                        horizontal: 20.w, vertical: 15.h),
                                     child: Center(
                                       child: Text(
                                         "1시간 전",
@@ -300,8 +295,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                                 ? selectedTextColor
                                                 : unselectedTextColor,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 16)),
+                                            fontSize: min(16.sp, 26)),
                                       ),
                                     ),
                                   ),
@@ -320,19 +314,16 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: AppUtils.scaleSize(context, 100),
+                                  width: 100.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.w),
                                     color: selectedThirtyMinutesAgo
                                         ? selectedBackgroundColor
                                         : unselectedBackgroundColor,
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            AppUtils.scaleSize(context, 20),
-                                        vertical:
-                                            AppUtils.scaleSize(context, 15)),
+                                        horizontal: 20.w, vertical: 15.h),
                                     child: Center(
                                       child: Text(
                                         "30분 전",
@@ -341,8 +332,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                                 ? selectedTextColor
                                                 : unselectedTextColor,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 16)),
+                                            fontSize: min(16.sp, 26)),
                                       ),
                                     ),
                                   ),
@@ -360,19 +350,16 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: AppUtils.scaleSize(context, 100),
+                                  width: 100.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.w),
                                     color: selectedOnTime
                                         ? selectedBackgroundColor
                                         : unselectedBackgroundColor,
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            AppUtils.scaleSize(context, 20),
-                                        vertical:
-                                            AppUtils.scaleSize(context, 15)),
+                                        horizontal: 20.w, vertical: 15.h),
                                     child: Center(
                                       child: Text(
                                         "정시",
@@ -381,8 +368,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                                 ? selectedTextColor
                                                 : unselectedTextColor,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 16)),
+                                            fontSize: min(16.sp, 26)),
                                       ),
                                     ),
                                   ),
@@ -391,22 +377,21 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                             ],
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 40),
+                            height: 40.w,
                           ),
                           Text(
                             "알림 받을 요일",
                             style: TextStyle(
                               color: const Color(0xff2B2D35),
                               fontWeight: FontWeight.bold,
-                              fontSize: AppUtils.scaleSize(context, 18),
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: 20.w,
                           ),
                           SizedBox(
-                            width:
-                                screenWidth - AppUtils.scaleSize(context, 40),
+                            width: screenWidth - 2 * paddingValue,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -440,11 +425,11 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                       });
                                     },
                                     child: Container(
-                                      width: AppUtils.scaleSize(context, 38),
-                                      height: AppUtils.scaleSize(context, 45),
+                                      width: 38.w,
+                                      height: 45.w,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(8.0),
+                                            BorderRadius.circular(8.w),
                                         color: daysOfWeek
                                                 .contains(dayType.englishName)
                                             ? selectedBackgroundColor
@@ -459,8 +444,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                                                   ? selectedTextColor
                                                   : unselectedTextColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 16)),
+                                              fontSize: min(16.sp, 26)),
                                         ),
                                       ),
                                     ),
@@ -468,7 +452,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 150)),
+                          SizedBox(height: 150.w),
                         ],
                       ),
                     ),
@@ -478,9 +462,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
             ),
           ),
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+            bottom: 0.h,
+            left: 0.w,
+            right: 0.w,
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -493,8 +477,8 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                 ),
               ),
               padding: EdgeInsets.only(
-                top: AppUtils.scaleSize(context, 20),
-                bottom: AppUtils.scaleSize(context, 34),
+                top: 20.w,
+                bottom: 54.w - paddingValue,
               ),
               child: InkWell(
                 onTap: () async {
@@ -522,12 +506,11 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                   }
                 },
                 child: Container(
-                  height: AppUtils.scaleSize(context, 56),
-                  margin: EdgeInsets.symmetric(
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                  height: min(56.w, 96),
+                  margin: EdgeInsets.symmetric(horizontal: paddingValue),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                     color: isRegisterButtonEnabled()
                         ? primaryColor
                         : const Color(0xffC9DFF9),
@@ -538,7 +521,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                     ),
                   ),
                 ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
@@ -9,6 +11,7 @@ import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_comment_api_service.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
@@ -72,6 +75,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     return FutureBuilder(
       future: futureCozyLog,
       builder: (context, snapshot) {
@@ -80,17 +85,16 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
           return Scaffold(
             backgroundColor: backgroundColor,
             appBar: PreferredSize(
-              preferredSize: Size(AppUtils.scaleSize(context, 400),
-                  AppUtils.scaleSize(context, 57.4)),
+              preferredSize: Size(screenWidth, 60.w),
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: AppUtils.scaleSize(context, 8),
-                    bottom: AppUtils.scaleSize(context, 8),
-                    right: AppUtils.scaleSize(context, 8)),
+                    top: paddingValue - 20.w,
+                    bottom: paddingValue - 20.w,
+                    right: 8.w),
                 child: Column(
                   children: [
                     SizedBox(
-                      height: AppUtils.scaleSize(context, 50),
+                      height: isTablet ? 0.w : 50.w,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,8 +103,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           icon: Image(
                             image: const AssetImage(
                                 'assets/images/icons/back_ios.png'),
-                            width: AppUtils.scaleSize(context, 34),
-                            height: AppUtils.scaleSize(context, 34),
+                            width: min(34.w, 44),
+                            height: min(34.w, 44),
                             color: mainTextColor,
                           ),
                           onPressed: () {
@@ -113,13 +117,13 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                           style: TextStyle(
                             color: mainTextColor,
                             fontWeight: FontWeight.w600,
-                            fontSize: AppUtils.scaleSize(context, 20),
+                            fontSize: min(18.sp, 28),
                           ),
                         ),
                         const Spacer(),
                         SizedBox(
-                          width: AppUtils.scaleSize(context, 32),
-                          height: AppUtils.scaleSize(context, 32),
+                          width: min(32.w, 42),
+                          height: min(32.w, 42),
                         )
                       ],
                     ),
@@ -133,19 +137,18 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: AppUtils.scaleSize(context, 20),
-                          vertical: AppUtils.scaleSize(context, 8)),
+                          horizontal: paddingValue, vertical: 8.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             cozyLog.title,
                             style: TextStyle(
-                                fontSize: AppUtils.scaleSize(context, 20),
+                                fontSize: min(20.sp, 30),
                                 fontWeight: FontWeight.w600),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 17),
+                            height: 17.w,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,23 +159,19 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                   cozyLog.writer.imageUrl == null
                                       ? Image.asset(
                                           "assets/images/icons/momProfile.png",
-                                          width:
-                                              AppUtils.scaleSize(context, 50),
-                                          height:
-                                              AppUtils.scaleSize(context, 50),
+                                          width: min(50.w, 100),
+                                          height: min(50.w, 100),
                                         )
                                       : ClipOval(
                                           child: Image.network(
                                             cozyLog.writer.imageUrl!,
                                             fit: BoxFit.cover,
-                                            width:
-                                                AppUtils.scaleSize(context, 50),
-                                            height:
-                                                AppUtils.scaleSize(context, 50),
+                                            width: min(50.w, 100),
+                                            height: min(50.w, 100),
                                           ),
                                         ),
                                   SizedBox(
-                                    width: AppUtils.scaleSize(context, 15),
+                                    width: 15.w,
                                   ),
                                   Column(
                                     crossAxisAlignment:
@@ -182,12 +181,11 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                         cozyLog.writer.nickname,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14),
+                                          fontSize: min(14.sp, 24),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: AppUtils.scaleSize(context, 5),
+                                        height: 5.w,
                                       ),
                                       Row(
                                         children: [
@@ -197,8 +195,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                             style: TextStyle(
                                               color: const Color(0xffAAAAAA),
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 14),
+                                              fontSize: min(14.sp, 24),
                                             ),
                                           ),
                                           isMyCozyLog
@@ -208,9 +205,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                     color:
                                                         const Color(0xffAAAAAA),
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize:
-                                                        AppUtils.scaleSize(
-                                                            context, 14),
+                                                    fontSize: min(14.sp, 24),
                                                   ),
                                                 )
                                               : Container()
@@ -222,37 +217,32 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                               ),
                               isMyCozyLog
                                   ? SizedBox(
-                                      width: AppUtils.scaleSize(context, 15),
-                                      height: AppUtils.scaleSize(context, 32),
+                                      width: min(15.w, 25),
+                                      height: min(32.w, 42),
                                       child: IconButton(
                                         padding: EdgeInsets.zero,
                                         onPressed: () {
                                           showModalBottomSheet<void>(
                                             backgroundColor: Colors.transparent,
+                                            elevation: 0.0,
                                             context: context,
                                             builder: (BuildContext context) {
                                               return SizedBox(
-                                                height: AppUtils.scaleSize(
-                                                    context, 220),
+                                                height: isTablet? 234.w - paddingValue : 234.w,
                                                 child: Column(
                                                   children: [
                                                     Container(
                                                       padding:
                                                           EdgeInsets.symmetric(
-                                                              vertical: AppUtils
-                                                                  .scaleSize(
-                                                                      context,
-                                                                      8)),
+                                                              vertical: 8.w),
                                                       width: screenWidth -
-                                                          AppUtils.scaleSize(
-                                                              context, 40),
+                                                          2 * paddingValue,
                                                       height:
-                                                          AppUtils.scaleSize(
-                                                              context, 128),
+                                                          148.w - paddingValue,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(20),
+                                                                .circular(20.w),
                                                         color: Colors.white,
                                                       ),
                                                       child: Center(
@@ -272,10 +262,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600,
-                                                                    fontSize: AppUtils
-                                                                        .scaleSize(
-                                                                            context,
-                                                                            16),
+                                                                    fontSize: min(
+                                                                        16.sp,
+                                                                        26),
                                                                   ),
                                                                 )),
                                                                 onTap:
@@ -316,10 +305,9 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600,
-                                                                    fontSize: AppUtils
-                                                                        .scaleSize(
-                                                                            context,
-                                                                            16),
+                                                                    fontSize: min(
+                                                                        16.sp,
+                                                                        26),
                                                                   ),
                                                                 )),
                                                                 onTap:
@@ -360,9 +348,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 15),
+                                                      height: 15.w,
                                                     ),
                                                     InkWell(
                                                       onTap: () {
@@ -370,16 +356,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                       },
                                                       child: Container(
                                                         width: screenWidth -
-                                                            AppUtils.scaleSize(
-                                                                context, 40),
-                                                        height:
-                                                            AppUtils.scaleSize(
-                                                                context, 56),
+                                                            2 * paddingValue,
+                                                        height: min(56.w, 96),
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(12),
+                                                                  .circular(
+                                                                      12.w),
                                                           color:
                                                               induceButtonColor,
                                                         ),
@@ -390,10 +374,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    16),
+                                                            fontSize:
+                                                                min(16.sp, 26),
                                                           ),
                                                         )),
                                                       ),
@@ -408,15 +390,14 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                           image: const AssetImage(
                                               'assets/images/icons/more_vert_outlined.png'),
                                           color: const Color(0xff858998),
-                                          width: AppUtils.scaleSize(context, 3),
-                                          height:
-                                              AppUtils.scaleSize(context, 17),
+                                          width: min(3.w, 6),
+                                          height: min(17.w, 34),
                                         ),
                                       ),
                                     )
                                   : SizedBox(
-                                      width: AppUtils.scaleSize(context, 25),
-                                      height: AppUtils.scaleSize(context, 32),
+                                      width: min(25.w, 35),
+                                      height: min(32.w, 42),
                                       child: IconButton(
                                         padding: EdgeInsets.zero,
                                         onPressed: () async {
@@ -441,39 +422,35 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                             ? Image(
                                                 image: const AssetImage(
                                                     'assets/images/icons/scrap_fill.png'),
-                                                width: AppUtils.scaleSize(
-                                                    context, 12.75),
-                                                height: AppUtils.scaleSize(
-                                                    context, 17),
+                                                width: min(12.75.w, 22.75),
+                                                height: min(17.w, 27),
                                               )
                                             : Image(
                                                 image: const AssetImage(
                                                     'assets/images/icons/unscrap.png'),
-                                                width: AppUtils.scaleSize(
-                                                    context, 12.75),
-                                                height: AppUtils.scaleSize(
-                                                    context, 17),
+                                                width: min(12.75.w, 22.75),
+                                                height: min(17.w, 27),
                                               ),
                                       ),
                                     ),
                             ],
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 10)),
+                          SizedBox(height: 10.w),
                           const Divider(
                             color: Color(0xffE1E1E7),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 20),
+                            height: 20.w,
                           ),
                           Text(
                             cozyLog.content,
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(context, 14)),
+                                fontSize: min(14.sp, 24)),
                           ),
                           SizedBox(
-                            height: AppUtils.scaleSize(context, 22),
+                            height: 22.w,
                           ),
 
                           ListView.builder(
@@ -487,7 +464,8 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     Container(
                                       clipBehavior: Clip.hardEdge,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius:
+                                            BorderRadius.circular(20.w),
                                       ),
                                       child: Image.network(
                                         cozyLog.imageList[index].imageUrl,
@@ -495,20 +473,19 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: AppUtils.scaleSize(context, 10),
+                                      height: 10.w,
                                     ),
                                     Text(
                                       cozyLog.imageList[index].description,
                                       style: TextStyle(
                                         color: const Color(0xffAAAAAA),
                                         fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 12),
+                                        fontSize: min(12.sp, 22),
                                       ),
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.center,  // TODO start가 나으려나?
                                     ),
                                     SizedBox(
-                                      height: AppUtils.scaleSize(context, 12),
+                                      height: 12.w,
                                     ),
                                   ],
                                 ),
@@ -516,7 +493,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             },
                           ),
                           SizedBox(
-                            width: AppUtils.scaleSize(context, 144),
+                            width: 144.w,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -525,20 +502,17 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     Image(
                                       image: const AssetImage(
                                           'assets/images/icons/scrap_gray.png'),
-                                      width: AppUtils.scaleSize(context, 11.76),
-                                      height:
-                                          AppUtils.scaleSize(context, 15.68),
+                                      width: min(11.76.w, 21.76),
+                                      height: min(15.68.w, 25.68),
                                       color: Colors.black,
                                     ),
-                                    SizedBox(
-                                        width: AppUtils.scaleSize(context, 8)),
+                                    SizedBox(width: 8.w),
                                     Text(
                                       '스크랩 ${cozyLog.scrapCount}',
                                       style: TextStyle(
                                         color: const Color(0xff8C909E),
                                         fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 12),
+                                        fontSize: min(12.sp, 22),
                                       ),
                                     ),
                                   ],
@@ -548,27 +522,24 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                     Image(
                                         image: const AssetImage(
                                             'assets/images/icons/comment.png'),
-                                        width: AppUtils.scaleSize(context, 16),
-                                        height:
-                                            AppUtils.scaleSize(context, 15.68),
+                                        width: min(16.w, 26),
+                                        height: min(15.68.w, 25.68),
                                         color: Colors.black),
-                                    SizedBox(
-                                        width: AppUtils.scaleSize(context, 8)),
+                                    SizedBox(width: 8.w),
                                     Text('댓글 ${cozyLog.commentCount}',
                                         style: TextStyle(
                                             color: const Color(0xff8C909E),
                                             fontWeight: FontWeight.w600,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 12))),
+                                            fontSize: min(12.sp, 22))),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 30)),
+                          SizedBox(height: 30.w),
                           // 댓글 목록
                           Divider(
-                            height: AppUtils.scaleSize(context, 30),
+                            height: 30.w,
                             color: mainLineColor,
                           ),
                           FutureBuilder(
@@ -604,10 +575,13 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                           snapshot.data![index]
                                                               .parentId;
                                                       textController.text = '';
-                                                      submitIcon = const Image(
-                                                          image: AssetImage(
-                                                        "assets/images/icons/submit_inactive.png",
-                                                      ));
+                                                      submitIcon = Image(
+                                                        image: const AssetImage(
+                                                          "assets/images/icons/submit_inactive.png",
+                                                        ),
+                                                        width: min(20.w, 30),
+                                                        height: min(20.w, 30),
+                                                      );
                                                     });
                                                   },
                                                   requestCommentsUpdate: () {
@@ -631,15 +605,16 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                           comment.commentId;
                                                       textController.text =
                                                           comment.content;
-                                                      submitIcon = const Image(
-                                                          image: AssetImage(
-                                                        "assets/images/icons/submit_active.png",
-                                                      ));
+                                                      submitIcon = Image(
+                                                        image: const AssetImage(
+                                                          "assets/images/icons/submit_active.png",
+                                                        ),
+                                                        width: min(20.w, 30),
+                                                        height: min(20.w, 30),
+                                                      );
                                                     });
                                                   }),
-                                              SizedBox(
-                                                  height: AppUtils.scaleSize(
-                                                      context, 15)),
+                                              SizedBox(height: 15.w),
                                             ],
                                           );
                                         } else {
@@ -659,30 +634,23 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.only(
-                      left: AppUtils.scaleSize(context, 25),
-                      right: AppUtils.scaleSize(context, 25),
-                      bottom: AppUtils.scaleSize(context, 25),
-                      top: AppUtils.scaleSize(context, 15)),
+                      left: 25.w, right: 25.w, bottom: 25.w, top: 15.w),
                   decoration: const BoxDecoration(
                     color: Colors.white, // 배경색 설정
                   ),
                   child: Container(
-                    width: screenWidth - AppUtils.scaleSize(context, 40),
-                    height: AppUtils.scaleSize(context, 36),
+                    width: screenWidth - paddingValue,
+                    height: 36.w,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        20,
-                      ),
+                      borderRadius: BorderRadius.circular(20.w),
                       color: const Color(0xffF7F7FA),
                     ),
-                    padding: EdgeInsets.only(
-                        left: AppUtils.scaleSize(context, 20),
-                        right: AppUtils.scaleSize(context, 6)),
+                    padding: EdgeInsets.only(left: 20.w, right: 6.w),
                     child: TextField(
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,
-                        fontSize: AppUtils.scaleSize(context, 14),
+                        fontSize: min(14.sp, 24),
                       ),
                       keyboardType: TextInputType.text,
                       maxLines: 1,
@@ -691,37 +659,39 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                         if (text != '') {
                           setState(() {
                             commentInput = text;
-                            submitIcon = const Image(
-                                image: AssetImage(
-                              "assets/images/icons/submit_active.png",
-                            ));
+                            submitIcon = Image(
+                              image: const AssetImage(
+                                "assets/images/icons/submit_active.png",
+                              ),
+                              width: min(20.w, 30),
+                              height: min(20.w, 30),
+                            );
                           });
                         } else {
                           setState(() {
                             commentInput = '';
-                            submitIcon = const Image(
-                                image: AssetImage(
-                              "assets/images/icons/submit_inactive.png",
-                            ));
+                            submitIcon = Image(
+                              image: const AssetImage(
+                                "assets/images/icons/submit_inactive.png",
+                              ),
+                              width: min(20.w, 30),
+                              height: min(20.w, 30),
+                            );
                           });
                         }
                       },
-                      cursorHeight: 14.5,
-                      cursorWidth: 1,
+                      cursorHeight: AppUtils.scaleSize(context, 14.5),
+                      cursorWidth: AppUtils.scaleSize(context, 1),
                       cursorColor: primaryColor,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(
-                            bottom: (AppUtils.scaleSize(context, 36) -
-                                    AppUtils.scaleSize(context, 14) * 1.2) /
-                                2 // 폰트 크기와 라인 높이 고려),
-                            ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.w),
                         hintText: parentCommentIdToReply != null
                             ? "답글을 남겨주세요."
                             : "댓글을 남겨주세요.",
                         hintStyle: TextStyle(
                           color: const Color(0xffBCC0C7),
                           fontWeight: FontWeight.w400,
-                          fontSize: AppUtils.scaleSize(context, 14),
+                          fontSize: min(14.sp, 24),
                         ),
                         suffixIcon: GestureDetector(
                           onTap: () async {
@@ -756,8 +726,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                             }
                           },
                           child: Padding(
-                            padding:
-                                EdgeInsets.all(AppUtils.scaleSize(context, 8)),
+                            padding: EdgeInsets.all(8.w),
                             child: submitIcon,
                           ),
                         ),

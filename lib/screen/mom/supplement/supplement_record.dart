@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_register_modal.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
@@ -33,6 +35,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
         Provider.of<SupplementApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     void addSupplement(int id) {
       setState(() {
@@ -78,13 +82,13 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   return Stack(
                     children: [
                       Positioned(
-                          top: AppUtils.scaleSize(context, 47),
+                          top: isTablet ? 0.w : 50.w,
                           width: screenWidth,
                           child: Padding(
                               padding: EdgeInsets.only(
-                                  top: AppUtils.scaleSize(context, 10),
-                                  bottom: AppUtils.scaleSize(context, 10),
-                                  right: AppUtils.scaleSize(context, 5)),
+                                  top: paddingValue - 20.w,
+                                  bottom: paddingValue - 20.w,
+                                  right: 8.w),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -93,8 +97,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                     icon: Image(
                                       image: const AssetImage(
                                           'assets/images/icons/back_ios.png'),
-                                      width: AppUtils.scaleSize(context, 34),
-                                      height: AppUtils.scaleSize(context, 34),
+                                      width: min(34.w, 44),
+                                      height: min(34.w, 44),
                                       color: mainTextColor,
                                     ),
                                     onPressed: () {
@@ -102,8 +106,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                     },
                                   ),
                                   SizedBox(
-                                    width: AppUtils.scaleSize(context, 30),
-                                    height: AppUtils.scaleSize(context, 30),
+                                    width: min(30.w, 40),
+                                    height: min(30.w, 40),
                                   ),
                                   const Spacer(),
                                   Row(
@@ -114,8 +118,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         style: TextStyle(
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 20),
+                                          fontSize: min(18.sp, 28),
                                         ),
                                       ),
                                       IconButton(
@@ -125,13 +128,12 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         onPressed: () {
                                           showModalBottomSheet(
                                             backgroundColor: Colors.transparent,
-                                            elevation: 0.0,
-                                            context: context,
-                                            builder: (context) {
-                                              return MonthCalendarModal(
-                                                limitToday: true,
-                                              );
-                                            },
+                                            isScrollControlled: true,
+                                elevation: 0.0,
+                                context: context,
+                                builder: (context) {
+                                  return Wrap(children : [MonthCalendarModal(limitToday: true)]);
+                                },
                                           );
                                         },
                                       ),
@@ -140,12 +142,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                   const Spacer(),
                                   IconButton(
                                       icon: Image(
-                                          image: const AssetImage(
-                                              'assets/images/icons/alert.png'),
-                                          height:
-                                              AppUtils.scaleSize(context, 32),
-                                          width:
-                                              AppUtils.scaleSize(context, 32)),
+                                        image: const AssetImage(
+                                            'assets/images/icons/alert.png'),
+                                        height: min(32.w, 42),
+                                        width: min(32.w, 42),
+                                      ),
                                       onPressed: () {
                                         Navigator.push(
                                             context,
@@ -158,18 +159,17 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                 ],
                               ))),
                       Positioned(
-                        top: AppUtils.scaleSize(context, 120),
-                        left: AppUtils.scaleSize(context, 20),
+                        top: isTablet? 80.h : 110.h,
+                        left: paddingValue,
                         child: SizedBox(
-                          height: AppUtils.scaleSize(context, 100),
-                          width: screenWidth - AppUtils.scaleSize(context, 40),
+                          width: screenWidth - 2 * paddingValue,
                           child: const WeeklyCalendar(),
                         ),
                       ),
                       Positioned(
-                        top: AppUtils.scaleSize(context, 203),
-                        left: 0,
-                        right: 0,
+                        top: 200.h,
+                        left: 0.w,
+                        right: 0.w,
                         child: pregnantSupplements.isEmpty
                             ? SizedBox(
                                 height: screenHeight * (0.55),
@@ -179,32 +179,27 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       Image(
                                           image: const AssetImage(
                                               'assets/images/icons/supplement_off.png'),
-                                          width:
-                                              AppUtils.scaleSize(context, 28),
-                                          height: AppUtils.scaleSize(
-                                              context, 67.2)),
+                                          width: min(28.w, 56),
+                                          height: min(67.2.w, 134.4)),
                                       Text('영양제를 등록해 보세요!',
                                           style: TextStyle(
                                               color: const Color(0xff9397A4),
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 14))),
+                                              fontSize: min(14.sp, 24))),
                                     ]))
                             : SizedBox(
-                                height: screenHeight -
-                                    AppUtils.scaleSize(context, 200),
+                                height: screenHeight,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
                                   child: Padding(
                                     padding: EdgeInsets.only(
-                                        bottom: screenHeight * (1 / 8)),
+                                        bottom: screenHeight * (0.3)),
                                     child: Column(
                                       children:
                                           pregnantSupplements.map((supplement) {
                                         return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: AppUtils.scaleSize(
-                                                    context, 10)),
+                                            padding:
+                                                EdgeInsets.only(bottom: 10.w),
                                             child: SupplementCard(
                                               supplementId:
                                                   supplement.supplementId,
@@ -225,6 +220,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                                       updatedData),
                                             ));
                                       }).toList(),
+                                      
                                     ),
                                   ),
                                 ),

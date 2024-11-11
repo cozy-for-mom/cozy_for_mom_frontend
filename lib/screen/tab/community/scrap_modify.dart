@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/recent_scrap_view.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -75,22 +77,25 @@ class _ScrapListModifyState extends State<ScrapListModify> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     ListModifyState scrapListModifyState = context.watch<ListModifyState>();
 
     return Column(
       children: [
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
+          padding: EdgeInsets.only(
+              left: paddingValue,
+              right: paddingValue,
+              top: isTablet ? 15.w : 0.w),
           child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 24)),
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            height: AppUtils.scaleSize(context, 53),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            width: screenWidth - 2 * paddingValue,
+            height: min(53.w, 83),
             decoration: BoxDecoration(
                 color: const Color(0xffF0F0F5),
-                borderRadius: BorderRadius.circular(30)),
+                borderRadius: BorderRadius.circular(30.w)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -98,9 +103,9 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                     Image(
                         image:
                             const AssetImage('assets/images/icons/scrap.png'),
-                        width: AppUtils.scaleSize(context, 18.4),
-                        height: AppUtils.scaleSize(context, 24)),
-                    SizedBox(width: AppUtils.scaleSize(context, 8)),
+                        width: min(18.4.w, 28.4),
+                        height: min(24.w, 34)),
+                    SizedBox(width: 8.w),
                     Consumer<ListModifyState>(
                       builder: (context, cozylogListModifyState, child) {
                         return Text(
@@ -108,7 +113,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14)),
+                              fontSize: min(14.sp, 24)),
                         );
                       },
                     ),
@@ -134,9 +139,9 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14))),
+                                fontSize: min(14.sp, 24))),
                       ),
-                      SizedBox(width: AppUtils.scaleSize(context, 24)),
+                      SizedBox(width: 24.w),
                       InkWell(
                         onTap: () {
                           Navigator.pushReplacement(
@@ -148,28 +153,27 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14))),
+                                fontSize: min(14.sp, 24))),
                       ),
                     ],
                   ),
                 ]),
           ),
         ),
-        SizedBox(height: AppUtils.scaleSize(context, 22)),
+        SizedBox(height: 22.w),
         widget.cozyLogs.isNotEmpty
             ? Padding(
                 padding: EdgeInsets.only(
-                    left: AppUtils.scaleSize(context, 20),
-                    right: AppUtils.scaleSize(context, 20),
-                    bottom: AppUtils.scaleSize(context, 60)),
+                    left: paddingValue,
+                    right: paddingValue,
+                    bottom: 80.w - paddingValue),
                 child: Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
+                  width: screenWidth - paddingValue,
                   // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                   height: screenHeight * (0.7),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.w),
                       color: contentBoxTwoColor),
                   child: PagedListView<int, ScrapForList>(
                     // physics: const NeverScrollableScrollPhysics(),
@@ -207,18 +211,18 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                     Image(
                         image: const AssetImage(
                             'assets/images/icons/scrap_off.png'),
-                        width: AppUtils.scaleSize(context, 34.54),
-                        height: AppUtils.scaleSize(context, 45.05)),
+                        width: min(34.54.w, 79.08),
+                        height: min(45.05.w, 90.1)),
                     SizedBox(
-                      height: AppUtils.scaleSize(context, 12),
+                      height: 12.w,
                     ),
                     Text('코지로그를 스크랩 해보세요!',
                         style: TextStyle(
                             color: const Color(0xff9397A4),
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 14))),
+                            fontSize: min(14.sp, 24))),
                     SizedBox(
-                      height: AppUtils.scaleSize(context, 140),
+                      height: 140.w,
                     ),
                   ],
                 ),

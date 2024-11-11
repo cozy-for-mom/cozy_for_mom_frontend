@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/welcome/welcome_screen.dart';
 import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -94,6 +96,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
     final joinInputData = Provider.of<JoinInputData>(context);
     final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
 
@@ -105,8 +108,8 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
         leading: IconButton(
           icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
             color: mainTextColor,
           ),
           onPressed: () {
@@ -127,7 +130,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: AppUtils.scaleSize(context, 20))),
+                fontSize: min(18.sp, 28))),
         actions: [
           InkWell(
             onTap: () async {
@@ -179,8 +182,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(
-                  right: screenWidth / AppUtils.scaleSize(context, 19)),
+              padding: EdgeInsets.only(right: screenWidth / 19.w),
               child: Text('다음',
                   style: TextStyle(
                       color: ((_currentPage == 0 && _isEmailValid) ||
@@ -193,7 +195,7 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
                           ? Colors.black
                           : navOffTextColor,
                       fontWeight: FontWeight.w400,
-                      fontSize: AppUtils.scaleSize(context, 18))),
+                      fontSize: min(18.sp, 28))),
             ),
           ),
         ],
@@ -201,20 +203,20 @@ class _JoinInfoInputScreenState extends State<JoinInfoInputScreen> {
       body: Stack(
         children: [
           Positioned(
-            top: AppUtils.scaleSize(context, 43),
-            left: AppUtils.scaleSize(context, 20),
-            right: AppUtils.scaleSize(context, 20),
+            top: 43.h,
+            left: paddingValue,
+            right: paddingValue,
             child: LinearProgressIndicator(
               value: (_currentPage + 1) / _totalPage,
               backgroundColor: mainLineColor,
               color: primaryColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.w),
               minHeight: 6.0,
             ),
           ),
           Positioned.fill(
-            top: AppUtils.scaleSize(context, 43),
-            left: 0,
+            top: 43.h,
+            left: 0.w,
             child: PageView(
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,

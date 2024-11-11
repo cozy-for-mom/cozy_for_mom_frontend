@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/line_chart_widget.dart';
 import 'package:cozy_for_mom_frontend/common/widget/tab_indicator_widget.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_weight_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,10 +68,13 @@ class _TimeLineChartState extends State<TimeLineChart>
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     BloodsugarApiService bloodsugarPeriodViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     WeightApiService weightPeriodViewModel =
         Provider.of<WeightApiService>(context, listen: true);
+
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
       return FutureBuilder(
           future: widget.recordType == RecordType.bloodsugar
@@ -105,10 +110,10 @@ class _TimeLineChartState extends State<TimeLineChart>
               ));
             }
             return Container(
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 400),
+              width: screenWidth - 2 * paddingValue,
+              height: min(400.w, 650),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(20.w),
                 color: Colors.white,
               ),
               child: DefaultTabController(
@@ -117,15 +122,20 @@ class _TimeLineChartState extends State<TimeLineChart>
                   children: [
                     TabBar(
                         controller: _tabController,
-                        labelColor: Colors.black,
-                        indicatorColor: Colors.red,
+                        labelColor: mainTextColor,
                         labelStyle: TextStyle(
-                          fontSize: AppUtils.scaleSize(context, 18),
-                          fontWeight: FontWeight.bold,
+                          color: mainTextColor,
+                          fontSize: min(16.sp, 26),
+                          fontWeight: FontWeight.w700,
                         ),
                         unselectedLabelStyle: TextStyle(
-                          fontSize: AppUtils.scaleSize(context, 16),
+                          color: offButtonTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: min(16.sp, 26),
                         ),
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        labelPadding:
+                            EdgeInsets.only(bottom: 3.w),
                         tabs: const [
                           Tab(text: "일간"),
                           Tab(text: "주간"),

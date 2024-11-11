@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -80,6 +82,8 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
     // 월화수목금토일 순으로 정렬
@@ -98,11 +102,11 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
       return hourA.compareTo(hourB);
     });
     return Padding(
-      padding: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 5)),
+      padding: EdgeInsets.only(bottom: 5.w),
       child: Card(
         elevation: 0.0,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
           controller: _slidableController,
           actionPane: const SlidableDrawerActionPane(),
@@ -110,12 +114,12 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             IconSlideAction(
               color: Colors.transparent,
               iconWidget: Container(
-                width: AppUtils.scaleSize(context, 120),
-                decoration: const BoxDecoration(
+                width: 120.w,
+                decoration: BoxDecoration(
                   color: deleteButtonColor,
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
+                    topRight: Radius.circular(20.w),
+                    bottomRight: Radius.circular(20.w),
                   ),
                 ),
                 child: InkWell(
@@ -145,16 +149,16 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                         Image(
                           image: const AssetImage(
                               'assets/images/icons/delete.png'),
-                          width: AppUtils.scaleSize(context, 17.5),
-                          height: AppUtils.scaleSize(context, 18),
+                          width: min(17.5.w, 27.5),
+                          height: min(18.w, 28),
                         ),
-                        SizedBox(height: AppUtils.scaleSize(context, 5)),
+                        SizedBox(height: 5.w),
                         Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 14),
+                            fontSize: min(14.sp, 24),
                           ),
                         ),
                       ]),
@@ -163,14 +167,12 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
             ),
           ],
           child: Container(
-            padding: EdgeInsets.symmetric(
-                vertical: AppUtils.scaleSize(context, 24),
-                horizontal: AppUtils.scaleSize(context, 20)),
+            padding: EdgeInsets.symmetric(vertical: 24.w, horizontal: 20.w),
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
-                borderRadius: BorderRadius.circular(20.0)),
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            height: AppUtils.scaleSize(context, 164),
+                borderRadius: BorderRadius.circular(20.w)),
+            width: screenWidth - 2 * paddingValue,
+            height: min(164.w, 328),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,24 +191,21 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                       style: TextStyle(
                                           color: afterInputColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 18)),
+                                          fontSize: min(18.sp, 28)),
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
                                 ),
-                                SizedBox(width: AppUtils.scaleSize(context, 8)),
+                                SizedBox(width: 8.w),
                                 Container(
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          AppUtils.scaleSize(context, 8),
-                                      vertical: AppUtils.scaleSize(context, 2)),
+                                      horizontal: 8.w, vertical: 2.w),
                                   decoration: BoxDecoration(
                                       color: widget.notification.isActive
                                           ? const Color(0xffFEEEEE)
                                           : offButtonColor,
-                                      borderRadius: BorderRadius.circular(8)),
+                                      borderRadius: BorderRadius.circular(8.w)),
                                   child: Wrap(
                                     children: widget.notification.daysOfWeek
                                         .map((day) {
@@ -219,16 +218,11 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                                     ? const Color(0xffFF9797)
                                                     : offButtonTextColor,
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 12)),
+                                                fontSize: min(12.sp, 22)),
                                           );
                                         })
-                                        .expand((widget) => [
-                                              widget,
-                                              SizedBox(
-                                                  width: AppUtils.scaleSize(
-                                                      context, 8))
-                                            ])
+                                        .expand((widget) =>
+                                            [widget, SizedBox(width: 8.w)])
                                         .toList()
                                       ..removeLast(),
                                   ),
@@ -251,9 +245,9 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 12))),
+                          fontSize: min(12.sp, 22))),
                   SizedBox(
-                    width: AppUtils.scaleSize(context, 312),
+                    width: 312.w,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -266,7 +260,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                   ? primaryColor
                                   : offButtonTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14),
+                              fontSize: min(14.sp, 24),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

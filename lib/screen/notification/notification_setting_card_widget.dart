@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -96,21 +98,22 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
     List<String> timeParts = textEditingController.text.split(':');
 
     return Container(
-      height: AppUtils.scaleSize(context, 78),
+      height: min(78.w, 156),
       width: screenWidth,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.w),
         ),
       ),
-      padding: EdgeInsets.all(AppUtils.scaleSize(context, 20)),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+      children: [
         Container(
-          width: AppUtils.scaleSize(context, 96),
-          height: AppUtils.scaleSize(context, 35),
+          width: 96.w,
+          height: 35.w,
           decoration: BoxDecoration(
-              color: offButtonColor, borderRadius: BorderRadius.circular(20)),
+              color: offButtonColor, borderRadius: BorderRadius.circular(20.w)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -125,10 +128,10 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                   });
                 },
                 child: Container(
-                    width: AppUtils.scaleSize(context, 45),
-                    height: AppUtils.scaleSize(context, 29),
+                    width: 45.w,
+                    height: 29.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.w),
                         color: isBeforeButtonEnabled
                             ? primaryColor
                             : offButtonColor),
@@ -140,7 +143,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                 ? Colors.white
                                 : offButtonTextColor,
                             fontWeight: FontWeight.w700,
-                            fontSize: AppUtils.scaleSize(context, 14),
+                            fontSize: min(14.sp, 24),
                           )),
                     )),
               ),
@@ -155,10 +158,10 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                   });
                 },
                 child: Container(
-                    width: AppUtils.scaleSize(context, 45),
-                    height: AppUtils.scaleSize(context, 29),
+                    width: 45.w,
+                    height: 29.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.w),
                         color: isAfterButtonEnabled
                             ? primaryColor
                             : offButtonColor),
@@ -170,7 +173,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                                 ? Colors.white
                                 : offButtonTextColor,
                             fontWeight: FontWeight.w700,
-                            fontSize: AppUtils.scaleSize(context, 14),
+                            fontSize: min(14.sp, 24),
                           )),
                     )),
               ),
@@ -178,13 +181,13 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
           ),
         ),
         Container(
-          width: AppUtils.scaleSize(context, 89),
+          width: min(89.w, 119),
           alignment: Alignment.center,
           child: Center(
             child: TextFormField(
               autocorrect: true,
               controller: textEditingController,
-              textAlignVertical: TextAlignVertical.bottom,
+              textAlignVertical: TextAlignVertical.center,
               textAlign: TextAlign.center,
               maxLength: 7,
               showCursor: false,
@@ -195,22 +198,19 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
               ],
               decoration: InputDecoration(
                 border: InputBorder.none,
-                // underline과의 기본 패딩값 없애기(텍스트 중앙정렬 위해)
-                isCollapsed: true,
-                contentPadding: EdgeInsets.zero,
                 counterText: '',
                 hintText: '00 : 00',
                 hintStyle: TextStyle(
                     color: offButtonTextColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: AppUtils.scaleSize(context, 24),
-                    height: AppUtils.scaleSize(context, 1)),
+                    fontSize: min(24.sp, 34),
+                    height: min(1.w, 1)),
               ),
               style: TextStyle(
                   color: mainTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: AppUtils.scaleSize(context, 24),
-                  height: AppUtils.scaleSize(context, 1)),
+                  fontSize: min(24.sp, 34),
+                  height: min(1.w, 1)),
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   textEditingController.value =

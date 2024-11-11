@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomProfileButton extends StatefulWidget {
   final String text;
@@ -32,8 +34,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
     return InkWell(
       onTap: widget.onPressed,
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 12)),
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -42,12 +43,12 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(50.w),
                     border: widget.isSelected
-                        ? Border.all(width: 2, color: primaryColor)
+                        ? Border.all(width: 2.w, color: primaryColor)
                         : widget.isEditMode
                             ? Border.all(
-                                width: 2, color: const Color(0xffC0C0C0))
+                                width: 2.w, color: const Color(0xffC0C0C0))
                             : null,
                   ),
                   child: ColorFiltered(
@@ -64,21 +65,20 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                                   ? profileColor
                                   : widget.offBackColor,
                               padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 20),
-                                  vertical: AppUtils.scaleSize(context, 23)),
+                                  horizontal: min(20.w, 30), vertical: min(23.w, 33)),
                               child: Image.asset(
                                 widget.isSelected
                                     ? 'assets/images/icons/babyProfileOn.png'
                                     : 'assets/images/icons/babyProfileOff.png',
-                                width: AppUtils.scaleSize(context, 40),
-                                height: AppUtils.scaleSize(context, 35),
+                                width: min(40.w, 80),
+                                height: min(35.w, 70),
                               ),
                             )
                           : Image.network(
                               widget.imagePath,
                               fit: BoxFit.fill,
-                              width: AppUtils.scaleSize(context, 80),
-                              height: AppUtils.scaleSize(context, 80),
+                              width: min(80.w, 130),
+                              height: min(80.w, 130),
                             ),
                     ),
                   ),
@@ -105,18 +105,17 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                             }
                           },
                           child: Image.asset(
-                            'assets/images/icons/babyprofile_modify_pen.png',
-                            width: AppUtils.scaleSize(context, 20),
-                            height: AppUtils.scaleSize(context, 20),
-                          ),
+                              'assets/images/icons/babyprofile_modify_pen.png',
+                              width: min(20.w, 30),
+                              height: min(20.w, 30)),
                         ),
                       )
                     : Container(),
               ],
             ),
-            SizedBox(height: AppUtils.scaleSize(context, 6)),
+            SizedBox(height: 6.w),
             SizedBox(
-              width: AppUtils.scaleSize(context, 70),
+              width: 70.w,
               child: Text(
                 widget.text,
                 overflow: TextOverflow.ellipsis,
@@ -126,7 +125,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                     color:
                         widget.isSelected ? primaryColor : offButtonTextColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: AppUtils.scaleSize(context, 14)),
+                    fontSize: min(14.sp, 24)),
               ),
             ),
           ],

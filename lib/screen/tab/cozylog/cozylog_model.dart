@@ -221,9 +221,10 @@ class CozyLogSearchResult {
   final String title;
   final String summary;
   final DateTime date;
+  // final CozyLogModeType mode;
   final int commentCount;
   final int scrapCount;
-  final String? imageUrl;
+  final String imageUrl;
   final int imageCount;
 
   CozyLogSearchResult({
@@ -231,6 +232,7 @@ class CozyLogSearchResult {
     required this.title,
     required this.summary,
     required this.date,
+    // required this.mode,
     required this.commentCount,
     required this.scrapCount,
     required this.imageUrl,
@@ -238,11 +240,18 @@ class CozyLogSearchResult {
   });
 
   factory CozyLogSearchResult.fromJson(Map<String, dynamic> json) {
+    //  late CozyLogModeType mode;
+    // if (json['mode'] == 'PUBLIC') {
+    //   mode = CozyLogModeType.public;
+    // } else {
+    //   mode = CozyLogModeType.private;
+    // }
     return CozyLogSearchResult(
       id: json['id'],
       date: DateTime.parse(json['date']),
       title: json['title'],
       summary: json['summary'],
+      // mode: mode,
       commentCount: json['commentCount'],
       scrapCount: json['scrapCount'],
       imageCount: json['imageCount'],

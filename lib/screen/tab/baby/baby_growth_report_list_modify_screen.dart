@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -83,6 +85,8 @@ class _BabyGrowthReportListModifyState
     final screenHeight = MediaQuery.of(context).size.height;
     const boxHeight = 20 + 143.0; //screenHeight * (0.6);
     final totalHeight = boxHeight * widget.babyProfileGrowths.length + 20;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     ListModifyState babyGrowthReportListModifyState =
         context.watch<ListModifyState>();
@@ -90,16 +94,17 @@ class _BabyGrowthReportListModifyState
     return Column(
       children: [
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
+          padding: EdgeInsets.only(
+              left: paddingValue,
+              right: paddingValue,
+              top: isTablet ? 15.w : 0.w),
           child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 24)),
-            width: screenWidth - AppUtils.scaleSize(context, 40),
-            height: AppUtils.scaleSize(context, 53),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            width: screenWidth - 2 * paddingValue,
+            height: min(53.w, 83),
             decoration: BoxDecoration(
                 color: const Color(0xffF0F0F5),
-                borderRadius: BorderRadius.circular(30)),
+                borderRadius: BorderRadius.circular(30.w)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -112,7 +117,7 @@ class _BabyGrowthReportListModifyState
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14)),
+                              fontSize: min(14.sp, 24)),
                         );
                       },
                     ),
@@ -141,27 +146,26 @@ class _BabyGrowthReportListModifyState
                             style: TextStyle(
                                 color: offButtonTextColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14))),
+                                fontSize: min(14.sp, 24))),
                       ),
                     ],
                   ),
                 ]),
           ),
         ),
-        SizedBox(height: AppUtils.scaleSize(context, 22)),
+        SizedBox(height: 22.w),
         widget.babyProfileGrowths.isNotEmpty
             ? Container(
-                width: screenWidth - AppUtils.scaleSize(context, 40),
+                width: screenWidth - 2 * paddingValue,
                 // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
                 height: screenHeight * (0.7),
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppUtils.scaleSize(context, 20)),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.w),
                     color: contentBoxTwoColor),
                 child: PagedListView<int, BabyProfileGrowth>(
                   padding: EdgeInsets.only(
-                    top: AppUtils.scaleSize(context, 10),
+                    top: 10.w,
                   ),
                   pagingController: pagingController,
                   builderDelegate: PagedChildBuilderDelegate<BabyProfileGrowth>(
@@ -170,16 +174,14 @@ class _BabyGrowthReportListModifyState
                     final dateTime = report.date;
                     return SizedBox(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: AppUtils.scaleSize(context, 10)),
+                        padding: EdgeInsets.symmetric(vertical: 10.w),
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                      right: AppUtils.scaleSize(context, 20)),
+                                  padding: EdgeInsets.only(right: 20.w),
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
@@ -197,21 +199,21 @@ class _BabyGrowthReportListModifyState
                                               'assets/images/icons/select_on.png')
                                           : const AssetImage(
                                               'assets/images/icons/select_off.png'),
-                                      width: AppUtils.scaleSize(context, 20),
-                                      height: AppUtils.scaleSize(context, 20),
+                                      width: min(20.w, 30),
+                                      height: min(20.w, 30),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: AppUtils.scaleSize(context, 255),
+                                  width: 255.w,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
                                         width: item.growthImageUrl == null
-                                            ? AppUtils.scaleSize(context, 240)
-                                            : AppUtils.scaleSize(context, 155),
+                                            ? 240.w
+                                            : 155.w,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -220,38 +222,30 @@ class _BabyGrowthReportListModifyState
                                               report.title,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 16),
+                                                fontSize: min(16.sp, 26),
                                                 fontWeight: FontWeight.w600,
                                                 color: const Color(0xff2B2D35),
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: AppUtils.scaleSize(
-                                                  context, 5),
-                                            ),
+                                            SizedBox(height: 5.w),
                                             Text(
                                               "${dateTime.year}. ${dateTime.month}. ${dateTime.day}.",
                                               style: TextStyle(
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 13),
+                                                fontSize: min(13.sp, 23),
                                                 color: const Color(0xffAAAAAA),
                                               ),
                                             ),
                                             SizedBox(
-                                              height: AppUtils.scaleSize(
-                                                  context, 7),
+                                              height: 7.w,
                                             ),
                                             SizedBox(
-                                              height: AppUtils.scaleSize(
-                                                  context, 36),
+                                              height: 36.w,
                                               child: Text(
                                                 report.diary,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                  fontSize: AppUtils.scaleSize(
-                                                      context, 12),
+                                                  fontSize: min(12.sp, 22),
                                                   color:
                                                       const Color(0xff858998),
                                                 ),
@@ -261,22 +255,20 @@ class _BabyGrowthReportListModifyState
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.all(
-                                            AppUtils.scaleSize(context, 3)),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 3.w, vertical: 3.w),
                                         child: Container(
                                           clipBehavior: Clip.hardEdge,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(10),
+                                                BorderRadius.circular(10.w),
                                           ),
                                           child: report.growthImageUrl == null
                                               ? Container()
                                               : Image.network(
                                                   report.growthImageUrl!,
-                                                  width: AppUtils.scaleSize(
-                                                      context, 79),
-                                                  height: AppUtils.scaleSize(
-                                                      context, 79),
+                                                  width: min(79.w, 149),
+                                                  height: min(79.w, 149),
                                                   fit: BoxFit.cover,
                                                 ),
                                         ),
@@ -287,7 +279,7 @@ class _BabyGrowthReportListModifyState
                               ],
                             ),
                             SizedBox(
-                              height: AppUtils.scaleSize(context, 10),
+                              height: 10.w,
                             ),
                             const Divider(
                               color: Color(0xffE1E1E7),
@@ -307,20 +299,22 @@ class _BabyGrowthReportListModifyState
                     Image(
                       image: const AssetImage(
                           "assets/images/icons/diary_inactive.png"),
-                      width: AppUtils.scaleSize(context, 45.31),
-                      height: AppUtils.scaleSize(context, 44.35),
+                      width: min(45.31.w, 90.62),
+                      height: min(44.35.w, 88.7),
                     ),
                     SizedBox(
-                      height: AppUtils.scaleSize(context, 15),
+                      height: 15.w,
                     ),
-                    const Text(
+                    Text(
                       "태아의 검진기록을 입력해보세요!",
                       style: TextStyle(
-                        color: Color(0xff9397A4),
+                        color: const Color(0xff9397A4),
+                        fontWeight: FontWeight.w500,
+                        fontSize: min(14.w, 24),
                       ),
                     ),
                     SizedBox(
-                      height: AppUtils.scaleSize(context, 140),
+                      height: 140.w,
                     ),
                   ],
                 ),

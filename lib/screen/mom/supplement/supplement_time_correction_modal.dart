@@ -1,4 +1,6 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +31,8 @@ class _SupplementModalState extends State<SupplementModal> {
     SupplementApiService supplementApi = SupplementApiService();
     final screenWidth = MediaQuery.of(context).size.width;
     final globalData = Provider.of<MyDataModel>(context, listen: false);
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     late String currentTime;
 
@@ -48,14 +52,12 @@ class _SupplementModalState extends State<SupplementModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth -
-                AppUtils.scaleSize(context, 40), // TODO 팝업창 너비 조정되도록 수정해야 함
-            height: AppUtils.scaleSize(context, 207),
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 20)),
+            width: screenWidth - 2 * paddingValue, // TODO 팝업창 너비 조정되도록 수정해야 함
+            height: min(207.w, 367),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.w),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,27 +66,25 @@ class _SupplementModalState extends State<SupplementModal> {
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: AppUtils.scaleSize(context, 20))),
+                        fontSize: min(18.sp, 28))),
                 Container(
-                    width: AppUtils.scaleSize(context, 312),
-                    height: AppUtils.scaleSize(context, 80),
-                    padding: EdgeInsets.only(
-                        left: AppUtils.scaleSize(context, 16),
-                        right: AppUtils.scaleSize(context, 16)),
+                    width: 312.w,
+                    height: min(80.w, 120),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     decoration: BoxDecoration(
                       color: backgroundColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.w),
                     ),
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: AppUtils.scaleSize(context, 84),
-                            height: AppUtils.scaleSize(context, 32),
+                            width: 84.w,
+                            height: 32.w,
                             decoration: BoxDecoration(
                                 color: contentBoxTwoColor,
-                                borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(20.w)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -96,13 +96,13 @@ class _SupplementModalState extends State<SupplementModal> {
                                     });
                                   },
                                   child: Container(
-                                      width: AppUtils.scaleSize(context, 38),
-                                      height: AppUtils.scaleSize(context, 26),
-                                      padding: EdgeInsets.all(
-                                          AppUtils.scaleSize(context, 4)),
+                                      width: 38.w,
+                                      height: 26.w,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 4.w, vertical: 4.w),
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(20.w),
                                           color: isBeforeButtonEnabled
                                               ? primaryColor
                                               : contentBoxTwoColor),
@@ -113,8 +113,7 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize:
-                                                AppUtils.scaleSize(context, 12),
+                                            fontSize: min(12.sp, 22),
                                           ))),
                                 ),
                                 InkWell(
@@ -125,13 +124,13 @@ class _SupplementModalState extends State<SupplementModal> {
                                     });
                                   },
                                   child: Container(
-                                      width: AppUtils.scaleSize(context, 38),
-                                      height: AppUtils.scaleSize(context, 26),
-                                      padding: EdgeInsets.all(
-                                          AppUtils.scaleSize(context, 4)),
+                                      width: 38.w,
+                                      height: 26.w,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 4.w, vertical: 4.w),
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(20.w),
                                           color: isAfterButtonEnabled
                                               ? primaryColor
                                               : contentBoxTwoColor),
@@ -142,15 +141,14 @@ class _SupplementModalState extends State<SupplementModal> {
                                                 ? Colors.white
                                                 : offButtonTextColor,
                                             fontWeight: FontWeight.w700,
-                                            fontSize:
-                                                AppUtils.scaleSize(context, 12),
+                                            fontSize: min(12.sp, 22),
                                           ))),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(
-                            width: AppUtils.scaleSize(context, 90),
+                            width: 90.w,
                             child: TextFormField(
                               autocorrect: true,
                               controller: textController,
@@ -169,12 +167,11 @@ class _SupplementModalState extends State<SupplementModal> {
                                   hintStyle: TextStyle(
                                       color: offButtonTextColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 24))),
+                                      fontSize: min(24.sp, 34))),
                               style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: AppUtils.scaleSize(context, 24)),
+                                  fontSize: min(24.sp, 34)),
                               onChanged: (value) {
                                 if (value.isNotEmpty) {
                                   textController.value =
@@ -194,19 +191,18 @@ class _SupplementModalState extends State<SupplementModal> {
               ],
             ),
           ),
-          SizedBox(height: AppUtils.scaleSize(context, 18)),
+          SizedBox(height: 18.w),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: 56,
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(56.w, 96),
                   padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 18),
-                      horizontal: AppUtils.scaleSize(context, 50)),
+                      vertical: min(18.w, 28), horizontal: 50.w),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.w)),
                   child: InkWell(
                     onTap: () async {
                       if (isEnabled) {
@@ -242,7 +238,7 @@ class _SupplementModalState extends State<SupplementModal> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                       textAlign: TextAlign.center,
                     ),
                   ),

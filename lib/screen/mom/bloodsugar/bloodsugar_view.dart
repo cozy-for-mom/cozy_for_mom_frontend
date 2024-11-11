@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -28,6 +28,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     BloodsugarApiService bloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     Random random = Random();
@@ -55,22 +57,21 @@ class _BloodsugarViewState extends State<BloodsugarView> {
             return Stack(
               children: [
                 Positioned(
-                  top: AppUtils.scaleSize(context, 204),
-                  left: AppUtils.scaleSize(context, 20),
+                  top: isTablet? 174.h : 204.h,
+                  left: paddingValue,
                   child: const TimeLineChart(recordType: RecordType.bloodsugar),
                 ),
                 Positioned(
-                    top: AppUtils.scaleSize(context, 635),
-                    left: AppUtils.scaleSize(context, 20),
+                    top: isTablet? 665.h : 635.h,
+                    left: paddingValue,
                     child: Container(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 114),
+                      width: screenWidth - 2 * paddingValue,
+                      height: min(114.w, 214),
                       padding: EdgeInsets.symmetric(
-                          horizontal: AppUtils.scaleSize(context, 20),
-                          vertical: AppUtils.scaleSize(context, 24)),
+                          horizontal: 20.w, vertical: 24.h),
                       decoration: BoxDecoration(
                           color: contentBoxTwoColor,
-                          borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(20.w)),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -82,20 +83,15 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                                     style: TextStyle(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w700,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 18))),
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom:
-                                            AppUtils.scaleSize(context, 6))),
+                                        fontSize: min(18.sp, 28))),
+                                Padding(padding: EdgeInsets.only(bottom: 6.h)),
                                 Text.rich(
                                   TextSpan(
                                     text: '임산부의 ${timeText[randomIndex]} 혈당치는 ',
                                     style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 12)),
+                                        fontSize: min(12.sp, 22)),
                                     children: [
                                       TextSpan(
                                           text:
@@ -103,16 +99,14 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                                           style: TextStyle(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 12))),
+                                              fontSize: min(12.sp, 22))),
                                       TextSpan(
                                           text:
                                               '\n정도로 일반인보다 ${avg < timeAvgBloodsugar[randomIndex] ? '낮' : '높'}은 편이네요!',
                                           style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 12))),
+                                              fontSize: min(12.sp, 22))),
                                     ],
                                   ),
                                 ),
@@ -120,8 +114,8 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                             ),
                             Image.asset(
                                 'assets/images/icons/icon_bloodsugar.png',
-                                width: AppUtils.scaleSize(context, 47),
-                                height: AppUtils.scaleSize(context, 61)),
+                                width: min(47.w, 94),
+                                height: min(61.w, 122)),
                           ]),
                     ))
               ],

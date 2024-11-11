@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/mypage/baby_register_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_scrap.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/custom_text_button.dart';
@@ -33,6 +35,8 @@ class _MyPageState extends State<MyPage> {
     int totalDays = 280; // 임신일 ~ 출산일
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -58,11 +62,11 @@ class _MyPageState extends State<MyPage> {
             return Stack(
               children: [
                 Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
+                  top: isTablet ? -65.h : 0.h,
+                  left: 0.w,
+                  right: 0.w,
                   child: Image(
-                    width: screenWidth - AppUtils.scaleSize(context, 40),
+                    width: screenWidth - 2 * paddingValue,
                     fit: BoxFit.cover,
                     image: const AssetImage(
                       "assets/images/subtract.png",
@@ -70,24 +74,24 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 47),
-                  left: AppUtils.scaleSize(context, 340),
+                  top: isTablet ? 27.h : 47.h,
+                  right: 8.w,
                   child: IconButton(
                       icon: Icon(
                         Icons.close,
                         color: Colors.black,
-                        size: AppUtils.scaleSize(context, 28),
+                        size: min(28.w, 38),
                       ),
                       onPressed: () {
                         Navigator.pop(context, true);
                       }),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 119),
-                  left: 0,
-                  right: 0,
+                  top: isTablet ? 109.h : 119.h,
+                  left: 0.w,
+                  right: 0.w,
                   child: SizedBox(
-                    height: AppUtils.scaleSize(context, 161),
+                    height: min(161.w, 300),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,27 +100,25 @@ class _MyPageState extends State<MyPage> {
                               ? Image.asset(
                                   'assets/images/icons/momProfile.png',
                                   fit: BoxFit.cover, // 이미지를 화면에 맞게 조절
-                                  width: AppUtils.scaleSize(context, 100),
-                                  height: AppUtils.scaleSize(context, 100),
+                                  width: min(100.w, 200),
+                                  height: min(100.w, 200),
                                   alignment: Alignment.center,
                                 )
                               : ClipOval(
                                   child: Image.network(
                                     pregnantInfo['imageUrl'],
                                     fit: BoxFit.cover,
-                                    width: AppUtils.scaleSize(context, 100),
-                                    height: AppUtils.scaleSize(context, 100),
+                                    width: min(100.w, 200),
+                                    height: min(100.w, 200),
                                   ),
                                 ),
-                          SizedBox(height: AppUtils.scaleSize(context, 8)),
                           Text(
                             "${pregnantInfo['nickname']} 산모님",
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w700,
-                                fontSize: AppUtils.scaleSize(context, 20)),
+                                fontSize: min(20.sp, 30)),
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 6)),
                           InkWell(
                             onTap: () async {
                               final res = await Navigator.push(
@@ -136,13 +138,12 @@ class _MyPageState extends State<MyPage> {
                                   style: TextStyle(
                                       color: offButtonTextColor,
                                       fontWeight: FontWeight.w500,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 12)),
+                                      fontSize: min(12.sp, 22)),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(width: AppUtils.scaleSize(context, 2)),
+                                SizedBox(width: 2.w),
                                 Image.asset('assets/images/icons/pen.png',
-                                    width: AppUtils.scaleSize(context, 12)),
+                                    width: min(12.w, 22)),
                               ],
                             ),
                           ),
@@ -150,17 +151,18 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 303),
-                  left: AppUtils.scaleSize(context, 11),
+                  top: 303.h,
+                  left: paddingValue,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                        borderRadius: BorderRadius.circular(20.w)),
+                    margin:
+                        EdgeInsets.symmetric(vertical: isTablet ? 30.w : 10.w),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 114),
+                      width: screenWidth - 2 * paddingValue,
+                      height: min(114.w, 144),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -172,32 +174,29 @@ class _MyPageState extends State<MyPage> {
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: AppUtils.scaleSize(context, 16)),
+                                    fontSize: min(16.sp, 26)),
                               ),
                               Text(' D-${pregnantInfo['dDay']}',
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 16))),
+                                      fontSize: min(16.sp, 26))),
                             ],
                           ),
                           Container(
-                            width:
-                                screenWidth - AppUtils.scaleSize(context, 80),
-                            height: AppUtils.scaleSize(context, 12),
+                            width: screenWidth - 4 * paddingValue,
+                            height: min(12.w, 18),
                             decoration: BoxDecoration(
                               color: lineTwoColor, // 전체 배경색
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.w),
                             ),
                             child: FractionallySizedBox(
                               widthFactor: percentage,
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                height: AppUtils.scaleSize(context, 20),
                                 decoration: BoxDecoration(
                                   color: primaryColor,
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5.w),
                                 ),
                               ),
                             ),
@@ -208,17 +207,18 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 434),
-                  left: AppUtils.scaleSize(context, 10),
+                  top: 434.h,
+                  left: paddingValue,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                        borderRadius: BorderRadius.circular(20.w)),
+                    margin:
+                        EdgeInsets.symmetric(vertical: isTablet ? 20.w : 10.w),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 102),
+                      width: screenWidth - 2 * paddingValue,
+                      height: min(102.w, 142),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -227,8 +227,8 @@ class _MyPageState extends State<MyPage> {
                               textColor: mainTextColor,
                               textWeight: FontWeight.w600,
                               imagePath: 'assets/images/icons/cozylog.png',
-                              imageWidth: 27.3,
-                              imageHeight: 24.34,
+                              imageWidth: min(27.3.w, 47.3),
+                              imageHeight: min(24.34.w, 44.34),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -237,8 +237,8 @@ class _MyPageState extends State<MyPage> {
                                             const MyCozylog()));
                               }),
                           Container(
-                            width: 1,
-                            height: AppUtils.scaleSize(context, 42),
+                            width: 1.w,
+                            height: 42.w,
                             color: const Color(0xffE8E8ED),
                           ),
                           CustomTextButton(
@@ -246,8 +246,8 @@ class _MyPageState extends State<MyPage> {
                               textColor: mainTextColor,
                               textWeight: FontWeight.w600,
                               imagePath: 'assets/images/icons/scrap.png',
-                              imageWidth: 18.4,
-                              imageHeight: 24,
+                              imageWidth: min(18.4.w, 38.4),
+                              imageHeight: min(24.w, 44),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -260,26 +260,25 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 552),
-                  left: AppUtils.scaleSize(context, 10),
+                  top: 552.h,
+                  left: paddingValue,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    margin: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                        borderRadius: BorderRadius.circular(20.w)),
+                    margin: EdgeInsets.symmetric(vertical: isTablet? 20.w : 10.w),
                     color: contentBoxTwoColor,
                     child: SizedBox(
-                        width: screenWidth - AppUtils.scaleSize(context, 40),
-                        height: AppUtils.scaleSize(context, 222),
+                        width: screenWidth - 2 * paddingValue,
+                        height: min(222.w, 332),
                         child: Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: AppUtils.scaleSize(context, 25),
-                                horizontal: AppUtils.scaleSize(context, 20)),
+                                vertical: 45.w - paddingValue, horizontal: 20.w),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  width: AppUtils.scaleSize(context, 312),
+                                  width: 312.w,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -288,15 +287,14 @@ class _MyPageState extends State<MyPage> {
                                           style: TextStyle(
                                               color: mainTextColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 18))),
+                                              fontSize: min(18.sp, 28))),
                                       Container(
-                                        width: AppUtils.scaleSize(context, 42),
-                                        height: AppUtils.scaleSize(context, 21),
+                                        width: min(42.w, 84),
+                                        height: 21.w,
                                         decoration: BoxDecoration(
                                           color: contentBoxColor,
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                              BorderRadius.circular(10.w),
                                         ),
                                         child: TextButton(
                                           onPressed: () {
@@ -313,8 +311,7 @@ class _MyPageState extends State<MyPage> {
                                               style: TextStyle(
                                                   color: offButtonTextColor,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: AppUtils.scaleSize(
-                                                      context, 12))),
+                                                  fontSize: min(12.sp, 22))),
                                         ),
                                       ),
                                     ],
@@ -322,8 +319,7 @@ class _MyPageState extends State<MyPage> {
                                 ),
                                 Expanded(
                                   child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: AppUtils.scaleSize(context, 30)),
+                                      padding: EdgeInsets.only(top: isTablet? 15.w : 30.w),
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: pregnantInfo['babyProfiles']
@@ -352,21 +348,12 @@ class _MyPageState extends State<MyPage> {
                                                 children: [
                                                   Container(
                                                     padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            AppUtils.scaleSize(
-                                                                context, 10),
-                                                            0,
-                                                            AppUtils.scaleSize(
-                                                                context, 10),
-                                                            AppUtils.scaleSize(
-                                                                context, 10)),
+                                                        EdgeInsets.symmetric(horizontal: 10.w),
                                                     child: Image.asset(
                                                       'assets/images/icons/plusDotted.png',
-                                                      width: AppUtils.scaleSize(
-                                                          context, 82),
-                                                      height:
-                                                          AppUtils.scaleSize(
-                                                              context, 82),
+                                                      width: min(82.w, 134),
+                                                      height: min(82.w, 134),
+                                                      fit: BoxFit.contain,
                                                       alignment:
                                                           Alignment.center,
                                                     ),

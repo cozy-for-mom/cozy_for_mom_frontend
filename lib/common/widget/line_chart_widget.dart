@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -62,6 +66,7 @@ class _LineChartState extends State<LineChart> {
     return SfCartesianChart(
       zoomPanBehavior: _zoomPanBehavior,
       backgroundColor: Colors.white,
+      margin: EdgeInsets.all(10.w),
       series: <ChartSeries>[
         LineSeries<LineChartData, String>(
           dataSource: widget.dataList.reversed.toList(),
@@ -72,18 +77,20 @@ class _LineChartState extends State<LineChart> {
                   : '${dateToString(data.xValue)[1]}월',
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
-          width: AppUtils.scaleSize(context, 3),
-          markerSettings: const MarkerSettings(
+          width: 3.w,
+          markerSettings: MarkerSettings(
             isVisible: true,
             shape: DataMarkerType.circle,
+            width: min(7.w, 14),
+            height: min(7.w, 14),
             color: Colors.white,
             borderColor: defaultColor,
-            borderWidth: 2,
+            borderWidth: 2.w,
           ),
         ),
       ],
       tooltipBehavior: TooltipBehavior(
-        color: const Color(0xff5CA6F8), // 툴팁 배경색 설정
+        color: primaryColor, // 툴팁 배경색 설정
         duration: 5000,
         enable: true,
         builder: (
@@ -93,23 +100,25 @@ class _LineChartState extends State<LineChart> {
           int pointIndex,
           int seriesIndex,
         ) {
-          return Container(
-            padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.black.withOpacity(0),
-            ),
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   '${data.yValue} ',
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: min(14.w, 24),
+                  ),
                 ),
                 Text(
                   widget.unit,
-                  style: const TextStyle(
-                    color: Color(0xffBADBFF),
+                  style: TextStyle(
+                    color: const Color(0xffBADBFF),
+                    fontWeight: FontWeight.w500,
+                    fontSize: min(12.w, 22),
                   ),
                 ),
               ],
@@ -123,35 +132,38 @@ class _LineChartState extends State<LineChart> {
         majorGridLines: const MajorGridLines(
           width: 0,
         ),
-        majorTickLines: const MajorTickLines(
+        majorTickLines: MajorTickLines(
           // 짧은 눈금선 제거
-          width: 0,
+          width: 0.w,
         ),
         minorGridLines: const MinorGridLines(
           width: 0,
         ),
-        axisLine: AxisLine(
-          color: thickLineColor,
-          width: AppUtils.scaleSize(context, 1.7),
-        ),
+        axisLine: AxisLine(color: thickLineColor, width: 1.w),
         labelStyle: TextStyle(
-          color: Colors.black.withOpacity(0.5),
-        ),
+            color: const Color(0xffCDCED5),
+            fontWeight: FontWeight.w500,
+            fontSize: min(12.w, 22),
+            height: 1.w),
       ),
       primaryYAxis: NumericAxis(
         interval: 10,
-        axisLine: const AxisLine(width: 1, color: Colors.white),
-        majorTickLines: const MajorTickLines(width: 0), // 제거
+        axisLine: AxisLine(width: 1.w, color: Colors.white),
         opposedPosition: true,
         maximumLabels: 4,
         minorTicksPerInterval: 1,
         tickPosition: TickPosition.inside,
         majorGridLines: MajorGridLines(
-          width: AppUtils.scaleSize(context, 1.7),
+          width: 1.w,
           color: thickLineColor,
         ),
-        minorGridLines: const MinorGridLines(
-          width: 1,
+        minorGridLines: MinorGridLines(
+          width: 1.w,
+        ),
+        labelStyle: TextStyle(
+          color: mainTextColor,
+          fontWeight: FontWeight.w500,
+          fontSize: min(12.w, 22),
         ),
         minimum: widget.unit == "kg"
             ? ((widget.baseValue - 10) / 10).roundToDouble() * 10

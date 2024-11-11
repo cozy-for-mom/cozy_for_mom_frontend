@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void handleHttpResponse(
     int statusCode, BuildContext context, String? message) async {
@@ -58,19 +59,22 @@ Future<void> showAlertDialog(BuildContext context, String? message) {
 
       return Dialog(
         backgroundColor: Colors.transparent,
+        elevation: 0.0,
         child: Container(
-          width: screenWidth * (1 / 3),
-          height: AppUtils.scaleSize(context, 41),
+          width: screenWidth * (0.45),
+          // padding: EdgeInsets.symmetric(horizontal: 10.w),
+          height: 41.w,
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: const Color.fromRGBO(0, 0, 0, 0.7),
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10.w)),
           child: Text(
             '$message',
             style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: AppUtils.scaleSize(context, 16)),
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: min(16.sp, 26),
+            ),
             textAlign: TextAlign.center,
           ),
         ),

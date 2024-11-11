@@ -1,5 +1,7 @@
-import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
@@ -24,6 +26,8 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
   Widget build(BuildContext context) {
     SupplementApiService supplementApi = SupplementApiService();
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -33,14 +37,12 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth -
-                AppUtils.scaleSize(context, 40), // TODO 팝업창 너비 조정되도록 수정해야 함
-            height: AppUtils.scaleSize(context, 302),
-            padding: EdgeInsets.symmetric(
-                horizontal: AppUtils.scaleSize(context, 20)),
+            width: screenWidth - 2 * paddingValue, // TODO 팝업창 너비 조정되도록 수정해야 함
+            height: min(302.w, 462),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.w),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,22 +51,20 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: AppUtils.scaleSize(context, 18))),
+                        fontSize: min(18.sp, 28))),
                 SizedBox(
-                  height: AppUtils.scaleSize(context, 176),
+                  height: min(176.w, 266),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: AppUtils.scaleSize(context, 312),
-                          height: AppUtils.scaleSize(context, 80),
+                          width: 312.w,
+                          height: min(80.w, 120),
                           padding: EdgeInsets.only(
-                              left: AppUtils.scaleSize(context, 24),
-                              right: AppUtils.scaleSize(context, 24),
-                              top: AppUtils.scaleSize(context, 12)),
+                              left: isTablet? 20.w : 24.w, right: isTablet? 20.w : 24.w, top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.w),
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,11 +75,10 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14))),
+                                          fontSize: min(14.sp, 24))),
                                 ),
                                 SizedBox(
-                                  height: AppUtils.scaleSize(context, 32),
+                                  height: min(32.w, 52),
                                   child: TextFormField(
                                     controller: nameController,
                                     onChanged: (text) {
@@ -106,28 +105,24 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 16))),
+                                            fontSize: min(16.sp, 26))),
                                     cursorColor: primaryColor,
                                     style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 16)),
+                                        fontSize: min(16.sp, 26)),
                                   ),
                                 ),
                               ]),
                         ),
                         Container(
-                          width: AppUtils.scaleSize(context, 312),
-                          height: AppUtils.scaleSize(context, 80),
+                          width: 312.w,
+                          height: min(80.w, 120),
                           padding: EdgeInsets.only(
-                              left: AppUtils.scaleSize(context, 24),
-                              right: AppUtils.scaleSize(context, 24),
-                              top: AppUtils.scaleSize(context, 12)),
+                              left: isTablet? 20.w : 24.w, right: isTablet? 20.w : 24.w, top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.w),
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,11 +133,10 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14))),
+                                          fontSize: min(14.sp, 24))),
                                 ),
                                 SizedBox(
-                                  height: AppUtils.scaleSize(context, 32),
+                                  height: min(32.w, 52),
                                   child: TextFormField(
                                     controller: targetCountController,
                                     onChanged: (text) {
@@ -173,14 +167,12 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 16))),
+                                            fontSize: min(16.sp, 26))),
                                     cursorColor: primaryColor,
                                     style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 16)),
+                                        fontSize: min(16.sp, 26)),
                                   ),
                                 ),
                               ]),
@@ -190,19 +182,18 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
               ],
             ),
           ),
-          SizedBox(height: AppUtils.scaleSize(context, 18)),
+          SizedBox(height: 18.w),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: screenWidth - AppUtils.scaleSize(context, 40),
-                  height: AppUtils.scaleSize(context, 56),
-                  padding: EdgeInsets.symmetric(
-                      vertical: AppUtils.scaleSize(context, 18),
-                      horizontal: AppUtils.scaleSize(context, 50)),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(56.w,96),
+                  padding:
+                      EdgeInsets.symmetric(vertical: min(18.w, 28), horizontal: 50.w),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.w)),
                   child: InkWell(
                     onTap: () async {
                       if (isEnabled) {
@@ -219,7 +210,7 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                       textAlign: TextAlign.center,
                     ),
                   ),

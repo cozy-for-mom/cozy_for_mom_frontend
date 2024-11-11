@@ -1,6 +1,8 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomButtonWidget extends StatefulWidget {
   final bool isActivated;
@@ -20,6 +22,7 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
     return Container(
       width: screenWidth,
       decoration: BoxDecoration(
@@ -32,26 +35,24 @@ class _BottomButtonWidgetState extends State<BottomButtonWidget> {
           ],
         ),
       ),
-      padding: EdgeInsets.only(
-          top: AppUtils.scaleSize(context, 20),
-          bottom: AppUtils.scaleSize(context, 34)),
+      padding:
+          EdgeInsets.only(top: 20.w, bottom: screenWidth > 600 ? 24.w : 34.w),
       child: Container(
-        margin:
-            EdgeInsets.symmetric(horizontal: AppUtils.scaleSize(context, 20)),
+        margin: EdgeInsets.symmetric(horizontal: paddingValue),
         alignment: Alignment.center,
-        height: AppUtils.scaleSize(context, 56),
+        height: min(56.w, 96),
         child: InkWell(
           onTap: widget.isActivated ? widget.tapped : null,
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: widget.isActivated ? primaryColor : induceButtonColor,
-                borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12.w)),
             child: Text(widget.text,
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: AppUtils.scaleSize(context, 16))),
+                    fontSize: min(16.sp, 26))),
           ),
         ),
       ),

@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
-import 'package:cozy_for_mom_frontend/screen/welcome/notification_check_modal.dart';
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -10,6 +12,8 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -18,10 +22,10 @@ class WelcomeScreen extends StatelessWidget {
           Column(
             children: [
               SizedBox(
-                height: AppUtils.scaleSize(context, 70),
+                height: isTablet? 0.w : 70.w,
               ),
               Image(
-                height: AppUtils.scaleSize(context, 390),
+                height: isTablet? 300.w : 390.w,
                 image: const AssetImage(
                   "assets/images/welcome_image.png",
                 ),
@@ -32,23 +36,22 @@ class WelcomeScreen extends StatelessWidget {
                 style: TextStyle(
                   color: primaryColor,
                   fontWeight: FontWeight.w800,
-                  fontSize: AppUtils.scaleSize(context, 10),
+                  fontSize: min(10.sp, 20),
                 ),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 15),
+                height: 10.w,
               ),
               Text(
                 "현명한 임신 준비\n코지포맘에서 시작해요",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: AppUtils.scaleSize(context, 30),
-                  height: AppUtils.scaleSize(context, 1.4),
+                  fontSize: min(30.sp, 40),
                 ),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 25),
+                height: 20.w,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -56,14 +59,14 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     "아기도, 엄마도 건강한 ",
                     style: TextStyle(
-                        fontSize: AppUtils.scaleSize(context, 14),
+                        fontSize: min(14.sp, 24),
                         color: const Color(0xff5E6573),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     "건강 기록 관리",
                     style: TextStyle(
-                      fontSize: AppUtils.scaleSize(context, 14),
+                      fontSize: min(14.sp, 24),
                       fontWeight: FontWeight.w600,
                       color: const Color(0xff5E6573),
                     ),
@@ -71,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 10),
+                height: 5.w,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -79,14 +82,14 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     "잊지않고 건강을 챙길 수 있는 ",
                     style: TextStyle(
-                        fontSize: AppUtils.scaleSize(context, 14),
+                        fontSize: min(14.sp, 24),
                         color: const Color(0xff5E6573),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     "포맘 알림",
                     style: TextStyle(
-                      fontSize: AppUtils.scaleSize(context, 14),
+                      fontSize: min(14.sp, 24),
                       fontWeight: FontWeight.w600,
                       color: const Color(0xff5E6573),
                     ),
@@ -94,7 +97,7 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 10),
+                height: 5.w,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,14 +105,14 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     "산모들의 소통창구 ",
                     style: TextStyle(
-                        fontSize: AppUtils.scaleSize(context, 14),
+                        fontSize: min(14.sp, 24),
                         color: const Color(0xff5E6573),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     "코지로그 커뮤니티",
                     style: TextStyle(
-                      fontSize: AppUtils.scaleSize(context, 14),
+                      fontSize: min(14.sp, 24),
                       fontWeight: FontWeight.w600,
                       color: const Color(0xff5E6573),
                     ),
@@ -119,9 +122,9 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
           Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
+              bottom: 0.h,
+              left: 0.w,
+              right: 0.w,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -134,8 +137,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
                 padding: EdgeInsets.only(
-                  top: AppUtils.scaleSize(context, 20),
-                  bottom: AppUtils.scaleSize(context, 34),
+                  top: 20.w,
+                  bottom: 54.w - paddingValue,
                 ),
                 child: InkWell(
                   onTap: () {
@@ -145,12 +148,11 @@ class WelcomeScreen extends StatelessWidget {
                             builder: (context) => const MainScreen()));
                   },
                   child: Container(
-                    height: AppUtils.scaleSize(context, 56),
-                    margin: EdgeInsets.symmetric(
-                        horizontal: AppUtils.scaleSize(context, 20)),
+                    height: min(56.w, 96),
+                    margin: EdgeInsets.symmetric(horizontal: paddingValue),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.w),
                         color: primaryColor),
                     child: Center(
                       child: Text(
@@ -158,7 +160,7 @@ class WelcomeScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 16),
+                          fontSize: min(16.sp, 26),
                         ),
                         textAlign: TextAlign.center,
                       ),

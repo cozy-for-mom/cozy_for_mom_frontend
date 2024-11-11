@@ -56,6 +56,7 @@ dependencies:
   dropdown_button2: ^2.3.8
   flutter_native_splash: ^2.3.10
   url_launcher: ^6.3.0
+  flutter_screenutil: ^5.0.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -117,13 +118,13 @@ flutter:
     - assets/images/icons/take_off.png
     - assets/images/icons/plus.png
     - assets/images/icons/delete.png
-    - assets/images/dark_background.png
     - assets/images/icons/mypage.png
     - assets/images/baby2_1.png
     - assets/images/baby2_2.png
     - assets/images/umbilical_cord.png
     - assets/images/icons/cozylog.png
     - assets/images/icons/diary_cozylog.png
+    - assets/images/babyhome_background.png
     - assets/images/babyhome_dark.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png

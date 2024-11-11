@@ -1,4 +1,6 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 
@@ -27,13 +29,14 @@ class _InfoInputFormState extends State<InfoInputForm> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
     if (widget.controller!.text.isNotEmpty) {
       _isHintVisible = false;
     }
 
     return SizedBox(
-      width: screenWidth - AppUtils.scaleSize(context, 40),
-      height: AppUtils.scaleSize(context, 83),
+      width: screenWidth - 2 * paddingValue,
+      height: 83.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -41,15 +44,15 @@ class _InfoInputFormState extends State<InfoInputForm> {
               style: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: AppUtils.scaleSize(context, 14))),
-          SizedBox(height: AppUtils.scaleSize(context, 14)),
+                  fontSize: min(14.sp, 24))),
+          SizedBox(height: 14.w),
           Container(
-              width: screenWidth - AppUtils.scaleSize(context, 40),
-              height: AppUtils.scaleSize(context, 48),
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppUtils.scaleSize(context, 20)),
+              width: screenWidth - 2 * paddingValue,
+              height: min(48.w, 78),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30.w)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -61,12 +64,12 @@ class _InfoInputFormState extends State<InfoInputForm> {
                       maxLength: 8,
                       textAlign: TextAlign.start,
                       cursorColor: primaryColor,
-                      cursorHeight: AppUtils.scaleSize(context, 17),
-                      cursorWidth: AppUtils.scaleSize(context, 1.5),
+                      cursorHeight: min(16.sp, 26),
+                      cursorWidth: 1.5.w,
                       style: TextStyle(
                           color: afterInputColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 16)),
+                          fontSize: min(16.sp, 26)),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         counterText: '',
@@ -74,7 +77,7 @@ class _InfoInputFormState extends State<InfoInputForm> {
                         hintStyle: TextStyle(
                             color: beforeInputColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 16)),
+                            fontSize: min(16.sp, 26)),
                       ),
                       onTap: () {
                         setState(() {
@@ -95,7 +98,7 @@ class _InfoInputFormState extends State<InfoInputForm> {
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
-                              fontSize: AppUtils.scaleSize(context, 16)),
+                              fontSize: min(16.sp, 26)),
                         )
                 ],
               )),

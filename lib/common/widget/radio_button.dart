@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -43,19 +46,16 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
         }
       },
       child: Container(
-        height: AppUtils.scaleSize(context, 48),
+        height: min(48.w, 78),
         padding: EdgeInsets.symmetric(
-            vertical: AppUtils.scaleSize(context, 10),
-            horizontal: widget.value == infoType
-                ? AppUtils.scaleSize(context, 18)
-                : AppUtils.scaleSize(context, 20)),
-        margin: EdgeInsets.only(bottom: AppUtils.scaleSize(context, 15)),
+            vertical: 8.w, horizontal: widget.value == infoType ? 18.w : 20.w),
+        margin: EdgeInsets.only(bottom: 15.w),
         decoration: BoxDecoration(
             color: contentBoxTwoColor,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.w),
             border: widget.value == infoType
                 ? Border.all(
-                    color: primaryColor, width: AppUtils.scaleSize(context, 2))
+                    color: primaryColor, width: 2.w)
                 : null),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,9 +66,9 @@ class _BuildRadioButtonState extends State<BuildRadioButton> {
                         ? mainTextColor
                         : beforeInputColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: AppUtils.scaleSize(context, 14))),
+                    fontSize: min(14.sp, 24))),
             SizedBox(
-                width: AppUtils.scaleSize(context, 18),
+                width: min(18.w, 28),
                 child: Image(
                     image: AssetImage((widget.value == infoType)
                         ? 'assets/images/icons/radio_selected.png'

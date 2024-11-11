@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -26,35 +28,60 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
       lastDay: DateTime.now(),
       calendarFormat: CalendarFormat.week,
       headerVisible: false,
-      daysOfWeekHeight: 20,
+      daysOfWeekHeight: min(20.w, 40),
       locale: 'ko_KR',
+      daysOfWeekStyle: DaysOfWeekStyle(
+        weekdayStyle: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: min(12.sp, 22),
+          color: const Color(0xff858998),
+        ),
+        weekendStyle: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: min(12.sp, 22),
+          color: const Color(0xff858998),
+        ),
+      ),
+
       selectedDayPredicate: (date) {
         return isSameDay(globalDate.selectedDay, date);
       },
+      rowHeight: 40.w,
       calendarStyle: CalendarStyle(
         weekendTextStyle: TextStyle(
           color: const Color(0xff858998),
-          fontSize: AppUtils.scaleSize(context, 15),
+          fontSize: min(14.sp, 24),
           fontWeight: FontWeight.w600,
         ),
         selectedDecoration: const BoxDecoration(
           color: primaryColor,
           shape: BoxShape.circle,
         ),
-        selectedTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
+        selectedTextStyle: TextStyle(
+          fontSize: min(14.sp, 24),
+          fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
         todayTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: AppUtils.scaleSize(context, 15),
+          fontSize: min(14.sp, 24),
           color: const Color(0xff858998),
         ),
         todayDecoration: const BoxDecoration(),
         defaultTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: AppUtils.scaleSize(context, 15),
+          fontSize: min(14.sp, 24),
           color: const Color(0xff858998),
+        ),
+        disabledTextStyle: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: min(14.sp, 24),
+          color: const Color(0xffE1E1E7),
+        ),
+        outsideTextStyle: TextStyle(
+          color: const Color(0xffE1E1E7),
+          fontWeight: FontWeight.w500,
+          fontSize: min(14.sp, 24),
         ),
       ),
       onDaySelected: (selectedDay, focusedDay) {

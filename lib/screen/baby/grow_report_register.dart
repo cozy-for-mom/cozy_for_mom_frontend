@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
 import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
@@ -5,7 +7,7 @@ import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_detail_
 import 'package:cozy_for_mom_frontend/service/baby/baby_growth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/image_api.dart';
 import 'package:cozy_for_mom_frontend/service/user/user_local_storage_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/baby_model.dart';
@@ -36,7 +38,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   Map<Baby, List<TextEditingController>> infoControllersByBabies = {};
   ValueNotifier<Baby?> selectedBaby = ValueNotifier<Baby?>(null);
 
-  late double _textFieldHeight = 50;
+  late double _textFieldHeight = 32.w;
   late BabyProfile babyProfile;
   List<Baby> babies = List.empty();
   String? growthImageUrl;
@@ -48,13 +50,13 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(
           text: text,
-          style: TextStyle(fontSize: AppUtils.scaleSize(context, 16))),
+          style:
+              TextStyle(fontSize: min(16.sp, 26))), // TODO 아이패드 늘어나는 비율 다시 수정
       maxLines: null,
       textDirection: TextDirection.ltr,
     );
     textPainter.layout(maxWidth: width);
-    return AppUtils.scaleSize(
-        context, 22 + textPainter.height.toDouble() * 1.2);
+    return (22 + textPainter.height.toDouble() * 1.2).w;
   }
 
   @override
@@ -63,8 +65,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     initializeBabyInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
-      _textFieldHeight = calculateHeight(context, diaryController.text,
-          screenWidth - AppUtils.scaleSize(context, 50)); // 초기 높이
+      _textFieldHeight = calculateHeight(
+          context, diaryController.text, screenWidth - 50.w); // 초기 높이
 
       setState(() {});
     });
@@ -143,6 +145,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
     final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     final babyGrowthApiService = BabyGrowthApiService();
     var id = widget.babyProfileGrowth?.id;
@@ -157,6 +160,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
       // 사용자 선택에 따라 모달을 닫고, 이미지 선택
       String? choice = await showModalBottomSheet<String>(
           backgroundColor: Colors.transparent,
+          elevation: 0.0,
           context: context,
           builder: (BuildContext context) {
             return SelectBottomModal(
@@ -184,6 +188,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
     Future<dynamic> showSelectModal() {
       return showModalBottomSheet(
           backgroundColor: Colors.transparent,
+          elevation: 0.0,
           context: context,
           builder: (BuildContext context) {
             return SelectBottomModal(
@@ -238,14 +243,14 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
           style: TextStyle(
             color: mainTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: AppUtils.scaleSize(context, 20),
+            fontSize: min(18.sp, 28),
           ),
         ),
         leading: IconButton(
           icon: Image(
             image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
             color: mainTextColor,
           ),
           onPressed: () {
@@ -267,11 +272,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.only(
-                            top: AppUtils.scaleSize(context, 20),
-                            left: AppUtils.scaleSize(context, 10),
-                            bottom: AppUtils.scaleSize(context, 32)),
+                            top: 20.w, left: 10.w, bottom: 32.w),
                         child: SizedBox(
-                          height: AppUtils.scaleSize(context, 111),
+                          height: 111.w,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: babies.length,
@@ -293,8 +296,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 20)),
+                        padding: EdgeInsets.symmetric(horizontal: paddingValue),
                         child: SizedBox(
                           width: screenWidth,
                           child: TextFormField(
@@ -303,11 +305,11 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
-                              fontSize: AppUtils.scaleSize(context, 20),
+                              fontSize: min(20.sp, 30),
                             ),
                             cursorColor: primaryColor,
-                            cursorHeight: AppUtils.scaleSize(context, 21),
-                            cursorWidth: AppUtils.scaleSize(context, 1.5),
+                            cursorHeight: min(20.sp, 30),
+                            cursorWidth: 1.5.w,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "제목을 입력해주세요",
@@ -315,8 +317,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                 color: const Color(
                                     0xff9397A4), // offButtonTextColor
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(
-                                    context, AppUtils.scaleSize(context, 20)),
+                                fontSize: min(20.sp, 30),
                               ),
                             ),
                             onChanged: (text) {
@@ -332,11 +333,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 20)),
+                        padding: EdgeInsets.symmetric(horizontal: paddingValue),
                         child: Container(
                           width: screenWidth,
-                          height: AppUtils.scaleSize(context, 1.5),
+                          height: 1.5.w,
                           color: bottomLineColor,
                         ),
                       ),
@@ -344,13 +344,12 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 18),
-                            vertical: AppUtils.scaleSize(context, 20)),
+                            horizontal: -2.w + paddingValue, vertical: 20.w),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.w),
                           child: Container(
                             width: screenWidth,
-                            height: AppUtils.scaleSize(context, 216),
+                            height: 216.w,
                             decoration: const BoxDecoration(
                               color: offButtonColor,
                             ),
@@ -375,8 +374,8 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                         textWeight: FontWeight.w500,
                                         imagePath:
                                             'assets/images/icons/photo_register.png',
-                                        imageWidth: 45.6,
-                                        imageHeight: 36.9,
+                                        imageWidth: min(45.6.w, 91.2),
+                                        imageHeight: min(36.9.w, 73.8),
                                         onPressed: () async {
                                           final selectedImage =
                                               await ImagePicker().pickImage(
@@ -409,7 +408,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: AppUtils.scaleSize(context, 21)),
+                            horizontal: 1.w + paddingValue),
                         child: SizedBox(
                           width: screenWidth,
                           height: _textFieldHeight,
@@ -421,11 +420,11 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
-                              fontSize: AppUtils.scaleSize(context, 16),
+                              fontSize: min(16.sp, 26),
                             ),
                             cursorColor: primaryColor,
-                            cursorHeight: AppUtils.scaleSize(context, 17),
-                            cursorWidth: AppUtils.scaleSize(context, 1.5),
+                            cursorHeight: min(16.sp, 26),
+                            cursorWidth: 1.5.w,
                             decoration: InputDecoration(
                               isDense: true,
                               contentPadding: EdgeInsets.zero,
@@ -435,17 +434,14 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                 color: const Color(
                                     0xff9397A4), // offButtonTextColor
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(context, 16),
+                                fontSize: min(16.sp, 26),
                               ),
                             ),
                             onChanged: (text) {
                               setState(() {
                                 // 텍스트의 길이에 따라 높이를 조절
                                 _textFieldHeight = calculateHeight(
-                                    context,
-                                    text,
-                                    screenWidth -
-                                        AppUtils.scaleSize(context, 50));
+                                    context, text, screenWidth - 50.w);
                               });
                             },
                           ),
@@ -455,12 +451,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: AppUtils.scaleSize(context, 20),
-                            right: AppUtils.scaleSize(context, 20),
-                            top: AppUtils.scaleSize(context, 15)),
+                            left: paddingValue, right: paddingValue, top: 15.w),
                         child: Container(
                           width: screenWidth,
-                          height: 1,
+                          height: 1.w,
                           color: mainLineColor,
                         ),
                       ),
@@ -475,9 +469,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                                   ?[index];
                           return Column(
                             children: [
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: AppUtils.scaleSize(context, 30))),
+                              Padding(padding: EdgeInsets.only(bottom: 50.w - paddingValue)),
                               InfoInputForm(
                                 title: type,
                                 hint: "0 $unit",
@@ -494,10 +486,10 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: SizedBox(height: AppUtils.scaleSize(context, 120)),
+                      child: SizedBox(height: 120.w),
                     ),
                     SliverToBoxAdapter(
-                      child: SizedBox(height: keyboardPadding),
+                      child: SizedBox(height: keyboardPadding.w),
                     ),
                   ],
                 );
@@ -505,9 +497,9 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
             ),
           ),
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+            bottom: 0.h,
+            left: 0.w,
+            right: 0.w,
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -519,9 +511,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   ],
                 ),
               ),
-              padding: EdgeInsets.only(
-                  top: AppUtils.scaleSize(context, 20),
-                  bottom: AppUtils.scaleSize(context, 34)),
+              padding: EdgeInsets.only(top: 20.w, bottom: 54.w - paddingValue),
               child: InkWell(
                 onTap: () {
                   if (isRegisterButtonEnabled()) {
@@ -580,22 +570,21 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                   }
                 },
                 child: Container(
-                  height: AppUtils.scaleSize(context, 56),
-                  margin: EdgeInsets.symmetric(
-                      horizontal: AppUtils.scaleSize(context, 20)),
+                  height: min(56.w, 96),
+                  margin: EdgeInsets.symmetric(horizontal: paddingValue),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: isRegisterButtonEnabled()
                         ? primaryColor
                         : const Color(0xffC9DFF9),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                   ),
                   child: Text(
                     widget.babyProfileGrowth == null ? "등록하기" : "수정하기",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: AppUtils.scaleSize(context, 16),
+                      fontSize: min(16.sp, 26),
                     ),
                   ),
                 ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
@@ -5,6 +7,7 @@ import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/select_bottom_modal.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:cozy_for_mom_frontend/screen/tab/community/image_text_card.dart';
@@ -112,12 +115,15 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     final cozylogProvider =
         Provider.of<CozyLogApiService>(context, listen: false);
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: FutureBuilder(
         future: futureCozyLog,
@@ -129,26 +135,27 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: AppUtils.scaleSize(context, 62),
-                    left: 0,
+                    top: isTablet ? 17.h : 47.h,
+                    left: 0.w,
                     child: Container(
-                      padding: EdgeInsets.all(AppUtils.scaleSize(context, 10)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 10.h),
                       width: screenWidth,
-                      height: AppUtils.scaleSize(context, 52),
+                      height: 52.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: AppUtils.scaleSize(context, 32),
-                            height: AppUtils.scaleSize(context, 32),
+                            width: min(32.w, 42),
+                            height: min(32.w, 42),
                           ),
                           Text(
                             '글쓰기',
                             style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: AppUtils.scaleSize(context, 18)),
+                                fontSize: min(18.sp, 28)),
                           ),
                           InkWell(
                             onTap: () {
@@ -156,7 +163,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             },
                             child: Icon(
                               Icons.close,
-                              size: AppUtils.scaleSize(context, 28),
+                              size: min(28.w, 38),
                             ),
                           ),
                         ],
@@ -164,11 +171,11 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 132),
-                    left: AppUtils.scaleSize(context, 20),
+                    top: 132.h,
+                    left: paddingValue,
                     child: SizedBox(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 52),
+                      width: screenWidth - 2 * paddingValue,
+                      height: 52.w,
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: titleController,
@@ -176,7 +183,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 20),
+                          fontSize: min(20.sp, 30),
                         ),
                         cursorColor: primaryColor,
                         cursorHeight: AppUtils.scaleSize(context, 21),
@@ -187,7 +194,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                           hintStyle: TextStyle(
                             color: offButtonTextColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 20),
+                            fontSize: min(20.sp, 30),
                           ),
                         ),
                         onChanged: (text) {
@@ -203,28 +210,25 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 182),
-                    left: AppUtils.scaleSize(context, 20),
+                    top: 182.h,
+                    left: paddingValue,
                     child: Container(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
-                      height: AppUtils.scaleSize(context, 1.5),
+                      width: screenWidth - 2 * paddingValue,
+                      height: 1.5.w,
                       color: bottomLineColor,
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 217),
-                      left: AppUtils.scaleSize(context, 20),
+                      top: 217.h,
+                      left: paddingValue,
                       child: Container(
-                        width: screenWidth - AppUtils.scaleSize(context, 40),
-                        height: screenHeight - AppUtils.scaleSize(context, 360),
-                        padding: EdgeInsets.only(
-                            left: AppUtils.scaleSize(context, 25),
-                            right: AppUtils.scaleSize(context, 15),
-                            top: AppUtils.scaleSize(context, 20),
-                            bottom: AppUtils.scaleSize(context, 20)),
+                        width: screenWidth - 2 * paddingValue,
+                        height: isTablet? screenHeight * 0.58 : screenHeight * 0.6 ,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: isTablet ? 15.w : 20.w),
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20.w)),
 
                         child: GestureDetector(
                           onTap: () {
@@ -239,45 +243,41 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
+                              Container(
                                 height: screenHeight * 0.48,
+                                padding: EdgeInsets.only(
+                                    bottom: keyboardPadding / 2),
                                 child: Scrollbar(
                                   // 스크롤바 표현
+                                  controller: scrollController,
                                   trackVisibility: true,
                                   thickness: 5.0,
-                                  radius: const Radius.circular(10),
-
+                                  radius: Radius.circular(10.w),
                                   child: SingleChildScrollView(
                                     controller: scrollController,
                                     scrollDirection: Axis.vertical,
                                     child: Column(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              bottom: AppUtils.scaleSize(
-                                                  context, 20)),
-                                          width: screenWidth -
-                                              AppUtils.scaleSize(context, 80),
+                                        SizedBox(
+                                          width: screenWidth - 2 * paddingValue,
                                           child: TextFormField(
                                             focusNode: focusNode,
                                             keyboardType:
                                                 TextInputType.multiline,
                                             controller: contentController,
                                             textAlignVertical:
-                                                TextAlignVertical.top,
+                                                TextAlignVertical.center,
                                             textAlign: TextAlign.start,
                                             maxLines: null,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 14),
-                                              height: AppUtils.scaleSize(
-                                                  context, 1.5),
+                                              fontSize: min(14.sp, 24),
+                                              height: min(1.5.w, 1.5),
                                             ),
                                             cursorColor: primaryColor,
                                             cursorHeight:
-                                                AppUtils.scaleSize(context, 15),
+                                                AppUtils.scaleSize(context, 14),
                                             cursorWidth: AppUtils.scaleSize(
                                                 context, 1.5),
                                             decoration: InputDecoration(
@@ -288,8 +288,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                               hintStyle: TextStyle(
                                                 color: offButtonTextColor,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: AppUtils.scaleSize(
-                                                    context, 14),
+                                                fontSize: min(14.sp, 24),
                                               ),
                                             ),
                                             onChanged: (text) {
@@ -305,6 +304,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                           CozyLogImage image = entry.value;
                                           return Column(
                                             children: [
+                                              SizedBox(height: 10.w),
                                               ImageTextCard(
                                                 key: ValueKey(image.imageUrl),
                                                 image: image,
@@ -318,9 +318,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                                         _updateDescription(
                                                             index, description),
                                               ),
-                                              SizedBox(
-                                                  height: AppUtils.scaleSize(
-                                                      context, 10)),
+                                              SizedBox(height: 10.w),
                                             ],
                                           );
                                         }).toList(),
@@ -330,7 +328,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: AppUtils.scaleSize(context, 85),
+                                width: min(85.w, 115),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -340,64 +338,51 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                         showModalBottomSheet(
                                           context: context,
                                           backgroundColor: Colors.transparent,
+                                          elevation: 0.0,
                                           builder: (BuildContext context) {
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      AppUtils.scaleSize(
-                                                          context, 18)),
-                                              child: SelectBottomModal(
-                                                  selec1: '직접 찍기',
-                                                  selec2: '앨범에서 선택',
-                                                  tap1: () {
-                                                    _pickImage(
-                                                        ImageSource.camera);
-                                                  },
-                                                  tap2: () {
-                                                    _pickImage(
-                                                        ImageSource.gallery);
-                                                  }),
-                                            );
+                                            return SelectBottomModal(
+                                                selec1: '직접 찍기',
+                                                selec2: '앨범에서 선택',
+                                                tap1: () {
+                                                  _pickImage(
+                                                      ImageSource.camera);
+                                                },
+                                                tap2: () {
+                                                  _pickImage(
+                                                      ImageSource.gallery);
+                                                });
                                           },
                                         );
                                       },
                                       child: Image(
                                           image: const AssetImage(
                                               'assets/images/icons/gallery.png'),
-                                          width:
-                                              AppUtils.scaleSize(context, 36),
-                                          height:
-                                              AppUtils.scaleSize(context, 36)),
+                                          width: min(36.w, 46),
+                                          height: min(36.w, 46)),
                                     ),
                                     InkWell(
                                       onTap: () {
                                         showModalBottomSheet(
                                           context: context,
                                           backgroundColor: Colors.transparent,
+                                          elevation: 0.0,
                                           builder: (BuildContext context) {
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      AppUtils.scaleSize(
-                                                          context, 18)),
-                                              child: SelectBottomModal(
-                                                selec1: '공개',
-                                                selec2: '비공개',
-                                                tap1: () {
-                                                  setState(() {
-                                                    mode =
-                                                        CozyLogModeType.public;
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                                tap2: () {
-                                                  setState(() {
-                                                    mode =
-                                                        CozyLogModeType.private;
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
+                                            return SelectBottomModal(
+                                              selec1: '공개',
+                                              selec2: '비공개',
+                                              tap1: () {
+                                                setState(() {
+                                                  mode = CozyLogModeType.public;
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              tap2: () {
+                                                setState(() {
+                                                  mode =
+                                                      CozyLogModeType.private;
+                                                });
+                                                Navigator.pop(context);
+                                              },
                                             );
                                           },
                                         );
@@ -408,10 +393,8 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                                 ? 'assets/images/icons/cozylog_private.png'
                                                 : 'assets/images/icons/cozylog_public.png',
                                           ),
-                                          width:
-                                              AppUtils.scaleSize(context, 36),
-                                          height:
-                                              AppUtils.scaleSize(context, 36)),
+                                          width: min(36.w, 46),
+                                          height: min(36.w, 46)),
                                     )
                                   ],
                                 ),
@@ -422,8 +405,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         // ),
                       )),
                   Positioned(
-                    top: screenHeight - AppUtils.scaleSize(context, 80),
-                    left: AppUtils.scaleSize(context, 20),
+                    bottom: 0.h,
                     child: InkWell(
                       onTap: () {
                         if (isRegisterButtonEnabled()) {
@@ -456,21 +438,33 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         }
                       },
                       child: Container(
-                        width: screenWidth - AppUtils.scaleSize(context, 40),
-                        height: AppUtils.scaleSize(context, 56),
-                        alignment: Alignment.center,
+                        width: screenWidth,
                         decoration: BoxDecoration(
-                            color: isRegisterButtonEnabled()
-                                ? primaryColor
-                                : const Color(0xffC9DFF9),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Text(
-                          "작성 완료",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: AppUtils.scaleSize(context, 16),
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter, // 그라데이션 시작점
+                            end: Alignment.topCenter, // 그라데이션 끝점
+                            colors: [
+                              Colors.white, // 시작 색상
+                              Colors.white.withOpacity(0.0), // 끝 색상
+                            ],
                           ),
+                        ),
+                        padding: EdgeInsets.only(top: 20.w, bottom: 54.w - paddingValue),
+                        child: Container(
+                          height: min(56.w, 96),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: paddingValue),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: isRegisterButtonEnabled()
+                                  ? primaryColor
+                                  : const Color(0xffC9DFF9),
+                              borderRadius: BorderRadius.circular(12.w)),
+                          child: Text("작성 완료",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26))),
                         ),
                       ),
                     ),

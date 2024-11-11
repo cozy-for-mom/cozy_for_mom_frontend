@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_search_result_page.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_local_storage_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CozyLogSearchPage extends StatefulWidget {
   const CozyLogSearchPage({super.key});
@@ -69,6 +71,10 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
+
     return GestureDetector(
       onTap: () {
         // 키보드가 활성화 상태인지 체크하고 키보드를 내립니다.
@@ -80,79 +86,79 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
       child: Scaffold(
         backgroundColor: backgroundColor,
         body: Padding(
-          padding: EdgeInsets.all(AppUtils.scaleSize(context, 8)),
+          padding: EdgeInsets.all(paddingValue),
           child: Column(
             children: [
               SizedBox(
-                height: AppUtils.scaleSize(context, 70),
+                height: isTablet ? 0.w : 50.w,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: AppUtils.scaleSize(context, 37),
-                    width: AppUtils.scaleSize(context, 316),
+                    height: min(37.w, 57),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.w),
                       color: Colors.white,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: AppUtils.scaleSize(context, 17),
+                          width: 17.w,
                         ),
                         Image(
                           image: const AssetImage(
                               "assets/images/icons/icon_search.png"),
-                          width: AppUtils.scaleSize(context, 15),
-                          height: AppUtils.scaleSize(context, 15),
+                          width: min(15.w, 25),
+                          height: min(15.w, 25),
                         ),
                         SizedBox(
-                          width: AppUtils.scaleSize(context, 15),
+                          width: 10.w,
                         ),
-                        SizedBox(
-                          width: AppUtils.scaleSize(context, 255),
-                          child: TextField(
-                            textAlignVertical: TextAlignVertical.bottom,
-                            keyboardType: TextInputType.text,
-                            cursorColor: primaryColor,
-                            cursorHeight: AppUtils.scaleSize(context, 15),
-                            decoration: InputDecoration(
-                              // underline과의 기본 패딩값 없애기(텍스트 중앙정렬 위해)
-                              isCollapsed: true,
-                              contentPadding: EdgeInsets.zero,
-                              focusColor: primaryColor,
-                              fillColor: primaryColor,
-                              border: InputBorder.none,
-                              hintStyle: TextStyle(
-                                color: const Color(0xff858998),
-                                fontWeight: FontWeight.w400,
-                                fontSize: AppUtils.scaleSize(context, 14),
+                        Container(
+                          padding: EdgeInsets.only(right: 10.w),
+                          width: 255.w,
+                          child: Center(
+                            child: TextField(
+                              keyboardType: TextInputType.text,
+                              cursorColor: primaryColor,
+                              cursorHeight: min(14.sp, 24),
+                              decoration: InputDecoration(
+                                focusColor: primaryColor,
+                                fillColor: primaryColor,
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(
+                                  color: const Color(0xff858998),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: min(14.sp, 24),
+                                ),
+                                hintText: "검색어를 입력해주세요",
                               ),
-                              hintText: "검색어를 입력해주세요",
-                            ),
-                            maxLines: 1,
-                            style: TextStyle(
+                              maxLines: 1,
+                              style: TextStyle(
                                 color: mainTextColor,
                                 fontWeight: FontWeight.w500,
-                                fontSize: AppUtils.scaleSize(context, 14)),
-                            onSubmitted: (String value) async {
-                              final res = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CozyLogSearchResultPage(
-                                    searchKeyword: value,
+                                fontSize: min(14.sp, 24),
+                              ),
+                              onSubmitted: (String value) async {
+                                final res = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CozyLogSearchResultPage(
+                                      searchKeyword: value,
+                                    ),
                                   ),
-                                ),
-                              );
-                              if (res == true) {
-                                setState(() {
-                                  addSearch(value);
-                                });
-                              }
-                            },
+                                );
+                                if (res == true) {
+                                  setState(() {
+                                    addSearch(value);
+                                  });
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -167,7 +173,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                         "취소",
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: AppUtils.scaleSize(context, 14),
+                          fontSize: min(14.sp, 24),
                         ),
                       ),
                     ),
@@ -175,7 +181,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                 ],
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 25),
+                height: 25.w,
               ),
               // 최근 검색
               Row(
@@ -184,12 +190,12 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                   Text(
                     "최근 검색",
                     style: TextStyle(
-                      fontSize: AppUtils.scaleSize(context, 18),
+                      fontSize: min(18.sp, 28),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(
-                    width: AppUtils.scaleSize(context, 100),
+                    width: 100.w,
                   ),
                   Row(
                     children: [
@@ -201,7 +207,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 ? const Color(0xff858998)
                                 : const Color(0xffD8DAE2),
                             fontWeight: FontWeight.w500,
-                            fontSize: AppUtils.scaleSize(context, 12),
+                            fontSize: min(12.sp, 22),
                           ),
                         ),
                         onTap: () {
@@ -212,7 +218,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                         },
                       ),
                       SizedBox(
-                        width: AppUtils.scaleSize(context, 20),
+                        width: 20.w,
                       ),
                       autoSave
                           ? InkWell(
@@ -221,7 +227,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 style: TextStyle(
                                   color: const Color(0xff858998),
                                   fontWeight: FontWeight.w500,
-                                  fontSize: AppUtils.scaleSize(context, 12),
+                                  fontSize: min(12.sp, 22),
                                 ),
                               ),
                               onTap: () {
@@ -237,7 +243,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                 style: TextStyle(
                                   color: const Color(0xff858998),
                                   fontWeight: FontWeight.w500,
-                                  fontSize: AppUtils.scaleSize(context, 12),
+                                  fontSize: min(12.sp, 22),
                                 ),
                               ),
                               onTap: () {
@@ -252,33 +258,32 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                 ],
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 10),
+                height: 10.w,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppUtils.scaleSize(context, 8),
+                  horizontal: 8.w,
                 ),
                 child: SizedBox(
-                  height: AppUtils.scaleSize(context, 50),
+                  height: min(50.w, 90),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: recentSearches.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: AppUtils.scaleSize(context, 5),
-                          vertical: AppUtils.scaleSize(context, 10),
+                          horizontal: 5.w,
+                          vertical: 10.w,
                         ),
                         child: Container(
-                          height: AppUtils.scaleSize(context, 30),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Color(0xffF0F0F5),
+                          height: 30.w,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.w)),
+                            color: const Color(0xffF0F0F5),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: AppUtils.scaleSize(context, 12),
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 12.w),
                             child: Row(
                               children: [
                                 InkWell(
@@ -296,21 +301,18 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                   child: Text(
                                     recentSearches[index],
                                     style: TextStyle(
-                                      fontSize: AppUtils.scaleSize(context, 14),
+                                      fontSize: min(14.sp, 24),
                                     ),
                                   ),
                                 ),
+                                SizedBox(width: min(12.w, 22)),
                                 SizedBox(
-                                    width: AppUtils.scaleSize(context, 12)),
-                                SizedBox(
-                                  height: AppUtils.scaleSize(context, 8),
-                                  width: AppUtils.scaleSize(context, 8),
                                   child: InkWell(
                                     child: Image(
                                       image: const AssetImage(
                                           "assets/images/icons/icon_close.png"),
-                                      width: AppUtils.scaleSize(context, 8),
-                                      height: AppUtils.scaleSize(context, 8),
+                                      width: min(8.w, 16),
+                                      height: min(8.w, 16),
                                     ),
                                     onTap: () {
                                       deleteSearch(recentSearches[index]);
@@ -327,23 +329,23 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                 ),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 180),
+                height: min(195.w, 235),
               ),
               Image(
                 image: const AssetImage("assets/images/icons/icon_search.png"),
-                width: AppUtils.scaleSize(context, 44),
-                height: AppUtils.scaleSize(context, 44),
+                width: min(44.w, 88),
+                height: min(44.w, 88),
                 color: const Color(0xffCBCBD3),
               ),
               SizedBox(
-                height: AppUtils.scaleSize(context, 17),
+                height: 17.w,
               ),
               Text(
                 "검색어를 입력해보세요!",
                 style: TextStyle(
                   color: const Color(0xff9397A4),
                   fontWeight: FontWeight.w500,
-                  fontSize: AppUtils.scaleSize(context, 14),
+                  fontSize: min(14.sp, 24),
                 ),
               )
             ],

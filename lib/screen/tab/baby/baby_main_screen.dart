@@ -2,11 +2,11 @@ import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/baby_growth_report_list_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/community/my_cozylog.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
@@ -86,23 +86,38 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: AppUtils.scaleSize(context, -5),
+                    top:
+                        MediaQuery.of(context).size.width > 600 ? -140.h : -5.h,
                     child: Image(
                         width: screenWidth,
                         fit: BoxFit.cover,
-                        image: AssetImage(
-                            //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
-                            nowHour >= 8 && nowHour < 18
-                                ? "assets/images/babyhome_morning.png"
-                                : "assets/images/babyhome_dark.png")),
+                        image: const AssetImage(
+                            "assets/images/babyhome_background.png")),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 46),
-                    left: screenWidth - AppUtils.scaleSize(context, 55),
+                    top: 205.h,
+                    left: 0.w,
+                    right: 0.w,
+                    child: Image(
+                      width: min(191.w, 281),
+                      height: min(191.w, 281),
+                      fit: BoxFit.contain,
+                      image: AssetImage(
+                          //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                          nowHour >= 8 && nowHour < 18
+                              ? "assets/images/babyhome_morning.png"
+                              : "assets/images/babyhome_dark.png"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 46.h,
+                    left: MediaQuery.of(context).size.width > 600
+                        ? screenWidth - 35.w
+                        : screenWidth - 55.w,
                     child: IconButton(
                       icon: Image(
-                        width: AppUtils.scaleSize(context, 30),
-                        height: AppUtils.scaleSize(context, 30),
+                        width: min(30.w, 40),
+                        height: min(30.w, 40),
                         image: const AssetImage(
                           "assets/images/icons/mypage.png",
                         ),
@@ -119,48 +134,50 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 126),
-                      left: 0,
-                      right: 0,
+                      top: 126.h,
+                      left: 0.w,
+                      right: 0.w,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: AppUtils.scaleSize(context, 225),
+                            width: 225.w,
                             child: Text(babyNames.join(''),
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: AppUtils.scaleSize(context, 26))),
+                                    fontSize: min(26.sp, 36))),
                           ),
-                          SizedBox(height: AppUtils.scaleSize(context, 5)),
-                          Text('임신 ${week}주차 ${day}일째',
+                          SizedBox(height: min(5.w, 5)),
+                          Text('임신 $week주차 $day일째',
                               style: TextStyle(
                                   color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
                                       nowHour >= 8 && nowHour < 18
                                           ? const Color(0xffFE8282)
                                           : const Color(0xff9D8DFF),
                                   fontWeight: FontWeight.w600,
-                                  fontSize: AppUtils.scaleSize(context, 16))),
+                                  fontSize: min(16.sp, 26))),
                         ],
                       )),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 255),
-                    left: AppUtils.scaleSize(context, 0),
-                    right: AppUtils.scaleSize(context, 0),
-                    child: Image(
-                        width: AppUtils.scaleSize(context, 167),
-                        height: AppUtils.scaleSize(context, 125),
-                        image: AssetImage(
-                            // 1부터 imageCount까지
-                            "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png")),
+                    top: 254.h,
+                    left: 0.w,
+                    right: 0.w,
+                    child: week <= 40  // 출산후(41주 이상) 태아 일러스트 없음
+                        ? Image(
+                            width: min(167.w, 237),
+                            height: min(125.w, 195),
+                            image: AssetImage(
+                                // 1부터 imageCount까지
+                                "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png"))
+                        : Container(),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 410),
-                    left: 0,
-                    right: 0,
+                    top: 414.h,
+                    left: 0.w,
+                    right: 0.w,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -172,36 +189,40 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                               style: TextStyle(
                                   color: mainTextColor,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: AppUtils.scaleSize(context, 16)),
+                                  fontSize: min(16.sp, 26)),
                             ),
-                            Text(' D-${dDay}',
+                            Text(' D-$dDay',
                                 style: TextStyle(
                                     color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
                                         nowHour >= 8 && nowHour < 18
                                             ? const Color(0xffFE8282)
                                             : const Color(0xff9D8DFF),
                                     fontWeight: FontWeight.w700,
-                                    fontSize: AppUtils.scaleSize(context, 16))),
+                                    fontSize: min(16.sp, 26))),
                           ],
                         ),
-                        SizedBox(height: AppUtils.scaleSize(context, 10)),
+                        SizedBox(height: 10.w),
                         Container(
-                          width: AppUtils.scaleSize(context, 298),
-                          height: AppUtils.scaleSize(context, 12),
+                          width: MediaQuery.of(context).size.width > 600
+                              ? screenWidth - 60.w
+                              : screenWidth - 40.w,
+                          height: MediaQuery.of(context).size.width > 600
+                              ? 6.w
+                              : 12.w,
                           decoration: BoxDecoration(
                             color: lineTwoColor, // 전체 배경색
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.w),
                           ),
                           child: FractionallySizedBox(
                             widthFactor: percentage,
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              height: AppUtils.scaleSize(context, 20),
+                              height: 20.w,
                               decoration: BoxDecoration(
                                 color: nowHour >= 8 && nowHour < 18
                                     ? const Color(0xffFFB4BE)
                                     : const Color(0xff9D8DFF),
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(5.w),
                               ),
                             ),
                           ),
@@ -210,10 +231,15 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                    top: AppUtils.scaleSize(context, 478),
-                    left: AppUtils.scaleSize(context, 20),
-                    child: SizedBox(
-                      width: screenWidth - AppUtils.scaleSize(context, 40),
+                    top: 478.h,
+                    left: 0.w,
+                    right: 0.w,
+                    child: Container(
+                      width: screenWidth - 40.w,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width > 600
+                              ? 30.w
+                              : 20.w),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -247,8 +273,9 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     ),
                   ),
                   Positioned(
-                      top: AppUtils.scaleSize(context, 585),
-                      left: AppUtils.scaleSize(context, 20),
+                      top: 594.h,
+                      left:
+                          MediaQuery.of(context).size.width > 600 ? 30.w : 20.w,
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -264,17 +291,17 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: AppUtils.scaleSize(context, 18))),
-                            SizedBox(height: AppUtils.scaleSize(context, 18)),
+                                    fontSize: min(18.sp, 28))),
+                            SizedBox(height: min(18.w, 28)),
                             Container(
-                              width:
-                                  screenWidth - AppUtils.scaleSize(context, 40),
-                              height: AppUtils.scaleSize(context, 100),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: AppUtils.scaleSize(context, 20)),
+                              width: MediaQuery.of(context).size.width > 600
+                                  ? screenWidth - 60.w
+                                  : screenWidth - 40.w,
+                              height: min(100.w, 150),
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
                               decoration: BoxDecoration(
                                   color: babyNightBar,
-                                  borderRadius: BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(10.w)),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -283,14 +310,12 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 16))),
+                                          fontSize: min(16.sp, 26))),
                                   Image(
                                       image: const AssetImage(
                                           "assets/images/icons/diary_cozylog.png"),
-                                      width: AppUtils.scaleSize(context, 78.44),
-                                      height:
-                                          AppUtils.scaleSize(context, 53.27)),
+                                      width: min(78.44.w, 98.44),
+                                      height: min(53.27.w, 73.27)),
                                 ],
                               ),
                             )

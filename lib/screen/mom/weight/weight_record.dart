@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/model/weight_model.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart';
@@ -53,8 +54,11 @@ class _WeightRecordState extends State<WeightRecord> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     WeightApiService momWeightViewModel =
         Provider.of<WeightApiService>(context, listen: false);
+
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
@@ -88,30 +92,33 @@ class _WeightRecordState extends State<WeightRecord> {
                 return Stack(
                   children: [
                     Positioned(
-                        top: AppUtils.scaleSize(context, 47),
+                        top: isTablet ? 0.w : 50.w,
                         width: screenWidth,
                         child: Padding(
-                                            padding: EdgeInsets.only(top: AppUtils.scaleSize(context, 10), bottom: AppUtils.scaleSize(context, 10), right: AppUtils.scaleSize(context, 5)),
-
+                            padding: EdgeInsets.only(
+                                top: paddingValue - 20.w,
+                                bottom: paddingValue - 20.w,
+                                right: 8.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-          icon:  Image(
-            image: const AssetImage('assets/images/icons/back_ios.png'),
-            width: AppUtils.scaleSize(context, 34),
-            height: AppUtils.scaleSize(context, 34),
-            color: mainTextColor,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-                                 SizedBox(
-                              width: AppUtils.scaleSize(context, 30),
-                              height: AppUtils.scaleSize(context, 30),
-                            ),
-                            const Spacer(),
+                                  icon: Image(
+                                    image: const AssetImage(
+                                        'assets/images/icons/back_ios.png'),
+                                    width: min(34.w, 44),
+                                    height: min(34.w, 44),
+                                    color: mainTextColor,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                SizedBox(
+                                  width: min(30.w, 40),
+                                  height: min(30.w, 40),
+                                ),
+                                const Spacer(),
                                 Row(
                                   children: [
                                     Text(
@@ -120,8 +127,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                       style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 20),
+                                        fontSize: min(18.sp, 28),
                                       ),
                                     ),
                                     IconButton(
@@ -131,12 +137,14 @@ class _WeightRecordState extends State<WeightRecord> {
                                       onPressed: () {
                                         showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
+                                          isScrollControlled: true,
                                           elevation: 0.0,
                                           context: context,
                                           builder: (context) {
-                                            return MonthCalendarModal(
-                                              limitToday: true,
-                                            );
+                                            return Wrap(children: [
+                                              MonthCalendarModal(
+                                                  limitToday: true)
+                                            ]);
                                           },
                                         );
                                       },
@@ -148,8 +156,8 @@ class _WeightRecordState extends State<WeightRecord> {
                                     icon: Image(
                                         image: const AssetImage(
                                             'assets/images/icons/alert.png'),
-                                        height: AppUtils.scaleSize(context, 32),
-                                        width: AppUtils.scaleSize(context, 32)),
+                                        height: min(32.w, 42),
+                                        width: min(32.w, 42)),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -164,25 +172,23 @@ class _WeightRecordState extends State<WeightRecord> {
                             // }),
                             )),
                     Positioned(
-                        top: AppUtils.scaleSize(context, 110),
-                        left: AppUtils.scaleSize(context, 20),
+                        top: isTablet ? 80.h : 110.h,
+                        left: paddingValue,
                         child: SizedBox(
-                          height: AppUtils.scaleSize(context, 100),
-                          width: screenWidth - AppUtils.scaleSize(context, 40),
+                          width: screenWidth - 2 * paddingValue,
                           child: const WeeklyCalendar(),
                         )),
                     Positioned(
-                      top: AppUtils.scaleSize(context, 212),
-                      left: AppUtils.scaleSize(context, 20),
+                      top: 200.h,
+                      left: paddingValue,
                       child: Container(
-                        width: screenWidth - AppUtils.scaleSize(context, 40),
-                        height: AppUtils.scaleSize(context, 86),
+                        width: screenWidth - 2 * paddingValue,
+                        height: min(86.w, 146),
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20.w)),
                         child: Padding(
-                          padding:
-                              EdgeInsets.all(AppUtils.scaleSize(context, 20)),
+                          padding: EdgeInsets.all(20.w),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,14 +211,13 @@ class _WeightRecordState extends State<WeightRecord> {
                                         style: TextStyle(
                                             color: primaryColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 12))),
+                                            fontSize: min(12.sp, 22))),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: AppUtils.scaleSize(context, 105),
+                                      width: 105.w,
                                       child: TextFormField(
                                         textAlign: TextAlign.end,
                                         maxLength: 5,
@@ -226,24 +231,19 @@ class _WeightRecordState extends State<WeightRecord> {
                                         },
                                         textInputAction: TextInputAction.done,
                                         cursorColor: primaryColor,
-                                        cursorWidth:
-                                            AppUtils.scaleSize(context, 1),
-                                        cursorHeight:
-                                            AppUtils.scaleSize(context, 28),
+                                        cursorWidth: 1.w,
+                                        cursorHeight: min(28.sp, 38),
                                         decoration: InputDecoration(
                                             contentPadding:
                                                 EdgeInsets.symmetric(
-                                                    vertical:
-                                                        AppUtils.scaleSize(
-                                                            context, 7)),
+                                                    vertical: 3.w),
                                             border: InputBorder.none,
                                             counterText: '',
                                             hintText: '00.00',
                                             hintStyle: TextStyle(
                                               color: beforeInputColor,
                                               fontWeight: FontWeight.w700,
-                                              fontSize: AppUtils.scaleSize(
-                                                  context, 28),
+                                              fontSize: min(28.sp, 38),
                                             )),
                                         style: TextStyle(
                                           color:
@@ -251,8 +251,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 28),
+                                          fontSize: min(28.sp, 38),
                                         ),
                                         onChanged: (text) {
                                           setState(() {
@@ -301,8 +300,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 28)),
+                                          fontSize: min(28.sp, 38)),
                                     ),
                                   ],
                                 ),
@@ -311,8 +309,8 @@ class _WeightRecordState extends State<WeightRecord> {
                       ),
                     ),
                     Positioned(
-                      top: AppUtils.scaleSize(context, 338),
-                      left: AppUtils.scaleSize(context, 20),
+                      top: 326.h,
+                      left: paddingValue,
                       child: const TimeLineChart(
                         recordType: RecordType.weight,
                       ),

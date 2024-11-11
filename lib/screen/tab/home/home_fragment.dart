@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_page.dart';
@@ -5,12 +7,12 @@ import 'package:cozy_for_mom_frontend/screen/mom/meal/meal_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/home/record_icon_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_record.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/weight/weight_record.dart';
 import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +79,7 @@ class _HomeFragmentState extends State<HomeFragment> {
             body: Stack(
               children: [
                 Positioned(
-                  top: 0,
+                  top: 0.h,
                   child: Image(
                     width: screenWidth,
                     fit: BoxFit.cover,
@@ -91,12 +93,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 128),
-                  left: 0,
-                  right: 0,
+                  top: 128.h,
+                  left: 0.w,
+                  right: 0.w,
                   child: SizedBox(
-                    width: AppUtils.scaleSize(context, 186),
-                    height: AppUtils.scaleSize(context, 103),
+                    width: 186.w,
+                    height: 103.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -109,20 +111,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                                       ? afternoonTextColor
                                       : nightTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 16)),
+                              fontSize: min(16.sp, 26)),
                         ),
-                        SizedBox(height: AppUtils.scaleSize(context, 3)),
+                        SizedBox(height: 3.w),
                         Text(
                           '${pregnantInfo['nickname']} 산모님',
                           style: TextStyle(
-                            fontSize: AppUtils.scaleSize(context, 26),
+                            fontSize: min(26.sp, 36),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         Text(
                           "오늘도 안녕하세요",
                           style: TextStyle(
-                            fontSize: AppUtils.scaleSize(context, 26),
+                            fontSize: min(26.sp, 36),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -131,12 +133,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 46),
-                  left: screenWidth - AppUtils.scaleSize(context, 55),
+                  top: 46.h,
+                  left: MediaQuery.of(context).size.width > 600 ? screenWidth - 35.w : screenWidth - 55.w,
                   child: IconButton(
                     icon: Image(
-                      width: AppUtils.scaleSize(context, 30),
-                      height: AppUtils.scaleSize(context, 30),
+                      width: min(30.w, 40),
+                      height: min(30.w, 40),
                       image: const AssetImage(
                         "assets/images/icons/mypage.png",
                       ),
@@ -150,90 +152,93 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 380),
-                  left: 0,
-                  right: 0,
+                  top: 380.h,
+                  left: 0.w,
+                  right: 0.w,
                   child: Container(
                     width: screenWidth,
                     height: screenHeight * 0.5,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                        bottomLeft: Radius.circular(40),
-                        bottomRight: Radius.circular(40),
+                        topLeft: Radius.circular(40.w),
+                        topRight: Radius.circular(40.w),
+                        bottomLeft: Radius.circular(40.w),
+                        bottomRight: Radius.circular(40.w),
                       ),
                       color: contentBoxTwoColor,
                     ),
                     child: Column(
                       children: [
                         SizedBox(
-                          height: AppUtils.scaleSize(context, 54),
+                          height: min(54.w, 64),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MealScreen()));
-                              },
-                              child: const RecordIcon(
-                                recordTypeName: "meal",
-                                recordTypeKorName: "식단",
-                                imageWidth: 26,
-                                imageHeight: 37,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? 30.w : 20.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MealScreen()));
+                                },
+                                child: RecordIcon(
+                                  recordTypeName: "meal",
+                                  recordTypeKorName: "식단",
+                                  imageWidth: min(26.w, 46),
+                                  imageHeight: min(37.w, 57),
+                                ),
                               ),
-                            ),
-                            InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SupplementRecord()));
-                                },
-                                child: const RecordIcon(
-                                  recordTypeName: "supplement",
-                                  recordTypeKorName: "영양제",
-                                  imageWidth: 28,
-                                  imageHeight: 67,
-                                )),
-                            InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BloodsugarPage()));
-                                },
-                                child: const RecordIcon(
-                                  recordTypeName: "bloodsugar",
-                                  recordTypeKorName: "혈당",
-                                  imageWidth: 28,
-                                  imageHeight: 37,
-                                )),
-                            InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const WeightRecord()));
-                                },
-                                child: const RecordIcon(
-                                  recordTypeName: "weight",
-                                  recordTypeKorName: "체중",
-                                  imageWidth: 28,
-                                  imageHeight: 37,
-                                )),
-                          ],
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SupplementRecord()));
+                                  },
+                                  child: RecordIcon(
+                                    recordTypeName: "supplement",
+                                    recordTypeKorName: "영양제",
+                                    imageWidth: min(28.w, 48),
+                                    imageHeight: min(67.w, 87),
+                                  )),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BloodsugarPage()));
+                                  },
+                                  child: RecordIcon(
+                                    recordTypeName: "bloodsugar",
+                                    recordTypeKorName: "혈당",
+                                    imageWidth: min(28.w, 48),
+                                    imageHeight: min(37.w, 57),
+                                  )),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const WeightRecord()));
+                                  },
+                                  child: RecordIcon(
+                                    recordTypeName: "weight",
+                                    recordTypeKorName: "체중",
+                                    imageWidth: min(28.w, 48),
+                                    imageHeight: min(37.w, 57),
+                                  )),
+                            ],
+                          ),
                         ),
                         SizedBox(
-                          height: AppUtils.scaleSize(context, 40),
+                          height: min(40.w, 50),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,8 +248,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 style: TextStyle(
                                     color: mainTextColor,
                                     fontWeight: FontWeight.w700,
-                                    fontSize: AppUtils.scaleSize(context, 18))),
-                            SizedBox(height: AppUtils.scaleSize(context, 18)),
+                                    fontSize: min(18.sp, 28))),
+                            SizedBox(height: min(18.w, 28)),
                             InkWell(
                               onTap: () async {
                                 final type = upcomingNotification['type'] ==
@@ -264,15 +269,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 }
                               },
                               child: Container(
-                                width: screenWidth -
-                                    AppUtils.scaleSize(context, 40),
-                                height: AppUtils.scaleSize(context, 100),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppUtils.scaleSize(context, 30)),
+                                width: MediaQuery.of(context).size.width > 600 ? screenWidth - 60.w : screenWidth - 40.w,
+                                height: min(110.w, 160),
+                                padding: EdgeInsets.symmetric(horizontal: 30.w),
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFA2A0F4),
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(10.w)),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -295,19 +297,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14))),
+                                                            fontSize: min(14.sp, 24))),
                                                     Text('등록해보세요!',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14)))
+                                                            fontSize: min(14.sp, 24)))
                                                   ]
                                                 : [
                                                     Text(
@@ -317,25 +313,21 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    14))),
+                                                            fontSize: min(14.sp, 24))),
+                                                    SizedBox(height: 6.w),
                                                     SizedBox(
-                                                        height:
-                                                            AppUtils.scaleSize(
-                                                                context, 6)),
-                                                    Text(
-                                                        upcomingNotification[
-                                                            'title'],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: AppUtils
-                                                                .scaleSize(
-                                                                    context,
-                                                                    18))),
+                                                      width: min(180.w, 400),
+                                                      child: Text(
+                                                          upcomingNotification[
+                                                              'title'],
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.w700,
+                                                              fontSize: min(18.sp, 28))),
+                                                    ),
                                                   ]),
                                       ],
                                     ),
@@ -350,19 +342,15 @@ class _HomeFragmentState extends State<HomeFragment> {
                                                 ? "assets/images/icons/icon_bloodsugar.png"
                                                 : "assets/images/icons/icon_supplement.png",
                                           ),
-                                          height:
-                                              AppUtils.scaleSize(context, 48),
-                                          width:
-                                              AppUtils.scaleSize(context, 30),
+                                          height: min(48.w, 68),
+                                          width: min(30.w, 50),
                                         ),
                                         Image(
                                           image: const AssetImage(
                                             "assets/images/icons/icon_clock.png",
                                           ),
-                                          height:
-                                              AppUtils.scaleSize(context, 66),
-                                          width:
-                                              AppUtils.scaleSize(context, 66),
+                                          height: min(66.w, 86),
+                                          width: min(66.w, 86),
                                         ),
                                       ],
                                     ),
@@ -377,15 +365,18 @@ class _HomeFragmentState extends State<HomeFragment> {
                   ),
                 ),
                 Positioned(
-                  top: AppUtils.scaleSize(context, 278),
-                  left: AppUtils.scaleSize(context, 85),
-                  width: AppUtils.scaleSize(context, 221),
-                  child: const Image(
-                    image: AssetImage(
-                      "assets/images/baby.png",
-                    ),
-                  ),
-                ),
+      top: 278.h,
+      left: 0.w,
+      right: 0.w, 
+      child: Center(
+        child: SizedBox(
+          width: min(221.w, 321),
+          child: const Image(
+            image: AssetImage("assets/images/baby.png"),
+          ),
+        ),
+      ),
+    ),
               ],
             ),
           );

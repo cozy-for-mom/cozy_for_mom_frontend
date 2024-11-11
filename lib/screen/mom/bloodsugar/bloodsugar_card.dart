@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_modal.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -28,8 +30,11 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     BloodsugarApiService momBloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
+
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
       return FutureBuilder(
           future: momBloodsugarViewModel.getBloodsugars(
@@ -48,15 +53,12 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
             return Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(20.w)),
               child: Container(
                 padding: EdgeInsets.only(
-                    left: AppUtils.scaleSize(context, 20),
-                    right: AppUtils.scaleSize(context, 20),
-                    top: AppUtils.scaleSize(context, 20),
-                    bottom: AppUtils.scaleSize(context, 12)),
-                width: screenWidth - AppUtils.scaleSize(context, 40),
-                height: AppUtils.scaleSize(context, 160),
+                    left: 20.w, right: 20.w, top: 20.w, bottom: 12.w),
+                width: screenWidth - 2 * paddingValue,
+                height: min(160.w, 250),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +68,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 12)),
+                          fontSize: min(12.sp, 22)),
                     ),
                     Column(
                         children: periods.map((period) {
@@ -94,8 +96,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                   style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 16))),
+                                      fontSize: min(16.sp, 26))),
                               Row(
                                 children: <Widget>[
                                   InkWell(
@@ -118,8 +119,10 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                               }
                                             })
                                           : showModalBottomSheet(
+                                              isScrollControlled: true,
                                               backgroundColor:
                                                   Colors.transparent,
+                                              elevation: 0.0,
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return SelectBottomModal(
@@ -173,52 +176,43 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                               });
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              AppUtils.scaleSize(context, 50),
-                                          vertical:
-                                              AppUtils.scaleSize(context, 10)),
-                                      width: AppUtils.scaleSize(context, 130),
-                                      height: AppUtils.scaleSize(context, 41),
+                                      width: min(130.w, 230),
+                                      height: min(41.w, 61),
                                       decoration: BoxDecoration(
                                           color: input == '-'
                                               ? offButtonColor
                                               : primaryColor,
                                           borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: Text(input,
-                                          textAlign: TextAlign.center,
-                                          style: input == '-'
-                                              ? TextStyle(
-                                                  color: mainTextColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: AppUtils.scaleSize(
-                                                      context, 18))
-                                              : TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: AppUtils.scaleSize(
-                                                      context, 16))),
+                                              BorderRadius.circular(20.w)),
+                                      child: Center(
+                                        child: Text(input,
+                                            textAlign: TextAlign.center,
+                                            style: input == '-'
+                                                ? TextStyle(
+                                                    color: mainTextColor,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: min(18.sp, 28))
+                                                : TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: min(16.sp, 26))),
+                                      ),
                                     ),
                                   ),
                                   Padding(
-                                      padding: EdgeInsets.only(
-                                          left: AppUtils.scaleSize(context, 8)),
+                                      padding: EdgeInsets.only(left: 8.w),
                                       child: Text(
                                         'mg / dL',
                                         style: TextStyle(
                                             color: mainTextColor,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: AppUtils.scaleSize(
-                                                context, 14)),
+                                            fontSize: min(14.sp, 24)),
                                       )),
                                 ],
                               )
                             ],
                           ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: AppUtils.scaleSize(context, 8))),
+                          Padding(padding: EdgeInsets.only(bottom: 8.h)),
                         ],
                       );
                     }).toList()),

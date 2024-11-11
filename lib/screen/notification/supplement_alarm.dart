@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_card.dart';
 import 'package:provider/provider.dart';
@@ -40,8 +42,11 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
+
     return FutureBuilder(
         future: notificationViewModel.getNotifications(context, 'supplement'),
         builder: (context, snapshot) {
@@ -61,9 +66,9 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
             ));
           }
           return Positioned(
-            top: AppUtils.scaleSize(context, 90),
-            left: 0,
-            right: 0,
+            top: isTablet? 110.h : 90.h,
+            left: 0.w,
+            right: 0.w,
             child: notifications.isEmpty
                 ? Column(children: [
                     SizedBox(
@@ -74,19 +79,18 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
                               Image(
                                   image: const AssetImage(
                                       'assets/images/icons/notification_off.png'),
-                                  width: AppUtils.scaleSize(context, 50),
-                                  height: AppUtils.scaleSize(context, 52)),
-                              SizedBox(height: AppUtils.scaleSize(context, 7)),
+                                  width: min(50.w, 100),
+                                  height: min(52.w, 104)),
+                              SizedBox(height: 7.w),
                               Text('알림을 등록해 보세요!',
                                   style: TextStyle(
                                       color: const Color(0xff9397A4),
                                       fontWeight: FontWeight.w500,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 14))),
+                                      fontSize: min(14.sp, 24))),
                             ])),
                   ])
                 : SizedBox(
-                    height: screenHeight - AppUtils.scaleSize(context, 200),
+                    height: isTablet? screenHeight - 110.h : screenHeight - 90.h,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
@@ -114,7 +118,7 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
                         }).toList()
                           ..add(SizedBox(
                               height: screenHeight *
-                                  (1 / 8))), // 리스트 끝에 SizedBox 추가
+                                  (1 / 6))), // 리스트 끝에 SizedBox 추가
                       ),
                     ),
                   ),

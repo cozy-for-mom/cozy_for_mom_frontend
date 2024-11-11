@@ -1,4 +1,6 @@
-import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -100,10 +102,11 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
     final screenHeight = MediaQuery.of(context).size.height;
     final joinInputData = Provider.of<JoinInputData>(context);
     return SizedBox(
-      height: screenHeight - AppUtils.scaleSize(context, 43),
+      height: screenHeight - 43.w,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -111,25 +114,21 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: AppUtils.scaleSize(context, 50),
-                      left: AppUtils.scaleSize(context, 20)),
+                  padding: EdgeInsets.only(top: 50.h, left: paddingValue),
                   child: Text('아기의 정보를 입력해주세요',
                       style: TextStyle(
                           color: mainTextColor,
                           fontWeight: FontWeight.w700,
-                          fontSize: AppUtils.scaleSize(context, 26))),
+                          fontSize: min(26.sp, 36))),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: AppUtils.scaleSize(context, 10),
-                      left: AppUtils.scaleSize(context, 20),
-                      bottom: AppUtils.scaleSize(context, 30)),
+                      top: 10.h, left: paddingValue, bottom: 30.h),
                   child: Text('정보는 언제든지 마이로그에서 수정할 수 있어요.',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: AppUtils.scaleSize(context, 14))),
+                          fontSize: min(14.sp, 24))),
                 ),
               ],
             ),
@@ -144,94 +143,83 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                   genderControllers.add(TextEditingController());
                 }
                 return Padding(
-                  padding:
-                      EdgeInsets.only(left: AppUtils.scaleSize(context, 20)),
+                  padding: EdgeInsets.symmetric(horizontal: paddingValue),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            bottom: AppUtils.scaleSize(context, 10)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width:
-                                  screenWidth - AppUtils.scaleSize(context, 40),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('태명',
-                                      style: TextStyle(
-                                          color: mainTextColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14))),
-                                  IconButton(
-                                      icon: Image(
-                                          image: const AssetImage(
-                                              'assets/images/icons/baby_remove.png'),
-                                          height:
-                                              AppUtils.scaleSize(context, 15),
-                                          width:
-                                              AppUtils.scaleSize(context, 14)),
-                                      onPressed: () {
-                                        print('$index 태아 삭제');
-                                        if (mounted && babyCount > 1) {
-                                          setState(() {
-                                            babyCount -= 1;
-                                            birthNameControllers
-                                                .removeAt(index);
-                                            genderControllers.removeAt(index);
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: screenWidth - 2 * paddingValue,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('태명',
+                                    style: TextStyle(
+                                        color: mainTextColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: min(14.sp, 24))),
+                                IconButton(
+                                    icon: Image(
+                                        image: const AssetImage(
+                                            'assets/images/icons/baby_remove.png'),
+                                        height: min(15.w, 35),
+                                        width: min(14.w, 24)),
+                                    onPressed: () {
+                                      print('$index 태아 삭제');
+                                      if (mounted && babyCount > 1) {
+                                        setState(() {
+                                          babyCount -= 1;
+                                          birthNameControllers.removeAt(index);
+                                          genderControllers.removeAt(index);
+                                          // 필드 값이 채워졌을때만 joinInputData에서 지워주기(체크 안하면 인덱스 에러 발생)
+                                          if (index < joinInputData.birthNames.length) {
                                             joinInputData.birthNames
                                                 .removeAt(index);
+                                          }
+                                          if (index < joinInputData.genders.length) {
                                             joinInputData.genders
                                                 .removeAt(index);
-                                            isOpenGenderModal.add(false);
-                                          });
-                                        }
-                                      }),
-                                ],
-                              ),
+                                          }
+                                          isOpenGenderModal.add(false);
+                                        });
+                                      }
+                                    }),
+                              ],
                             ),
-                            SizedBox(height: AppUtils.scaleSize(context, 10)),
-                            Container(
-                                width: screenWidth -
-                                    AppUtils.scaleSize(context, 40),
-                                height: AppUtils.scaleSize(context, 48),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: AppUtils.scaleSize(context, 10),
-                                    horizontal:
-                                        AppUtils.scaleSize(context, 20)),
-                                decoration: BoxDecoration(
-                                    color: contentBoxTwoColor,
-                                    borderRadius: BorderRadius.circular(10)),
+                          ),
+                          SizedBox(height: 10.w),
+                          Container(
+                              width: screenWidth - 2 * paddingValue,
+                              height: min(48.w, 78),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: min(20.w, 30)),
+                              decoration: BoxDecoration(
+                                  color: contentBoxTwoColor,
+                                  borderRadius: BorderRadius.circular(10.w)),
+                              child: Center(
                                 child: TextFormField(
                                   controller: birthNameControllers[index],
                                   keyboardType: TextInputType.text,
                                   textAlign: TextAlign.start,
-                                  textAlignVertical: TextAlignVertical.center,
                                   maxLength: 10,
                                   cursorColor: primaryColor,
-                                  cursorHeight: AppUtils.scaleSize(context, 14),
-                                  cursorWidth: AppUtils.scaleSize(context, 1.2),
+                                  cursorHeight: min(14.sp, 24),
+                                  cursorWidth: 1.2.w,
                                   style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w400,
-                                      fontSize:
-                                          AppUtils.scaleSize(context, 14)),
+                                      fontSize: min(14.sp, 24)),
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical:
-                                            AppUtils.scaleSize(context, 10)),
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 8.w),
                                     border: InputBorder.none,
                                     hintText: '8자 이내로 입력해주세요',
                                     hintStyle: TextStyle(
                                         color: beforeInputColor,
                                         fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 14)),
+                                        fontSize: min(14.sp, 24)),
                                     counterText: '',
                                   ),
                                   onChanged: (value) {
@@ -243,128 +231,122 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                       });
                                     }
                                   },
-                                )),
-                            SizedBox(height: AppUtils.scaleSize(context, 25)),
-                            Text('성별',
-                                style: TextStyle(
-                                    color: mainTextColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: AppUtils.scaleSize(context, 14))),
-                            SizedBox(height: AppUtils.scaleSize(context, 10)),
-                            InkWell(
-                              onTap: () {
-                                if (mounted) {
-                                  setState(() {
-                                    isOpenGenderModal[index] =
-                                        !isOpenGenderModal[index];
-                                  });
-                                }
-                              },
-                              child: Container(
-                                width: screenWidth -
-                                    AppUtils.scaleSize(context, 40),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.only(
-                                    left: AppUtils.scaleSize(context, 20)),
-                                child: IgnorePointer(
+                                ),
+                              )),
+                          SizedBox(height: 25.w),
+                          Text('성별',
+                              style: TextStyle(
+                                  color: mainTextColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: min(14.sp, 24))),
+                          SizedBox(height: 10.w),
+                          InkWell(
+                            onTap: () {
+                              if (mounted) {
+                                setState(() {
+                                  isOpenGenderModal[index] =
+                                      !isOpenGenderModal[index];
+                                });
+                              }
+                            },
+                            child: Container(
+                              width: screenWidth - 2 * paddingValue,
+                              height: min(48.w, 78),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.w)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: min(20.w, 30)),
+                              child: IgnorePointer(
+                                child: Center(
                                   child: TextFormField(
                                     controller: genderControllers[index],
                                     readOnly: true,
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          top: AppUtils.scaleSize(context, 15)),
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 8.w),
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius:
+                                            BorderRadius.circular(10.w),
                                       ),
                                       hintText: '성별',
                                       hintStyle: TextStyle(
                                           color: beforeInputColor,
                                           fontWeight: FontWeight.w400,
-                                          fontSize:
-                                              AppUtils.scaleSize(context, 14)),
-                                      suffixIcon: const Icon(
+                                          fontSize: min(14.sp, 24)),
+                                      suffixIcon: Icon(
                                           CupertinoIcons.chevron_down,
-                                          size: 15,
+                                          size: min(15.w, 25),
                                           color: mainTextColor),
                                     ),
                                     style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            AppUtils.scaleSize(context, 14)),
+                                        fontSize: min(14.sp, 24)),
                                   ),
                                 ),
                               ),
                             ),
-                            isOpenGenderModal[index]
-                                ? Container(
-                                    height: AppUtils.scaleSize(context, 188),
-                                    width: screenWidth -
-                                        AppUtils.scaleSize(context, 40),
-                                    margin: EdgeInsets.symmetric(
-                                        vertical:
-                                            AppUtils.scaleSize(context, 8)),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: contentBoxTwoColor,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: genderItems
-                                          .map<Widget>((String item) {
-                                        return InkWell(
-                                          onTap: () {
-                                            if (mounted) {
-                                              setState(() {
-                                                joinInputData.setGender(
-                                                    index, item);
-                                                genderControllers[index] =
-                                                    (TextEditingController(
-                                                        text: item));
-                                                _validateFields();
-                                                isOpenGenderModal[index] =
-                                                    !isOpenGenderModal[index];
-                                              });
-                                            }
-                                          },
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(
-                                                  AppUtils.scaleSize(
-                                                      context, 8)),
-                                              child: Text(
-                                                item,
-                                                style: TextStyle(
-                                                  color: offButtonTextColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: AppUtils.scaleSize(
-                                                      context, 16),
-                                                ),
+                          ),
+                          isOpenGenderModal[index]
+                              ? Container(
+                                  height: min(188.w, 288),
+                                  width: screenWidth - 2 * paddingValue,
+                                  margin: EdgeInsets.symmetric(vertical: 8.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
+                                    color: contentBoxTwoColor,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children:
+                                        genderItems.map<Widget>((String item) {
+                                      return InkWell(
+                                        onTap: () {
+                                          if (mounted) {
+                                            setState(() {
+                                              joinInputData.setGender(
+                                                  index, item);
+                                              genderControllers[index] =
+                                                  (TextEditingController(
+                                                      text: item));
+                                              _validateFields();
+                                              isOpenGenderModal[index] =
+                                                  !isOpenGenderModal[index];
+                                            });
+                                          }
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(
+                                              8.w,
+                                            ),
+                                            child: Text(
+                                              item,
+                                              style: TextStyle(
+                                                color: offButtonTextColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: min(16.sp, 26),
                                               ),
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  )
-                                : Container(),
-                            babyCount > 1 && index < babyCount - 1
-                                ? Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical:
-                                            AppUtils.scaleSize(context, 30)),
-                                    width: screenWidth -
-                                        AppUtils.scaleSize(context, 40),
-                                    height: 1,
-                                    color: mainLineColor)
-                                : Container(),
-                          ],
-                        ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                )
+                              : Container(),
+                          babyCount > 1 && index < babyCount - 1
+                              ? Container(
+                                  margin: EdgeInsets.symmetric(vertical: 20.w),
+                                  width: screenWidth - 2 * paddingValue,
+                                  height: 1.w,
+                                  color: mainLineColor)
+                              : Container(),
+                        ],
                       ),
                     ],
                   ),
@@ -385,20 +367,19 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                       }
                     },
                     child: Padding(
-                        padding: EdgeInsets.only(
-                            top: AppUtils.scaleSize(context, 10)),
+                        padding: EdgeInsets.only(top: 20.w),
                         child: Center(
                             child: Text(
                           '+ 태아 추가하기',
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: AppUtils.scaleSize(context, 14)),
+                              fontSize: min(14.sp, 24)),
                         ))))
                 : Container(),
           ),
           SliverToBoxAdapter(
-            child: SizedBox(height: AppUtils.scaleSize(context, 100)),
+            child: SizedBox(height: 60.w),
           )
         ],
       ),
