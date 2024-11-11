@@ -20,15 +20,18 @@ class SplashScreenState extends State<SplashScreen> {
     Map<String, dynamic> result = await manager.initialize();
     bool permissionGranted = result['permissionGranted'] ?? false;
 
-    if (permissionGranted) {
+    if (!permissionGranted) {
+      // 권한이 허용되지 않은 경우 즉시 권한 거부 처리
+      handlePermissionDenied();
+    }
+    // if (permissionGranted) {
       // 이미 권한이 허용된 경우, 2초 지연 후 로그인 화면으로 넘어감
       Future.delayed(Duration(seconds: 2), () {
         navigateToLogin();
       });
-    } else {
-      // 권한이 허용되지 않은 경우 즉시 권한 거부 처리
-      handlePermissionDenied();
-    }
+    // } else {
+
+    // }
   }
 
   void navigateToLogin() {
