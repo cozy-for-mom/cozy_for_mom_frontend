@@ -191,7 +191,7 @@ class _MyPageState extends State<MyPage> {
                               borderRadius: BorderRadius.circular(5.w),
                             ),
                             child: FractionallySizedBox(
-                              widthFactor: percentage,
+                              widthFactor: percentage.clamp(0.0, 1.0),
                               alignment: Alignment.centerLeft,
                               child: Container(
                                 decoration: BoxDecoration(

@@ -215,81 +215,84 @@ class _WeightRecordState extends State<WeightRecord> {
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 105.w,
-                                      child: TextFormField(
-                                        textAlign: TextAlign.end,
-                                        maxLength: 5,
-                                        controller: _weightController,
-                                        // keyboardType: const TextInputType
-                                        //     .numberWithOptions(decimal: true), // TODO 완료 버튼 따로 추가하면 바꾸기
-                                        keyboardType: TextInputType.datetime,
-                                        onTapOutside: (event) {
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
-                                        },
-                                        textInputAction: TextInputAction.done,
-                                        cursorColor: primaryColor,
-                                        cursorWidth: 1.w,
-                                        cursorHeight: min(28.sp, 38),
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 3.w),
-                                            border: InputBorder.none,
-                                            counterText: '',
-                                            hintText: '00.00',
-                                            hintStyle: TextStyle(
-                                              color: beforeInputColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: min(28.sp, 38),
-                                            )),
-                                        style: TextStyle(
-                                          color:
-                                              _weightController.text.isNotEmpty
-                                                  ? afterInputColor
-                                                  : beforeInputColor,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: min(28.sp, 38),
-                                        ),
-                                        onChanged: (text) {
-                                          setState(() {
-                                            if (text.isNotEmpty) {
-                                              if (text.length ==
-                                                      5 && // 입력 형식을 따르지 않았을 경우, 디폴트 값 지정
-                                                  !text.contains('.')) {
-                                                _weightController.text =
-                                                    '999.9';
+                                      child: Center(
+                                        child: TextFormField(
+                                          textAlign: TextAlign.end,
+                                          maxLength: 5,
+                                          controller: _weightController,
+                                          // keyboardType: const TextInputType
+                                          //     .numberWithOptions(decimal: true), // TODO 완료 버튼 따로 추가하면 바꾸기
+                                          keyboardType: TextInputType.datetime,
+                                          onTapOutside: (event) {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                          },
+                                          textInputAction: TextInputAction.done,
+                                          cursorColor: primaryColor,
+                                          cursorWidth: 1.w,
+                                          cursorHeight: min(28.sp, 38),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: min(7.w, 7)),
+                                              border: InputBorder.none,
+                                              counterText: '',
+                                              hintText: '00.00',
+                                              hintStyle: TextStyle(
+                                                color: beforeInputColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: min(28.sp, 38),
+                                              )),
+                                          style: TextStyle(
+                                            color: _weightController
+                                                    .text.isNotEmpty
+                                                ? afterInputColor
+                                                : beforeInputColor,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: min(28.sp, 38),
+                                          ),
+                                          onChanged: (text) {
+                                            setState(() {
+                                              if (text.isNotEmpty) {
+                                                if (text.length ==
+                                                        5 && // 입력 형식을 따르지 않았을 경우, 디폴트 값 지정
+                                                    !text.contains('.')) {
+                                                  _weightController.text =
+                                                      '999.9';
+                                                }
+                                                if ((text.contains('.') &&
+                                                        text.indexOf('.') !=
+                                                            text.lastIndexOf(
+                                                                '.')) ||
+                                                    (!RegExp(r'^\d*\.?\d*$')
+                                                        .hasMatch(text))) {
+                                                  _weightController.text =
+                                                      text.substring(
+                                                          0, text.length - 1);
+                                                }
                                               }
-                                              if ((text.contains('.') &&
-                                                      text.indexOf('.') !=
-                                                          text.lastIndexOf(
-                                                              '.')) ||
-                                                  (!RegExp(r'^\d*\.?\d*$')
-                                                      .hasMatch(text))) {
-                                                _weightController.text =
-                                                    text.substring(
-                                                        0, text.length - 1);
-                                              }
-                                            }
-                                          });
-                                        },
+                                            });
+                                          },
 
-                                        onFieldSubmitted: (value) async {
-                                          _isInitialized
-                                              ? await momWeightViewModel
-                                                  .modifyWeight(
-                                                      context,
-                                                      globalData.selectedDate,
-                                                      double.parse(value))
-                                              : await momWeightViewModel
-                                                  .recordWeight(
-                                                      context,
-                                                      globalData.selectedDate,
-                                                      double.parse(value));
-                                          setState(() {});
-                                        },
+                                          onFieldSubmitted: (value) async {
+                                            _isInitialized
+                                                ? await momWeightViewModel
+                                                    .modifyWeight(
+                                                        context,
+                                                        globalData.selectedDate,
+                                                        double.parse(value))
+                                                : await momWeightViewModel
+                                                    .recordWeight(
+                                                        context,
+                                                        globalData.selectedDate,
+                                                        double.parse(value));
+                                            setState(() {});
+                                          },
+                                        ),
                                       ),
                                     ),
                                     Text(

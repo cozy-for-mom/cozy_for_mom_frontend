@@ -165,7 +165,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                     top: 254.h,
                     left: 0.w,
                     right: 0.w,
-                    child: week <= 40  // 출산후(41주 이상) 태아 일러스트 없음
+                    child: week <= 40 // 출산후(41주 이상) 태아 일러스트 없음
                         ? Image(
                             width: min(167.w, 237),
                             height: min(125.w, 195),
@@ -214,7 +214,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                             borderRadius: BorderRadius.circular(5.w),
                           ),
                           child: FractionallySizedBox(
-                            widthFactor: percentage,
+                            widthFactor: percentage.clamp(0.0, 1.0),
                             alignment: Alignment.centerLeft,
                             child: Container(
                               height: 20.w,
