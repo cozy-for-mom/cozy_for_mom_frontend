@@ -27,7 +27,6 @@ class OauthApiService {
         await deviceTokenManager.getDeviceToken() ?? 'unknown';
     final headers = await getHeaders();
     dynamic res;
-    print('dt $deviceToken');
     res = await http.post(
       url,
       headers: headers,
@@ -44,7 +43,6 @@ class OauthApiService {
       final accessToken =
           (res.headers['authorization'] as String).split(' ')[1];
       tokenManager.setToken(accessToken);
-      print('at $accessToken');
       final decoded = JwtDecoder.decode(accessToken);
       print('role ${UserType.findByString(decoded['info']['role'])}');
 

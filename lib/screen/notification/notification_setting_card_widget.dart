@@ -198,6 +198,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
               ],
               decoration: InputDecoration(
                 border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                 counterText: '',
                 hintText: '00 : 00',
                 hintStyle: TextStyle(

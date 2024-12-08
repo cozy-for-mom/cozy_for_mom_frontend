@@ -119,9 +119,7 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                                 Image(
                                   image: AssetImage((checkNicknameLength(
                                                   widget.controller!.text) &&
-                                              _isNicknameNotDuplicated!) ||
-                                          _validateEmail(
-                                              widget.controller!.text)
+                                              _isNicknameNotDuplicated!)
                                       ? 'assets/images/icons/pass.png'
                                       : 'assets/images/icons/unpass.png'),
                                   width: min(18.w, 28),
@@ -210,12 +208,8 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                         } else {
                           _isSuffixVisible = true;
                         }
-                        if (widget.title == '이메일') {
-                          widget.updateValidity(_isSuffixVisible &&
-                              _validateEmail(widget.controller!.text));
-                        } else {
+                        
                           widget.updateValidity(_isSuffixVisible);
-                        }
                       });
                     }
                   },
@@ -230,21 +224,12 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
                         ? (!_isNicknameNotDuplicated!
                             ? '이미 사용중인 닉네임입니다.'
                             : '사용 가능한 닉네임입니다.')
-                        : (widget.title == '이메일' &&
-                                _validateEmail(widget.controller!.text))
-                            ? '사용 가능한 이메일입니다.'
-                            : (widget.title == '닉네임' &&
-                                    !checkNicknameLength(
-                                        widget.controller!.text))
-                                ? '닉네임은 최대 8자까지 입력이 가능해요.'
-                                : '사용 불가능한 형식의 이메일입니다.',
-                    style: TextStyle(
+                        : '닉네임은 최대 8자까지 입력이 가능해요.',
+                         style: TextStyle(
                         color: (widget.title == '닉네임' &&
                                     checkNicknameLength(
                                         widget.controller!.text) &&
-                                    _isNicknameNotDuplicated!) ||
-                                (widget.title == '이메일' &&
-                                    _validateEmail(widget.controller!.text))
+                                    _isNicknameNotDuplicated!)
                             ? primaryColor
                             : deleteButtonColor,
                         fontWeight: FontWeight.w400,
@@ -260,15 +245,6 @@ class _ProfileInfoFormState extends State<ProfileInfoForm> {
 bool checkNicknameLength(String nickName) {
   if (nickName.isEmpty) return false;
   return nickName.length < 9;
-}
-
-bool _validateEmail(String email) {
-  if (email.isEmpty) return false;
-final dotCount = email.split('').where((char) => char == '.').length;  RegExp emailRegExp = RegExp(
-    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-  );
-
-  return emailRegExp.hasMatch(email) && dotCount <= 1;
 }
 
 bool _isNumeric(String value) {

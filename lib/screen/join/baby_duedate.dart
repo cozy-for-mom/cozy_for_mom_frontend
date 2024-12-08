@@ -178,11 +178,11 @@ class _BabyDuedateInputScreenState extends State<BabyDuedateInputScreen> {
                             if (value.length == 8 && _isNumeric(value)) {
                               parsedDate = DateFormat('yyyy.MM.dd')
                                   .format(DateTime.parse(value));
-                              // 오늘 날짜보다 미래인 경우 어제 날짜로 변경
-                              if (DateTime.parse(value).isAfter(DateTime.now())) {
+                              // 출산예정일 날짜보다 미래인 경우 출산예정일 - 280일로 변경
+                              if (DateTime.parse(value).isAfter(DateFormat('yyyy.MM.dd').parse(joinInputData.dueDate))) {
                                 parsedDate = DateFormat('yyyy.MM.dd').format(
-                                    DateTime.now()
-                                        .subtract(const Duration(days: 1)));
+                                    DateFormat('yyyy.MM.dd').parse(joinInputData.dueDate)
+                                        .subtract(const Duration(days: 280)));
                               }
                             } else {
                               parsedDate = value;

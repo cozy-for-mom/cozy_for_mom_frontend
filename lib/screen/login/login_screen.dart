@@ -102,9 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () async {
                   UserType? userType = await kakaoLogin();
                   joinInputData.setOauthType(OauthType.kakao);
-          
+
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
-          
+
                   if (userType == UserType.guest) {
                     // UserType이 guest이면 회원가입 페이지로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -140,9 +140,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () async {
                   UserType? userType = await appleLogin();
                   joinInputData.setOauthType(OauthType.apple);
-          
+
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
-          
+
                   if (userType == UserType.guest) {
                     // UserType이 guest이면 회원가입 페이지로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -248,12 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<UserType?> kakaoLogin() async {
     late String kakaoAccessToken;
     late String? email;
+    late String? name;
     if (await isKakaoTalkInstalled()) {
       try {
         var res = await UserApi.instance.loginWithKakaoTalk();
         kakaoAccessToken = res.accessToken;
         var user = await UserApi.instance.me();
         email = user.kakaoAccount?.email;
+        name = user.kakaoAccount?.name;
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
         // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
@@ -267,6 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
           kakaoAccessToken = res.accessToken;
           var user = await UserApi.instance.me();
           email = user.kakaoAccount?.email;
+          name = user.kakaoAccount?.name;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
         }
@@ -278,13 +281,16 @@ class _LoginScreenState extends State<LoginScreen> {
         kakaoAccessToken = res.accessToken;
         var user = await UserApi.instance.me();
         email = user.kakaoAccount?.email;
+        name = user.kakaoAccount?.name;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
     }
-
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
+    }
+    if (name != null && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setName(name);
     }
 
     return oauthApiService.authenticateByOauth(
@@ -294,6 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<UserType?> appleLogin() async {
     late String appleAuthCode;
     late String? email;
+    late String? name;
     try {
       var res = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -306,15 +313,22 @@ class _LoginScreenState extends State<LoginScreen> {
       // 애플 인증 코드 저장
       appleAuthCode = res.authorizationCode;
       email = res.email;
+      name = "${res.familyName ?? ''}${res.givenName ?? ''}".trim();
+      print('email $email');
     } catch (e) {
       print('애플로그인 실패: $e');
       if (e is PlatformException && e.code == 'CANCELED') {
         throw Exception(e.code); // TODO fix
       }
     }
+    // 처음 로그인했을때만 전달되므로 로컬 스토리지에 저장한다.
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
+    if (name != '' && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setName(name!);
+    }
+
     return oauthApiService.authenticateByOauth(
         context, OauthType.apple, appleAuthCode);
   }

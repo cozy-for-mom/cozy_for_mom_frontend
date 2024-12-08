@@ -62,7 +62,6 @@ class BabyGrowthApiService {
     if (lastId != null && lastId != 0) urlString += '&lastId=$lastId';
     // if (lastId != null) urlString += '&lastId=null';
     final url = Uri.parse(urlString);
-    print(url);
     dynamic res;
     res = await get(url, headers: headers);
     String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];

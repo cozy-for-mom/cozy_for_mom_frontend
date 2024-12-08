@@ -167,18 +167,20 @@ class _BabyGenderBirthNameScreenState extends State<BabyGenderBirthNameScreen> {
                                         height: min(15.w, 35),
                                         width: min(14.w, 24)),
                                     onPressed: () {
-                                      print('$index 태아 삭제');
                                       if (mounted && babyCount > 1) {
+                                        print('$index 태아 삭제');
                                         setState(() {
                                           babyCount -= 1;
                                           birthNameControllers.removeAt(index);
                                           genderControllers.removeAt(index);
                                           // 필드 값이 채워졌을때만 joinInputData에서 지워주기(체크 안하면 인덱스 에러 발생)
-                                          if (index < joinInputData.birthNames.length) {
+                                          if (index <
+                                              joinInputData.birthNames.length) {
                                             joinInputData.birthNames
                                                 .removeAt(index);
                                           }
-                                          if (index < joinInputData.genders.length) {
+                                          if (index <
+                                              joinInputData.genders.length) {
                                             joinInputData.genders
                                                 .removeAt(index);
                                           }

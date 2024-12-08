@@ -82,7 +82,7 @@ class _LogoutModalState extends State<LogoutModal> {
                     height: 10.w,
                   ),
                   Text(
-                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.",  // TODO 삭제 기능이 빠져서 문구 다시 수정해야할 듯
+                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.", // TODO 삭제 기능이 빠져서 문구 다시 수정해야할 듯
                     style: TextStyle(
                       color: offButtonTextColor,
                       fontWeight: FontWeight.w500,

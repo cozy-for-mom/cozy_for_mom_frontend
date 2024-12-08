@@ -44,7 +44,6 @@ class _BloodsugarViewState extends State<BloodsugarView> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               avg = snapshot.data!;
-              print(avg);
             }
             if (!snapshot.hasData) {
               return const Center(

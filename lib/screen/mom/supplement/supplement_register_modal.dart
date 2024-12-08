@@ -61,7 +61,9 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                           width: 312.w,
                           height: min(80.w, 120),
                           padding: EdgeInsets.only(
-                              left: isTablet? 20.w : 24.w, right: isTablet? 20.w : 24.w, top: 12.w),
+                              left: isTablet ? 20.w : 24.w,
+                              right: isTablet ? 20.w : 24.w,
+                              top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(12.w),
@@ -119,7 +121,9 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                           width: 312.w,
                           height: min(80.w, 120),
                           padding: EdgeInsets.only(
-                              left: isTablet? 20.w : 24.w, right: isTablet? 20.w : 24.w, top: 12.w),
+                              left: isTablet ? 20.w : 24.w,
+                              right: isTablet ? 20.w : 24.w,
+                              top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(12.w),
@@ -188,9 +192,9 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
               builder: (context, isEnabled, child) {
                 return Container(
                   width: screenWidth - 2 * paddingValue,
-                  height: min(56.w,96),
-                  padding:
-                      EdgeInsets.symmetric(vertical: min(18.w, 28), horizontal: 50.w),
+                  height: min(56.w, 96),
+                  padding: EdgeInsets.symmetric(
+                      vertical: min(18.w, 28), horizontal: 50.w),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
                       borderRadius: BorderRadius.circular(12.w)),
@@ -201,8 +205,10 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                             context,
                             nameController.text,
                             int.parse(targetCountController.text));
+                        if (id != null) {
                         Navigator.of(context).pop();
-                        widget.onRegister(id!);
+                        widget.onRegister(id);
+                        }
                       }
                     },
                     child: Text(

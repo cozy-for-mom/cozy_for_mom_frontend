@@ -130,7 +130,6 @@ class _BabyGrowthReportListModifyState
                               await BabyGrowthApiService().getAllGrowthIds(
                             context,
                           );
-                          print(widget.babyProfileGrowths.length);
                           babyGrowthReportListModifyState.selectedCount > 0
                               ? babyGrowthReportListModifyState.clearSelection()
                               : babyGrowthReportListModifyState

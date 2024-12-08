@@ -4,7 +4,6 @@ class UserInfo {
   final String? oauthType;
   final String name;
   final String nickname;
-  final String birth;
   final String email;
   final String? deviceToken;
 
@@ -12,7 +11,6 @@ class UserInfo {
     this.oauthType,
     required this.name,
     required this.nickname,
-    required this.birth,
     required this.email,
     this.deviceToken,
   });
@@ -20,7 +18,6 @@ class UserInfo {
         'oauthType': oauthType,
         'name': name,
         'nickname': nickname,
-        'birth': birth,
         'email': email,
         'deviceToken': deviceToken,
       };

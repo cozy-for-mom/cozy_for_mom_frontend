@@ -26,17 +26,21 @@ void handleHttpResponse(
       if (context.mounted) {
         var currentRoute = ModalRoute.of(context)?.settings.name;
         if (route != null && currentRoute != '/login') {
-          await showAlertDialog(context, '인증되지 않은 사용자입니다.');
+          await showAlertDialog(context, message ?? '인증되지 않은 사용자입니다.');
           if (context.mounted) {
             Navigator.of(context).pushReplacementNamed('/login');
           }
         }
       }
       break;
+    case 404:
+      // 요청한 리소스 부재
+      showAlertDialog(context, message ?? '존재하지 않는 리소스입니다.');
+    case 409:
+      // 입력값 중복
+      showAlertDialog(context, message ?? '이미 존재하는 데이터입니다.');
     case 500:
       // 서버 내부 오류
-      showAlertDialog(context, '알 수 없는 오류가 발생했습니다.');
-      break;
     default:
       // 기타 오류
       showAlertDialog(context, message ?? '알 수 없는 오류가 발생했습니다.');

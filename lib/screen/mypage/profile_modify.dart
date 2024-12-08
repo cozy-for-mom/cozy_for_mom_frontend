@@ -26,12 +26,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   late TextEditingController introduceController;
   late Map<String, TextEditingController> controllers;
 
-  final momInfoType = ["이름", "닉네임", "이메일", "생년월일"];
+  final momInfoType = ["이름", "닉네임"];
 
   bool _isSuffixVisible = false;
-  bool _isEmailValid = false;
   bool _isNicknameValid = false;
-  bool _isBirthValid = false;
   String? userProfileImageUrl;
   UserApiService userApiService = UserApiService();
   ImageApiService imageApiService = ImageApiService();
@@ -43,8 +41,6 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     controllers = {
       '이름': TextEditingController(),
       '닉네임': TextEditingController(),
-      '이메일': TextEditingController(),
-      '생년월일': TextEditingController(),
     };
     _loadData();
   }
@@ -55,14 +51,9 @@ class _MomProfileModifyState extends State<MomProfileModify> {
       introduceController.text = pregnantInfo['introduce'];
       controllers['이름']!.text = pregnantInfo['name'];
       controllers['닉네임']!.text = pregnantInfo['nickname'];
-      controllers['이메일']!.text = pregnantInfo['email'];
-      controllers['생년월일']!.text =
-          receiveFormatUsingRegex(pregnantInfo['birth']);
       userProfileImageUrl = pregnantInfo['imageUrl'];
       setState(() {
         _isNicknameValid = true;
-        _isEmailValid = true;
-        _isBirthValid = true;
       }); // UI 갱신
     } catch (e) {
       print('Data loading failed: $e');
@@ -77,34 +68,10 @@ class _MomProfileModifyState extends State<MomProfileModify> {
     super.dispose();
   }
 
-  String sendFormatUsingRegex(String date) {
-    return date.replaceAll(RegExp(r'\.'), '-');
-  }
-
-  String receiveFormatUsingRegex(String date) {
-    return date.replaceAll(RegExp(r'\-'), '.');
-  }
-
-  void _updateEmailValidity(bool isValid) {
-    if (mounted) {
-      setState(() {
-        _isEmailValid = isValid;
-      });
-    }
-  }
-
   void _updateNicknameValidity(bool isValid) {
     if (mounted) {
       setState(() {
         _isNicknameValid = isValid;
-      });
-    }
-  }
-
-  void _updateBirthValidity(bool isValid) {
-    if (mounted) {
-      setState(() {
-        _isBirthValid = isValid;
       });
     }
   }
@@ -292,6 +259,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
     final paddingValue = isTablet ? 30.w : 20.w;
 
@@ -333,9 +301,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                     height: min(29.w, 49),
                     decoration: BoxDecoration(
                       color: areAllFieldsFilled(controllers) &&
-                              _isEmailValid &&
-                              _isNicknameValid &&
-                              _isBirthValid
+                              _isNicknameValid
                           ? primaryColor
                           : induceButtonColor,
                       borderRadius: BorderRadius.circular(33.w),
@@ -351,17 +317,14 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                 ),
                 onTap: () async {
                   if (areAllFieldsFilled(controllers) &&
-                      _isEmailValid &&
-                      _isNicknameValid &&
-                      _isBirthValid) {
+                      _isNicknameValid
+                      ) {
                     await userApiService.modifyUserProfile(
                         context,
                         controllers['이름']!.text,
                         controllers['닉네임']!.text,
                         introduceController.text,
-                        userProfileImageUrl,
-                        sendFormatUsingRegex(controllers['생년월일']!.text),
-                        controllers['이메일']!.text);
+                        userProfileImageUrl);
                     if (mounted) {
                       Navigator.pop(context, true);
                     }
@@ -504,10 +467,6 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                   hint = '이름을 입력해주세요.';
                 } else if (type == '닉네임') {
                   hint = '8자 이내로 입력해주세요.';
-                } else if (type == '이메일') {
-                  hint = 'cozy@cozy.com';
-                } else {
-                  hint = 'YYYY.MM.DD';
                 }
                 return Column(
                   children: [
@@ -517,11 +476,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
                         controller: controllers[type],
                         updateValidity: type == '닉네임'
                             ? _updateNicknameValidity
-                            : type == '이메일'
-                                ? _updateEmailValidity
-                                : type == '생년월일'
-                                    ? _updateBirthValidity
-                                    : _updateNameValidity),
+                            : _updateNameValidity),
                     SizedBox(height: 24.w),
                   ],
                 );
@@ -531,7 +486,7 @@ class _MomProfileModifyState extends State<MomProfileModify> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              margin: EdgeInsets.only(bottom: isTablet? 30.w : 0.w),
+              margin: EdgeInsets.only(top: isTablet? screenHeight * (1/6) : screenHeight * (1/4)),  // TODO 아이폰 체크
               width: 132.w,
               height: 21.w,
               child: Row(

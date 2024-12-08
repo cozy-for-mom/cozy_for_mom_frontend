@@ -65,25 +65,26 @@ class JoinApiService extends ChangeNotifier {
     }
   }
 
-  Future<bool?> emailDuplicateCheck(BuildContext context, String email) async {
-    final url = Uri.parse('$baseUrl/authenticate/email');
-    final data = {'email': email};
-    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
-    final Response res =
-        await post(url, headers: headers, body: jsonEncode(data));
-    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
-    if (res.statusCode == 200) {
-      return true;
-    } else if (res.statusCode == 409) {
-      return false;
-    } else {
-      if (context.mounted) {
-        handleHttpResponse(res.statusCode, context, message);
-      }
-      return null;
-      // throw Exception('이메일 중복 확인 실패');
-    }
-  }
+  // TODO 제거
+  // Future<bool?> emailDuplicateCheck(BuildContext context, String email) async {
+  //   final url = Uri.parse('$baseUrl/authenticate/email');
+  //   final data = {'email': email};
+  //   final headers = {'Content-Type': 'application/json; charset=UTF-8'};
+  //   final Response res =
+  //       await post(url, headers: headers, body: jsonEncode(data));
+  //   String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+  //   if (res.statusCode == 200) {
+  //     return true;
+  //   } else if (res.statusCode == 409) {
+  //     return false;
+  //   } else {
+  //     if (context.mounted) {
+  //       handleHttpResponse(res.statusCode, context, message);
+  //     }
+  //     return null;
+  //     // throw Exception('이메일 중복 확인 실패');
+  //   }
+  // }
 
   Future<void> signOut(BuildContext context, String reason) async {
     final url = Uri.parse('$baseUrl/user/signout');

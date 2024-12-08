@@ -6,7 +6,6 @@ import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 class JoinInputData extends ChangeNotifier {
   String email = '';
   String name = '';
-  String birth = '';
   String nickname = '';
   String dueDate = '';
   String laseMensesDate = '';
@@ -33,12 +32,6 @@ class JoinInputData extends ChangeNotifier {
     name = value;
     notifyListeners();
     _saveToStorage('name', value);
-  }
-
-  void setBirth(String value) {
-    birth = value;
-    notifyListeners();
-    _saveToStorage('birth', value);
   }
 
   void setNickname(String value) {
@@ -123,7 +116,6 @@ class JoinInputData extends ChangeNotifier {
   Future<void> loadFromStorage() async {
     email = await _storage.read(key: 'email') ?? '';
     name = await _storage.read(key: 'name') ?? '';
-    birth = await _storage.read(key: 'birth') ?? '';
     nickname = await _storage.read(key: 'nickname') ?? '';
     dueDate = await _storage.read(key: 'dueDate') ?? '';
     laseMensesDate = await _storage.read(key: 'laseMensesDate') ?? '';

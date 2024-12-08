@@ -152,7 +152,6 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                     onTap: () async {
                       if (isEnabled) {
                         late int? bloodsugarId;
-                        print(widget.id);
                         widget.id > 0
                             ? bloodsugarId =
                                 await bloodsugarApi.modifyBloodsugar(

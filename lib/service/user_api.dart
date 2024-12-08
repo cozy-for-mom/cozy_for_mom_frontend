@@ -36,8 +36,8 @@ class UserApiService extends ChangeNotifier {
         String nickname = userData['nickname'];
         String introduce = userData['introduce'] ?? '';
         String? imageUrl = userData['imageUrl'];
-        String birth = userData['birth'];
-        String email = userData['email'];
+        String birth = userData['birth'] ?? ''; // TODO 백엔드 수정 후, 생년월일 필드 삭제
+        String email = userData['email'] ?? '';
         int dDay = userData['dDay'];
 
         storageService.setUser(
@@ -76,7 +76,7 @@ class UserApiService extends ChangeNotifier {
   }
 
   Future<void> modifyUserProfile(BuildContext context, name, String nickname,
-      String introduce, String? imageUrl, String birth, String email) async {
+      String introduce, String? imageUrl) async {
     final headers = await getHeaders();
     final url = Uri.parse('$baseUrl/me');
     Map data = {
@@ -84,8 +84,6 @@ class UserApiService extends ChangeNotifier {
       'nickname': nickname,
       'introduce': introduce,
       'image': imageUrl,
-      'birth': birth,
-      'email': email
     };
     final Response res =
         await put(url, headers: headers, body: jsonEncode(data));
