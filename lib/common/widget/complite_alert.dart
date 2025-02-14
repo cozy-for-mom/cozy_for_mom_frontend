@@ -12,16 +12,18 @@ class CompleteAlertModal extends StatelessWidget {
 
   static Future<void> showCompleteDialog(
       BuildContext context, String text, String action) async {
+    // 다이얼로그를 띄운 후
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Timer(const Duration(seconds: 1), () {
-          Navigator.of(context).pop();
-        });
-
         return CompleteAlertModal(text: text, action: action);
       },
     );
+    // 1초 후에 다이얼로그 닫기
+    await Future.delayed(const Duration(seconds: 1));
+    if (context.mounted && Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override

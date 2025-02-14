@@ -9,9 +9,14 @@ class DeleteModal extends StatefulWidget {
   final String text;
   final String title;
   final Future<void> Function()? tapFunc;
+  final int shouldCloseParentCnt;  // 페이지마다 (모달 개수 따라) pop해야 하는 횟수가 달라지므로 필요함.
 
   const DeleteModal(
-      {super.key, required this.text, required this.title, this.tapFunc});
+      {super.key,
+      required this.text,
+      required this.title,
+      this.tapFunc,
+      this.shouldCloseParentCnt = 1});
   @override
   State<DeleteModal> createState() => _DeleteModalState();
 }
@@ -38,8 +43,7 @@ class _DeleteModalState extends State<DeleteModal> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: 50.w - paddingValue),
+              padding: EdgeInsets.symmetric(vertical: 50.w - paddingValue),
               child: Text(widget.text,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -47,10 +51,10 @@ class _DeleteModalState extends State<DeleteModal> {
                       fontWeight: FontWeight.w600,
                       fontSize: min(16.sp, 26))),
             ),
-             Container(
-                  width: screenWidth,
-                  height: 1.w,
-                  color: const Color(0xffD9D9D9)),
+            Container(
+                width: screenWidth,
+                height: 1.w,
+                color: const Color(0xffD9D9D9)),
             Expanded(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -74,9 +78,16 @@ class _DeleteModalState extends State<DeleteModal> {
                       onTap: () async {
                         await widget.tapFunc!();
                         if (mounted) {
-                          Navigator.of(context).pop(true);
                           await CompleteAlertModal.showCompleteDialog(
                               context, widget.title, '삭제');
+                        }
+                        if (mounted) {
+                          for (int i = 0;
+                              i < widget.shouldCloseParentCnt;
+                              i++) {
+                            // 1.DeleteModal 닫기 2.bottomModal 닫기 3.현재 화면 닫기
+                            Navigator.pop(context, true);
+                          }
                         }
                       },
                       child: Container(

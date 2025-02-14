@@ -277,12 +277,9 @@ class _BabyGrowthReportDetailScreenState
                                                                               () async {
                                                                             await babyGrowthApiService.deleteBabyProfileGrowth(context,
                                                                                 widget.babyProfileGrowthId);
-                                                                            if (mounted) {
-                                                                              Navigator.pop(context, true);
-                                                                              Navigator.pop(context, true);
-                                                                            }
                                                                             setState(() {});
                                                                           },
+                                                                          shouldCloseParentCnt: 3,
                                                                         );
                                                                       },
                                                                       barrierDismissible:
