@@ -59,7 +59,8 @@ class OauthApiService {
 
 enum UserType {
   guest,
-  user;
+  user,
+  admin;
 
   static UserType findByString(String type) {
     return UserType.values.firstWhere(

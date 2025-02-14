@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const JoinInfoInputScreen()));
     } else {
-      // UserType이 user이면 MainScreen으로 이동
+      // UserType이 user/admin이면 MainScreen으로 이동
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainScreen()));
     }
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const JoinInfoInputScreen()));
                   } else {
-                    // UserType이 user이면 MainScreen으로 이동
+                    // UserType이 user/admin이면 MainScreen으로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const MainScreen()));
                   }
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const JoinInfoInputScreen()));
                   } else {
-                    // UserType이 user이면 MainScreen으로 이동
+                    // UserType이 user/admin이면 MainScreen으로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const MainScreen()));
                   }
