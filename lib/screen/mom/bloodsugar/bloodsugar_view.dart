@@ -8,6 +8,7 @@ import 'package:cozy_for_mom_frontend/common/widget/time_line_chart_widget.dart'
 import 'package:cozy_for_mom_frontend/model/bloodsugar_model.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_bloodsugar_api_service.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BloodsugarView extends StatefulWidget {
   const BloodsugarView({super.key});
@@ -56,16 +57,16 @@ class _BloodsugarViewState extends State<BloodsugarView> {
             return Stack(
               children: [
                 Positioned(
-                  top: isTablet? 174.h : 204.h,
+                  top: isTablet ? 174.h : 204.h,
                   left: paddingValue,
                   child: const TimeLineChart(recordType: RecordType.bloodsugar),
                 ),
                 Positioned(
-                    top: isTablet? 665.h : 635.h,
+                    top: isTablet ? 665.h : 635.h,
                     left: paddingValue,
                     child: Container(
                       width: screenWidth - 2 * paddingValue,
-                      height: min(114.w, 214),
+                      height: min(134.w, 214),
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 24.h),
                       decoration: BoxDecoration(
@@ -109,6 +110,21 @@ class _BloodsugarViewState extends State<BloodsugarView> {
                                     ],
                                   ),
                                 ),
+                                Padding(padding: EdgeInsets.only(bottom: 8.h)),
+                                InkWell(
+                                    child: Text(
+                                      '출처: 질병관리청 국가건강정보포털 (https://health.kdca.go.kr/)',
+                                      style: TextStyle(
+                                        color: const Color(
+                                            0xff9397A4), // offButtonTextColor)
+                                        fontSize: min(8.sp, 18),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      launchUrl(Uri.parse(
+                                          'https://health.kdca.go.kr/healthinfo/biz/health/ntcnInfo/healthSourc/thtimtCntnts/thtimtCntntsView.do?thtimt_cntnts_sn=61&utm_source=kdca&utm_medium=banner'));
+                                    })
                               ],
                             ),
                             Image.asset(
