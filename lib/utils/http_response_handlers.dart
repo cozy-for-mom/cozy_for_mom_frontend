@@ -53,14 +53,7 @@ Future<void> showAlertDialog(BuildContext context, String? message) {
     barrierDismissible: true,
     builder: (BuildContext context) {
       final screenWidth = MediaQuery.of(context).size.width;
-
-      // Timer(const Duration(seconds: 5), () {
-      //   if (Navigator.of(context).canPop()) {
-      //     // 안전하게 닫을 수 있는지 확인
-      //     Navigator.of(context).pop();
-      //   }
-      // });
-
+      
       return Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -85,7 +78,4 @@ Future<void> showAlertDialog(BuildContext context, String? message) {
       );
     },
   );
-  // .then((_) {
-  //   // 다이얼로그가 닫힌 후 필요한 추가 작업을 여기에 넣을 수 있다.
-  // });
 }

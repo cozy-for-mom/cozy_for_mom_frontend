@@ -12,7 +12,7 @@ class CozyLogCommentApiService with ChangeNotifier {
     BuildContext context,
     int id,
   ) async {
-    var urlString = '$baseUrl/cozy-log/$id/comment?userId=1';
+    var urlString = '$baseUrl/cozy-log/$id/comment';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
     dynamic res;
