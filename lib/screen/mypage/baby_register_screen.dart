@@ -17,7 +17,8 @@ import 'package:provider/provider.dart';
 
 class BabyRegisterScreen extends StatefulWidget {
   final int? babyProfileId;
-  const BabyRegisterScreen({super.key, this.babyProfileId = -1});
+  final bool isRecentBabyProfile;
+  const BabyRegisterScreen({super.key, this.babyProfileId = -1, this.isRecentBabyProfile = false});
 
   @override
   State<BabyRegisterScreen> createState() => _BabyRegisterScreenState();
@@ -148,7 +149,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
       builder: (BuildContext context) {
         return SizedBox(
           width: screenWidth - 2 * paddingValue,
-          height: isTablet? 214.w : 280.w,
+          height: isTablet ? 214.w : 280.w,
           child: Column(
             children: [
               Container(
@@ -631,8 +632,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                         fontWeight: FontWeight.w500,
                                         fontSize: min(16.sp, 26)),
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.zero,
+                                      contentPadding: EdgeInsets.zero,
                                       border: InputBorder.none,
                                       hintText: 'YYYY.MM.DD',
                                       hintStyle: TextStyle(
@@ -678,7 +678,9 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 20.w, bottom: 60.w),
                           child: widget.babyProfileId! > -1
-                              ? InkWell(
+                              ? widget.isRecentBabyProfile
+                              ? Container()
+                              : InkWell(
                                   onTap: () {
                                     showDialog(
                                       barrierDismissible: false,
@@ -692,12 +694,11 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                                             await UserApiService()
                                                 .deleteBabyProfile(context,
                                                     widget.babyProfileId!);
-                                            if (mounted) {
-                                              Navigator.of(context).pop(true);
-                                            }
+
 
                                             return Future.value();
                                           },
+                                          shouldCloseParentCnt: 2,
                                         );
                                       },
                                     );
@@ -771,7 +772,6 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                       if (mounted) {
                         await CompleteAlertModal.showCompleteDialog(
                             context, '프로필이', '변경');
-                        Navigator.pop(context, true);
                       }
                     } else {
                       await UserApiService().addBabyProfile(
@@ -780,6 +780,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
                           babyProfileImageUrl,
                           babies);
                     }
+                    // 화면 전환은 모든 작업이 완료된 후에 수행한다.
                     if (mounted) {
                       Navigator.pop(context, true);
                     }

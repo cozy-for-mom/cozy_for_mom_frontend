@@ -95,6 +95,7 @@ class _CustomProfileButtonState extends State<CustomProfileButton> {
                                   babyProfileId: widget.babyProfileId > -1
                                       ? widget.babyProfileId
                                       : null,
+                                  isRecentBabyProfile: widget.isSelected,
                                 ),
                               ),
                             );
