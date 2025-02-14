@@ -126,6 +126,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                               cursorColor: primaryColor,
                               cursorHeight: min(14.sp, 24),
                               decoration: InputDecoration(
+                                isDense: true,
                                 focusColor: primaryColor,
                                 fillColor: primaryColor,
                                 border: InputBorder.none,

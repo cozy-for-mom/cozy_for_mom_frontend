@@ -1101,93 +1101,97 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                       color: const Color(0xffF7F7FA),
                     ),
                     padding: EdgeInsets.only(left: 20.w, right: 6.w),
-                    child: TextField(
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: min(14.sp, 24),
-                      ),
-                      keyboardType: TextInputType.text,
-                      maxLines: 1,
-                      maxLength: 250,
-                      controller: textController,
-                      onChanged: (text) {
-                        if (text != '') {
-                          setState(() {
-                            commentInput = text;
-                            submitIcon = Image(
-                              image: const AssetImage(
-                                "assets/images/icons/submit_active.png",
-                              ),
-                              width: min(20.w, 30),
-                              height: min(20.w, 30),
-                            );
-                          });
-                        } else {
-                          setState(() {
-                            commentInput = '';
-                            submitIcon = Image(
-                              image: const AssetImage(
-                                "assets/images/icons/submit_inactive.png",
-                              ),
-                              width: min(20.w, 30),
-                              height: min(20.w, 30),
-                            );
-                          });
-                        }
-                      },
-                      cursorHeight: AppUtils.scaleSize(context, 14.5),
-                      cursorWidth: AppUtils.scaleSize(context, 1),
-                      cursorColor: primaryColor,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.w),
-                        counterText: '',
-                        hintText: parentCommentIdToReply != null
-                            ? "답글을 남겨주세요."
-                            : "댓글을 남겨주세요.",
-                        hintStyle: TextStyle(
-                          color: const Color(0xffBCC0C7),
+                    child: Center(
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(
+                          color: Colors.black,
                           fontWeight: FontWeight.w400,
                           fontSize: min(14.sp, 24),
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () async {
-                            if (commentInput != '') {
-                              if (commentIdToUpdate == null) {
-                                await CozyLogCommentApiService().postComment(
-                                  context,
-                                  widget.id,
-                                  parentCommentIdToReply,
-                                  commentInput,
-                                );
-                                reloadCozyLog();
-                              } else {
-                                await CozyLogCommentApiService().updateComment(
-                                  context,
-                                  widget.id,
-                                  commentIdToUpdate!,
-                                  parentCommentIdToReply,
-                                  commentInput,
-                                );
-                              }
-                              if (mounted) {
-                                await CompleteAlertModal.showCompleteDialog(
-                                    context, '댓글이', '등록');
-                              }
-                              setState(() {
-                                textController.text = '';
-                                futureComments = CozyLogCommentApiService()
-                                    .getCozyLogComments(context, widget.id);
-                                parentCommentIdToReply = null;
-                              });
-                            }
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(8.w),
-                            child: submitIcon,
+                        keyboardType: TextInputType.text,
+                        maxLines: 1,
+                        maxLength: 250,
+                        controller: textController,
+                        onChanged: (text) {
+                          if (text != '') {
+                            setState(() {
+                              commentInput = text;
+                              submitIcon = Image(
+                                image: const AssetImage(
+                                  "assets/images/icons/submit_active.png",
+                                ),
+                                width: min(20.w, 30),
+                                height: min(20.w, 30),
+                              );
+                            });
+                          } else {
+                            setState(() {
+                              commentInput = '';
+                              submitIcon = Image(
+                                image: const AssetImage(
+                                  "assets/images/icons/submit_inactive.png",
+                                ),
+                                width: min(20.w, 30),
+                                height: min(20.w, 30),
+                              );
+                            });
+                          }
+                        },
+                        cursorHeight: AppUtils.scaleSize(context, 14.5),
+                        cursorWidth: AppUtils.scaleSize(context, 1),
+                        cursorColor: primaryColor,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counterText: '',
+                          hintText: parentCommentIdToReply != null
+                              ? "답글을 남겨주세요."
+                              : "댓글을 남겨주세요.",
+                          hintStyle: TextStyle(
+                            color: const Color(0xffBCC0C7),
+                            fontWeight: FontWeight.w400,
+                            fontSize: min(14.sp, 24),
                           ),
+                          suffixIcon: GestureDetector(
+                            onTap: () async {
+                              if (commentInput != '') {
+                                if (commentIdToUpdate == null) {
+                                  await CozyLogCommentApiService().postComment(
+                                    context,
+                                    widget.id,
+                                    parentCommentIdToReply,
+                                    commentInput,
+                                  );
+                                  reloadCozyLog();
+                                } else {
+                                  await CozyLogCommentApiService()
+                                      .updateComment(
+                                    context,
+                                    widget.id,
+                                    commentIdToUpdate!,
+                                    parentCommentIdToReply,
+                                    commentInput,
+                                  );
+                                }
+                                if (mounted) {
+                                  await CompleteAlertModal.showCompleteDialog(
+                                      context, '댓글이', '등록');
+                                }
+                                setState(() {
+                                  textController.text = '';
+                                  futureComments = CozyLogCommentApiService()
+                                      .getCozyLogComments(context, widget.id);
+                                  parentCommentIdToReply = null;
+                                });
+                              }
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(8.w),
+                              child: submitIcon,
+                            ),
+                          ),
+                          border: InputBorder.none,
                         ),
-                        border: InputBorder.none,
                       ),
                     ),
                   ),
