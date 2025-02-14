@@ -142,12 +142,16 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                         width: 255.w,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            widget.searchKeyword,
-                            style: TextStyle(
-                              color: mainTextColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: min(14.sp, 24),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              widget.searchKeyword,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: min(14.sp, 24),
+                              ),
                             ),
                           ),
                         ),
