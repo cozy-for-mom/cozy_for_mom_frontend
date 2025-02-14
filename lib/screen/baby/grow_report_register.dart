@@ -302,6 +302,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                           child: TextFormField(
                             controller: titleController,
                             textAlign: TextAlign.start,
+                            maxLength: 34,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
@@ -312,6 +313,7 @@ class _GrowReportRegisterState extends State<GrowReportRegister> {
                             cursorWidth: 1.5.w,
                             decoration: InputDecoration(
                               border: InputBorder.none,
+                              counterText: '',
                               hintText: "제목을 입력해주세요",
                               hintStyle: TextStyle(
                                 color: const Color(

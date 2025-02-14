@@ -180,6 +180,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         keyboardType: TextInputType.text,
                         controller: titleController,
                         textAlign: TextAlign.start,
+                        maxLength: 38,
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
@@ -190,6 +191,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                         cursorWidth: AppUtils.scaleSize(context, 1.5),
                         decoration: InputDecoration(
                           border: InputBorder.none,
+                          counterText: '',
                           hintText: "제목을 입력해주세요",
                           hintStyle: TextStyle(
                             color: offButtonTextColor,

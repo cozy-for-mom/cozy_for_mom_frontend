@@ -186,6 +186,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                       keyboardType: TextInputType.text,
                       controller: titleController,
                       textAlign: TextAlign.start,
+                      maxLength: 38,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -196,6 +197,7 @@ class _CozylogRecordPageState extends State<CozylogRecordPage> {
                       cursorWidth: 1.5.w,
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        counterText: '',
                         hintText: "제목을 입력해주세요",
                         hintStyle: TextStyle(
                           color: offButtonTextColor,
