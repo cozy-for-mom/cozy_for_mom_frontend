@@ -40,7 +40,6 @@ class SupplementCard extends StatefulWidget {
 }
 
 class _SupplementCardState extends State<SupplementCard> {
-  final SlidableController _slidableController = SlidableController();
   // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
   double calculateCardHeight(BuildContext context, int itemCount) {
     double buttonHeight = 36;
@@ -65,23 +64,18 @@ class _SupplementCardState extends State<SupplementCard> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
-          controller: _slidableController,
-          actionPane: const SlidableDrawerActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-              color: Colors.transparent,
-              foregroundColor: Colors.transparent,
-              iconWidget: Container(
-                width: 120.w,
-                decoration: BoxDecoration(
-                  color: deleteButtonColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.w),
-                    bottomRight: Radius.circular(20.w),
-                  ),
-                ),
-                child: InkWell(
-                  onTap: () {
+          key: ValueKey(widget.supplementId),  // 기존 State가 다음 아이템에 붙어서 슬라이드 상태가 이어지는 현상 방지
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.25,
+            children: [
+              CustomSlidableAction(
+                padding: EdgeInsets.zero,
+                foregroundColor: deleteButtonColor,
+                autoClose: true,
+                flex: 1,
+                onPressed: (context) {
+                  // 삭제 다이얼로그 띄우기
                     showDialog(
                       barrierDismissible: false,
                       context: context,
@@ -95,14 +89,46 @@ class _SupplementCardState extends State<SupplementCard> {
                             widget.onDelete(
                                 widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
                             setState(() {
-                              _slidableController.activeState?.close();
+                        Slidable.of(buildContext)?.close();
                             });
                           },
                         );
                       },
                     );
                   },
-                  child: Column(
+                  backgroundColor: Colors.transparent,
+                child: Container(
+                  width: 120.w,
+                  decoration: BoxDecoration(
+                    color: deleteButtonColor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.w),
+                      bottomRight: Radius.circular(20.w),
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                        return DeleteModal(
+                          text: '등록된 영양제를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                          title: '영양제가',
+                          tapFunc: () async {
+                            await supplementApi.deleteSupplement(
+                                context, widget.supplementId);
+                            widget.onDelete(
+                                widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
+                            setState(() {
+                        Slidable.of(buildContext)?.close();
+                            });
+                          },
+                        );
+                      },
+                      );
+                    },
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
@@ -120,11 +146,13 @@ class _SupplementCardState extends State<SupplementCard> {
                             fontSize: min(14.sp, 24),
                           ),
                         ),
-                      ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.w),
             child: Container(

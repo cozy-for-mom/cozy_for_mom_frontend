@@ -28,7 +28,6 @@ class AlarmSettingCard extends StatefulWidget {
 class _AlarmSettingCardState extends State<AlarmSettingCard> {
   late NotificationApiService notificationViewModel;
 
-  final SlidableController _slidableController = SlidableController();
   // 요일을 숫자로 매핑하는 맵
   final Map<String, int> dayOrder = {
     'mon': 1,
@@ -108,42 +107,73 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
-          controller: _slidableController,
-          actionPane: const SlidableDrawerActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-              color: Colors.transparent,
-              iconWidget: Container(
-                width: 120.w,
-                decoration: BoxDecoration(
-                  color: deleteButtonColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.w),
-                    bottomRight: Radius.circular(20.w),
+          key: ValueKey(widget.notification.id),  // 기존 State가 다음 아이템에 붙어서 슬라이드 상태가 이어지는 현상 방지
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.25,
+            children: [
+              CustomSlidableAction(
+                padding: EdgeInsets.zero,
+                foregroundColor: deleteButtonColor,
+                autoClose: true,
+                flex: 1,
+                onPressed: (context) {
+                  // 삭제 다이얼로그 띄우기
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext buildContext) {
+                      return DeleteModal(
+                        text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                        title: '알림이',
+                        tapFunc: () async {
+                          await notificationViewModel.deleteNotification(
+                            context,
+                            widget.notification.id,
+                          );
+                          widget.onDelete(widget.notification.id);
+                          setState(() {
+                            Slidable.of(buildContext)?.close();
+                          });
+                        },
+                      );
+                    },
+                  );
+                },
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  width: 120.w,
+                  decoration: BoxDecoration(
+                    color: deleteButtonColor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.w),
+                      bottomRight: Radius.circular(20.w),
+                    ),
                   ),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext buildContext) {
-                        return DeleteModal(
-                          text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                          title: '알림이',
-                          tapFunc: () async {
-                            await notificationViewModel.deleteNotification(
-                                context, widget.notification.id);
-                            widget.onDelete(widget.notification.id);
-                            setState(() {
-                              _slidableController.activeState?.close();
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: Column(
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                          return DeleteModal(
+                            text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                            title: '알림이',
+                            tapFunc: () async {
+                              await notificationViewModel.deleteNotification(
+                                context,
+                                widget.notification.id,
+                              );
+                              widget.onDelete(widget.notification.id);
+                              setState(() {
+                                Slidable.of(buildContext)?.close();
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
@@ -161,11 +191,13 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                             fontSize: min(14.sp, 24),
                           ),
                         ),
-                      ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 24.w, horizontal: 20.w),
             decoration: BoxDecoration(
@@ -237,7 +269,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                     context, widget.notification.id, value);
                             widget.onActiveChanged();
                           },
-                          activeColor: primaryColor,
+                          activeTrackColor: primaryColor,
                         ),
                       ]),
                   const Divider(color: mainLineColor, thickness: 1),

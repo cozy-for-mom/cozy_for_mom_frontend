@@ -168,8 +168,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
                       ),
                       Positioned(
                         top: 200.h,
-                        left: 0.w,
-                        right: 0.w,
+                        left: paddingValue,
+                        right: paddingValue,
                         child: pregnantSupplements.isEmpty
                             ? SizedBox(
                                 height: screenHeight * (0.55),

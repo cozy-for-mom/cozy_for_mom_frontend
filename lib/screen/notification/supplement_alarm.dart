@@ -67,8 +67,8 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
           }
           return Positioned(
             top: isTablet? 110.h : 90.h,
-            left: 0.w,
-            right: 0.w,
+            left: isTablet? 30.w : 20.w,
+            right: isTablet? 30.w : 20.w,
             child: notifications.isEmpty
                 ? Column(children: [
                     SizedBox(

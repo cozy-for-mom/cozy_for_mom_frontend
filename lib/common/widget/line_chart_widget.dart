@@ -66,8 +66,10 @@ class _LineChartState extends State<LineChart> {
     return SfCartesianChart(
       zoomPanBehavior: _zoomPanBehavior,
       backgroundColor: Colors.white,
+      plotAreaBorderWidth: 1,
+      plotAreaBorderColor: thickLineColor,
       margin: EdgeInsets.all(10.w),
-      series: <ChartSeries>[
+      series: <CartesianSeries<LineChartData, String>>[
         LineSeries<LineChartData, String>(
           dataSource: widget.dataList.reversed.toList(),
           xValueMapper: (LineChartData data, _) => widget.timeType == 'daily'
@@ -136,9 +138,6 @@ class _LineChartState extends State<LineChart> {
           // 짧은 눈금선 제거
           width: 0.w,
         ),
-        minorGridLines: const MinorGridLines(
-          width: 0,
-        ),
         axisLine: AxisLine(color: thickLineColor, width: 1.w),
         labelStyle: TextStyle(
             color: const Color(0xffCDCED5),
@@ -147,6 +146,9 @@ class _LineChartState extends State<LineChart> {
             height: 1.w),
       ),
       primaryYAxis: NumericAxis(
+        maximum: widget.unit == "kg"
+            ? ((widget.baseValue + 10) / 10).roundToDouble() * 10
+            : ((widget.baseValue + 20) / 10).roundToDouble() * 10,
         interval: 10,
         axisLine: AxisLine(width: 1.w, color: Colors.white),
         opposedPosition: true,
@@ -157,8 +159,14 @@ class _LineChartState extends State<LineChart> {
           width: 1.w,
           color: thickLineColor,
         ),
-        minorGridLines: MinorGridLines(
+        minorGridLines: MinorGridLines(width: 1.w, color: defaultLineColor),
+        majorTickLines: MajorTickLines(
           width: 1.w,
+          color: thickLineColor,
+        ),
+        minorTickLines: MinorTickLines(
+          width: 1.w,
+          color: defaultLineColor,
         ),
         labelStyle: TextStyle(
           color: mainTextColor,

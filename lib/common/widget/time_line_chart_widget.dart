@@ -123,6 +123,7 @@ class _TimeLineChartState extends State<TimeLineChart>
                     TabBar(
                         controller: _tabController,
                         labelColor: mainTextColor,
+                        dividerColor: Colors.transparent,
                         labelStyle: TextStyle(
                           color: mainTextColor,
                           fontSize: min(16.sp, 26),
@@ -141,6 +142,7 @@ class _TimeLineChartState extends State<TimeLineChart>
                           Tab(text: "주간"),
                           Tab(text: "월간"),
                         ],
+
                         indicatorSize: TabBarIndicatorSize.label,
                         indicator: CustomTabIndicator(color: primaryColor)),
                     Expanded(
