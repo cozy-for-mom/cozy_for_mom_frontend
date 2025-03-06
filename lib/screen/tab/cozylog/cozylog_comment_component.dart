@@ -84,8 +84,18 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
 
     return Column(
       children: [
-        !widget.comment.isDeleted
-            ? Row(
+        widget.comment.isDeleted || widget.comment.isReported!
+            ? Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  widget.comment.isDeleted ? "댓글이 삭제되었습니다." : "신고된 댓글입니다.",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: min(14.sp, 24),
+                  ),
+                ))
+            : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -650,17 +660,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                     ),
                   )
                 ],
-              )
-            : Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "댓글이 삭제되었습니다.",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: min(14.sp, 24),
-                  ),
-                )),
+              ),
         widget.subComments.isNotEmpty
             ? Column(
                 children: [
@@ -688,8 +688,23 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                               SizedBox(
                                 height: 15.w,
                               ),
-                              !subComment.isDeleted
-                                  ? Padding(
+                              subComment.isDeleted || subComment.isReported!
+                                  ? subComment.isDeleted
+                                      ? Container()
+                                      : Padding(
+                                        padding: EdgeInsets.only(bottom: 15.w),
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "신고된 댓글입니다.",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: min(14.sp, 24),
+                                              ),
+                                            )),
+                                      )
+                                  : Padding(
                                       padding: EdgeInsets.only(
                                           left: isTablet
                                               ? 40.w
@@ -1227,11 +1242,9 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                               },
                                             ),
                                           )
-                                          // : Container(),
                                         ],
                                       ),
-                                    )
-                                  : Container(),
+                                    ),
                               if (index != widget.subComments.length - 1)
                                 Divider(
                                   color: const Color(0xffE1E1E7),
