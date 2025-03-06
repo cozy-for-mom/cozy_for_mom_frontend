@@ -60,6 +60,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
   @override
   void initState() {
     super.initState();
+    CozyLogApiService().countCozylogView(context, widget.id);
     futureCozyLog = CozyLogApiService().getCozyLog(context, widget.id);
     futureCozyLog.then((value) {
       if (value != null) {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/service/user/idempotency_key_manager.dart';
 import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -219,6 +220,45 @@ class CozyLogApiService extends ChangeNotifier {
       }
       return null;
       // throw Exception('코지로그(id: $id) 조회 실패');
+    }
+  }
+
+  Future<void> countCozylogView(BuildContext context, int cozyLogId) async {
+    var urlString = '$baseUrl/cozy-log/view/$cozyLogId';
+    final keyManager = IdempotencyKeyManager();
+    final headers = await getHeaders();
+    final url = Uri.parse(urlString);
+    dynamic res;
+
+    // 사용자 id
+    final userId = await keyManager.extractUserId();
+
+    // 멱등키 생성 (SHA-256)
+    final idempotencyKey =
+        keyManager.generateIdempotencyKey(url.toString(), userId, null);
+
+    headers['X-Idempotency-Key'] = idempotencyKey;
+
+    res = await patch(
+      url,
+      headers: headers,
+    );
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      return; // 성공 시 그냥 반환
+    } else {
+      // 에러 처리
+      final responseBody = utf8.decode(res.bodyBytes);
+      if (responseBody.isNotEmpty) {
+        String? message = jsonDecode(responseBody)['message'];
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context, message);
+        }
+      } else {
+        // 혹은 메시지가 없으면 기본 에러 메시지를 넣어주는 방식
+        if (context.mounted) {
+          handleHttpResponse(res.statusCode, context, null);
+        }
+      }
     }
   }
 
