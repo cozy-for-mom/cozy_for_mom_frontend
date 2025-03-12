@@ -257,6 +257,7 @@ class _BabyGrowthReportListScreenState
                                                   }
 
                                                   return SingleChildScrollView(
+                                                    physics: ClampingScrollPhysics(),
                                                     // TODO 너비 조정
                                                     child: Column(
                                                       children: [

@@ -168,6 +168,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     child: Padding(
                       padding: EdgeInsets.only(

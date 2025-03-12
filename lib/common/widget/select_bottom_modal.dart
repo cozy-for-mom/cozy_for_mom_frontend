@@ -24,7 +24,7 @@ class SelectBottomModal extends StatelessWidget {
 
     return SizedBox(
       width: screenWidth - 2 * paddingValue,
-      height: isTablet? 234.w - paddingValue : 234.w,
+      height: isTablet ? 234.w - paddingValue : 234.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -32,7 +32,7 @@ class SelectBottomModal extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 8.h),
             width: screenWidth,
-            height: 148.w - paddingValue,
+            height: 153.w - paddingValue,
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
                 borderRadius: BorderRadius.circular(20.w)),

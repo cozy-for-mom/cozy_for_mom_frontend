@@ -54,6 +54,7 @@ class _CozylogMainState extends State<CozylogMain> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
+    final isSmall = screenHeight < 670;
     final paddingValue = isTablet ? 30.w : 20.w;
     userViewModel = Provider.of<UserApiService>(context, listen: true);
     return FutureBuilder(
@@ -79,7 +80,7 @@ class _CozylogMainState extends State<CozylogMain> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: isTablet ? -100.h : 0.h,
+                    top: isSmall ? -20.h : 0.h,
                     left: 0.w,
                     child: Image(
                         width: screenWidth + paddingValue,
@@ -87,10 +88,10 @@ class _CozylogMainState extends State<CozylogMain> {
                         image: const AssetImage("assets/images/subtract2.png")),
                   ),
                   Positioned(
-                    top: isTablet ? 17.h : 34.h,
+                    top: isSmall ? 0.w : 40.w,
                     child: Container(
                         width: screenWidth,
-                        padding: EdgeInsets.only(top: 10.w),
+                        padding: EdgeInsets.only(top: paddingValue),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,8 +163,8 @@ class _CozylogMainState extends State<CozylogMain> {
                         )),
                   ),
                   Positioned(
-                    top: isTablet? 104.h : 134.h,
-                    left: isTablet? 32.w : 28.w,
+                    top: isTablet ? 104.h : 134.h,
+                    left: isTablet ? 32.w : 28.w,
                     child: pregnantInfo['imageUrl'] == null
                         ? Image.asset(
                             'assets/images/icons/momProfile.png',
@@ -243,7 +244,7 @@ class _CozylogMainState extends State<CozylogMain> {
                       color: contentBoxTwoColor,
                       child: SizedBox(
                         width: screenWidth - 2 * paddingValue,
-                        height: min(102.w, 152),
+                        height: isSmall ? 92.w : min(102.w, 142),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -352,7 +353,10 @@ class _CozylogMainState extends State<CozylogMain> {
                     left: paddingValue,
                     child: Container(
                       width: screenWidth - 2 * paddingValue,
-                      height: screenHeight * 0.375,
+                      // height: screenHeight * 0.375,
+                      height: screenHeight -
+                          434.h -
+                          min(93.w, 123),
                       padding: EdgeInsets.symmetric(
                         horizontal: 20.w,
                       ),
@@ -373,6 +377,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                           fontSize: min(16.sp, 26))));
                             } else {
                               return SingleChildScrollView(
+                                physics: ClampingScrollPhysics(),
                                 child: Column(
                                   children: <Widget>[
                                     ...snapshot.data!

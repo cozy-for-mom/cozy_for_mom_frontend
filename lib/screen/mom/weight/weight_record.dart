@@ -54,8 +54,9 @@ class _WeightRecordState extends State<WeightRecord> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
     WeightApiService momWeightViewModel =
         Provider.of<WeightApiService>(context, listen: false);
 
@@ -92,11 +93,11 @@ class _WeightRecordState extends State<WeightRecord> {
                 return Stack(
                   children: [
                     Positioned(
-                        top: isTablet ? 0.w : 50.w,
+                        top: isSmall? 0.w : 40.w,
                         width: screenWidth,
                         child: Padding(
                             padding: EdgeInsets.only(
-                                top: paddingValue - 20.w,
+                                top: paddingValue,
                                 bottom: paddingValue - 20.w,
                                 right: 8.w),
                             child: Row(
@@ -172,7 +173,7 @@ class _WeightRecordState extends State<WeightRecord> {
                             // }),
                             )),
                     Positioned(
-                        top: isTablet ? 80.h : 110.h,
+                        top: 110.h,
                         left: paddingValue,
                         child: SizedBox(
                           width: screenWidth - 2 * paddingValue,
@@ -216,6 +217,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 105.w,
@@ -236,9 +238,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                           cursorWidth: 1.w,
                                           cursorHeight: min(28.sp, 38),
                                           decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: min(7.w, 7)),
+                                              isDense: true,
                                               border: InputBorder.none,
                                               counterText: '',
                                               hintText: '00.00',

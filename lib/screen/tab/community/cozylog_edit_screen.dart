@@ -225,7 +225,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                       left: paddingValue,
                       child: Container(
                         width: screenWidth - 2 * paddingValue,
-                        height: isTablet? screenHeight * 0.58 : screenHeight * 0.6 ,
+                        height: screenHeight * 0.59,
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: isTablet ? 15.w : 20.w),
                         decoration: BoxDecoration(
@@ -256,6 +256,7 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                                   thickness: 5.0,
                                   radius: Radius.circular(10.w),
                                   child: SingleChildScrollView(
+                                    physics: ClampingScrollPhysics(),
                                     controller: scrollController,
                                     scrollDirection: Axis.vertical,
                                     child: Column(
@@ -451,7 +452,8 @@ class _CozylogEditPageState extends State<CozylogEditPage> {
                             ],
                           ),
                         ),
-                        padding: EdgeInsets.only(top: 20.w, bottom: 54.w - paddingValue),
+                        padding: EdgeInsets.only(
+                            top: 20.w, bottom: 54.w - paddingValue),
                         child: Container(
                           height: min(56.w, 96),
                           margin:

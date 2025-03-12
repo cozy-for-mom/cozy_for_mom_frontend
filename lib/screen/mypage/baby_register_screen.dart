@@ -154,7 +154,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             children: [
               Container(
                 width: screenWidth - 2 * paddingValue,
-                height: min(172.w, 272),
+                height: min(175.w, 275),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.w),
                   color: Colors.white,
@@ -532,6 +532,7 @@ class _BabyRegisterScreenState extends State<BabyRegisterScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: Padding(
                     padding: EdgeInsets.only(
                         left: 20.w,

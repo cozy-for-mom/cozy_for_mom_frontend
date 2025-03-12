@@ -170,7 +170,7 @@ class _ScrapListModifyState extends State<ScrapListModify> {
                 child: Container(
                   width: screenWidth - paddingValue,
                   // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                  height: screenHeight * (0.7),
+                  height: screenHeight * (0.69),
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.w),

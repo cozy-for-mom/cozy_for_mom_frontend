@@ -88,6 +88,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     BlockApiService blockApi = BlockApiService();
     final isTablet = screenWidth > 600;
+    final isSmall = screenHeight < 670;
     final paddingValue = isTablet ? 30.w : 20.w;
     return FutureBuilder(
       future: futureCozyLog,
@@ -100,14 +101,10 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
               preferredSize: Size(screenWidth, 60.w),
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: paddingValue - 20.w,
-                    bottom: paddingValue - 20.w,
-                    right: 8.w),
+                    top: paddingValue, bottom: paddingValue - 20.w, right: 8.w),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: isTablet ? 0.w : 50.w,
-                    ),
+                    SizedBox(height: isSmall ? 0.w : 40.w),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -147,6 +144,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: paddingValue, vertical: 8.w),
@@ -193,7 +191,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                         width: screenWidth -
                                                             2 * paddingValue,
                                                         height:
-                                                            92.w - paddingValue,
+                                                            95.w - paddingValue,
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
@@ -375,7 +373,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                       width: screenWidth -
                                                           2 * paddingValue,
                                                       height:
-                                                          148.w - paddingValue,
+                                                          153.w - paddingValue,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -599,7 +597,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                       8.w),
                                                           width: screenWidth -
                                                               2 * paddingValue,
-                                                          height: 92.w -
+                                                          height: 95.w -
                                                               paddingValue,
                                                           decoration:
                                                               BoxDecoration(
@@ -659,7 +657,7 @@ class _CozyLogDetailScreenState extends State<CozyLogDetailScreen> {
                                                                                 ),
                                                                               ),
                                                                               Container(
-                                                                                height: screenHeight * 3 / 5,
+                                                                                height: isSmall? screenHeight * 0.7 : screenHeight * 0.6,
                                                                                 decoration: BoxDecoration(
                                                                                   color: Colors.white,
                                                                                   borderRadius: BorderRadius.only(

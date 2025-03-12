@@ -9,32 +9,43 @@ class BloodsugarRecord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
     List<String> times = ['아침', '점심', '저녁'];
 
     return Stack(
       children: <Widget>[
         Positioned(
-            top: isTablet? 160.h : 180.h,
+            top: 180.h,
             left: paddingValue,
             child: SizedBox(
               width: screenWidth - 2 * paddingValue,
               child: const WeeklyCalendar(),
             )),
         Positioned(
-          top: isTablet? 268.h : 288.h,  // TODO 스크롤을 적용할지 고민
+          top: isSmall ? 268.h : 288.h,
           left: 0.w,
           right: 0.w,
-          child: Column(
-            children: times.map((time) {
-              return Column(
-                children: [
-                  BloodsugarCard(time: time),
-                  Padding(padding: EdgeInsets.only(bottom: 5.h)),
-                ],
-              );
-            }).toList(),
+          child: SizedBox(
+            height: screenHeight,
+            child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: screenHeight * (0.4)),
+                child: Column(
+                  children: times.map((time) {
+                    return Column(
+                      children: [
+                        BloodsugarCard(time: time),
+                        Padding(padding: EdgeInsets.only(bottom: 5.h)),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
           ),
         ),
       ],

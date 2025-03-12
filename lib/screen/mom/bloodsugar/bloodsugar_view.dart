@@ -29,8 +29,9 @@ class _BloodsugarViewState extends State<BloodsugarView> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
     BloodsugarApiService bloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
     Random random = Random();
@@ -57,18 +58,18 @@ class _BloodsugarViewState extends State<BloodsugarView> {
             return Stack(
               children: [
                 Positioned(
-                  top: isTablet ? 174.h : 204.h,
+                  top: isSmall? 184.h : 204.h,
                   left: paddingValue,
                   child: const TimeLineChart(recordType: RecordType.bloodsugar),
                 ),
                 Positioned(
-                    top: isTablet ? 665.h : 635.h,
+                    top: isSmall? 655.h : 635.h,
                     left: paddingValue,
                     child: Container(
                       width: screenWidth - 2 * paddingValue,
-                      height: min(134.w, 214),
+                      height: isSmall? 124.w : min(134.w, 214),
                       padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 24.h),
+                          horizontal: 20.w, vertical: isSmall? 14.h : 24.h),
                       decoration: BoxDecoration(
                           color: contentBoxTwoColor,
                           borderRadius: BorderRadius.circular(20.w)),

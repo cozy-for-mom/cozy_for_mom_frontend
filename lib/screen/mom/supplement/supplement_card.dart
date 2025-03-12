@@ -59,6 +59,7 @@ class _SupplementCardState extends State<SupplementCard> {
     List<DateTime> sortedTakeTimes = widget.takeTimes
       ..sort((a, b) => a.compareTo(b));
     return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
       child: Card(
         elevation: 0.0,
         shape:

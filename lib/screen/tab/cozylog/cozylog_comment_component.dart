@@ -76,8 +76,8 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     BlockApiService blockApi = BlockApiService();
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
     setIsMyComment();
 
     DateFormat dateFormat = DateFormat('yyyy. MM. dd HH:mm');
@@ -233,9 +233,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                 ? 234.w
                                 : 234.w - 60.w;
                             return SizedBox(
-                              height: isTablet
-                                  ? baseHeight - paddingValue
-                                  : baseHeight,
+                              height: baseHeight,
                               width: screenWidth - 2 * paddingValue,
                               child: Column(
                                 children: [
@@ -247,8 +245,8 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                     // 타인이 작성한 코지로그에 다른 사람이 작성한 댓글일 경우 1.댓글 신고하기
                                     // 내가 작성한 댓글일 경우 1.수정하기 2.삭제하기
                                     height: widget.isMyCozyLog || isMyComment
-                                        ? 152.w - paddingValue
-                                        : 92.w - paddingValue,
+                                        ? 153.w - paddingValue
+                                        : 95.w - paddingValue,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.w),
                                       color: Colors.white,
@@ -381,10 +379,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    height:
-                                                                        screenHeight *
-                                                                            3 /
-                                                                            5,
+                                                                    height: isSmall? screenHeight * 0.7 : screenHeight * 0.6,
                                                                     decoration:
                                                                         BoxDecoration(
                                                                       color: Colors
@@ -692,23 +687,22 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                   ? subComment.isDeleted
                                       ? Container()
                                       : Padding(
-                                        padding: EdgeInsets.only(bottom: 15.w),
-                                        child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "신고된 댓글입니다.",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: min(14.sp, 24),
-                                              ),
-                                            )),
-                                      )
+                                          padding:
+                                              EdgeInsets.only(bottom: 15.w),
+                                          child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "신고된 댓글입니다.",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: min(14.sp, 24),
+                                                ),
+                                              )),
+                                        )
                                   : Padding(
                                       padding: EdgeInsets.only(
-                                          left: isTablet
-                                              ? 40.w
-                                              : 50.w), // 왼쪽 패딩으로 인덴트 조정
+                                          left: 50.w), // 왼쪽 패딩으로 인덴트 조정
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -868,10 +862,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                         ? 234.w
                                                         : 234.w - 60.w;
                                                     return SizedBox(
-                                                      height: isTablet
-                                                          ? baseHeight -
-                                                              paddingValue
-                                                          : baseHeight,
+                                                      height: baseHeight,
                                                       width: screenWidth -
                                                           2 * paddingValue,
                                                       child: Column(
@@ -888,9 +879,9 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                                     subComment
                                                                             .writerId ==
                                                                         userId
-                                                                ? 152.w -
+                                                                ? 153.w -
                                                                     paddingValue
-                                                                : 92.w -
+                                                                : 95.w -
                                                                     paddingValue,
                                                             decoration:
                                                                 BoxDecoration(
@@ -990,7 +981,7 @@ class _CozyLogCommentComponentState extends State<CozyLogCommentComponent> {
                                                                                         ),
                                                                                       ),
                                                                                       Container(
-                                                                                        height: screenHeight * 3 / 5,
+                                                                                        height: isSmall? screenHeight * 0.7 : screenHeight * 0.6,
                                                                                         decoration: BoxDecoration(
                                                                                           color: Colors.white,
                                                                                           borderRadius: BorderRadius.only(

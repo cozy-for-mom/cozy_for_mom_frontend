@@ -41,8 +41,8 @@ class _MealScreenState extends State<MealScreen> {
     final globalData = Provider.of<MyDataModel>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     Future<XFile?> showImageSelectModal() async {
       XFile? selectedImage;
@@ -129,16 +129,13 @@ class _MealScreenState extends State<MealScreen> {
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: PreferredSize(
-          preferredSize: Size(screenWidth, isTablet? 42.w : 60.w),
+          preferredSize: Size(screenWidth, 60.w),
           child: Padding(
-            padding: EdgeInsets.only(top: paddingValue - 20.w,
-                    bottom: paddingValue - 20.w,
-                    right: 8.w),
+            padding: EdgeInsets.only(
+                top: paddingValue, bottom: paddingValue - 20.w, right: 8.w),
             child: Column(
               children: [
-                SizedBox(
-                  height: isTablet ? 0.w : 50.w,
-                ),
+                SizedBox(height: isSmall? 0.w : 40.w),
                 Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,7 +178,9 @@ class _MealScreenState extends State<MealScreen> {
                                 elevation: 0.0,
                                 context: context,
                                 builder: (context) {
-                                  return Wrap(children : [MonthCalendarModal(limitToday: true)]);
+                                  return Wrap(children: [
+                                    MonthCalendarModal(limitToday: true)
+                                  ]);
                                 },
                               );
                             },
@@ -277,16 +276,17 @@ class _MealScreenState extends State<MealScreen> {
                 }
                 return Column(
                   children: [
-                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingValue, vertical: 8.w),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: paddingValue, vertical: 8.w),
                       child: const WeeklyCalendar(),
                     ),
                     SizedBox(height: 15.h),
                     Expanded(
                       child: SingleChildScrollView(
+                        physics: ClampingScrollPhysics(),
                         child: Column(
                           children: [
-                            
                             containsBreakfast // TODO List로 수정하면 좋을 듯 (배포하고 리팩토링하기)
                                 ? InkWell(
                                     onTap: () {
@@ -363,13 +363,15 @@ class _MealScreenState extends State<MealScreen> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20.w),
+                                        borderRadius:
+                                            BorderRadius.circular(20.w),
                                         color: Colors.white,
                                       ),
                                       child: Stack(
                                         children: [
                                           SizedBox(
-                                            width: screenWidth - 2 * paddingValue,
+                                            width:
+                                                screenWidth - 2 * paddingValue,
                                             height: 216.w,
                                             child: ClipRRect(
                                                 borderRadius:
@@ -393,15 +395,18 @@ class _MealScreenState extends State<MealScreen> {
                                                                 const AssetImage(
                                                               "assets/images/icons/default_meal.png",
                                                             ),
-                                                            height: min(43.w, 86),
-                                                            width: min(19.w, 38),
+                                                            height:
+                                                                min(43.w, 86),
+                                                            width:
+                                                                min(19.w, 38),
                                                           ),
                                                           Text(
                                                             "클릭하여 식사를 기록해 보세요",
                                                             style: TextStyle(
                                                               color: const Color(
                                                                   0xff9397A4),
-                                                              fontSize: min(14.sp, 24),
+                                                              fontSize: min(
+                                                                  14.sp, 24),
                                                             ),
                                                           )
                                                         ],
@@ -514,13 +519,15 @@ class _MealScreenState extends State<MealScreen> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20.w),
+                                        borderRadius:
+                                            BorderRadius.circular(20.w),
                                         color: Colors.white,
                                       ),
                                       child: Stack(
                                         children: [
                                           SizedBox(
-                                            width: screenWidth - 2 * paddingValue,
+                                            width:
+                                                screenWidth - 2 * paddingValue,
                                             height: 216.w,
                                             child: ClipRRect(
                                                 borderRadius:
@@ -544,15 +551,18 @@ class _MealScreenState extends State<MealScreen> {
                                                                 const AssetImage(
                                                               "assets/images/icons/default_meal.png",
                                                             ),
-                                                            height: min(43.w, 86),
-                                                            width: min(19.w, 38),
+                                                            height:
+                                                                min(43.w, 86),
+                                                            width:
+                                                                min(19.w, 38),
                                                           ),
                                                           Text(
                                                             "클릭하여 식사를 기록해 보세요",
                                                             style: TextStyle(
                                                               color: const Color(
                                                                   0xff9397A4),
-                                                              fontSize: min(14.sp, 24),
+                                                              fontSize: min(
+                                                                  14.sp, 24),
                                                             ),
                                                           )
                                                         ],
@@ -665,13 +675,15 @@ class _MealScreenState extends State<MealScreen> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20.w),
+                                        borderRadius:
+                                            BorderRadius.circular(20.w),
                                         color: Colors.white,
                                       ),
                                       child: Stack(
                                         children: [
                                           SizedBox(
-                                            width: screenWidth - 2 * paddingValue,
+                                            width:
+                                                screenWidth - 2 * paddingValue,
                                             height: 216.w,
                                             child: ClipRRect(
                                                 borderRadius:
@@ -695,15 +707,18 @@ class _MealScreenState extends State<MealScreen> {
                                                                 const AssetImage(
                                                               "assets/images/icons/default_meal.png",
                                                             ),
-                                                            height: min(43.w, 86),
-                                                            width: min(19.w, 38),
+                                                            height:
+                                                                min(43.w, 86),
+                                                            width:
+                                                                min(19.w, 38),
                                                           ),
                                                           Text(
                                                             "클릭하여 식사를 기록해 보세요",
                                                             style: TextStyle(
                                                               color: const Color(
                                                                   0xff9397A4),
-                                                              fontSize: min(14.sp, 24),
+                                                              fontSize: min(
+                                                                  14.sp, 24),
                                                             ),
                                                           )
                                                         ],
@@ -737,7 +752,7 @@ class _MealScreenState extends State<MealScreen> {
                                       ),
                                     ),
                                   ),
-                                SizedBox(height: 60.w),
+                            SizedBox(height: 60.w),
                           ],
                         ),
                       ),

@@ -78,6 +78,7 @@ class _HomeFragmentState extends State<HomeFragment> {
           return Scaffold(
             body: Stack(
               children: [
+                // =========== 1) 고정 배경 이미지  ===========
                 Positioned(
                   top: 0.h,
                   child: Image(
@@ -92,49 +93,317 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 : "assets/images/home_evening.png"),
                   ),
                 ),
-                Positioned(
-                  top: 128.h,
-                  left: 0.w,
-                  right: 0.w,
+
+                // =========== 2) 스크롤될 메인 콘텐츠  ===========
+                SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: SizedBox(
-                    width: 186.w,
-                    height: 103.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '$nowMonth월 $nowDay일 $nowWeekDay',
-                          style: TextStyle(
-                              color: nowHour >= 8 && nowHour < 12
-                                  ? morningTextColor
-                                  : nowHour >= 12 && nowHour < 19
-                                      ? afternoonTextColor
-                                      : nightTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: min(16.sp, 26)),
-                        ),
-                        SizedBox(height: 3.w),
-                        Text(
-                          '${pregnantInfo['nickname']} 산모님',
-                          style: TextStyle(
-                            fontSize: min(26.sp, 36),
-                            fontWeight: FontWeight.w700,
+                    height: MediaQuery.of(context).size.height,
+                    child: Stack(children: [
+                      Positioned(
+                        top: 128.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: SizedBox(
+                          width: 186.w,
+                          height: 103.w,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '$nowMonth월 $nowDay일 $nowWeekDay',
+                                style: TextStyle(
+                                    color: nowHour >= 8 && nowHour < 12
+                                        ? morningTextColor
+                                        : nowHour >= 12 && nowHour < 19
+                                            ? afternoonTextColor
+                                            : nightTextColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: min(16.sp, 26)),
+                              ),
+                              SizedBox(height: 3.w),
+                              Text(
+                                '${pregnantInfo['nickname']} 산모님',
+                                style: TextStyle(
+                                  fontSize: min(26.sp, 36),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                "오늘도 안녕하세요",
+                                style: TextStyle(
+                                  fontSize: min(26.sp, 36),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          "오늘도 안녕하세요",
-                          style: TextStyle(
-                            fontSize: min(26.sp, 36),
-                            fontWeight: FontWeight.w700,
+                      ),
+                      Positioned(
+                        top: 380.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: Container(
+                          width: screenWidth,
+                          height: screenHeight * 0.6,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40.w),
+                              topRight: Radius.circular(40.w),
+                            ),
+                            color: contentBoxTwoColor,
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: min(54.w, 64),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width > 600
+                                            ? 30.w
+                                            : 20.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MealScreen()));
+                                      },
+                                      child: RecordIcon(
+                                        recordTypeName: "meal",
+                                        recordTypeKorName: "식단",
+                                        imageWidth: min(26.w, 46),
+                                        imageHeight: min(37.w, 57),
+                                      ),
+                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SupplementRecord()));
+                                        },
+                                        child: RecordIcon(
+                                          recordTypeName: "supplement",
+                                          recordTypeKorName: "영양제",
+                                          imageWidth: min(28.w, 48),
+                                          imageHeight: min(67.w, 87),
+                                        )),
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const BloodsugarPage()));
+                                        },
+                                        child: RecordIcon(
+                                          recordTypeName: "bloodsugar",
+                                          recordTypeKorName: "혈당",
+                                          imageWidth: min(28.w, 48),
+                                          imageHeight: min(37.w, 57),
+                                        )),
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const WeightRecord()));
+                                        },
+                                        child: RecordIcon(
+                                          recordTypeName: "weight",
+                                          recordTypeKorName: "체중",
+                                          imageWidth: min(28.w, 48),
+                                          imageHeight: min(37.w, 57),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: min(40.w, 50),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('잊지 말고 기록하세요',
+                                      style: TextStyle(
+                                          color: mainTextColor,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: min(18.sp, 28))),
+                                  SizedBox(height: min(18.w, 28)),
+                                  InkWell(
+                                    onTap: () async {
+                                      final type =
+                                          upcomingNotification['type'] ==
+                                                  CardType.bloodsugar.name
+                                              ? CardType.bloodsugar
+                                              : CardType.supplement;
+
+                                      final shouldRefresh =
+                                          await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AlarmSettingPage(type: type)),
+                                      );
+
+                                      if (mounted && shouldRefresh == true) {
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width >
+                                              600
+                                          ? screenWidth - 60.w
+                                          : screenWidth - 40.w,
+                                      height: min(100.w, 150),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 30.w),
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFA2A0F4),
+                                          borderRadius:
+                                              BorderRadius.circular(10.w)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: upcomingNotification[
+                                                              'targetTimeAt'] ==
+                                                          ''
+                                                      ? [
+                                                          Text('영양제와 혈당 알림을',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: min(
+                                                                      14.sp,
+                                                                      24))),
+                                                          Text('등록해보세요!',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: min(
+                                                                      14.sp,
+                                                                      24)))
+                                                        ]
+                                                      : [
+                                                          Text(
+                                                              upcomingNotification[
+                                                                  'targetTimeAt'],
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: min(
+                                                                      14.sp,
+                                                                      24))),
+                                                          SizedBox(height: 6.w),
+                                                          SizedBox(
+                                                            width:
+                                                                min(180.w, 400),
+                                                            child: Text(upcomingNotification['title'],
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize: min(
+                                                                        18.sp,
+                                                                        28))),
+                                                          ),
+                                                        ]),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Image(
+                                                image: AssetImage(
+                                                  upcomingNotification[
+                                                              'type'] ==
+                                                          CardType
+                                                              .bloodsugar.name
+                                                      ? "assets/images/icons/icon_bloodsugar.png"
+                                                      : "assets/images/icons/icon_supplement.png",
+                                                ),
+                                                height: min(48.w, 68),
+                                                width: min(30.w, 50),
+                                              ),
+                                              Image(
+                                                image: const AssetImage(
+                                                  "assets/images/icons/icon_clock.png",
+                                                ),
+                                                height: min(66.w, 86),
+                                                width: min(66.w, 86),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Positioned(
+                        top: 278.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: Center(
+                          child: SizedBox(
+                            width: min(221.w, 321),
+                            child: const Image(
+                              image: AssetImage("assets/images/baby.png"),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
+                // =========== 3) 고정 아이콘(마이페이지) ===========
                 Positioned(
                   top: 46.h,
-                  left: MediaQuery.of(context).size.width > 600 ? screenWidth - 35.w : screenWidth - 55.w,
+                  left: MediaQuery.of(context).size.width > 600
+                      ? screenWidth - 35.w
+                      : screenWidth - 55.w,
                   child: IconButton(
                     icon: Image(
                       width: min(30.w, 40),
@@ -151,232 +420,6 @@ class _HomeFragmentState extends State<HomeFragment> {
                     },
                   ),
                 ),
-                Positioned(
-                  top: 380.h,
-                  left: 0.w,
-                  right: 0.w,
-                  child: Container(
-                    width: screenWidth,
-                    height: screenHeight * 0.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40.w),
-                        topRight: Radius.circular(40.w),
-                        bottomLeft: Radius.circular(40.w),
-                        bottomRight: Radius.circular(40.w),
-                      ),
-                      color: contentBoxTwoColor,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: min(54.w, 64),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? 30.w : 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MealScreen()));
-                                },
-                                child: RecordIcon(
-                                  recordTypeName: "meal",
-                                  recordTypeKorName: "식단",
-                                  imageWidth: min(26.w, 46),
-                                  imageHeight: min(37.w, 57),
-                                ),
-                              ),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SupplementRecord()));
-                                  },
-                                  child: RecordIcon(
-                                    recordTypeName: "supplement",
-                                    recordTypeKorName: "영양제",
-                                    imageWidth: min(28.w, 48),
-                                    imageHeight: min(67.w, 87),
-                                  )),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const BloodsugarPage()));
-                                  },
-                                  child: RecordIcon(
-                                    recordTypeName: "bloodsugar",
-                                    recordTypeKorName: "혈당",
-                                    imageWidth: min(28.w, 48),
-                                    imageHeight: min(37.w, 57),
-                                  )),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const WeightRecord()));
-                                  },
-                                  child: RecordIcon(
-                                    recordTypeName: "weight",
-                                    recordTypeKorName: "체중",
-                                    imageWidth: min(28.w, 48),
-                                    imageHeight: min(37.w, 57),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: min(40.w, 50),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('잊지 말고 기록하세요',
-                                style: TextStyle(
-                                    color: mainTextColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: min(18.sp, 28))),
-                            SizedBox(height: min(18.w, 28)),
-                            InkWell(
-                              onTap: () async {
-                                final type = upcomingNotification['type'] ==
-                                        CardType.bloodsugar.name
-                                    ? CardType.bloodsugar
-                                    : CardType.supplement;
-
-                                final shouldRefresh = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AlarmSettingPage(type: type)),
-                                );
-
-                                if (mounted && shouldRefresh == true) {
-                                  setState(() {});
-                                }
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width > 600 ? screenWidth - 60.w : screenWidth - 40.w,
-                                height: min(110.w, 160),
-                                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xFFA2A0F4),
-                                    borderRadius: BorderRadius.circular(10.w)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: upcomingNotification[
-                                                        'targetTimeAt'] ==
-                                                    ''
-                                                ? [
-                                                    Text('영양제와 혈당 알림을',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: min(14.sp, 24))),
-                                                    Text('등록해보세요!',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: min(14.sp, 24)))
-                                                  ]
-                                                : [
-                                                    Text(
-                                                        upcomingNotification[
-                                                            'targetTimeAt'],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: min(14.sp, 24))),
-                                                    SizedBox(height: 6.w),
-                                                    SizedBox(
-                                                      width: min(180.w, 400),
-                                                      child: Text(
-                                                          upcomingNotification[
-                                                              'title'],
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight.w700,
-                                                              fontSize: min(18.sp, 28))),
-                                                    ),
-                                                  ]),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Image(
-                                          image: AssetImage(
-                                            upcomingNotification['type'] ==
-                                                    CardType.bloodsugar.name
-                                                ? "assets/images/icons/icon_bloodsugar.png"
-                                                : "assets/images/icons/icon_supplement.png",
-                                          ),
-                                          height: min(48.w, 68),
-                                          width: min(30.w, 50),
-                                        ),
-                                        Image(
-                                          image: const AssetImage(
-                                            "assets/images/icons/icon_clock.png",
-                                          ),
-                                          height: min(66.w, 86),
-                                          width: min(66.w, 86),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-      top: 278.h,
-      left: 0.w,
-      right: 0.w, 
-      child: Center(
-        child: SizedBox(
-          width: min(221.w, 321),
-          child: const Image(
-            image: AssetImage("assets/images/baby.png"),
-          ),
-        ),
-      ),
-    ),
               ],
             ),
           );

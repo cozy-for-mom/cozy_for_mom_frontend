@@ -92,6 +92,7 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
                 : SizedBox(
                     height: isTablet? screenHeight - 110.h : screenHeight - 90.h,
                     child: SingleChildScrollView(
+                      physics: ClampingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: notifications.map<Widget>((notification) {

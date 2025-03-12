@@ -30,21 +30,20 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: isTablet ? 0.w : 50.w,
+              top: isSmall ? 0.w : 40.w,
               width: screenWidth,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: paddingValue - 20.w,
-                    bottom: paddingValue - 20.w,
-                    right: 8.w),
+                    top: paddingValue, bottom: paddingValue - 20.w, right: 8.w),
                 child: Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +86,9 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                                 elevation: 0.0,
                                 context: context,
                                 builder: (context) {
-                                  return Wrap(children : [MonthCalendarModal(limitToday: true)]);
+                                  return Wrap(children: [
+                                    MonthCalendarModal(limitToday: true)
+                                  ]);
                                 },
                               );
                             },
@@ -115,7 +116,7 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 }),
               )),
           Positioned(
-              top: isTablet ? 80.h : 100.h,
+              top: isSmall? 90.h : 110.h,
               left: paddingValue,
               child: Container(
                 width: screenWidth - 2 * paddingValue,

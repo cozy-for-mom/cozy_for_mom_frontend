@@ -102,7 +102,6 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
     final paddingValue = isTablet ? 30.w : 20.w;
-    final searchController = TextEditingController(text: widget.searchKeyword);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -143,6 +142,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: SingleChildScrollView(
+                            physics: ClampingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             child: Text(
                               widget.searchKeyword,
@@ -214,7 +214,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                     vertical: 8.w),
                                                 width: screenWidth -
                                                     2 * paddingValue,
-                                                height: 148.w - paddingValue,
+                                                height: 153.w - paddingValue,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -359,7 +359,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                           Container(
                             width: screenWidth - 2 * paddingValue,
                             // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                            height: screenHeight * (0.75),
+                            height: screenHeight * (0.73), // TODO 다른 기종 확인
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.w),

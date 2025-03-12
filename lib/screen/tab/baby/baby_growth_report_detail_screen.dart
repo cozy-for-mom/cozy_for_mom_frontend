@@ -183,7 +183,7 @@ class _BabyGrowthReportDetailScreenState
                                                         padding: EdgeInsets
                                                             .symmetric(
                                                                 vertical: 8.h),
-                                                        height: 148.w -
+                                                        height: 153.w -
                                                             paddingValue,
                                                         decoration:
                                                             BoxDecoration(
@@ -279,7 +279,8 @@ class _BabyGrowthReportDetailScreenState
                                                                                 widget.babyProfileGrowthId);
                                                                             setState(() {});
                                                                           },
-                                                                          shouldCloseParentCnt: 3,
+                                                                          shouldCloseParentCnt:
+                                                                              3,
                                                                         );
                                                                       },
                                                                       barrierDismissible:

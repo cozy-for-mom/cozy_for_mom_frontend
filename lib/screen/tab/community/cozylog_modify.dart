@@ -176,7 +176,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                       child: Container(
                         width: screenWidth - paddingValue,
                         // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                        height: screenHeight * (0.7),
+                        height: screenHeight * (0.69),
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.w),
@@ -217,7 +217,7 @@ class _CozylogListModifyState extends State<CozylogListModify> {
                                 image: const AssetImage(
                                     'assets/images/icons/cozylog_off.png'),
                                 width: min(45.31.w, 90.62),
-                                height: min(40.77.w, 40.77*2)),
+                                height: min(40.77.w, 40.77 * 2)),
                             SizedBox(height: 12.w),
                             Text('코지로그를 작성해 보세요!',
                                 style: TextStyle(

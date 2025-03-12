@@ -35,8 +35,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
         Provider.of<SupplementApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     void addSupplement(int id) {
       setState(() {
@@ -82,11 +82,11 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   return Stack(
                     children: [
                       Positioned(
-                          top: isTablet ? 0.w : 50.w,
+                        top: isSmall? 0.w : 40.w,
                           width: screenWidth,
                           child: Padding(
                               padding: EdgeInsets.only(
-                                  top: paddingValue - 20.w,
+                                  top: paddingValue,
                                   bottom: paddingValue - 20.w,
                                   right: 8.w),
                               child: Row(
@@ -159,7 +159,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                 ],
                               ))),
                       Positioned(
-                        top: isTablet? 80.h : 110.h,
+                        top: 110.h,
                         left: paddingValue,
                         child: SizedBox(
                           width: screenWidth - 2 * paddingValue,
@@ -190,6 +190,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
                             : SizedBox(
                                 height: screenHeight,
                                 child: SingleChildScrollView(
+                                  physics: ClampingScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   child: Padding(
                                     padding: EdgeInsets.only(
