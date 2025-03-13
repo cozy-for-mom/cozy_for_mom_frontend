@@ -257,7 +257,8 @@ class _BabyGrowthReportListScreenState
                                                   }
 
                                                   return SingleChildScrollView(
-                                                    physics: ClampingScrollPhysics(),
+                                                    physics:
+                                                        ClampingScrollPhysics(),
                                                     // TODO 너비 조정
                                                     child: Column(
                                                       children: [
@@ -270,9 +271,9 @@ class _BabyGrowthReportListScreenState
                                                               Padding(
                                                                 padding: EdgeInsets
                                                                     .symmetric(
-                                                                        horizontal:
-                                                                            8.w,
-                                                                        ),
+                                                                  horizontal:
+                                                                      8.w,
+                                                                ),
                                                                 child: Divider(
                                                                   height: min(
                                                                       30.w, 30),
@@ -297,61 +298,72 @@ class _BabyGrowthReportListScreenState
                                                                 ),
                                                               ),
                                                               SizedBox(
-                                                                  height: min(20.w, 20)),
+                                                                  height: min(
+                                                                      20.w,
+                                                                      20)),
                                                               Padding(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            isTablet? 6.w : 8.w),  // TODO 수평스크롤 넣을지 고민
-                                                                child:
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceAround,
-                                                                      children: [
-                                                                        NotificationOption(
-                                                                            title:
-                                                                                '당일 정오',
-                                                                            isSelected: selectedNotifications.contains(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        isTablet
+                                                                            ? 6.w
+                                                                            : 8.w), // TODO 수평스크롤 넣을지 고민
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    NotificationOption(
+                                                                        title:
+                                                                            '당일 정오',
+                                                                        isSelected:
+                                                                            selectedNotifications.contains(
                                                                                 "on day"),
-                                                                            onTap: () =>
-                                                                                {
-                                                                                  toggleNotification("on day")
-                                                                                }),
-                                                                        NotificationOption(
-                                                                          title:
-                                                                              '하루 전',
-                                                                          isSelected:
-                                                                              selectedNotifications.contains("one day ago"),
-                                                                          onTap: () =>
-                                                                              toggleNotification("one day ago"),
-                                                                        ),
-                                                                        NotificationOption(
-                                                                          title:
-                                                                              '이틀 전',
-                                                                          isSelected:
-                                                                              selectedNotifications.contains("two day ago"),
-                                                                          onTap: () =>
-                                                                              toggleNotification("two day ago"),
-                                                                        ),
-                                                                        NotificationOption(
-                                                                          title:
-                                                                              '일주일 전',
-                                                                          isSelected:
-                                                                              selectedNotifications.contains("one week ago"),
-                                                                          onTap: () =>
-                                                                              toggleNotification("one week ago"),
-                                                                        ),
-                                                                        NotificationOption(
-                                                                          title:
-                                                                              '설정 안 함',
-                                                                          isSelected:
-                                                                              selectedNotifications.contains("none"),
-                                                                          onTap: () =>
-                                                                              toggleNotification("none"),
-                                                                        ),
-                                                                      ],
+                                                                        onTap: () =>
+                                                                            {
+                                                                              toggleNotification("on day")
+                                                                            }),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '하루 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("one day ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "one day ago"),
                                                                     ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '이틀 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("two day ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "two day ago"),
+                                                                    ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '일주일 전',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("one week ago"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "one week ago"),
+                                                                    ),
+                                                                    NotificationOption(
+                                                                      title:
+                                                                          '설정 안 함',
+                                                                      isSelected:
+                                                                          selectedNotifications
+                                                                              .contains("none"),
+                                                                      onTap: () =>
+                                                                          toggleNotification(
+                                                                              "none"),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               SizedBox(
                                                                   height: 30.w),
@@ -377,7 +389,9 @@ class _BabyGrowthReportListScreenState
                                                                 padding:
                                                                     EdgeInsets
                                                                         .only(
-                                                                  top: isTablet ? 0.w : 20.w,
+                                                                  top: isTablet
+                                                                      ? 0.w
+                                                                      : 20.w,
                                                                   bottom: 54.w -
                                                                       paddingValue,
                                                                 ),
@@ -396,6 +410,8 @@ class _BabyGrowthReportListScreenState
                                                                         Navigator.pop(
                                                                             context,
                                                                             true);
+                                                                        setState(
+                                                                            () {});
                                                                       }
                                                                     }
                                                                   },
@@ -807,7 +823,9 @@ class NotificationOption extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: isTablet ? 5.w : 8.w, horizontal: isTablet ? 8.w : 12.w),
+          padding: EdgeInsets.symmetric(
+              vertical: isTablet ? 5.w : 8.w,
+              horizontal: isTablet ? 8.w : 12.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11.w),
             color: isSelected ? primaryColor : const Color(0xffF0F0F5),
