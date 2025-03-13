@@ -488,7 +488,7 @@ class _BabyGrowthReportDetailScreenState
                                       readOnly: true,
                                       controller: TextEditingController(
                                           text:
-                                              "${selectedBaby.value!.babyGrowthInfo.headCircum} cm"),
+                                              "${selectedBaby.value!.babyGrowthInfo.headDiameter} cm"),
                                       style: TextStyle(
                                         color: afterInputColor,
                                         fontWeight: FontWeight.w500,
@@ -536,7 +536,7 @@ class _BabyGrowthReportDetailScreenState
                                       readOnly: true,
                                       controller: TextEditingController(
                                           text:
-                                              "${selectedBaby.value!.babyGrowthInfo.headDiameter} cm"),
+                                              "${selectedBaby.value!.babyGrowthInfo.headCircum} cm"),
                                       style: TextStyle(
                                         color: afterInputColor,
                                         fontWeight: FontWeight.w500,
