@@ -72,11 +72,21 @@ class _LineChartState extends State<LineChart> {
       series: <CartesianSeries<LineChartData, String>>[
         LineSeries<LineChartData, String>(
           dataSource: widget.dataList.reversed.toList(),
-          xValueMapper: (LineChartData data, _) => widget.timeType == 'daily'
-              ? dateToString(data.xValue)
-              : widget.timeType == 'weekly'
-                  ? '${dateToString(data.xValue).substring(0, 3)}${DateFormat('dd').format(findMonday(data.xValue))} - ${DateFormat('dd').format(findSunday(findMonday(data.xValue)))}'
-                  : '${dateToString(data.xValue)[1]}월',
+          xValueMapper: (LineChartData data, int index) {
+            DateTime date = data.xValue;
+
+            if (widget.timeType == 'daily') {
+              return DateFormat('yyyy-MM-dd').format(date);
+            } else if (widget.timeType == 'weekly') {
+              final monday = findMonday(date);
+              final sunday = findSunday(monday);
+              return '${dateToString(data.xValue).substring(0, 3)}'
+                  '${DateFormat('dd').format(monday)} - '
+                  '${DateFormat('dd').format(sunday)}';
+            } else {
+              return '${date.month}월';
+            }
+          },
           yValueMapper: (LineChartData data, _) => data.yValue,
           color: defaultColor,
           width: 3.w,
