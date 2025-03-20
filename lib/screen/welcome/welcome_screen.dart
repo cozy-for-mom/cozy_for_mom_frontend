@@ -11,9 +11,10 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -22,10 +23,10 @@ class WelcomeScreen extends StatelessWidget {
           Column(
             children: [
               SizedBox(
-                height: isTablet? 0.w : 70.w,
+                height: isSmall ? 0.w : 70.w,
               ),
               Image(
-                height: isTablet? 300.w : 390.w,
+                height: 390.w,
                 image: const AssetImage(
                   "assets/images/welcome_image.png",
                 ),
