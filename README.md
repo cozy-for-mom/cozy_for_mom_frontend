@@ -1,16 +1,42 @@
-# cozy_for_mom_frontend
+# Cozy For Mom
 
-A new Flutter project.
+**✅ 주제**
 
-## Getting Started
+임산부와 태아의 건강을 동시에 모니터링할 수 있는 애플리케이션
 
-This project is a starting point for a Flutter application.
+**✅ 메인화면 이미지**
 
-A few resources to get you started if this is your first Flutter project:
+![코지포맘_태아/산모/커뮤니티_화면](https://github.com/user-attachments/assets/f2d474b2-8e7e-4b08-adfa-d9aaf6fd91a7)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**✅ 사용대상**
+
+임신 준비중인 예비 산모 및 현재 임신중인 예비 엄마
+
+**✅ 발견한 문제점**
+
+현재 임산부에게 서비스를 제공하는 앱들은 아이 위주의 기록 관리이거나 커머스 중심 애플리케이션이 대다수입니다. 하지만 임신을 했을 때 엄마의 건강 상태가 양호해야 아이도 건강할 수 있음은 당연합니다.
+
+**✅ 솔루션**
+
+저희 코지포맘은 아이의 성장 기록과 임신 일기와 더불어 엄마의 식단과 혈당, 체중등 건강과 관련된 정보를 기록하여 아이뿐만 아니라 엄마의 건강도 한눈에 확인할 수 있게 도와줄 것입니다.
+
+**✅ 기대효과**
+
+코지포맘을 통해서 임산부들은 자신의 건강과 아이의 성장 기록을 한번에 챙길 수 있습니다.
+
+## 🛠️ 모바일 사용 기술 및 라이브러리
+
+- Flutter, Dart, iOS, VSCode, Xcode(Simulator)
+- Figma
+- Git, GitHub, Notion
+
+## 🧑‍🧑‍🧒‍🧒 팀 구성원
+
+- Mobile(2) : 문아영, 박채경
+- Backend(1) : 안소현
+- Design(2) : 김윤주, 이승미
+
+## 🔗 링크
+
+- 앱스토어 링크 : https://apps.apple.com/kr/app/cozyformom/id6502280374
