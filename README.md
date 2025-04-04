@@ -6,7 +6,7 @@
 
 **✅ 메인화면 이미지**
 
-![코지포맘_태아/산모/커뮤니티_화면](https://github.com/user-attachments/assets/f2d474b2-8e7e-4b08-adfa-d9aaf6fd91a7)
+<img src="https://github.com/user-attachments/assets/f2d474b2-8e7e-4b08-adfa-d9aaf6fd91a7" alt="코지포맘_태아/산모/커뮤니티_화면" width="800">
 
 
 **✅ 사용대상**
@@ -25,7 +25,7 @@
 
 코지포맘을 통해서 임산부들은 자신의 건강과 아이의 성장 기록을 한번에 챙길 수 있습니다.
 
-## 🛠️ 모바일 사용 기술 및 라이브러리
+## 🛠️ 사용 기술 및 라이브러리
 
 - Flutter, Dart, iOS, VSCode, Xcode(Simulator)
 - Figma
