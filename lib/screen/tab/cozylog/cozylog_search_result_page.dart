@@ -102,7 +102,6 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
     final paddingValue = isTablet ? 30.w : 20.w;
-
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Padding(
@@ -554,6 +553,17 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
             SizedBox(
               height: 20.w,
             ),
+                        ],
+                      );
+                    }
+                  } else {
+                    return Container();
+                  }
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            
           ],
         ),
       ),
