@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecordIcon extends StatelessWidget {
   // TODO onTap 속성 추가
@@ -20,12 +24,12 @@ class RecordIcon extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 76,
-          width: 76,
+          height: min(76.w, 116),
+          width: min(76.w, 116),
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(9),
+            borderRadius: BorderRadius.all(
+              Radius.circular(9.w),
             ),
           ),
           child: Center(
@@ -38,11 +42,15 @@ class RecordIcon extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 7,
+        SizedBox(
+          height: 7.w,
         ),
         Text(
           recordTypeKorName,
+          style: TextStyle(
+              color: mainTextColor,
+              fontWeight: FontWeight.w600,
+              fontSize: min(14.sp, 24)),
         ),
       ],
     );

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,149 +98,145 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
     List<String> timeParts = textEditingController.text.split(':');
 
     return Container(
-      height: 78,
-      decoration: const BoxDecoration(
+      height: min(78.w, 156),
+      width: screenWidth,
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.w),
         ),
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: screenWidth - 80,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 96,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          color: offButtonColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                isBeforeButtonEnabled = true;
-                                isAfterButtonEnabled = false;
-                                if (widget.initialTime != null) {
-                                  widget.targetTimeAt(convert24Time(timeParts));
-                                }
-                              });
-                            },
-                            child: Container(
-                                width: 45,
-                                height: 29,
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: isBeforeButtonEnabled
-                                        ? primaryColor
-                                        : offButtonColor),
-                                child: Text('오전',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: isBeforeButtonEnabled
-                                          ? Colors.white
-                                          : offButtonTextColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                    ))),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                isBeforeButtonEnabled = false;
-                                isAfterButtonEnabled = true;
-                                if (widget.initialTime != null) {
-                                  widget.targetTimeAt(convert24Time(timeParts));
-                                }
-                              });
-                            },
-                            child: Container(
-                                width: 45,
-                                height: 29,
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: isAfterButtonEnabled
-                                        ? primaryColor
-                                        : offButtonColor),
-                                child: Text('오후',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: isAfterButtonEnabled
-                                          ? Colors.white
-                                          : offButtonTextColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                    ))),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 90,
-                      child: Center(
-                        child: TextFormField(
-                          autocorrect: true,
-                          controller: textEditingController,
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+      children: [
+        Container(
+          width: 96.w,
+          height: 35.w,
+          decoration: BoxDecoration(
+              color: offButtonColor, borderRadius: BorderRadius.circular(20.w)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isBeforeButtonEnabled = true;
+                    isAfterButtonEnabled = false;
+                    if (widget.initialTime != null) {
+                      widget.targetTimeAt(convert24Time(timeParts));
+                    }
+                  });
+                },
+                child: Container(
+                    width: 45.w,
+                    height: 29.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.w),
+                        color: isBeforeButtonEnabled
+                            ? primaryColor
+                            : offButtonColor),
+                    child: Center(
+                      child: Text('오전',
                           textAlign: TextAlign.center,
-                          maxLength: 7,
-                          showCursor: false,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(4),
-                          ],
-                          decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 4),
-                              border: InputBorder.none,
-                              counterText: '',
-                              hintText: '00 : 00',
-                              hintStyle: TextStyle(
-                                  color: offButtonTextColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24)),
-                          style: const TextStyle(
-                              color: mainTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24),
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              textEditingController.value =
-                                  textEditingController.value.copyWith(
-                                text: formatTime(value),
-                                selection: TextSelection.collapsed(
-                                    offset: formatTime(value).length),
-                              );
-                              String time;
-                              timeParts = textEditingController.text.split(':');
+                          style: TextStyle(
+                            color: isBeforeButtonEnabled
+                                ? Colors.white
+                                : offButtonTextColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: min(14.sp, 24),
+                          )),
+                    )),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isBeforeButtonEnabled = false;
+                    isAfterButtonEnabled = true;
+                    if (widget.initialTime != null) {
+                      widget.targetTimeAt(convert24Time(timeParts));
+                    }
+                  });
+                },
+                child: Container(
+                    width: 45.w,
+                    height: 29.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.w),
+                        color: isAfterButtonEnabled
+                            ? primaryColor
+                            : offButtonColor),
+                    child: Center(
+                      child: Text('오후',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: isAfterButtonEnabled
+                                ? Colors.white
+                                : offButtonTextColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: min(14.sp, 24),
+                          )),
+                    )),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: min(89.w, 119),
+          alignment: Alignment.center,
+          child: Center(
+            child: TextFormField(
+              autocorrect: true,
+              controller: textEditingController,
+              textAlignVertical: TextAlignVertical.center,
+              textAlign: TextAlign.center,
+              maxLength: 7,
+              showCursor: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(4),
+              ],
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                counterText: '',
+                hintText: '00 : 00',
+                hintStyle: TextStyle(
+                    color: offButtonTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: min(24.sp, 34),
+                    height: min(1.w, 1)),
+              ),
+              style: TextStyle(
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: min(24.sp, 34),
+                  height: min(1.w, 1)),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  textEditingController.value =
+                      textEditingController.value.copyWith(
+                    text: formatTime(value),
+                    selection: TextSelection.collapsed(
+                        offset: formatTime(value).length),
+                  );
+                  String time;
+                  if (textEditingController.text.contains(':')) {
+                    timeParts = textEditingController.text.split(':');
 
-                              if (timeParts[0].length + timeParts[1].length ==
-                                  6) {
-                                // 각각 공백 포함 3글자
-                                time = convert24Time(
-                                    timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
-                                widget.targetTimeAt(time);
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ])),
-        ],
-      ),
+                    if (timeParts[0].length + timeParts[1].length == 6) {
+                      // 각각 공백 포함 3글자
+                      time = convert24Time(
+                          timeParts); // TODO RangeError (index): Invalid value: Only valid value is 0: 1 수정
+                      widget.targetTimeAt(time);
+                    }
+                  }
+                }
+              },
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }

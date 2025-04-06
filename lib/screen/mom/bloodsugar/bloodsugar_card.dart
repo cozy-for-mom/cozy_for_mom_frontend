@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/bloodsugar/bloodsugar_modal.dart';
 import 'package:cozy_for_mom_frontend/model/global_state.dart';
@@ -27,12 +30,15 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     BloodsugarApiService momBloodsugarViewModel =
         Provider.of<BloodsugarApiService>(context, listen: true);
+
     return Consumer<MyDataModel>(builder: (context, globalData, _) {
       return FutureBuilder(
-          future:
-              momBloodsugarViewModel.getBloodsugars(globalData.selectedDate),
+          future: momBloodsugarViewModel.getBloodsugars(
+              context, globalData.selectedDate),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               pregnantBloodsugars = snapshot.data! as List<PregnantBloosdugar>;
@@ -47,22 +53,22 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
             return Card(
               elevation: 0.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(20.w)),
               child: Container(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 12),
-                width: screenWidth - 40,
-                height: 160,
+                padding: EdgeInsets.only(
+                    left: 20.w, right: 20.w, top: 20.w, bottom: 12.w),
+                width: screenWidth - 2 * paddingValue,
+                height: min(160.w, 250),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       widget.time,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12),
+                          fontSize: min(12.sp, 22)),
                     ),
                     Column(
                         children: periods.map((period) {
@@ -87,10 +93,10 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(period,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: mainTextColor,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16)),
+                                      fontSize: min(16.sp, 26))),
                               Row(
                                 children: <Widget>[
                                   InkWell(
@@ -113,8 +119,10 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                               }
                                             })
                                           : showModalBottomSheet(
+                                              isScrollControlled: true,
                                               backgroundColor:
                                                   Colors.transparent,
+                                              elevation: 0.0,
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return SelectBottomModal(
@@ -146,6 +154,8 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                     tap2: () {
                                                       Navigator.pop(context);
                                                       showDialog(
+                                                          barrierDismissible:
+                                                              false,
                                                           context: context,
                                                           builder: (context) {
                                                             return DeleteModal(
@@ -156,6 +166,7 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                                                     () async {
                                                                   await momBloodsugarViewModel
                                                                       .deleteBloodsugar(
+                                                                          context,
                                                                           id);
                                                                   setState(
                                                                       () {});
@@ -165,43 +176,43 @@ class _BloodsugarCardState extends State<BloodsugarCard> {
                                               });
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 50, vertical: 10),
-                                      width: 130,
-                                      height: 41,
+                                      width: min(130.w, 230),
+                                      height: min(41.w, 61),
                                       decoration: BoxDecoration(
                                           color: input == '-'
                                               ? offButtonColor
                                               : primaryColor,
                                           borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: Text(input,
-                                          textAlign: TextAlign.center,
-                                          style: input == '-'
-                                              ? const TextStyle(
-                                                  color: mainTextColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 18)
-                                              : const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16)),
+                                              BorderRadius.circular(20.w)),
+                                      child: Center(
+                                        child: Text(input,
+                                            textAlign: TextAlign.center,
+                                            style: input == '-'
+                                                ? TextStyle(
+                                                    color: mainTextColor,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: min(18.sp, 28))
+                                                : TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: min(16.sp, 26))),
+                                      ),
                                     ),
                                   ),
-                                  const Padding(
-                                      padding: EdgeInsets.only(left: 8),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 8.w),
                                       child: Text(
                                         'mg / dL',
                                         style: TextStyle(
                                             color: mainTextColor,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: 14),
+                                            fontSize: min(14.sp, 24)),
                                       )),
                                 ],
                               )
                             ],
                           ),
-                          const Padding(padding: EdgeInsets.only(bottom: 8)),
+                          Padding(padding: EdgeInsets.only(bottom: 8.h)),
                         ],
                       );
                     }).toList()),

@@ -1,16 +1,20 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_info_input_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/join/join_input_data.dart';
 import 'package:cozy_for_mom_frontend/screen/main_screen.dart';
-import 'package:cozy_for_mom_frontend/service/user/device_token_manager.dart';
 import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/user/token_manager.dart'
     as TokenManager;
+import 'package:cozy_for_mom_frontend/slpsh_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,40 +39,37 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final deviceToken = DeviceTokenManager().deviceToken ?? 'Unknown';
-    print(deviceToken);
-
     return Scaffold(
-        body: FutureBuilder<String?>(
-            future: accessToken,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: Colors.white,
-                ));
-              } else if (snapshot.hasData) {
-                handleUserType(context);
-                return const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: Colors.white,
-                )); // 결과 대기 중 표시
-              } else {
-                return buildLoginScreen(screenWidth, screenHeight);
-              }
-            }));
+      backgroundColor: backgroundColor,
+      body: FutureBuilder<String?>(
+        future: accessToken,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: SplashScreen());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData && snapshot.data != null) {
+              handleUserType(context);
+              return const Center(child: SplashScreen()); // 결과 대기 중 표시
+            } else {
+              return buildLoginScreen(screenWidth, screenHeight);
+            }
+          } else {
+            return const Center(child: SplashScreen()); // 로딩 중인 경우
+          }
+        },
+      ),
+    );
   }
 
   void handleUserType(BuildContext context) async {
     final userType = await tokenManager.getUserType();
+    print(userType);
     if (userType == UserType.guest) {
       // UserType이 guest이면 회원가입 페이지로 이동
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const JoinInfoInputScreen()));
     } else {
-      // UserType이 user이면 MainScreen으로 이동
+      // UserType이 user/admin이면 MainScreen으로 이동
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainScreen()));
     }
@@ -76,31 +77,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget buildLoginScreen(double screenWidth, double screenHeight) {
     final joinInputData = Provider.of<JoinInputData>(context);
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     // 로그인 스크린 UI 구성
     return Stack(
       children: [
         Positioned(
-          top: -230,
+          top: -180.h,
           child: Image(
-            image: const AssetImage('assets/images/login_confetti_image.png'),
+            image:
+                const AssetImage('assets/images/login_confetti_logo_group.png'),
             width: screenWidth,
             height: screenHeight,
           ),
         ),
         Positioned(
-          top: 100,
+          top: 331.h,
+          left: 0.w,
+          right: 0.w,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image(
-                image: const AssetImage('assets/images/login_cozy_image.png'),
-                width: screenWidth,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
               InkWell(
                 onTap: () async {
-                  UserType userType = await kakaoLogin();
+                  UserType? userType = await kakaoLogin();
                   joinInputData.setOauthType(OauthType.kakao);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
@@ -110,35 +110,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const JoinInfoInputScreen()));
                   } else {
-                    // UserType이 user이면 MainScreen으로 이동
+                    // UserType이 user/admin이면 MainScreen으로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const MainScreen()));
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: 350,
+                  height: min(60.w, 100),
+                  width: screenWidth - 2 * paddingValue,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                     color: const Color(0xffFEE500),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "카카오로 시작하기",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: min(18.sp, 30),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 13,
+              SizedBox(
+                height: min(16.w, 16),
               ),
               InkWell(
                 onTap: () async {
-                  UserType userType = await appleLogin();
+                  UserType? userType = await appleLogin();
                   joinInputData.setOauthType(OauthType.apple);
 
                   if (!mounted) return; // 위젯이 여전히 활성 상태인지 확인
@@ -148,93 +148,114 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const JoinInfoInputScreen()));
                   } else {
-                    // UserType이 user이면 MainScreen으로 이동
+                    // UserType이 user/admin이면 MainScreen으로 이동
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const MainScreen()));
                   }
                 },
                 child: Container(
-                  height: 60,
-                  width: 350,
+                  height: min(60.w, 100),
+                  width: screenWidth - 2 * paddingValue,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.w),
                     color: const Color(0xff393939),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       "Apple로 시작하기",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: min(18.sp, 30),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: min(26.w, 36),
               ),
-              const Text(
+              Text(
                 "로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.",
                 style: TextStyle(
-                  color: Color(0xff858998),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff858998),
+                  fontSize: min(12.sp, 22),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(
-                height: 8,
+              SizedBox(
+                height: 6.w,
               ),
-              const Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "개인정보처리방침",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
+                  InkWell(
+                      child: Text(
+                        "개인정보처리방침",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationColor: const Color(0xff858998),
+                          fontSize: min(12.sp, 22),
+                          color: const Color(0xff858998),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://glitter-stealer-46b.notion.site/59242de9773b49ba8cef776e14fdd498?pvs=4'));
+                      }),
                   SizedBox(
-                    width: 30,
+                    width: 30.w,
                   ),
-                  Text(
-                    "이용약관",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 12,
-                      color: Color(0xff858998),
-                    ),
-                  ),
+                  InkWell(
+                      child: Text(
+                        "이용약관",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: const Color(0xff858998),
+                            fontSize: min(12.sp, 22),
+                            color: const Color(0xff858998),
+                            fontWeight: FontWeight.w400),
+                      ),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://glitter-stealer-46b.notion.site/7d7b29f16fdb4ce6ae9160f2d754c6be?pvs=4'));
+                      }),
                 ],
               )
             ],
           ),
         ),
         Positioned(
-          // top: 700,
-          bottom: -135,
-          left: -170,
-          child: Image(
-            image: const AssetImage('assets/images/login_group_image.png'),
-            width: screenWidth + 250,
+          top: 560.h,
+          left: -150.w,
+          child: ClipRect(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              heightFactor: 0.9, // 이미지의 하단 80%만 보여줍니다
+              child: Image(
+                image: const AssetImage('assets/images/login_group_image.png'),
+                width: screenWidth + 250.w,
+                height: min(450.w, 900),
+              ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Future<UserType> kakaoLogin() async {
+  Future<UserType?> kakaoLogin() async {
     late String kakaoAccessToken;
     late String? email;
+    late String? name;
     if (await isKakaoTalkInstalled()) {
       try {
         var res = await UserApi.instance.loginWithKakaoTalk();
         kakaoAccessToken = res.accessToken;
         var user = await UserApi.instance.me();
         email = user.kakaoAccount?.email;
+        name = user.kakaoAccount?.name;
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
         // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
@@ -248,6 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
           kakaoAccessToken = res.accessToken;
           var user = await UserApi.instance.me();
           email = user.kakaoAccount?.email;
+          name = user.kakaoAccount?.name;
         } catch (error) {
           print('카카오계정으로 로그인 실패 $error');
         }
@@ -259,22 +281,26 @@ class _LoginScreenState extends State<LoginScreen> {
         kakaoAccessToken = res.accessToken;
         var user = await UserApi.instance.me();
         email = user.kakaoAccount?.email;
+        name = user.kakaoAccount?.name;
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
     }
-
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
+    if (name != null && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setName(name);
+    }
 
     return oauthApiService.authenticateByOauth(
-        OauthType.kakao, kakaoAccessToken);
+        context, OauthType.kakao, kakaoAccessToken);
   }
 
-  Future<UserType> appleLogin() async {
+  Future<UserType?> appleLogin() async {
     late String appleAuthCode;
     late String? email;
+    late String? name;
     try {
       var res = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -287,15 +313,23 @@ class _LoginScreenState extends State<LoginScreen> {
       // 애플 인증 코드 저장
       appleAuthCode = res.authorizationCode;
       email = res.email;
+      name = "${res.familyName ?? ''}${res.givenName ?? ''}".trim();
+      print('email $email');
     } catch (e) {
       print('애플로그인 실패: $e');
       if (e is PlatformException && e.code == 'CANCELED') {
         throw Exception(e.code); // TODO fix
       }
     }
+    // 처음 로그인했을때만 전달되므로 로컬 스토리지에 저장한다.
     if (email != null && mounted) {
       Provider.of<JoinInputData>(context, listen: false).setEmail(email);
     }
-    return oauthApiService.authenticateByOauth(OauthType.apple, appleAuthCode);
+    if (name != '' && mounted) {
+      Provider.of<JoinInputData>(context, listen: false).setName(name!);
+    }
+
+    return oauthApiService.authenticateByOauth(
+        context, OauthType.apple, appleAuthCode);
   }
 }

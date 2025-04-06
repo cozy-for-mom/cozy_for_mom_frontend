@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
@@ -37,12 +40,11 @@ class SupplementCard extends StatefulWidget {
 }
 
 class _SupplementCardState extends State<SupplementCard> {
-  final SlidableController _slidableController = SlidableController();
   // 영양제 섭취 횟수에 따라 Card 위젯 height 동적으로 설정
-  double calculateCardHeight(int itemCount) {
+  double calculateCardHeight(BuildContext context, int itemCount) {
     double buttonHeight = 36;
     double spacingHeight = 8;
-    return itemCount * (buttonHeight + spacingHeight) + 40;
+    return (itemCount * (buttonHeight + spacingHeight) + 40).w;
   }
 
   @override
@@ -51,80 +53,114 @@ class _SupplementCardState extends State<SupplementCard> {
     late DateTime currentTime;
     SupplementApiService supplementApi = SupplementApiService();
     final globalData = Provider.of<MyDataModel>(context, listen: false);
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     List<DateTime> sortedTakeTimes = widget.takeTimes
       ..sort((a, b) => a.compareTo(b));
     return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
       child: Card(
         elevation: 0.0,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
-          controller: _slidableController,
-          actionPane: const SlidableDrawerActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-              color: Colors.transparent,
-              foregroundColor: Colors.transparent,
-              iconWidget: Container(
-                width: 120,
-                decoration: const BoxDecoration(
-                  color: deleteButtonColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
-                  ),
-                ),
-                child: InkWell(
-                  onTap: () {
+          key: ValueKey(widget.supplementId),  // 기존 State가 다음 아이템에 붙어서 슬라이드 상태가 이어지는 현상 방지
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.25,
+            children: [
+              CustomSlidableAction(
+                padding: EdgeInsets.zero,
+                foregroundColor: deleteButtonColor,
+                autoClose: true,
+                flex: 1,
+                onPressed: (context) {
+                  // 삭제 다이얼로그 띄우기
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext buildContext) {
                         return DeleteModal(
                           text: '등록된 영양제를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
                           title: '영양제가',
                           tapFunc: () async {
-                            await supplementApi
-                                .deleteSupplement(widget.supplementId);
+                            await supplementApi.deleteSupplement(
+                                context, widget.supplementId);
                             widget.onDelete(
                                 widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
                             setState(() {
-                              _slidableController.activeState?.close();
+                        Slidable.of(buildContext)?.close();
                             });
                           },
                         );
                       },
                     );
                   },
-                  child: const Column(
+                  backgroundColor: Colors.transparent,
+                child: Container(
+                  width: 120.w,
+                  decoration: BoxDecoration(
+                    color: deleteButtonColor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.w),
+                      bottomRight: Radius.circular(20.w),
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                        return DeleteModal(
+                          text: '등록된 영양제를 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                          title: '영양제가',
+                          tapFunc: () async {
+                            await supplementApi.deleteSupplement(
+                                context, widget.supplementId);
+                            widget.onDelete(
+                                widget.supplementId); // 상태 업데이트를 상위 위젯에 전달
+                            setState(() {
+                        Slidable.of(buildContext)?.close();
+                            });
+                          },
+                        );
+                      },
+                      );
+                    },
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
-                          image: AssetImage('assets/images/icons/delete.png'),
-                          width: 17.5,
-                          height: 18,
+                          image: const AssetImage(
+                              'assets/images/icons/delete.png'),
+                          width: min(17.5.w, 27.5),
+                          height: min(18.w, 28),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 5.w),
                         Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: min(14.sp, 24),
                           ),
                         ),
-                      ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(20.w),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.w),
               color: contentBoxTwoColor,
-              width: screenWidth - 40,
-              height: calculateCardHeight(widget.targetCount),
+              width: screenWidth - 2 * paddingValue,
+              height: calculateCardHeight(context, widget.targetCount),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,28 +172,28 @@ class _SupplementCardState extends State<SupplementCard> {
                                 ? 'assets/images/icons/take_on.png'
                                 : 'assets/images/icons/take_off.png',
                           ),
-                          width: 20,
-                          height: 20),
-                      const SizedBox(width: 10),
+                          width: min(20.w, 30),
+                          height: min(20.w, 30)),
+                      SizedBox(width: 10.w),
                       Text(widget.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: afterInputColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18)),
-                      const SizedBox(width: 7),
+                              fontSize: min(18.sp, 28))),
+                      SizedBox(width: 7.w),
                       Container(
-                        width: 57,
-                        height: 22,
+                        height: 22.w,
                         alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         decoration: BoxDecoration(
                             color: const Color(0xffFEEEEE),
-                            borderRadius: BorderRadius.circular(8)),
+                            borderRadius: BorderRadius.circular(8.w)),
                         child: Text(
                           '하루 ${widget.targetCount}회',
-                          style: const TextStyle(
-                              color: Color(0xffFF9797),
+                          style: TextStyle(
+                              color: const Color(0xffFF9797),
                               fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                              fontSize: min(12.sp, 22)),
                         ),
                       )
                     ]),
@@ -166,13 +202,14 @@ class _SupplementCardState extends State<SupplementCard> {
                         children: List.generate(
                           widget.targetCount,
                           (index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            padding: EdgeInsets.symmetric(vertical: 4.w),
                             child: InkWell(
                               onTap: widget.realCount > index
                                   ? () {
                                       int id = widget.recordIds[index];
                                       showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
+                                          elevation: 0.0,
                                           context: context,
                                           builder: (BuildContext context) {
                                             return SelectBottomModal(
@@ -181,6 +218,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                               tap1: () {
                                                 Navigator.pop(context);
                                                 showDialog(
+                                                  barrierDismissible: true,
                                                   context: context,
                                                   builder: (context) {
                                                     return SupplementModal(
@@ -198,6 +236,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                               tap2: () {
                                                 Navigator.pop(context);
                                                 showDialog(
+                                                  barrierDismissible: false,
                                                   context: context,
                                                   builder: (context) {
                                                     return DeleteModal(
@@ -207,7 +246,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                                       tapFunc: () async {
                                                         await supplementApi
                                                             .deleteSupplementIntake(
-                                                                id);
+                                                                context, id);
                                                         setState(() {
                                                           widget.realCount--;
                                                           widget.takeTimes
@@ -228,24 +267,24 @@ class _SupplementCardState extends State<SupplementCard> {
                                         '${globalData.selectedDate.toIso8601String().split('T')[0]} ${DateTime.now().toIso8601String().split('T')[1].substring(0, 12)}',
                                       );
 
-                                      int intakeId = await supplementApi
-                                          .recordSupplementIntake(
+                                      int? intakeId = await supplementApi
+                                          .recordSupplementIntake(context,
                                               widget.name, currentTime);
                                       setState(() {
                                         widget.realCount++;
                                         widget.takeTimes.add(currentTime);
-                                        widget.recordIds.add(intakeId);
+                                        widget.recordIds.add(intakeId!);
                                       });
                                     },
                               child: Container(
-                                width: 106,
-                                height: 36,
+                                width: 126.w - paddingValue,
+                                height: 36.w,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: widget.realCount > index
                                         ? primaryColor
                                         : offButtonColor,
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(20.w)),
                                 child: Text(
                                     widget.realCount > index
                                         ? DateFormat('HH:mm')
@@ -256,7 +295,7 @@ class _SupplementCardState extends State<SupplementCard> {
                                             ? Colors.white
                                             : offButtonTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16)),
+                                        fontSize: min(16.sp, 26))),
                               ),
                             ),
                           ),

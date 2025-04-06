@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_card.dart';
 import 'package:provider/provider.dart';
@@ -39,10 +42,13 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
+
     return FutureBuilder(
-        future: notificationViewModel.getNotifications('supplement'),
+        future: notificationViewModel.getNotifications(context, 'supplement'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // 비동기 작업이 완전히 완료되었는지 확인하는 조건
@@ -60,32 +66,33 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
             ));
           }
           return Positioned(
-            top: 90,
-            left: 0,
-            right: 0,
+            top: isTablet? 110.h : 90.h,
+            left: isTablet? 30.w : 20.w,
+            right: isTablet? 30.w : 20.w,
             child: notifications.isEmpty
                 ? Column(children: [
                     SizedBox(
                         height: screenHeight * (0.55),
-                        child: const Column(
+                        child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image(
-                                  image: AssetImage(
+                                  image: const AssetImage(
                                       'assets/images/icons/notification_off.png'),
-                                  width: 50,
-                                  height: 52),
-                              SizedBox(height: 7),
+                                  width: min(50.w, 100),
+                                  height: min(52.w, 104)),
+                              SizedBox(height: 7.w),
                               Text('알림을 등록해 보세요!',
                                   style: TextStyle(
-                                      color: Color(0xff9397A4),
+                                      color: const Color(0xff9397A4),
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14)),
+                                      fontSize: min(14.sp, 24))),
                             ])),
                   ])
                 : SizedBox(
-                    height: screenHeight - 200,
+                    height: isTablet? screenHeight - 110.h : screenHeight - 90.h,
                     child: SingleChildScrollView(
+                      physics: ClampingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: notifications.map<Widget>((notification) {
@@ -110,8 +117,9 @@ class _SupplementAlarmState extends State<SupplementAlarm> {
                             ),
                           );
                         }).toList()
-                          ..add(const SizedBox(
-                              height: 110)), // 리스트 끝에 SizedBox 추가
+                          ..add(SizedBox(
+                              height: screenHeight *
+                                  (1 / 6))), // 리스트 끝에 SizedBox 추가
                       ),
                     ),
                   ),

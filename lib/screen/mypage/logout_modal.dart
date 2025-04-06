@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:cozy_for_mom_frontend/service/user_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LogoutModal extends StatefulWidget {
   const LogoutModal({super.key});
@@ -10,124 +15,114 @@ class LogoutModal extends StatefulWidget {
 
 class _LogoutModalState extends State<LogoutModal> {
   var selected = false;
+  late UserApiService userViewModel;
+  late Map<String, dynamic> pregnantInfo;
+
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        height: 300,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
-          child: Column(
-            children: [
-              const Text(
-                "로그아웃",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+    userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final paddingValue = screenWidth > 600 ? 30.w : 20.w;
+
+    return FutureBuilder(
+      future: userViewModel.getUserInfo(context),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          pregnantInfo = snapshot.data!;
+        }
+        if (!snapshot.hasData) {
+          return const Center(
+              child: CircularProgressIndicator(
+            backgroundColor: primaryColor,
+            color: Colors.white,
+          ));
+        }
+        return Dialog(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          child: Container(
+            width: screenWidth - 2 * paddingValue,
+            height: min(252.w, 452),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.w),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.w),
+              child: Column(
                 children: [
                   Text(
-                    "cozyformom11 ",
+                    "로그아웃",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: mainTextColor,
+                      fontSize: min(20.sp, 30),
                       fontWeight: FontWeight.w600,
                     ),
-                  ), // TODO 산모 닉네임으로 수정해야함.
-
-                  Text("아이디가 로그아웃됩니다."),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "해당 아이디는 간편 아이디로 계속 유지되며, 원하지 않을 경우 삭제 할 수 있습니다.",
-                style: TextStyle(
-                  color: Color(0xff858998),
-                  height: 1.3,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Divider(
-                color: Color(0xffE1E1E7),
-                thickness: 2,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: Row(
-                  children: [
-                    InkWell(
-                      child: Image(
-                        image: AssetImage(
-                          selected
-                              ? 'assets/images/icons/logout_agree_active.png'
-                              : 'assets/images/icons/logout_agree_inactive.png',
-                        ),
-                        width: 20,
-                        height: 20,
+                  ),
+                  SizedBox(height: 15.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${pregnantInfo['nickname']} ",
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: min(14.sp, 24)),
                       ),
-                      onTap: () {
-                        setState(() {
-                          selected = !selected;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Text(
-                      "간편로그인 (cozyformom11) 삭제",
-                      style: TextStyle(
-                        color: Color(0xff858998),
+                      Text(
+                        " 아이디가 로그아웃됩니다.",
+                        style: TextStyle(
+                            color: mainTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: min(14.sp, 24)),
                       ),
-                    ), // TODO 산모 닉네임으로 수정해야함.
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: () {
-                  print(selected);
-                  print("확인 버튼 클릭"); // TODO 확인 api 호출
-                },
-                child: Container(
-                  width: 350, // TODO
-                  height: 56,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: const Text(
-                    "확인",
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.w,
+                  ),
+                  Text(
+                    "해당 아이디는 간편 아이디로 계속 유지되며,\n원하지 않을 경우 삭제 할 수 있습니다.", // TODO 삭제 기능이 빠져서 문구 다시 수정해야할 듯
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      color: offButtonTextColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: min(12.sp, 22),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 30.w,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      Navigator.pop(context);
+                      await userViewModel.logOut(context);
+                      if (context.mounted) {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      }
+                    },
+                    child: Container(
+                      height: min(56.w, 96),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(12.w)),
+                      child: Text(
+                        "확인",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: min(16.sp, 26),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

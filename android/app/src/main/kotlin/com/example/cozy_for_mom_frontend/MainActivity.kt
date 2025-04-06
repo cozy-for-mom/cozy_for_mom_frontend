@@ -1,4 +1,4 @@
-package com.example.cozy_for_mom_frontend
+package com.cozyformom
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/common/widget/weekly_calendar.dart';
 import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_card.dart';
 import 'package:cozy_for_mom_frontend/common/widget/floating_button.dart';
 import 'package:cozy_for_mom_frontend/screen/mom/supplement/supplement_register_modal.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
@@ -32,6 +35,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
         Provider.of<SupplementApiService>(context, listen: true);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     void addSupplement(int id) {
       setState(() {
@@ -57,8 +62,8 @@ class _SupplementRecordState extends State<SupplementRecord> {
         body: Consumer<MyDataModel>(
           builder: (context, globalData, _) {
             return FutureBuilder(
-                future: momSupplementViewModel
-                    .getSupplements(globalData.selectedDay),
+                future: momSupplementViewModel.getSupplements(
+                    context, globalData.selectedDay),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     pregnantSupplements =
@@ -77,29 +82,43 @@ class _SupplementRecordState extends State<SupplementRecord> {
                   return Stack(
                     children: [
                       Positioned(
-                          top: 47,
+                        top: isSmall? 0.w : 40.w,
                           width: screenWidth,
                           child: Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: EdgeInsets.only(
+                                  top: paddingValue,
+                                  bottom: paddingValue - 20.w,
+                                  right: 8.w),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_back_ios),
+                                    icon: Image(
+                                      image: const AssetImage(
+                                          'assets/images/icons/back_ios.png'),
+                                      width: min(34.w, 44),
+                                      height: min(34.w, 44),
+                                      color: mainTextColor,
+                                    ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
+                                  SizedBox(
+                                    width: min(30.w, 40),
+                                    height: min(30.w, 40),
+                                  ),
+                                  const Spacer(),
                                   Row(
                                     children: [
                                       Text(
                                         DateFormat('M.d E', 'ko_KR')
                                             .format(globalData.selectedDate),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: mainTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize: min(18.sp, 28),
                                         ),
                                       ),
                                       IconButton(
@@ -109,22 +128,25 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                         onPressed: () {
                                           showModalBottomSheet(
                                             backgroundColor: Colors.transparent,
-                                            elevation: 0.0,
-                                            context: context,
-                                            builder: (context) {
-                                              return MonthCalendarModal(limitToday: true,);
-                                            },
+                                            isScrollControlled: true,
+                                elevation: 0.0,
+                                context: context,
+                                builder: (context) {
+                                  return Wrap(children : [MonthCalendarModal(limitToday: true)]);
+                                },
                                           );
                                         },
                                       ),
                                     ],
                                   ),
+                                  const Spacer(),
                                   IconButton(
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/icons/alert.png'),
-                                          height: 32,
-                                          width: 32),
+                                      icon: Image(
+                                        image: const AssetImage(
+                                            'assets/images/icons/alert.png'),
+                                        height: min(32.w, 42),
+                                        width: min(32.w, 42),
+                                      ),
                                       onPressed: () {
                                         Navigator.push(
                                             context,
@@ -136,62 +158,74 @@ class _SupplementRecordState extends State<SupplementRecord> {
                                       })
                                 ],
                               ))),
-                      const Positioned(
-                        top: 120,
-                        left: 20,
+                      Positioned(
+                        top: 110.h,
+                        left: paddingValue,
                         child: SizedBox(
-                          height: 100,
-                          width: 350,
-                          child: WeeklyCalendar(),
+                          width: screenWidth - 2 * paddingValue,
+                          child: const WeeklyCalendar(),
                         ),
                       ),
                       Positioned(
-                        top: 203,
-                        left: 0,
-                        right: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: pregnantSupplements.isEmpty
-                              ? [
-                                  SizedBox(
-                                      height: screenHeight * (0.55),
-                                      child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image(
-                                                image: AssetImage(
-                                                    'assets/images/icons/supplement_off.png'),
-                                                width: 28,
-                                                height: 67.2),
-                                            Text('영양제를 등록해 보세요!',
-                                                style: TextStyle(
-                                                    color: Color(0xff9397A4),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14)),
-                                          ])),
-                                ]
-                              : pregnantSupplements.map((supplement) {
-                                  return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: SupplementCard(
-                                        supplementId: supplement.supplementId,
-                                        name: supplement.supplementName,
-                                        targetCount: supplement.targetCount,
-                                        realCount: supplement.realCount,
-                                        takeTimes: supplement.records
-                                            .map((record) => record.datetime)
-                                            .toList(),
-                                        recordIds: supplement.records
-                                            .map((record) => record.id)
-                                            .toList(),
-                                        onDelete: deleteSupplement,
-                                        onUpdate: (updatedData) =>
-                                            updateSupplementIntake(updatedData),
-                                      ));
-                                }).toList(),
-                        ),
+                        top: 200.h,
+                        left: paddingValue,
+                        right: paddingValue,
+                        child: pregnantSupplements.isEmpty
+                            ? SizedBox(
+                                height: screenHeight * (0.55),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                          image: const AssetImage(
+                                              'assets/images/icons/supplement_off.png'),
+                                          width: min(28.w, 56),
+                                          height: min(67.2.w, 134.4)),
+                                      Text('영양제를 등록해 보세요!',
+                                          style: TextStyle(
+                                              color: const Color(0xff9397A4),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: min(14.sp, 24))),
+                                    ]))
+                            : SizedBox(
+                                height: screenHeight,
+                                child: SingleChildScrollView(
+                                  physics: ClampingScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: screenHeight * (0.3)),
+                                    child: Column(
+                                      children:
+                                          pregnantSupplements.map((supplement) {
+                                        return Padding(
+                                            padding:
+                                                EdgeInsets.only(bottom: 10.w),
+                                            child: SupplementCard(
+                                              supplementId:
+                                                  supplement.supplementId,
+                                              name: supplement.supplementName,
+                                              targetCount:
+                                                  supplement.targetCount,
+                                              realCount: supplement.realCount,
+                                              takeTimes: supplement.records
+                                                  .map((record) =>
+                                                      record.datetime)
+                                                  .toList(),
+                                              recordIds: supplement.records
+                                                  .map((record) => record.id)
+                                                  .toList(),
+                                              onDelete: deleteSupplement,
+                                              onUpdate: (updatedData) =>
+                                                  updateSupplementIntake(
+                                                      updatedData),
+                                            ));
+                                      }).toList(),
+                                      
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ),
                     ],
                   );
@@ -200,6 +234,7 @@ class _SupplementRecordState extends State<SupplementRecord> {
         ),
         floatingActionButton: CustomFloatingButton(pressed: () {
           showDialog(
+            barrierDismissible: true,
             context: context,
             builder: (context) {
               return SupplementRegisterModal(
