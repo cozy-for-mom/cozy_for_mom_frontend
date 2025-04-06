@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageTextCard extends StatefulWidget {
   final CozyLogImage image;
@@ -23,12 +27,13 @@ class ImageTextCard extends StatefulWidget {
 }
 
 class _ImageTextCardState extends State<ImageTextCard> {
-    late TextEditingController _descriptionController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
-    _descriptionController = TextEditingController(text: widget.image.description);
+    _descriptionController =
+        TextEditingController(text: widget.image.description);
     _descriptionController.addListener(_onDescriptionChanged);
   }
 
@@ -42,12 +47,23 @@ class _ImageTextCardState extends State<ImageTextCard> {
   void _onDescriptionChanged() {
     widget.onDescriptionChanged(_descriptionController.text);
   }
-  
+
+  // 이미지 description도 이미지따라 함께 이동하도록 실행하는 메서드
+  @override
+  void didUpdateWidget(covariant ImageTextCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.image.description != oldWidget.image.description) {
+      _descriptionController.text = widget.image.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     return Container(
-      width: screenWidth - 80,
+      width: screenWidth - (40.w + 2 * paddingValue),
       decoration: const BoxDecoration(
         color: contentBoxTwoColor,
       ),
@@ -56,45 +72,45 @@ class _ImageTextCardState extends State<ImageTextCard> {
           Stack(
             children: [
               SizedBox(
-                width: 69,
-                height: 69,
+                width: min(69.w, 109),
+                height: min(69.w, 109),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.w),
                   child: Image.network(widget.image.imageUrl, fit: BoxFit.fill),
                 ),
               ),
               Positioned(
-                top: 52,
-                left: 5,
+                top: 52.h,
+                left: 0.w,
+                right: 0.w,
                 child: SizedBox(
-                  width: 60,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       InkWell(
                         onTap: widget.onMoveUp,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image: AssetImage(
+                        child: Image(
+                          width: min(10.w, 18),
+                          height: min(10.w, 18),
+                          image: const AssetImage(
                               'assets/images/icons/image_up.png'),
                         ),
                       ),
                       InkWell(
                         onTap: widget.onMoveDown,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image: AssetImage(
+                        child: Image(
+                          width: min(10.w, 18),
+                          height: min(10.w, 18),
+                          image: const AssetImage(
                               'assets/images/icons/image_down.png'),
                         ),
                       ),
                       InkWell(
                         onTap: widget.onDelete,
-                        child: const Image(
-                          width: 10,
-                          height: 10,
-                          image: AssetImage(
+                        child: Image(
+                          width: min(10.w, 18),
+                          height: min(10.w, 18),
+                          image: const AssetImage(
                               'assets/images/icons/image_delete.png'),
                         ),
                       ),
@@ -105,26 +121,26 @@ class _ImageTextCardState extends State<ImageTextCard> {
             ],
           ),
           Container(
-            padding: const EdgeInsets.only(left: 15),
-            width: screenWidth - 80 - 70 - 15,
-            height: 60,
+            padding: EdgeInsets.only(left: 15.w),
+            width: screenWidth - 165.w,
+            height: min(60.w, 100),
             child: TextFormField(
               controller: _descriptionController,
               // initialValue: widget.image.description,
               // onChanged: widget.onDescriptionChanged,
-              textAlignVertical: TextAlignVertical.top,
+              textAlignVertical: TextAlignVertical.center,
               textAlign: TextAlign.start,
               maxLines: 3,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
-                fontSize: 12,
-                height: 1.5,
+                fontSize: min(12.sp, 22),
+                height: min(1.5.w, 1.5),
               ),
               cursorColor: primaryColor,
-              cursorHeight: 13,
-              cursorWidth: 1.5,
-              decoration: const InputDecoration(
+              cursorHeight: AppUtils.scaleSize(context, 12),
+              cursorWidth: AppUtils.scaleSize(context, 1.5),
+              decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
@@ -132,7 +148,7 @@ class _ImageTextCardState extends State<ImageTextCard> {
                 hintStyle: TextStyle(
                   color: offButtonTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
+                  fontSize: min(12.sp, 22),
                 ),
               ),
             ),

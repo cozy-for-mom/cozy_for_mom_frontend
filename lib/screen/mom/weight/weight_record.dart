@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/model/weight_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/widget/month_calendar.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +28,8 @@ class _WeightRecordState extends State<WeightRecord> {
   late List<PregnantWeight> pregnantWeights = [];
   late bool _isInitialized;
   final TextEditingController _weightController = TextEditingController();
+  String _previousInput = '';
+
   bool _isWeightInitialized = false;
   DateTime _lastCheckedDate = DateTime.now(); // 마지막으로 데이터를 로드한 날짜
 
@@ -49,13 +54,19 @@ class _WeightRecordState extends State<WeightRecord> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
     WeightApiService momWeightViewModel =
         Provider.of<WeightApiService>(context, listen: false);
+
     return Scaffold(
         backgroundColor: backgroundColor,
         body: Consumer<MyDataModel>(builder: (context, globalData, _) {
           return FutureBuilder(
-              future: momWeightViewModel.getWeights(globalData.selectedDate,
+              future: momWeightViewModel.getWeights(
+                  context,
+                  globalData.selectedDate,
                   'daily'), // 조회 그래프가 아닌 선택한 날짜의 체중값을 위헤 호출하는 것이므로 daily로 픽스한다.
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -70,7 +81,6 @@ class _WeightRecordState extends State<WeightRecord> {
                             .difference(DateTime.parse(data['lastRecordDate']));
                     _isInitialized = todayWeight > 0 ? true : false;
                     _initializeData(globalData.selectedDate);
-                    print(lastRecordDate.inDays);
                   }
                 }
                 if (!snapshot.hasData) {
@@ -83,28 +93,42 @@ class _WeightRecordState extends State<WeightRecord> {
                 return Stack(
                   children: [
                     Positioned(
-                        top: 47,
+                        top: isSmall? 0.w : 40.w,
                         width: screenWidth,
                         child: Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding: EdgeInsets.only(
+                                top: paddingValue,
+                                bottom: paddingValue - 20.w,
+                                right: 8.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.arrow_back_ios),
+                                  icon: Image(
+                                    image: const AssetImage(
+                                        'assets/images/icons/back_ios.png'),
+                                    width: min(34.w, 44),
+                                    height: min(34.w, 44),
+                                    color: mainTextColor,
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
                                 ),
+                                SizedBox(
+                                  width: min(30.w, 40),
+                                  height: min(30.w, 40),
+                                ),
+                                const Spacer(),
                                 Row(
                                   children: [
                                     Text(
                                       DateFormat('M.d E', 'ko_KR')
                                           .format(globalData.selectedDate),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 18,
+                                        fontSize: min(18.sp, 28),
                                       ),
                                     ),
                                     IconButton(
@@ -114,22 +138,27 @@ class _WeightRecordState extends State<WeightRecord> {
                                       onPressed: () {
                                         showModalBottomSheet(
                                           backgroundColor: Colors.transparent,
+                                          isScrollControlled: true,
                                           elevation: 0.0,
                                           context: context,
                                           builder: (context) {
-                                            return MonthCalendarModal(limitToday: true,);
+                                            return Wrap(children: [
+                                              MonthCalendarModal(
+                                                  limitToday: true)
+                                            ]);
                                           },
                                         );
                                       },
                                     ),
                                   ],
                                 ),
+                                const Spacer(),
                                 IconButton(
-                                    icon: const Image(
-                                        image: AssetImage(
+                                    icon: Image(
+                                        image: const AssetImage(
                                             'assets/images/icons/alert.png'),
-                                        height: 32,
-                                        width: 32),
+                                        height: min(32.w, 42),
+                                        width: min(32.w, 42)),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -143,25 +172,24 @@ class _WeightRecordState extends State<WeightRecord> {
                             )
                             // }),
                             )),
-                    const Positioned(
-                        top: 103,
-                        left: 20,
+                    Positioned(
+                        top: 110.h,
+                        left: paddingValue,
                         child: SizedBox(
-                          height: 100,
-                          width: 350,
-                          child: WeeklyCalendar(),
+                          width: screenWidth - 2 * paddingValue,
+                          child: const WeeklyCalendar(),
                         )),
                     Positioned(
-                      top: 205,
-                      left: 20,
+                      top: 200.h,
+                      left: paddingValue,
                       child: Container(
-                        width: screenWidth - 40,
-                        height: 86,
+                        width: screenWidth - 2 * paddingValue,
+                        height: min(86.w, 146),
                         decoration: BoxDecoration(
                             color: contentBoxTwoColor,
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20.w)),
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: EdgeInsets.all(20.w),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,68 +209,90 @@ class _WeightRecordState extends State<WeightRecord> {
                                                 const Duration(days: -1)
                                             ? '측정 기록이 없어요'
                                             : '마지막 측정 ${lastRecordDate.inDays}일전',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: primaryColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 12)),
+                                            fontSize: min(12.sp, 22))),
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      width: 105,
-                                      child: TextFormField(
-                                        textAlign: TextAlign.end,
-                                        maxLength: 5,
-                                        controller: _weightController,
-                                        keyboardType: TextInputType.number,
-                                        cursorColor: primaryColor,
-                                        cursorWidth: 1,
-                                        cursorHeight: 28,
-                                        decoration: const InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 7),
-                                            border: InputBorder.none,
-                                            counterText: '',
-                                            hintText: '00.00',
-                                            hintStyle: TextStyle(
-                                              color: beforeInputColor,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 28,
-                                            )),
-                                        style: TextStyle(
-                                          color:
-                                              _weightController.text.isNotEmpty
-                                                  ? afterInputColor
-                                                  : beforeInputColor,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 28,
-                                        ),
-                                        onChanged: (text) {
-                                          setState(() {
-                                            if (text.isNotEmpty) {
-                                              if (text.length ==
-                                                      5 && // 입력 형식을 따르지 않았을 경우, 디폴트 값 지정
-                                                  !text.contains('.')) {
-                                                _weightController.text =
-                                                    '999.9';
+                                      width: 105.w,
+                                      child: Center(
+                                        child: TextFormField(
+                                          textAlign: TextAlign.end,
+                                          maxLength: 5,
+                                          controller: _weightController,
+                                          // keyboardType: const TextInputType
+                                          //     .numberWithOptions(decimal: true), // TODO 완료 버튼 따로 추가하면 바꾸기
+                                          keyboardType: TextInputType.datetime,
+                                          onTapOutside: (event) {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                          },
+                                          textInputAction: TextInputAction.done,
+                                          cursorColor: primaryColor,
+                                          cursorWidth: 1.w,
+                                          cursorHeight: min(28.sp, 38),
+                                          decoration: InputDecoration(
+                                              isDense: true,
+                                              border: InputBorder.none,
+                                              counterText: '',
+                                              hintText: '00.00',
+                                              hintStyle: TextStyle(
+                                                color: beforeInputColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: min(28.sp, 38),
+                                              )),
+                                          style: TextStyle(
+                                            color: _weightController
+                                                    .text.isNotEmpty
+                                                ? afterInputColor
+                                                : beforeInputColor,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: min(28.sp, 38),
+                                          ),
+                                          onChanged: (text) {
+                                            setState(() {
+                                              if (text.isNotEmpty) {
+                                                if (text.length ==
+                                                        5 && // 입력 형식을 따르지 않았을 경우, 디폴트 값 지정
+                                                    !text.contains('.')) {
+                                                  _weightController.text =
+                                                      '999.9';
+                                                }
+                                                if ((text.contains('.') &&
+                                                        text.indexOf('.') !=
+                                                            text.lastIndexOf(
+                                                                '.')) ||
+                                                    (!RegExp(r'^\d*\.?\d*$')
+                                                        .hasMatch(text))) {
+                                                  _weightController.text =
+                                                      text.substring(
+                                                          0, text.length - 1);
+                                                }
                                               }
-                                            }
-                                          });
-                                        },
-                                        onFieldSubmitted: (value) async {
-                                          _isInitialized
-                                              ? await momWeightViewModel
-                                                  .modifyWeight(
-                                                      globalData.selectedDate,
-                                                      double.parse(value))
-                                              : await momWeightViewModel
-                                                  .recordWeight(
-                                                      globalData.selectedDate,
-                                                      double.parse(value));
-                                          setState(() {});
-                                        },
+                                            });
+                                          },
+
+                                          onFieldSubmitted: (value) async {
+                                            _isInitialized
+                                                ? await momWeightViewModel
+                                                    .modifyWeight(
+                                                        context,
+                                                        globalData.selectedDate,
+                                                        double.parse(value))
+                                                : await momWeightViewModel
+                                                    .recordWeight(
+                                                        context,
+                                                        globalData.selectedDate,
+                                                        double.parse(value));
+                                            setState(() {});
+                                          },
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -253,7 +303,7 @@ class _WeightRecordState extends State<WeightRecord> {
                                                   ? afterInputColor
                                                   : beforeInputColor,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 28),
+                                          fontSize: min(28.sp, 38)),
                                     ),
                                   ],
                                 ),
@@ -261,10 +311,10 @@ class _WeightRecordState extends State<WeightRecord> {
                         ),
                       ),
                     ),
-                    const Positioned(
-                      top: 331,
-                      left: 20,
-                      child: TimeLineChart(
+                    Positioned(
+                      top: 326.h,
+                      left: paddingValue,
+                      child: const TimeLineChart(
                         recordType: RecordType.weight,
                       ),
                     ),

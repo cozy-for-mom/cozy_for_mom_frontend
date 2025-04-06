@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/mypage/mypage_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/baby/custom_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
@@ -22,8 +23,21 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
   late Map<String, dynamic> pregnantInfo;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MyDataModel>(context, listen: false)
+          .updateSelectedDay(DateTime.now());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     userViewModel = Provider.of<UserApiService>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+
     DateTime now = DateTime.now(); // 현재 날짜
     int nowHour = int.parse(DateFormat('HH').format(now));
 
@@ -43,11 +57,12 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
     int imageCount = 1; // 기본값으로 1개 설정
 
     return FutureBuilder(
-        future: userViewModel.getUserInfo(),
+        future: userViewModel.getUserInfo(context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pregnantInfo = snapshot.data!;
             dDay = pregnantInfo['dDay'];
+            if (dDay < 0) dDay = 0; // TODO 방어로직.
             passedDay = totalDays - dDay;
             week = passedDay ~/ 7;
             day = passedDay % 7;
@@ -71,125 +86,184 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
           return Scaffold(
             body: Stack(
               children: [
+                // =========== 1) 고정 배경 이미지  ===========
                 Positioned(
-                  top: 0,
+                  top: MediaQuery.of(context).size.width > 600 ? -140.h : -25.h,
                   child: Image(
-                      width: 405, // TODO 화면 너비에 맞춘 width로 수정해야함
+                      width: screenWidth,
                       fit: BoxFit.cover,
-                      image: AssetImage(
-                          //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
-                          nowHour >= 8 && nowHour < 18
-                              ? "assets/images/babyhome_morning.png"
-                              : "assets/images/babyhome_dark.png")),
+                      image: const AssetImage(
+                          "assets/images/babyhome_background.png")),
                 ),
-                Positioned(
-                  top: 66,
-                  left: 340,
-                  child: IconButton(
-                    icon: const Image(
-                      width: 30,
-                      height: 30,
-                      image: AssetImage(
-                        "assets/images/icons/mypage.png",
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyPage()));
-                    },
-                  ),
-                ),
-                Positioned(
-                    top: 145,
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(babyNames.join(''),
-                            style: const TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 26)),
-                        const SizedBox(height: 5),
-                        Text('임신 ${week}주차 ${day}일째',
-                            style: TextStyle(
-                                color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
-                                    nowHour >= 8 && nowHour < 18
-                                        ? const Color(0xffFE8282)
-                                        : const Color(0xff9D8DFF),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16)),
-                      ],
-                    )),
-                Positioned(
-                  top: 270,
-                  left: 120,
-                  child: Image(width: 167, height: 125, image: AssetImage(
-                      // 1부터 imageCount까지
-                      "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png")),
-                ),
-                Positioned(
-                  top: 433,
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "아기와 만나기까지",
-                            style: TextStyle(
-                                color: mainTextColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
-                          ),
-                          Text(' D-${dDay}',
-                              style: TextStyle(
-                                  color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
-                                      nowHour >= 8 && nowHour < 18
-                                          ? const Color(0xffFE8282)
-                                          : const Color(0xff9D8DFF),
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16)),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        width: 313,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: lineTwoColor, // 전체 배경색
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: FractionallySizedBox(
-                          widthFactor: percentage,
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: babyNightBar, // TODO 밤/낮 따라 색상 바꿔줘야 함
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 501.52,
-                  left: 20,
+                // =========== 2) 스크롤될 메인 콘텐츠  ===========
+                SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: SizedBox(
-                    width: 350,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
+                    height: MediaQuery.of(context).size.height,
+                    child: Stack(children: [
+                      Positioned(
+                        top: 185.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: Image(
+                          width: min(191.w, 281),
+                          height: min(191.w, 281),
+                          fit: BoxFit.contain,
+                          image: AssetImage(
+                              //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                              nowHour >= 8 && nowHour < 18
+                                  ? "assets/images/babyhome_morning.png"
+                                  : "assets/images/babyhome_dark.png"),
+                        ),
+                      ),
+                      Positioned(
+                          top: 106.h,
+                          left: 0.w,
+                          right: 0.w,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 225.w,
+                                child: Text(babyNames.join(''),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: mainTextColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: min(26.sp, 36))),
+                              ),
+                              SizedBox(height: isSmall? 0.w : min(5.w, 5)),
+                              Text('임신 $week주차 $day일째',
+                                  style: TextStyle(
+                                      color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                                          nowHour >= 8 && nowHour < 18
+                                              ? const Color(0xffFE8282)
+                                              : const Color(0xff9D8DFF),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: min(16.sp, 26))),
+                            ],
+                          )),
+                      Positioned(
+                        top: 234.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: week <= 40 // 출산후(41주 이상) 태아 일러스트 없음
+                            ? Image(
+                                width: min(167.w, 237),
+                                height: min(125.w, 195),
+                                image: AssetImage(
+                                    // 1부터 imageCount까지
+                                    "assets/images/baby_illust/${week}_week_${random.nextInt(imageCount) + 1}.png"))
+                            : Container(),
+                      ),
+                      Positioned(
+                        top: 414.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "아기와 만나기까지",
+                                  style: TextStyle(
+                                      color: mainTextColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: min(16.sp, 26)),
+                                ),
+                                Text(' D-$dDay',
+                                    style: TextStyle(
+                                        color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7
+                                            nowHour >= 8 && nowHour < 18
+                                                ? const Color(0xffFE8282)
+                                                : const Color(0xff9D8DFF),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: min(16.sp, 26))),
+                              ],
+                            ),
+                            SizedBox(height: 10.w),
+                            Container(
+                              width: MediaQuery.of(context).size.width > 600
+                                  ? screenWidth - 60.w
+                                  : screenWidth - 40.w,
+                              height: MediaQuery.of(context).size.width > 600
+                                  ? 6.w
+                                  : 12.w,
+                              decoration: BoxDecoration(
+                                color: lineTwoColor, // 전체 배경색
+                                borderRadius: BorderRadius.circular(5.w),
+                              ),
+                              child: FractionallySizedBox(
+                                widthFactor: percentage.clamp(0.0, 1.0),
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  height: 20.w,
+                                  decoration: BoxDecoration(
+                                    color: nowHour >= 8 && nowHour < 18
+                                        ? const Color(0xffFFB4BE)
+                                        : const Color(0xff9D8DFF),
+                                    borderRadius: BorderRadius.circular(5.w),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: 478.h,
+                        left: 0.w,
+                        right: 0.w,
+                        child: Container(
+                          width: screenWidth - 40.w,
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width > 600
+                                      ? 30.w
+                                      : 20.w),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BabyGrowthReportListScreen()));
+                                  },
+                                  child: const CustomButton(
+                                      text: '성장 보고서',
+                                      imagePath:
+                                          "assets/images/icons/diary.png"),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyCozylog(),
+                                      ),
+                                    );
+                                  },
+                                  child: const CustomButton(
+                                    text: '코지로그',
+                                    imagePath:
+                                        "assets/images/icons/cozylog.png",
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ),
+                      Positioned(
+                          top: 594.h,
+                          left: MediaQuery.of(context).size.width > 600
+                              ? 30.w
+                              : 20.w,
+                          child: InkWell(
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -197,72 +271,74 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                       builder: (context) =>
                                           const BabyGrowthReportListScreen()));
                             },
-                            child: const CustomButton(
-                                text: '성장 보고서',
-                                imagePath: "assets/images/icons/diary.png"),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyCozylog(),
-                                ),
-                              );
-                            },
-                            child: const CustomButton(
-                              text: '코지로그',
-                              imagePath: "assets/images/icons/cozylog.png",
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-                Positioned(
-                    top: 613.52,
-                    left: 20,
-                    child: InkWell(
-                      onTap: () {
-                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BabyGrowthReportListScreen()));
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('성장일지를 기록해요',
-                              style: TextStyle(
-                                  color: mainTextColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18)),
-                          const SizedBox(height: 18),
-                          Container(
-                            width: 350,
-                            height: 100,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: babyNightBar,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('오늘은 얼마나 자랐을까?',
+                                Text('성장일지를 기록해요',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: mainTextColor,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 16)),
-                                Image(
-                                    image: AssetImage(
-                                        "assets/images/icons/diary_cozylog.png"),
-                                    width: 78.44,
-                                    height: 53.27),
+                                        fontSize: min(18.sp, 28))),
+                                SizedBox(height: min(18.w, 28)),
+                                Container(
+                                  width: MediaQuery.of(context).size.width > 600
+                                      ? screenWidth - 60.w
+                                      : screenWidth - 40.w,
+                                  height: min(100.w, 150),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  decoration: BoxDecoration(
+                                      color: babyNightBar,
+                                      borderRadius:
+                                          BorderRadius.circular(10.w)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('오늘은 얼마나 자랐을까?',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: min(16.sp, 26))),
+                                      Image(
+                                          image: const AssetImage(
+                                              "assets/images/icons/diary_cozylog.png"),
+                                          width: min(78.44.w, 98.44),
+                                          height: min(53.27.w, 73.27)),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
+                          ))
+                    ]),
+                  ),
+                ),
+                // =========== 3) 고정 아이콘(마이페이지) ===========
+                Positioned(
+                  top: 46.h,
+                  left: MediaQuery.of(context).size.width > 600
+                      ? screenWidth - 35.w
+                      : screenWidth - 55.w,
+                  child: IconButton(
+                    icon: Image(
+                      width: min(30.w, 40),
+                      height: min(30.w, 40),
+                      image: const AssetImage(
+                        "assets/images/icons/mypage.png",
                       ),
-                    ))
+                    ),
+                    onPressed: () async {
+                      final res = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyPage()));
+                      if (res == true) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           );

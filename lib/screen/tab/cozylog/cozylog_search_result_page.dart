@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_detail_screen.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
+import 'package:cozy_for_mom_frontend/screen/tab/cozylog/recent_cozylog_search_view.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_api_service.dart';
 import 'package:cozy_for_mom_frontend/service/cozylog/cozylog_local_storage_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +23,7 @@ class CozyLogSearchResultPage extends StatefulWidget {
 }
 
 class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
-  late Future<CozyLogSearchResponse> response;
+  late Future<CozyLogSearchResponse?> res;
   CozyLogSearchSortType sortType = CozyLogSearchSortType.time;
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
@@ -33,8 +36,8 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
   @override
   void initState() {
     super.initState();
-    response = CozyLogApiService()
-        .searchCozyLogs(widget.searchKeyword, null, 15, sortType);
+    res = CozyLogApiService()
+        .searchCozyLogs(context, widget.searchKeyword, null, 15, sortType);
     pagingController = PagingController(firstPageKey: 0);
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -42,13 +45,12 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
     initializeStorageService(); // 서비스 초기화
   }
 
-    Future<void> initializeStorageService() async {
+  Future<void> initializeStorageService() async {
     storageService =
         await CozyLogLocalStorageService.getInstance(); // 인스턴스 가져오기
     storageService.getAutoSave().then((value) => autoSave = value);
     await loadRecentSearches(); // 최근 검색어 로드
   }
-
 
   Future<void> loadRecentSearches() async {
     List<String> searches =
@@ -58,11 +60,10 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
     });
   }
 
-   Future<void> deleteSearch(String search) async {
+  Future<void> deleteSearch(String search) async {
     await storageService.deleteRecentSearch(search); // 특정 검색어 삭제
     await loadRecentSearches(); // 업데이트
   }
-
 
   Future<void> addSearch(String search) async {
     if (autoSave) {
@@ -74,13 +75,14 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final response = await CozyLogApiService().searchCozyLogs(
+      final res = await CozyLogApiService().searchCozyLogs(
+        context,
         widget.searchKeyword,
         pageKey,
         15,
         sortType,
       );
-      final cozyLogs = response.results;
+      final cozyLogs = res!.results;
       final isLastPage = cozyLogs.length < 15;
 
       if (isLastPage) {
@@ -96,45 +98,60 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    final searchController = TextEditingController(text: widget.searchKeyword);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(
+            left: paddingValue, right: paddingValue, top: paddingValue),
         child: Column(
           children: [
-            const SizedBox(
-              height: 70,
+            SizedBox(
+              height: isTablet ? 0.w : 50.w,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 37,
-                  width: 316,
+                  height: min(37.w, 57),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.w),
                     color: Colors.white,
                   ),
                   child: Row(
                     children: [
-                      const SizedBox(
-                        width: 17,
+                      SizedBox(
+                        width: 17.w,
                       ),
-                      const Image(
-                        image:
-                            AssetImage("assets/images/icons/icon_search.png"),
-                        width: 15,
-                        height: 15,
+                      Image(
+                        image: const AssetImage(
+                            "assets/images/icons/icon_search.png"),
+                        width: min(15.w, 25),
+                        height: min(15.w, 25),
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: 10.w,
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.searchKeyword,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
+                      Container(
+                        padding: EdgeInsets.only(right: 10.w),
+                        width: 255.w,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SingleChildScrollView(
+                            physics: ClampingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              widget.searchKeyword,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: mainTextColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: min(14.sp, 24),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -142,140 +159,169 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                   ),
                 ),
                 InkWell(
-                  child: const Center(
-                    child: Text("취소"),
+                  child: Center(
+                    child: Text(
+                      "취소",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: min(14.sp, 24),
+                      ),
+                    ),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, true);
                   },
                 )
               ],
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.w,
             ),
             FutureBuilder(
-                future: response,
+                future: res,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.totalElements > 0) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
+                      return Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "${snapshot.data!.totalElements.toString()}건",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: primaryColor,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: min(14.sp, 24),
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
                                   showModalBottomSheet(
                                       backgroundColor: Colors.transparent,
+                                      elevation: 0.0,
                                       context: context,
                                       builder: (BuildContext context) {
                                         return SizedBox(
-                                          height: 200,
+                                          height: isTablet
+                                              ? 234.w - paddingValue
+                                              : 234.w,
                                           child: Column(
                                             children: [
                                               Container(
-                                                width: 350,
-                                                decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(20),
-                                                      topRight:
-                                                          Radius.circular(20)),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 8.w),
+                                                width: screenWidth -
+                                                    2 * paddingValue,
+                                                height: 153.w - paddingValue,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.w),
                                                   color: Colors.white,
                                                 ),
-                                                child: ListTile(
-                                                  title: const Center(
-                                                      child: Text(
-                                                    '최신순',
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  )),
-                                                  onTap: () {
-                                                    setState(() {
-                                                      sortType =
-                                                          CozyLogSearchSortType
-                                                              .time;
-                                                      response = CozyLogApiService()
-                                                          .searchCozyLogs(
-                                                        widget.searchKeyword,
-                                                        0,
-                                                        15,
-                                                        sortType,
-                                                      );
-                                                    });
+                                                child: Center(
+                                                  child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: <Widget>[
+                                                        ListTile(
+                                                          title: Center(
+                                                              child: Text(
+                                                            '최신순',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  mainTextColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: min(
+                                                                  16.sp, 26),
+                                                            ),
+                                                          )),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              sortType =
+                                                                  CozyLogSearchSortType
+                                                                      .time;
+                                                              res = CozyLogApiService()
+                                                                  .searchCozyLogs(
+                                                                context,
+                                                                widget
+                                                                    .searchKeyword,
+                                                                0,
+                                                                15,
+                                                                sortType,
+                                                              );
+                                                            });
 
-                                                    Navigator.pop(context);
-                                                  },
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        ),
+                                                        ListTile(
+                                                          title: Center(
+                                                              child: Text(
+                                                            '댓글순',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    mainTextColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: min(
+                                                                    16.sp, 26)),
+                                                          )),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              sortType =
+                                                                  CozyLogSearchSortType
+                                                                      .comment;
+                                                              res = CozyLogApiService()
+                                                                  .searchCozyLogs(
+                                                                context,
+                                                                widget
+                                                                    .searchKeyword,
+                                                                0,
+                                                                15,
+                                                                CozyLogSearchSortType
+                                                                    .comment, // TODO API 다시 확인 요청
+                                                              );
+                                                            });
+
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        ),
+                                                      ]),
                                                 ),
                                               ),
-                                              Container(
-                                                width: 350,
-                                                decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                      bottomRight:
-                                                          Radius.circular(20)),
-                                                  color: Colors.white,
-                                                ),
-                                                child: ListTile(
-                                                  title: const Center(
-                                                      child: Text(
-                                                    '댓글순',
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  )),
-                                                  onTap: () {
-                                                    setState(() {
-                                                      sortType =
-                                                          CozyLogSearchSortType
-                                                              .comment;
-                                                      response = CozyLogApiService()
-                                                          .searchCozyLogs(
-                                                        widget.searchKeyword,
-                                                        0,
-                                                        15,
-                                                        CozyLogSearchSortType
-                                                            .comment,
-                                                      );
-                                                    });
-
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
+                                              SizedBox(
+                                                height: 15.w,
                                               ),
                                               InkWell(
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                 },
                                                 child: Container(
-                                                  width: 350,
-                                                  height: 56,
+                                                  width: screenWidth -
+                                                      2 * paddingValue,
+                                                  height: min(56.w, 96),
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(12),
-                                                    color: const Color(0xffC2C4CB),
+                                                        BorderRadius.circular(
+                                                            12.w),
+                                                    color: induceButtonColor,
                                                   ),
-                                                  child: const Center(
+                                                  child: Center(
                                                       child: Text(
                                                     "취소",
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: min(16.sp, 26),
                                                     ),
                                                   )),
                                                 ),
@@ -287,16 +333,18 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                 },
                                 child: Row(
                                   children: [
-                                    const Image(
-                                      image: AssetImage(
+                                    Image(
+                                      image: const AssetImage(
                                           "assets/images/icons/icon_switch.png"),
-                                      width: 15,
-                                      height: 15,
+                                      width: min(15.w, 25),
+                                      height: min(15.w, 25),
                                     ),
                                     Text(
                                       " ${sortType.name}",
-                                      style: const TextStyle(
-                                        color: Color(0xff928C8C),
+                                      style: TextStyle(
+                                        color: const Color(0xff928C8C),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: min(14.sp, 24),
                                       ),
                                     )
                                   ],
@@ -304,338 +352,206 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                               )
                             ],
                           ),
-                        SizedBox(height: 20,),
-                        Container(
-                height: 600,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                ),
-                child: PagedListView(
-                  pagingController: pagingController,
-                  padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 15,
-                  ),
-                  builderDelegate:
-                          PagedChildBuilderDelegate<CozyLogSearchResult>(
-                        itemBuilder: (context, item, index) => InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CozyLogDetailScreen(
-                                  id: item.id,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Flexible(
-                                    flex: 7,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.title,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          item.summary,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xff858998),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          dateFormat.format(item.date),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xffAAAAAA),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Image(
-                                              image: AssetImage(
-                                                "assets/images/icons/icon_comment.png",
-                                              ),
-                                              width: 13,
-                                              height: 13,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "댓글 ${item.commentCount}",
-                                              style: const TextStyle(
-                                                color: Color(0xffAAAAAA),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 15,
-                                            ),
-                                            const Image(
-                                              image: AssetImage(
-                                                  "assets/images/icons/icon_scrap.png"),
-                                              width: 13,
-                                              height: 13,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "스크랩 ${item.scrapCount}",
-                                              style: const TextStyle(
-                                                color: Color(0xffAAAAAA),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 7,
-                                  ),
-                                  item.imageUrl != null
-                                      ? Flexible(
-                                          flex: 3,
-                                          child: Container(
-                                            clipBehavior: Clip.hardEdge,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Stack(children: [
-                                              Image.network(
-                                                item.imageUrl!,
-                                                fit: BoxFit.cover,
-                                                width: 88,
-                                                height: 88,
-                                              ),
-                                              Positioned(
-                                                top: 5,
-                                                right: 5,
-                                                child: Container(
-                                                  width: 24,
-                                                  height: 18,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black
-                                                        .withOpacity(0.4),
-                                                    borderRadius:
-                                                        BorderRadius.circular(10),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      item.imageCount.toString(),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                          ),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Divider(
-                                thickness: 1,
-                                color: Color(0xffE1E1E7),
-                              ),
-                            ],
+                          SizedBox(
+                            height: 20.w,
                           ),
-                        ),
-                  ),
-                ),
-              ),
-                        
+                          Container(
+                            width: screenWidth - 2 * paddingValue,
+                            // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
+                            height: screenHeight * (0.73), // TODO 다른 기종 확인
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.w),
+                              color: contentBoxTwoColor,
+                            ),
+                            child: PagedListView<int, CozyLogSearchResult>(
+                              pagingController: pagingController,
+                              padding: EdgeInsets.zero, // 기본 패딩 제거
+                              builderDelegate: PagedChildBuilderDelegate<
+                                  CozyLogSearchResult>(
+                                itemBuilder: (context, item, index) {
+                                  bool isLast = index ==
+                                      pagingController.itemList!.length - 1;
+                                  return CozylogSearchViewWidget(
+                                    isLast: isLast,
+                                    cozylog: item,
+                                    isMyCozyLog: true,
+                                  );
+                                },
+                              ),
+                            ),
+                          )
                         ],
-                      ),
-                    );
+                      );
                     } else {
                       return Column(
                         children: [
-                           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text(
-                  "최근 검색",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  width: 100,
-                ),
-                Row(
-                  children: [
-                    InkWell(
-                      child: Text(
-                        "전체 삭제",
-                        style: TextStyle(
-                          color: recentSearches.isNotEmpty
-                              ? const Color(0xff858998)
-                              : const Color(0xffD8DAE2),
-                          fontSize: 12,
-                        ),
-                      ),
-                      onTap: () {
-                        storageService.clearRecentSearches();
-                        setState(() {
-                          recentSearches = [];
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    autoSave
-                        ? InkWell(
-                            child: const Text(
-                              "자동저장 끄기",
-                              style: TextStyle(
-                                color: Color(0xff858998),
-                                fontSize: 12,
-                              ),
-                            ),
-                            onTap: () {
-                              storageService.setAutoSave(false);
-                              setState(() {
-                                autoSave = false;
-                              });
-                            },
-                          )
-                        : InkWell(
-                            child: const Text(
-                              "자동저장 켜기",
-                              style: TextStyle(
-                                color: Color(0xff858998),
-                                fontSize: 12,
-                              ),
-                            ),
-                            onTap: () {
-                              storageService.setAutoSave(true);
-                              setState(() {
-                                autoSave = true;
-                              });
-                            },
-                          ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-              ),
-              child: SizedBox(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recentSearches.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 10,
-                      ),
-                      child: Container(
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Color(0xffF0F0F5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                          ),
-                          child: Row(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                recentSearches[index],
-                                style: const TextStyle(
-                                  fontSize: 14,
+                                "최근 검색",
+                                style: TextStyle(
+                                  color: mainTextColor,
+                                  fontSize: min(18.sp, 28),
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              const SizedBox(width: 12),
                               SizedBox(
-                                height: 8,
-                                width: 8,
-                                child: InkWell(
-                                  child: const Image(
-                                    image: AssetImage(
-                                        "assets/images/icons/icon_close.png"),
-                                    width: 8,
-                                    height: 8,
+                                width: 100.w,
+                              ),
+                              Row(
+                                children: [
+                                  InkWell(
+                                    child: Text(
+                                      "전체 삭제",
+                                      style: TextStyle(
+                                        color: recentSearches.isNotEmpty
+                                            ? const Color(0xff858998)
+                                            : const Color(0xffD8DAE2),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: min(12.sp, 22),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      storageService.clearRecentSearches();
+                                      setState(() {
+                                        recentSearches = [];
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    deleteSearch(recentSearches[index]);
-                                  },
-                                ),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  autoSave
+                                      ? InkWell(
+                                          child: Text(
+                                            "자동저장 끄기",
+                                            style: TextStyle(
+                                              color: const Color(0xff858998),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: min(12.sp, 22),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            storageService.setAutoSave(false);
+                                            setState(() {
+                                              autoSave = false;
+                                            });
+                                          },
+                                        )
+                                      : InkWell(
+                                          child: Text(
+                                            "자동저장 켜기",
+                                            style: TextStyle(
+                                              color: const Color(0xff858998),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: min(12.sp, 22),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            storageService.setAutoSave(true);
+                                            setState(() {
+                                              autoSave = true;
+                                            });
+                                          },
+                                        ),
+                                ],
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 180,
-            ),
-            const Image(
-              image: AssetImage("assets/images/icons/icon_search.png"),
-              width: 44,
-              height: 44,
-              color: Color(0xffCBCBD3),
-            ),
-            const SizedBox(
-              height: 17,
-            ),
-            const Text(
-              "일치하는 검색결과가 없습니다.",
-              style: TextStyle(
-                color: Color(0xff9397A4),
-                fontWeight: FontWeight.w500,
-              ),
+                          // SizedBox(  // TODO 결과 페이지에서도 태그 필요한지 확인하기
+                          //   height: 10.w,
+                          // ),
+                          // Padding(
+                          //   padding: EdgeInsets.symmetric(
+                          //     horizontal: 8.w,
+                          //   ),
+                          //   child: SizedBox(
+                          //     height: 50.w,
+                          //     child: ListView.builder(
+                          //       scrollDirection: Axis.horizontal,
+                          //       itemCount: recentSearches.length,
+                          //       itemBuilder: (context, index) {
+                          //         return Padding(
+                          //           padding: EdgeInsets.symmetric(
+                          //             horizontal: 5.w,
+                          //             vertical: 10.w,
+                          //           ),
+                          //           child: Container(
+                          //             height: 30.w,
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(
+                          //                   Radius.circular(20.w)),
+                          //               color: const Color(0xffF0F0F5),
+                          //             ),
+                          //             child: Padding(
+                          //               padding: EdgeInsets.symmetric(
+                          //                 horizontal: 12.w,
+                          //               ),
+                          //               child: Row(
+                          //                 children: [
+                          //                   Text(
+                          //                     recentSearches[index],
+                          //                     style: TextStyle(
+                          //                       fontSize: min(14.sp, 24),
+                          //                     ),
+                          //                   ),
+                          //                   SizedBox(
+                          //                     width: 12.w,
+                          //                   ),
+                          //                   SizedBox(
+                          //                     height: min(8.w, 16),
+                          //                     width: min(8.w, 16),
+                          //                     child: InkWell(
+                          //                       child: Image(
+                          //                         image: const AssetImage(
+                          //                             "assets/images/icons/icon_close.png"),
+                          //                         width: min(8.w, 16),
+                          //                         height: min(8.w, 16),
+                          //                       ),
+                          //                       onTap: () {
+                          //                         deleteSearch(
+                          //                             recentSearches[index]);
+                          //                       },
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: min(265.w, 360),
+                          ),
+                          Image(
+                            image: const AssetImage(
+                                "assets/images/icons/icon_search.png"),
+                            width: min(44.w, 88),
+                            height: min(44.w, 88),
+                            color: const Color(0xffCBCBD3),
+                          ),
+                          SizedBox(height: 12.w),
+                          Text(
+                            "일치하는 검색결과가 없습니다.",
+                            style: TextStyle(
+                                color: const Color(0xff9397A4),
+                                fontWeight: FontWeight.w500,
+                                fontSize: min(14.sp, 24)),
+                          ),
+                        ],
+                      );
+                    }
+                  } else {
+                    return Container();
+                  }
+                }),
+            SizedBox(
+              height: 20.w,
             ),
                         ],
                       );

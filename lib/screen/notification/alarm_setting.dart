@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/bloodsugar_alarm.dart';
@@ -47,35 +50,45 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F7FA),
+        scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "알림 설정",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: min(18.sp, 28)),
         ),
         leading: IconButton(
-          color: Colors.black,
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
+            color: mainTextColor,
+          ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ),
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: 10,
-              left: 20,
+              top: isTablet? 20.h : 5.h,
+              left: paddingValue,
               child: Container(
-                width: screenWidth - 40,
-                height: 53,
+                width: screenWidth - 2 * paddingValue,
+                height: min(53.w, 93),
                 decoration: BoxDecoration(
                     color: offButtonColor,
-                    borderRadius: BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(30.w)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -88,23 +101,26 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                         });
                       },
                       child: Container(
-                          width: isBloodSugarButtonEnabled ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isBloodSugarButtonEnabled
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: isBloodSugarButtonEnabled
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('혈당',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isBloodSugarButtonEnabled
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ))),
+                          child: Center(
+                            child: Text('혈당',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isBloodSugarButtonEnabled
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                     InkWell(
                       onTap: () {
@@ -115,23 +131,26 @@ class _AlarmSettingPageState extends State<AlarmSettingPage> {
                         });
                       },
                       child: Container(
-                          width: isSupplementButtonEnabled ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isSupplementButtonEnabled
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: isSupplementButtonEnabled
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('영양제',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isSupplementButtonEnabled
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ))),
+                          child: Center(
+                            child: Text('영양제',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isSupplementButtonEnabled
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                   ],
                 ),

@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/alarm_setting.dart';
 import 'package:cozy_for_mom_frontend/screen/notification/notification_setting_card_widget.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -114,6 +117,9 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
+    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
 
@@ -125,358 +131,405 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F7FA),
+        scrolledUnderElevation: 0,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "알림 설정",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: min(18.sp, 28)),
         ),
         leading: IconButton(
-          color: Colors.black,
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Image(
+            image: const AssetImage('assets/images/icons/back_ios.png'),
+            width: min(34.w, 44),
+            height: min(34.w, 44),
+            color: mainTextColor,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextField(
-                      cursorColor: primaryColor,
-                      controller: titleController,
-                      keyboardType: TextInputType.text,
-                      style: const TextStyle(
-                        color: mainTextColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelStyle: TextStyle(
-                          color: Color(0xff2B2D35),
-                          fontSize: 20,
-                        ),
-                        hintText: "일정의 제목을 입력해주세요",
-                        hintStyle: TextStyle(
-                          color: Color(0xff858998),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                      ),
-                      onChanged: (text) {
-                        setState(() {
-                          title = text;
-                        });
-                      },
-                    ),
-                    Container(
-                      width: screenWidth,
-                      height: 1.5,
-                      color: titleController.text.isNotEmpty
-                          ? primaryColor
-                          : mainLineColor,
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Text(
-                      type == CardType.bloodsugar.name ? "측정 시간" : "복용 시간",
-                      style: const TextStyle(
-                        color: Color(0xff2B2D35),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ...targetTimeWidgets
-                        .expand(
-                            (widget) => [widget, const SizedBox(height: 10)])
-                        .toList(),
-                    const SizedBox(height: 10),
-                    type == CardType.bloodsugar.name
-                        ? Container()
-                        : GestureDetector(
-                            onTap: _addNotificationCard,
-                            child: const Center(
-                              child: Text(
-                                "+ 알림 받을 시간 추가하기",
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      "알림",
-                      style: TextStyle(
-                        color: Color(0xff2B2D35),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedOneHourAgo = !selectedOneHourAgo;
-                              if (selectedOneHourAgo) {
-                                selectedThirtyMinutesAgo = false;
-                                selectedOnTime = false;
-                                notifyAt = "one hour ago";
-                              }
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: selectedOneHourAgo
-                                  ? selectedBackgroundColor
-                                  : unselectedBackgroundColor,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Center(
-                                child: Text(
-                                  "1시간 전",
-                                  style: TextStyle(
-                                      color: selectedOneHourAgo
-                                          ? selectedTextColor
-                                          : unselectedTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedThirtyMinutesAgo =
-                                  !selectedThirtyMinutesAgo;
-                              if (selectedThirtyMinutesAgo) {
-                                selectedOneHourAgo = false;
-                                selectedOnTime = false;
-                                notifyAt = "thirty minutes ago";
-                              }
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: selectedThirtyMinutesAgo
-                                  ? selectedBackgroundColor
-                                  : unselectedBackgroundColor,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Center(
-                                child: Text(
-                                  "30분 전",
-                                  style: TextStyle(
-                                      color: selectedThirtyMinutesAgo
-                                          ? selectedTextColor
-                                          : unselectedTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedOnTime = !selectedOnTime;
-                              if (selectedOnTime) {
-                                selectedThirtyMinutesAgo = false;
-                                selectedOneHourAgo = false;
-                                notifyAt = "on time";
-                              }
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: selectedOnTime
-                                  ? selectedBackgroundColor
-                                  : unselectedBackgroundColor,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Center(
-                                child: Text(
-                                  "정시",
-                                  style: TextStyle(
-                                      color: selectedOnTime
-                                          ? selectedTextColor
-                                          : unselectedTextColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const Text(
-                      "알림 받을 요일",
-                      style: TextStyle(
-                        color: Color(0xff2B2D35),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: screenWidth - 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: paddingValue, right: paddingValue, bottom: keyboardPadding.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          for (var dayType in NotificationDayType.values)
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (daysOfWeek
-                                      .contains(dayType.englishName)) {
-                                    daysOfWeek.remove(dayType.englishName);
-                                  } else {
-                                    if (dayType.englishName == 'all') {
-                                      // 매일과 요일을 중복으로 선택 못하도록 방지
-                                      daysOfWeek.clear();
-                                      daysOfWeek.add(dayType.englishName);
-                                    } else {
-                                      if (daysOfWeek.contains('all')) {
-                                        daysOfWeek.remove('all');
-                                      }
-                                      daysOfWeek.add(dayType.englishName);
-                                    }
-                                    if (allDays.every(
-                                        (day) => daysOfWeek.contains(day))) {
-                                      daysOfWeek = [
-                                        NotificationDayType.all.englishName
-                                      ]; // 모든 요일을 'all'로 대체
-                                    }
-                                  }
-                                });
-                              },
-                              child: Container(
-                                width: 38,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color:
-                                      daysOfWeek.contains(dayType.englishName)
-                                          ? selectedBackgroundColor
-                                          : backgroundColor,
+                          SizedBox(
+                            height: 30.w,
+                          ),
+                          TextField(
+                            cursorColor: primaryColor,
+                            controller: titleController,
+                            keyboardType: TextInputType.text,
+                            style: TextStyle(
+                              color: mainTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: min(20.sp, 30),
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelStyle: TextStyle(
+                                color: const Color(0xff2B2D35),
+                                fontSize: min(20.sp, 30),
+                              ),
+                              hintText: "일정의 제목을 입력해주세요",
+                              hintStyle: TextStyle(
+                                color: const Color(0xff858998),
+                                fontWeight: FontWeight.w500,
+                                fontSize: min(20.sp, 30),
+                              ),
+                            ),
+                            onChanged: (text) {
+                              setState(() {
+                                title = text;
+                              });
+                            },
+                          ),
+                          Container(
+                            width: screenWidth,
+                            height: 1.5.w,
+                            color: titleController.text.isNotEmpty
+                                ? primaryColor
+                                : mainLineColor,
+                          ),
+                          SizedBox(
+                            height: 50.w,
+                          ),
+                          Text(
+                            type == CardType.bloodsugar.name
+                                ? "측정 시간"
+                                : "복용 시간",
+                            style: TextStyle(
+                              color: const Color(0xff2B2D35),
+                              fontWeight: FontWeight.bold,
+                              fontSize: min(18.sp, 28),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.w,
+                          ),
+                          ...targetTimeWidgets
+                              .expand(
+                                  (widget) => [widget, SizedBox(height: 10.w)])
+                              .toList(),
+                          SizedBox(height: 10.w),
+                          type == CardType.bloodsugar.name
+                              ? Container()
+                              : GestureDetector(
+                                  onTap: _addNotificationCard,
+                                  child: Center(
+                                    child: Text(
+                                      "+ 알림 받을 시간 추가하기",
+                                      style: TextStyle(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: min(14.sp, 24)),
+                                    ),
+                                  ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    dayType.name,
-                                    style: TextStyle(
-                                        color: daysOfWeek
-                                                .contains(dayType.englishName)
-                                            ? selectedTextColor
-                                            : unselectedTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                          SizedBox(
+                            height: 20.w,
+                          ),
+                          Text(
+                            "알림",
+                            style: TextStyle(
+                              color: const Color(0xff2B2D35),
+                              fontWeight: FontWeight.bold,
+                              fontSize: min(18.sp, 28),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.w,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedOneHourAgo = !selectedOneHourAgo;
+                                    if (selectedOneHourAgo) {
+                                      selectedThirtyMinutesAgo = false;
+                                      selectedOnTime = false;
+                                      notifyAt = "one hour ago";
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 100.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
+                                    color: selectedOneHourAgo
+                                        ? selectedBackgroundColor
+                                        : unselectedBackgroundColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 15.h),
+                                    child: Center(
+                                      child: Text(
+                                        "1시간 전",
+                                        style: TextStyle(
+                                            color: selectedOneHourAgo
+                                                ? selectedTextColor
+                                                : unselectedTextColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: min(16.sp, 26)),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedThirtyMinutesAgo =
+                                        !selectedThirtyMinutesAgo;
+                                    if (selectedThirtyMinutesAgo) {
+                                      selectedOneHourAgo = false;
+                                      selectedOnTime = false;
+                                      notifyAt = "thirty minutes ago";
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 100.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
+                                    color: selectedThirtyMinutesAgo
+                                        ? selectedBackgroundColor
+                                        : unselectedBackgroundColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 15.h),
+                                    child: Center(
+                                      child: Text(
+                                        "30분 전",
+                                        style: TextStyle(
+                                            color: selectedThirtyMinutesAgo
+                                                ? selectedTextColor
+                                                : unselectedTextColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: min(16.sp, 26)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedOnTime = !selectedOnTime;
+                                    if (selectedOnTime) {
+                                      selectedThirtyMinutesAgo = false;
+                                      selectedOneHourAgo = false;
+                                      notifyAt = "on time";
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 100.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.w),
+                                    color: selectedOnTime
+                                        ? selectedBackgroundColor
+                                        : unselectedBackgroundColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 15.h),
+                                    child: Center(
+                                      child: Text(
+                                        "정시",
+                                        style: TextStyle(
+                                            color: selectedOnTime
+                                                ? selectedTextColor
+                                                : unselectedTextColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: min(16.sp, 26)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 40.w,
+                          ),
+                          Text(
+                            "알림 받을 요일",
+                            style: TextStyle(
+                              color: const Color(0xff2B2D35),
+                              fontWeight: FontWeight.bold,
+                              fontSize: min(18.sp, 28),
                             ),
+                          ),
+                          SizedBox(
+                            height: 20.w,
+                          ),
+                          SizedBox(
+                            width: screenWidth - 2 * paddingValue,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                for (var dayType in NotificationDayType.values)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (daysOfWeek
+                                            .contains(dayType.englishName)) {
+                                          daysOfWeek
+                                              .remove(dayType.englishName);
+                                        } else {
+                                          if (dayType.englishName == 'all') {
+                                            // 매일과 요일을 중복으로 선택 못하도록 방지
+                                            daysOfWeek.clear();
+                                            daysOfWeek.add(dayType.englishName);
+                                          } else {
+                                            if (daysOfWeek.contains('all')) {
+                                              daysOfWeek.remove('all');
+                                            }
+                                            daysOfWeek.add(dayType.englishName);
+                                          }
+                                          if (allDays.every((day) =>
+                                              daysOfWeek.contains(day))) {
+                                            daysOfWeek = [
+                                              NotificationDayType
+                                                  .all.englishName
+                                            ]; // 모든 요일을 'all'로 대체
+                                          }
+                                        }
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 38.w,
+                                      height: 45.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.w),
+                                        color: daysOfWeek
+                                                .contains(dayType.englishName)
+                                            ? selectedBackgroundColor
+                                            : backgroundColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          dayType.name,
+                                          style: TextStyle(
+                                              color: daysOfWeek.contains(
+                                                      dayType.englishName)
+                                                  ? selectedTextColor
+                                                  : unselectedTextColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: min(16.sp, 26)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 150.w),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 70),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0.h,
+            left: 0.w,
+            right: 0.w,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0.2),
                   ],
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () async {
-                var notification = NotificationModel(
-                  isActive: isActive,
-                  type: widget.type.name,
-                  title: title,
-                  notifyAt: notifyAt,
-                  targetTimeAt: targetTimeAt,
-                  daysOfWeek: daysOfWeek,
-                );
-                if (widget.notification != null) {
-                  int responseId = await notificationViewModel
-                      .modifyNotification(id, notification);
-                  print('modify');
-                  widget.onModify!(responseId);
-                } else {
-                  int responseId = await notificationViewModel
-                      .recordNotification(notification);
-                  print('register');
-                  widget.onRegister!(responseId);
-                }
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: screenWidth - 40,
-                height: 56,
-                margin: const EdgeInsets.only(bottom: 35),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: isRegisterButtonEnabled()
-                      ? primaryColor
-                      : const Color(0xffC9DFF9),
-                ),
-                child: const Center(
-                  child: Text(
-                    "등록하기",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+              padding: EdgeInsets.only(
+                top: 20.w,
+                bottom: 54.w - paddingValue,
+              ),
+              child: InkWell(
+                onTap: () async {
+                  if (isRegisterButtonEnabled()) {
+                    var notification = NotificationModel(
+                      isActive: isActive,
+                      type: widget.type.name,
+                      title: title,
+                      notifyAt: notifyAt,
+                      targetTimeAt: targetTimeAt,
+                      daysOfWeek: daysOfWeek,
+                    );
+                    if (widget.notification != null) {
+                      int? resId = await notificationViewModel
+                          .modifyNotification(context, id, notification);
+                      widget.onModify!(resId!);
+                    } else {
+                      int? resId = await notificationViewModel
+                          .recordNotification(context, notification);
+                      widget.onRegister!(resId!);
+                    }
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  }
+                },
+                child: Container(
+                  height: min(56.w, 96),
+                  margin: EdgeInsets.symmetric(horizontal: paddingValue),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.w),
+                    color: isRegisterButtonEnabled()
+                        ? primaryColor
+                        : const Color(0xffC9DFF9),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "등록하기",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: min(16.sp, 26)),
                     ),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

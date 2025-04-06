@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/widget/delete_modal.dart';
 import 'package:cozy_for_mom_frontend/model/notification_model.dart';
 import 'package:cozy_for_mom_frontend/service/notification/notification_domain_api_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -25,7 +28,6 @@ class AlarmSettingCard extends StatefulWidget {
 class _AlarmSettingCardState extends State<AlarmSettingCard> {
   late NotificationApiService notificationViewModel;
 
-  final SlidableController _slidableController = SlidableController();
   // 요일을 숫자로 매핑하는 맵
   final Map<String, int> dayOrder = {
     'mon': 1,
@@ -79,6 +81,8 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     NotificationApiService notificationViewModel =
         Provider.of<NotificationApiService>(context, listen: false);
     // 월화수목금토일 순으로 정렬
@@ -97,75 +101,110 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
       return hourA.compareTo(hourB);
     });
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: EdgeInsets.only(bottom: 5.w),
       child: Card(
         elevation: 0.0,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.w)),
         child: Slidable(
-          controller: _slidableController,
-          actionPane: const SlidableDrawerActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-              color: Colors.transparent,
-              iconWidget: Container(
-                width: 120,
-                decoration: const BoxDecoration(
-                  color: deleteButtonColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
+          key: ValueKey(widget.notification.id),  // 기존 State가 다음 아이템에 붙어서 슬라이드 상태가 이어지는 현상 방지
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.25,
+            children: [
+              CustomSlidableAction(
+                padding: EdgeInsets.zero,
+                foregroundColor: deleteButtonColor,
+                autoClose: true,
+                flex: 1,
+                onPressed: (context) {
+                  // 삭제 다이얼로그 띄우기
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext buildContext) {
+                      return DeleteModal(
+                        text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                        title: '알림이',
+                        tapFunc: () async {
+                          await notificationViewModel.deleteNotification(
+                            context,
+                            widget.notification.id,
+                          );
+                          widget.onDelete(widget.notification.id);
+                          setState(() {
+                            Slidable.of(buildContext)?.close();
+                          });
+                        },
+                      );
+                    },
+                  );
+                },
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  width: 120.w,
+                  decoration: BoxDecoration(
+                    color: deleteButtonColor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.w),
+                      bottomRight: Radius.circular(20.w),
+                    ),
                   ),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext buildContext) {
-                        return DeleteModal(
-                          text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
-                          title: '알림이',
-                          tapFunc: () async {
-                            await notificationViewModel
-                                .deleteNotification(widget.notification.id);
-                            widget.onDelete(widget.notification.id);
-                            setState(() {
-                              _slidableController.activeState?.close();
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: const Column(
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext buildContext) {
+                          return DeleteModal(
+                            text: '등록된 알림을 삭제하시겠습니까?\n이 과정은 복구할 수 없습니다.',
+                            title: '알림이',
+                            tapFunc: () async {
+                              await notificationViewModel.deleteNotification(
+                                context,
+                                widget.notification.id,
+                              );
+                              widget.onDelete(widget.notification.id);
+                              setState(() {
+                                Slidable.of(buildContext)?.close();
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image(
-                          image: AssetImage('assets/images/icons/delete.png'),
-                          width: 17.5,
-                          height: 18,
+                          image: const AssetImage(
+                              'assets/images/icons/delete.png'),
+                          width: min(17.5.w, 27.5),
+                          height: min(18.w, 28),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 5.w),
                         Text(
                           "삭제",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: min(14.sp, 24),
                           ),
                         ),
-                      ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 24.w, horizontal: 20.w),
             decoration: BoxDecoration(
                 color: contentBoxTwoColor,
-                borderRadius: BorderRadius.circular(20.0)),
-            width: screenWidth - 40,
-            height: 164,
+                borderRadius: BorderRadius.circular(20.w)),
+            width: screenWidth - 2 * paddingValue,
+            height: min(164.w, 328),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,41 +220,41 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                               children: [
                                 Flexible(
                                   child: Text(widget.notification.title,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: afterInputColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18),
+                                          fontSize: min(18.sp, 28)),
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8.w),
                                 Container(
-                                  height: 22,
                                   alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w, vertical: 2.w),
                                   decoration: BoxDecoration(
                                       color: widget.notification.isActive
                                           ? const Color(0xffFEEEEE)
                                           : offButtonColor,
-                                      borderRadius: BorderRadius.circular(8)),
+                                      borderRadius: BorderRadius.circular(8.w)),
                                   child: Wrap(
                                     children: widget.notification.daysOfWeek
                                         .map((day) {
                                           return Text(
                                             weekDayNames[day]!,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: widget
                                                         .notification.isActive
                                                     ? const Color(0xffFF9797)
                                                     : offButtonTextColor,
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 12),
+                                                fontSize: min(12.sp, 22)),
                                           );
                                         })
                                         .expand((widget) =>
-                                            [widget, const SizedBox(width: 8)])
+                                            [widget, SizedBox(width: 8.w)])
                                         .toList()
                                       ..removeLast(),
                                   ),
@@ -227,20 +266,20 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                           onChanged: (value) async {
                             await notificationViewModel
                                 .modifyNotificationActive(
-                                    widget.notification.id, value);
+                                    context, widget.notification.id, value);
                             widget.onActiveChanged();
                           },
-                          activeColor: primaryColor,
+                          activeTrackColor: primaryColor,
                         ),
                       ]),
                   const Divider(color: mainLineColor, thickness: 1),
-                  const Text('설정한 시간',
+                  Text('설정한 시간',
                       style: TextStyle(
                           color: offButtonTextColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12)),
+                          fontSize: min(12.sp, 22))),
                   SizedBox(
-                    width: 312,
+                    width: 312.w,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -253,7 +292,7 @@ class _AlarmSettingCardState extends State<AlarmSettingCard> {
                                   ? primaryColor
                                   : offButtonTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: min(14.sp, 24),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

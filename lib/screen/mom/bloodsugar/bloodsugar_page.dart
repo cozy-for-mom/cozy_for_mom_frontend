@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
@@ -27,35 +30,50 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Positioned(
-              top: 47,
+              top: isSmall ? 0.w : 40.w,
               width: screenWidth,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.only(
+                    top: paddingValue, bottom: paddingValue - 20.w, right: 8.w),
                 child: Consumer<MyDataModel>(builder: (context, globalData, _) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
+                        icon: Image(
+                          image: const AssetImage(
+                              'assets/images/icons/back_ios.png'),
+                          width: min(34.w, 44),
+                          height: min(34.w, 44),
+                          color: mainTextColor,
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
+                      SizedBox(
+                        width: min(30.w, 40),
+                        height: min(30.w, 40),
+                      ),
+                      const Spacer(),
                       Row(
                         children: [
                           Text(
                             DateFormat('M.d E', 'ko_KR')
                                 .format(globalData.selectedDate),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: mainTextColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                              fontSize: min(18.sp, 28),
                             ),
                           ),
                           IconButton(
@@ -64,22 +82,26 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                             onPressed: () {
                               showModalBottomSheet(
                                 backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
                                 elevation: 0.0,
                                 context: context,
                                 builder: (context) {
-                                  return MonthCalendarModal(limitToday: true);
+                                  return Wrap(children: [
+                                    MonthCalendarModal(limitToday: true)
+                                  ]);
                                 },
                               );
                             },
                           ),
                         ],
                       ),
+                      const Spacer(),
                       IconButton(
-                          icon: const Image(
-                              image:
-                                  AssetImage('assets/images/icons/alert.png'),
-                              height: 32,
-                              width: 32),
+                          icon: Image(
+                              image: const AssetImage(
+                                  'assets/images/icons/alert.png'),
+                              height: min(32.w, 42),
+                              width: min(32.w, 42)),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -94,58 +116,64 @@ class _BloodsugarPageState extends State<BloodsugarPage> {
                 }),
               )),
           Positioned(
-              top: 104,
-              left: 20,
+              top: isSmall? 90.h : 110.h,
+              left: paddingValue,
               child: Container(
-                width: 351,
-                height: 53,
+                width: screenWidth - 2 * paddingValue,
+                height: min(53.w, 93),
                 decoration: BoxDecoration(
                     color: offButtonColor,
-                    borderRadius: BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(30.w)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     InkWell(
                       onTap: !isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: isRecordActive ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: isRecordActive
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기록하기',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isRecordActive
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ))),
+                          child: Center(
+                            child: Text('기록하기',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isRecordActive
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                     InkWell(
                       onTap: isRecordActive ? () => toggleView() : null,
                       child: Container(
-                          width: !isRecordActive ? 173 : 153,
-                          height: 41,
-                          padding: const EdgeInsets.all(10),
+                          width: !isRecordActive
+                              ? 193.w - paddingValue
+                              : 173.w - paddingValue,
+                          height: min(41.w, 71),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(30.w),
                               color: !isRecordActive
                                   ? primaryColor
                                   : offButtonColor),
-                          child: Text('기간별 조회',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: !isRecordActive
-                                    ? Colors.white
-                                    : offButtonTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ))),
+                          child: Center(
+                            child: Text('기간별 조회',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: !isRecordActive
+                                      ? Colors.white
+                                      : offButtonTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: min(16.sp, 26),
+                                )),
+                          )),
                     ),
                   ],
                 ),

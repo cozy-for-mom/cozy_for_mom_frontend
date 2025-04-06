@@ -20,14 +20,26 @@ class UserLocalStorageService {
 
   Future<void> setUser(User user) async {
     await _prefs!.setInt('babyProfileId', user.babyProfile.babyProfileId);
-    await _prefs!.setStringList('babyIds', user.babyProfile.babies.map((e) => e.babyId.toString()).toList());
-    await _prefs!.setStringList('babyNames', user.babyProfile.babies.map((e) => e.babyName.toString()).toList());
+    await _prefs!.setString(
+        'babyProfileImageUrl', user.recentBabyProfile.babyProfileImageUrl!);
+    await _prefs!.setStringList('babyIds',
+        user.babyProfile.babies.map((e) => e.babyId.toString()).toList());
+    await _prefs!.setStringList('babyNames',
+        user.babyProfile.babies.map((e) => e.babyName.toString()).toList());
     await _prefs!.setString('nickname', user.nickname);
   }
 
   Future<int?> getBabyProfileId() async {
     if (_prefs!.getInt('babyProfileId') != null) {
-     return _prefs!.getInt('babyProfileId')!;
+      return _prefs!.getInt('babyProfileId')!;
+    } else {
+      return null;
+    }
+  }
+
+  Future<String?> getBabyProfileImageUrl() async {
+    if (_prefs!.getString('babyProfileImageUrl') != null) {
+      return _prefs!.getString('babyProfileImageUrl')!;
     } else {
       return null;
     }

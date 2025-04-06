@@ -2,7 +2,7 @@ name: cozy_for_mom_frontend
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: ">=3.0.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -28,46 +28,45 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  camera: ^0.11.1
+  crypto: ^3.0.0
+  cupertino_icons: ^1.0.2
+  dropdown_button2: ^2.3.8
   flutter:
     sdk: flutter
-  intl: ^0.18.0
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  table_calendar: ^3.0.8
-  syncfusion_flutter_charts: ^21.2.4
-  time_picker_spinner: ^0.0.1
-  provider: ^6.0.5
-  image_picker: ^1.0.4
-  flutter_slidable: ^0.6.0
-  shared_preferences: ^2.2.2
-  infinite_scroll_pagination: ^4.0.0
-  fluttertoast: ^8.2.5
-  http_parser:
-  camera: ^0.10.5+9
-  http: ^1.1.0
-  kakao_flutter_sdk_user: ^1.9.1+2
-  flutter_secure_storage: ^9.0.0
-  jwt_decoder: ^2.0.1
   flutter_dotenv: ^5.1.0
-  sign_in_with_apple: ^4.0.0
-  dropdown_button2: ^2.3.8
+  flutter_native_splash: ^2.3.10
+  flutter_screenutil: ^5.0.0+2
+  flutter_secure_storage: ^10.0.0-beta.4
+  flutter_slidable: ^4.0.0
+  fluttertoast: ^8.2.5
+  http: ^1.1.0
+  http_parser: null
+  image_picker: ^1.0.4
+  infinite_scroll_pagination: ^4.0.0
+  intl: ^0.20.2
+  jwt_decoder: ^2.0.1
+  kakao_flutter_sdk_user: ^1.9.1+2
+  provider: ^6.0.5
+  shared_preferences: ^2.2.2
+  sign_in_with_apple: ^6.1.4
+  syncfusion_flutter_charts: ^28.2.6
+  table_calendar: ^3.0.8
+  time_picker_spinner: ^1.0.2
+  url_launcher: ^6.3.1
+  url_launcher_ios: ^6.3.2
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
   assets:
@@ -80,8 +79,6 @@ flutter:
     - assets/images/icons/momProfile.png
     - assets/images/icons/babyProfileOn.png
     - assets/images/icons/babyProfileOff.png
-    - assets/images/icons/logout_agree_active.png
-    - assets/images/icons/logout_agree_inactive.png
     - assets/images/icons/scrap.png
     - assets/images/icons/pen.png
     - assets/images/icons/plus_blue.png
@@ -109,7 +106,6 @@ flutter:
     - assets/images/icons/icon_switch.png
     - assets/images/icons/icon_comment.png
     - assets/images/icons/photo_register.png
-    - assets/images/icons/icon_scrap.png
     - assets/images/icons/submit_inactive.png
     - assets/images/icons/submit_active.png
     - assets/images/baby.png
@@ -118,13 +114,13 @@ flutter:
     - assets/images/icons/take_off.png
     - assets/images/icons/plus.png
     - assets/images/icons/delete.png
-    - assets/images/dark_background.png
     - assets/images/icons/mypage.png
     - assets/images/baby2_1.png
     - assets/images/baby2_2.png
     - assets/images/umbilical_cord.png
     - assets/images/icons/cozylog.png
     - assets/images/icons/diary_cozylog.png
+    - assets/images/babyhome_background.png
     - assets/images/babyhome_dark.png
     - assets/images/babyhome_morning.png
     - assets/images/icons/circle_pen.png
@@ -145,8 +141,6 @@ flutter:
     - assets/images/icons/pass.png
     - assets/images/icons/text_delete.png
     - assets/images/icons/supplement_off.png
-    - assets/images/icons/logout_agree_active.png
-    - assets/images/icons/logout_agree_inactive.png
     - assets/images/icons/babyProfile.png
     - assets/images/home_morning.png
     - assets/images/home_afternoon.png
@@ -158,29 +152,33 @@ flutter:
     - assets/test_json/meal.json
     - assets/test_json/bloodsugar.json
     - assets/test_json/bloodsugar_period.json
-    
+
     - assets/images/icons/radio_selected.png
     - assets/images/icons/radio_unselected.png
     - assets/images/test_image.png
     - assets/images/test_image2.png
-    - assets/images/login_cozy_image.png
-    - assets/images/login_confetti_image.png
+    - assets/images/login_confetti_logo_group.png
     - assets/images/login_group_image.png
     - assets/images/icons/diary_inactive.png
     - assets/images/icons/notification_off.png
+    - assets/images/splash.png
+    - assets/images/icons/baby_remove.png
+    - assets/images/icons/babyprofile_modify_pen.png
+    - assets/images/icons/back_ios.png
+    - assets/images/icons/more_vert_outlined.png
+    - assets/images/icons/unscrap.png
+    - assets/images/icons/scrap_fill.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

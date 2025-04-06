@@ -1,3 +1,4 @@
+import 'package:cozy_for_mom_frontend/model/baby_growth_model.dart';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_model.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +22,13 @@ class ListModifyState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setAllSelected(List<CozyLogForList> cozyLogs) {
-    _selectedIds = cozyLogs.map((cozyLog) => cozyLog.cozyLogId).toList();
+  void setCozylogAllSelected(List<int> ids) {
+    _selectedIds = ids.map((id) => id).toList();
+    notifyListeners();
+  }
+
+  void setGrowthAllSelected(List<int> ids) {
+    _selectedIds = ids.map((id) => id).toList();
     notifyListeners();
   }
 

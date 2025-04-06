@@ -6,7 +6,6 @@ import 'package:cozy_for_mom_frontend/service/user/oauth_api_service.dart';
 class JoinInputData extends ChangeNotifier {
   String email = '';
   String name = '';
-  String birth = '';
   String nickname = '';
   String dueDate = '';
   String laseMensesDate = '';
@@ -15,8 +14,13 @@ class JoinInputData extends ChangeNotifier {
   List<String> genders = [];
   List<Baby> babies = [];
   OauthType oauthType = OauthType.none;
+  bool fetalInfoChanged = false;
 
   final _storage = FlutterSecureStorage();
+
+  void resetData() {
+    _storage.deleteAll();
+  }
 
   void setEmail(String value) {
     email = value;
@@ -28,12 +32,6 @@ class JoinInputData extends ChangeNotifier {
     name = value;
     notifyListeners();
     _saveToStorage('name', value);
-  }
-
-  void setBirth(String value) {
-    birth = value;
-    notifyListeners();
-    _saveToStorage('birth', value);
   }
 
   void setNickname(String value) {
@@ -55,10 +53,20 @@ class JoinInputData extends ChangeNotifier {
   }
 
   void setFetalInfo(String? value) {
-    if (value != null) {
+    if (value != null && value != fetalInfo) {
       fetalInfo = value;
+      genders.clear();
+      birthNames.clear();
       _saveToStorage('fetalInfo', value);
+      _saveListToStorage('genders', genders);
+      _saveListToStorage('birthNames', birthNames);
+      fetalInfoChanged = true;
+      notifyListeners();
     }
+  }
+
+  void resetFetalInfoChange() {
+    fetalInfoChanged = false;
     notifyListeners();
   }
 
@@ -108,7 +116,6 @@ class JoinInputData extends ChangeNotifier {
   Future<void> loadFromStorage() async {
     email = await _storage.read(key: 'email') ?? '';
     name = await _storage.read(key: 'name') ?? '';
-    birth = await _storage.read(key: 'birth') ?? '';
     nickname = await _storage.read(key: 'nickname') ?? '';
     dueDate = await _storage.read(key: 'dueDate') ?? '';
     laseMensesDate = await _storage.read(key: 'laseMensesDate') ?? '';

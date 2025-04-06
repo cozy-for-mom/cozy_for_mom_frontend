@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 // 아이콘 + 텍스트 버튼 (커스텀버튼 위젯)
@@ -25,7 +28,7 @@ class CustomTextButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -34,11 +37,11 @@ class CustomTextButton extends StatelessWidget {
               width: imageWidth,
               height: imageHeight,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.w),
             Text(
               text,
               style: TextStyle(
-                  color: textColor, fontWeight: textWeight, fontSize: 14),
+                  color: textColor, fontWeight: textWeight, fontSize: min(14.sp, 24)),
             ),
           ],
         ),

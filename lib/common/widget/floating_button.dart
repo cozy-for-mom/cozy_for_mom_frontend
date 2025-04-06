@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 // 공통으로 사용할 플로팅버튼
@@ -15,16 +18,16 @@ class CustomFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 50,
-      height: 50,
+      width: min(50.w, 70),
+      height: min(50.w, 70),
       child: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.w)),
         backgroundColor: primaryColor,
         onPressed: pressed,
         child: Image.asset(
           'assets/images/icons/plus_white.png',
-          width: 24,
-          height: 24,
+          width: min(24.w, 44),
+          height: min(24.w, 44),
         ),
       ),
     );

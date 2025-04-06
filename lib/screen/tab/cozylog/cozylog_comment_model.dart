@@ -1,6 +1,7 @@
 class CozyLogComment {
   final int commentId;
   final bool isDeleted;
+  final bool? isReported;
   final int? parentId;
   final String content;
   final DateTime createdAt;
@@ -13,6 +14,7 @@ class CozyLogComment {
   CozyLogComment({
     required this.commentId,
     required this.isDeleted,
+    required this.isReported,
     required this.parentId,
     required this.content,
     required this.createdAt,
@@ -28,6 +30,7 @@ class CozyLogComment {
     return CozyLogComment(
       commentId: json['commentId'],
       isDeleted: json['isDeleted'],
+      isReported: json['isReported'] ?? false,
       parentId: json['parentId'],
       content: json['comment'],
       createdAt: DateTime.parse(json['createdAt']),

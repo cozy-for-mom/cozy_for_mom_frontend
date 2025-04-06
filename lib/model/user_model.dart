@@ -4,7 +4,7 @@ class User {
   final String nickname;
   final String introduce;
   final String? imageUrl;
-  final String birth;
+  final String birth;  // TODO 백엔드 수정 후, 생년월일 필드 삭제
   final String email;
   final BabyProfile babyProfile;
   final BabyProfile recentBabyProfile;
@@ -28,7 +28,7 @@ class User {
       introduce: json['introduce'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
       birth: json['birth'],
-      email: json['email'],
+      email: json['email'] ?? '',
       babyProfile: BabyProfile.fromJson(json['babyProfile']),
       recentBabyProfile: BabyProfile.fromJson(json['recentBabyProfile']),
       dDay: json['dDay'],

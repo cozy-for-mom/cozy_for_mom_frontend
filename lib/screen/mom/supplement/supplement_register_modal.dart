@@ -1,7 +1,11 @@
-import 'package:cozy_for_mom_frontend/model/supplement_model.dart';
+import 'dart:math';
+
+import 'package:cozy_for_mom_frontend/utils/app_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
 import 'package:cozy_for_mom_frontend/service/mom/mom_supplement_api_service.dart';
+import 'package:flutter/services.dart';
 
 class SupplementRegisterModal extends StatefulWidget {
   final void Function(int) onRegister;
@@ -22,56 +26,61 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
   Widget build(BuildContext context) {
     SupplementApiService supplementApi = SupplementApiService();
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
 
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: screenWidth - 40, // TODO 팝업창 너비 조정되도록 수정해야 함
-            height: 302,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: screenWidth - 2 * paddingValue, // TODO 팝업창 너비 조정되도록 수정해야 함
+            height: min(302.w, 462),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: contentBoxTwoColor,
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.w),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('영양제 등록',
+                Text('영양제 등록',
                     style: TextStyle(
                         color: mainTextColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 18)),
+                        fontSize: min(18.sp, 28))),
                 SizedBox(
-                  height: 176,
+                  height: min(176.w, 266),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 312,
-                          height: 80,
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, top: 12),
+                          width: 312.w,
+                          height: min(80.w, 120),
+                          padding: EdgeInsets.only(
+                              left: isTablet ? 20.w : 24.w,
+                              right: isTablet ? 20.w : 24.w,
+                              top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.w),
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const SizedBox(
+                                SizedBox(
                                   child: Text('이름',
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14)),
+                                          fontSize: min(14.sp, 24))),
                                 ),
                                 SizedBox(
-                                  height: 32,
+                                  height: min(32.w, 52),
                                   child: TextFormField(
                                     controller: nameController,
                                     onChanged: (text) {
@@ -88,47 +97,50 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                     },
                                     textAlign: TextAlign.start,
                                     maxLength: 15,
-                                    cursorHeight: 16,
+                                    cursorHeight:
+                                        AppUtils.scaleSize(context, 16),
                                     keyboardType: TextInputType.text,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                         border: InputBorder.none,
                                         counterText: '',
                                         hintText: '영양제 이름 입력',
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 16)),
+                                            fontSize: min(16.sp, 26))),
                                     cursorColor: primaryColor,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize: min(16.sp, 26)),
                                   ),
                                 ),
                               ]),
                         ),
                         Container(
-                          width: 312,
-                          height: 80,
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, top: 12),
+                          width: 312.w,
+                          height: min(80.w, 120),
+                          padding: EdgeInsets.only(
+                              left: isTablet ? 20.w : 24.w,
+                              right: isTablet ? 20.w : 24.w,
+                              top: 12.w),
                           decoration: BoxDecoration(
                             color: backgroundColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.w),
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const SizedBox(
+                                SizedBox(
                                   child: Text('목표 섭취량',
                                       style: TextStyle(
                                           color: offButtonTextColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14)),
+                                          fontSize: min(14.sp, 24))),
                                 ),
                                 SizedBox(
-                                  height: 32,
+                                  height: min(32.w, 52),
                                   child: TextFormField(
                                     controller: targetCountController,
                                     onChanged: (text) {
@@ -145,21 +157,26 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
                                     },
                                     textAlign: TextAlign.start,
                                     maxLength: 2,
-                                    cursorHeight: 16,
+                                    cursorHeight:
+                                        AppUtils.scaleSize(context, 16),
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(2),
+                                    ],
+                                    decoration: InputDecoration(
                                         border: InputBorder.none,
                                         counterText: '',
                                         hintText: '횟수 입력',
                                         hintStyle: TextStyle(
                                             color: beforeInputColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 16)),
+                                            fontSize: min(16.sp, 26))),
                                     cursorColor: primaryColor,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: mainTextColor,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
+                                        fontSize: min(16.sp, 26)),
                                   ),
                                 ),
                               ]),
@@ -169,32 +186,37 @@ class _SupplementRegisterModalState extends State<SupplementRegisterModal> {
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18.w),
           ValueListenableBuilder<bool>(
               valueListenable: isButtonEnabled,
               builder: (context, isEnabled, child) {
                 return Container(
-                  width: 350,
-                  height: 56,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 50),
+                  width: screenWidth - 2 * paddingValue,
+                  height: min(56.w, 96),
+                  padding: EdgeInsets.symmetric(
+                      vertical: min(18.w, 28), horizontal: 50.w),
                   decoration: BoxDecoration(
                       color: isEnabled ? primaryColor : const Color(0xffC9DFF9),
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12.w)),
                   child: InkWell(
                     onTap: () async {
-                      int id = await supplementApi.registerSupplement(
-                          nameController.text,
-                          int.parse(targetCountController.text));
-                      Navigator.of(context).pop();
-                      widget.onRegister(id);
+                      if (isEnabled) {
+                        int? id = await supplementApi.registerSupplement(
+                            context,
+                            nameController.text,
+                            int.parse(targetCountController.text));
+                        if (id != null) {
+                        Navigator.of(context).pop();
+                        widget.onRegister(id);
+                        }
+                      }
                     },
-                    child: const Text(
+                    child: Text(
                       '등록하기',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                          fontSize: min(16.sp, 26)),
                       textAlign: TextAlign.center,
                     ),
                   ),

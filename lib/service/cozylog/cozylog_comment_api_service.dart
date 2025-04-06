@@ -3,31 +3,40 @@ import 'dart:convert';
 import 'package:cozy_for_mom_frontend/screen/tab/cozylog/cozylog_comment_model.dart';
 import 'package:cozy_for_mom_frontend/service/base_api.dart';
 import 'package:cozy_for_mom_frontend/service/base_headers.dart';
+import 'package:cozy_for_mom_frontend/utils/http_response_handlers.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class CozyLogCommentApiService {
-  Future<List<CozyLogComment>> getCozyLogComments(
+class CozyLogCommentApiService with ChangeNotifier {
+  Future<List<CozyLogComment>?> getCozyLogComments(
+    BuildContext context,
     int id,
   ) async {
-    var urlString = '$baseUrl/cozy-log/$id/comment?userId=1';
+    var urlString = '$baseUrl/cozy-log/$id/comment';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+    dynamic res;
+    res = await get(url, headers: headers);
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       List<dynamic> data = body['data']['comments'];
       List<CozyLogComment> cozyLogs = data.map((comment) {
         return CozyLogComment.fromJson(comment);
       }).toList();
+
       return cozyLogs;
     } else {
-      throw Exception('코지로그(id: $id) 댓글 조회 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return null;
+      // throw Exception('코지로그(id: $id) 댓글 조회 실패');
     }
   }
 
-  Future<bool> postComment(
+  Future<bool?> postComment(
+    BuildContext context,
     int cozyLogId,
     int? parentId,
     String content,
@@ -35,8 +44,8 @@ class CozyLogCommentApiService {
     var urlString = '$baseUrl/cozy-log/$cozyLogId/comment?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await post(
+    dynamic res;
+    res = await post(
       url,
       headers: headers,
       body: jsonEncode(
@@ -46,35 +55,44 @@ class CozyLogCommentApiService {
         },
       ),
     );
-
-    if (response.statusCode == 201) {
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 201) {
       return true;
     } else {
-      throw Exception('코지로그(id: $cozyLogId) 댓글 작성 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return null;
+      // throw Exception('코지로그(id: $cozyLogId) 댓글 작성 실패');
     }
   }
 
-  Future<bool> deleteComment(
+  Future<bool?> deleteComment(
+    BuildContext context,
     int cozyLogId,
     int commentId,
   ) async {
     var urlString = '$baseUrl/cozy-log/$cozyLogId/comment/$commentId?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await delete(
+    dynamic res;
+    res = await delete(
       url,
       headers: headers,
     );
-
-    if (response.statusCode == 204) {
+    if (res.statusCode == 204) {
       return true;
     } else {
-      throw Exception('코지로그(id: $cozyLogId) 댓글 삭제 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, null);
+      }
+      return null;
+      // throw Exception('코지로그(id: $cozyLogId) 댓글 삭제 실패');
     }
   }
 
-  Future<bool> updateComment(
+  Future<bool?> updateComment(
+    BuildContext context,
     int cozyLogId,
     int commentId,
     int? parentId,
@@ -83,8 +101,8 @@ class CozyLogCommentApiService {
     var urlString = '$baseUrl/cozy-log/$cozyLogId/comment?userId=1';
     final headers = await getHeaders();
     final url = Uri.parse(urlString);
-    dynamic response;
-    response = await put(
+    dynamic res;
+    res = await put(
       url,
       headers: headers,
       body: jsonEncode(
@@ -95,11 +113,15 @@ class CozyLogCommentApiService {
         },
       ),
     );
-
-    if (response.statusCode == 200) {
+    String? message = jsonDecode(utf8.decode(res.bodyBytes))['message'];
+    if (res.statusCode == 200) {
       return true;
     } else {
-      throw Exception('코지로그(id: $cozyLogId) 댓글 수정 실패');
+      if (context.mounted) {
+        handleHttpResponse(res.statusCode, context, message);
+      }
+      return null;
+      // throw Exception('코지로그(id: $cozyLogId) 댓글 수정 실패');
     }
   }
 }

@@ -9,6 +9,8 @@ class CozyLog {
   final DateTime updatedAt;
   final int scrapCount;
   final int viewCount;
+  final int commentCount;
+
   final bool isScrapped;
 
   CozyLog({
@@ -22,6 +24,7 @@ class CozyLog {
     required this.updatedAt,
     required this.scrapCount,
     required this.viewCount,
+    required this.commentCount,
     required this.isScrapped,
   });
 
@@ -45,6 +48,7 @@ class CozyLog {
       updatedAt: DateTime.parse(json['updatedAt']),
       scrapCount: json['scrapCount'],
       viewCount: json['viewCount'],
+      commentCount: json['commentCount'],
       isScrapped: json['isScraped'],
     );
   }
@@ -61,7 +65,7 @@ class MyCozyLogListWrapper {
 }
 
 class ScrapCozyLogListWrapper {
-  final List<CozyLogForList> cozyLogs;
+  final List<ScrapForList> cozyLogs;
   final int totalCount;
 
   ScrapCozyLogListWrapper({
@@ -114,6 +118,52 @@ class CozyLogForList {
   }
 }
 
+class ScrapForList {
+  final int id;
+  final int cozyLogId;
+  final String title;
+  final String summary;
+  final CozyLogModeType mode;
+  final DateTime date; // 생성일? 수정일?
+  final int commentCount;
+  final int scrapCount;
+  final int imageCount;
+  final String imageUrl;
+
+  ScrapForList({
+    required this.id,
+    required this.cozyLogId,
+    required this.title,
+    required this.summary,
+    required this.mode,
+    required this.date,
+    required this.commentCount,
+    required this.scrapCount,
+    required this.imageCount,
+    required this.imageUrl,
+  });
+  factory ScrapForList.fromJson(Map<String, dynamic> json) {
+    late CozyLogModeType mode;
+    if (json['mode'] == 'PUBLIC') {
+      mode = CozyLogModeType.public;
+    } else {
+      mode = CozyLogModeType.private;
+    }
+    return ScrapForList(
+      id: json['id'],
+      cozyLogId: json['cozyLogId'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      summary: json['summary'],
+      mode: mode,
+      commentCount: json['commentCount'],
+      scrapCount: json['scrapCount'],
+      imageCount: json['imageCount'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+}
+
 enum CozyLogModeType { public, private }
 
 class CozyLogImage {
@@ -151,7 +201,7 @@ class CozyLogWriter {
     return CozyLogWriter(
       id: json['id'],
       nickname: json['nickname'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['profileImageUrl'],
     );
   }
 }
@@ -171,9 +221,10 @@ class CozyLogSearchResult {
   final String title;
   final String summary;
   final DateTime date;
+  // final CozyLogModeType mode;
   final int commentCount;
   final int scrapCount;
-  final String? imageUrl;
+  final String imageUrl;
   final int imageCount;
 
   CozyLogSearchResult({
@@ -181,6 +232,7 @@ class CozyLogSearchResult {
     required this.title,
     required this.summary,
     required this.date,
+    // required this.mode,
     required this.commentCount,
     required this.scrapCount,
     required this.imageUrl,
@@ -188,11 +240,18 @@ class CozyLogSearchResult {
   });
 
   factory CozyLogSearchResult.fromJson(Map<String, dynamic> json) {
+    //  late CozyLogModeType mode;
+    // if (json['mode'] == 'PUBLIC') {
+    //   mode = CozyLogModeType.public;
+    // } else {
+    //   mode = CozyLogModeType.private;
+    // }
     return CozyLogSearchResult(
       id: json['id'],
       date: DateTime.parse(json['date']),
       title: json['title'],
       summary: json['summary'],
+      // mode: mode,
       commentCount: json['commentCount'],
       scrapCount: json['scrapCount'],
       imageCount: json['imageCount'],

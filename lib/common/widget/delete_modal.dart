@@ -1,14 +1,22 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:cozy_for_mom_frontend/common/custom_color.dart';
-import 'package:cozy_for_mom_frontend/common/widget/delete_complite_alert.dart';
+import 'package:cozy_for_mom_frontend/common/widget/complite_alert.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DeleteModal extends StatefulWidget {
   final String text;
   final String title;
   final Future<void> Function()? tapFunc;
+  final int shouldCloseParentCnt;  // 페이지마다 (모달 개수 따라) pop해야 하는 횟수가 달라지므로 필요함.
 
   const DeleteModal(
-      {super.key, required this.text, required this.title, this.tapFunc});
+      {super.key,
+      required this.text,
+      required this.title,
+      this.tapFunc,
+      this.shouldCloseParentCnt = 1});
   @override
   State<DeleteModal> createState() => _DeleteModalState();
 }
@@ -19,67 +27,80 @@ class _DeleteModalState extends State<DeleteModal> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final paddingValue = isTablet ? 30.w : 20.w;
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       child: Container(
-        width: screenWidth, // TODO 화면 너비에 맞춘 width로 수정해야함
-        height: 173,
+        width: screenWidth - 2 * paddingValue,
+        height: min(173.w, 273),
         decoration: BoxDecoration(
-            color: contentBoxTwoColor, borderRadius: BorderRadius.circular(20)),
+            color: contentBoxTwoColor,
+            borderRadius: BorderRadius.circular(20.w)),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 50.w - paddingValue),
               child: Text(widget.text,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: mainTextColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16)),
+                      fontSize: min(16.sp, 26))),
             ),
             Container(
-                width: 350,
-                height: 1,
-                color: const Color(0xffD9D9D9)), // TODO 화면 너비에 맞춘 width로 수정해야함
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 56,
-                    child: const Text('취소',
-                        style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14)),
-                  ),
-                ),
-                Container(width: 1, height: 65, color: const Color(0xffD9D9D9)),
-                InkWell(
-                  onTap: () async {
-                    await widget.tapFunc!();
-                    Navigator.of(context).pop();
-                    DeleteCompleteAlertModal.showDeleteCompleteDialog(
-                        context, widget.title);
-                  },
-                  child: Container(
-                    width: 56,
-                    alignment: Alignment.center,
-                    child: const Text('삭제하기',
-                        style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14)),
-                  ),
-                ),
-              ],
+                width: screenWidth,
+                height: 1.w,
+                color: const Color(0xffD9D9D9)),
+            Expanded(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 100.w,
+                        child: Text('취소',
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: min(14.sp, 24))),
+                      ),
+                    ),
+                    Container(width: 1.w, color: const Color(0xffD9D9D9)),
+                    InkWell(
+                      onTap: () async {
+                        await widget.tapFunc!();
+                        if (mounted) {
+                          await CompleteAlertModal.showCompleteDialog(
+                              context, widget.title, '삭제');
+                        }
+                        if (mounted) {
+                          for (int i = 0;
+                              i < widget.shouldCloseParentCnt;
+                              i++) {
+                            // 1.DeleteModal 닫기 2.bottomModal 닫기 3.현재 화면 닫기
+                            Navigator.pop(context, true);
+                          }
+                        }
+                      },
+                      child: Container(
+                        width: 100.w,
+                        alignment: Alignment.center,
+                        child: Text('삭제하기',
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: min(14.sp, 24))),
+                      ),
+                    ),
+                  ]),
             ),
           ],
         ),
