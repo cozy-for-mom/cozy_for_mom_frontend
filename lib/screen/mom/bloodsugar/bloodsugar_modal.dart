@@ -70,14 +70,14 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                 Container(
                   width: 312.w,
                   height: min(80.w, 120),
-                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 12.h),
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w),
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(12.w),
                   ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center, // TODO SE 확인
                       children: [
                         SizedBox(
                           child: Text(widget.time,
@@ -98,7 +98,7 @@ class _BloodsugarModalState extends State<BloodsugarModal> {
                               }
                             },
                             maxLength: 3,
-                            textAlign: TextAlign.start,
+                            // textAlign: TextAlign.start,
                             cursorWidth: AppUtils.scaleSize(context, 0.8),
                             cursorHeight: min(14.sp, 24),
                             keyboardType: TextInputType.number,

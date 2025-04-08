@@ -197,6 +197,7 @@ class _NotificationSettingCardState extends State<NotificationSettingCard> {
                 LengthLimitingTextInputFormatter(4),
               ],
               decoration: InputDecoration(
+                isDense: true,
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                 counterText: '',
