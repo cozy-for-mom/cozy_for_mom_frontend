@@ -99,7 +99,9 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                 SingleChildScrollView(
                   physics: ClampingScrollPhysics(),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: isSmall
+                    ? MediaQuery.of(context).size.height
+                    : MediaQuery.of(context).size.height * (0.9),
                     child: Stack(children: [
                       Positioned(
                         top: 185.h,
@@ -133,7 +135,7 @@ class _BabyMainScreenState extends State<BabyMainScreen> {
                                         fontWeight: FontWeight.w700,
                                         fontSize: min(26.sp, 36))),
                               ),
-                              SizedBox(height: isSmall? 0.w : min(5.w, 5)),
+                              SizedBox(height: isSmall ? 0.w : min(5.w, 5)),
                               Text('임신 $week주차 $day일째',
                                   style: TextStyle(
                                       color: //  낮: AM8 ~ PM5 / 저녁: PM6 ~ AM7

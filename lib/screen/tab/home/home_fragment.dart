@@ -46,6 +46,7 @@ class _HomeFragmentState extends State<HomeFragment> {
         Provider.of<NotificationApiService>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
     DateTime now = DateTime.now();
     int nowHour = int.parse(DateFormat('HH').format(now));
     int nowMonth = int.parse(DateFormat('M').format(now));
@@ -98,7 +99,9 @@ class _HomeFragmentState extends State<HomeFragment> {
                 SingleChildScrollView(
                   physics: ClampingScrollPhysics(),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: isSmall
+                        ? MediaQuery.of(context).size.height
+                        : MediaQuery.of(context).size.height * (0.9),
                     child: Stack(children: [
                       Positioned(
                         top: 128.h,
