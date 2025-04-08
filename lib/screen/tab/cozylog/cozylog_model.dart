@@ -54,23 +54,34 @@ class CozyLog {
   }
 }
 
+class CozyLogListWrapper {
+  final List<CozyLogForList> cozyLogs;
+  final bool hasNext;
+
+  CozyLogListWrapper({required this.cozyLogs, required this.hasNext});
+}
+
 class MyCozyLogListWrapper {
   final List<CozyLogForList> cozyLogs;
   final int totalCount;
+  final bool hasNext;
 
-  MyCozyLogListWrapper({
-    required this.cozyLogs,
-    required this.totalCount,
-  });
+  MyCozyLogListWrapper(
+      {required this.cozyLogs,
+      required this.totalCount,
+      required this.hasNext,
+      });
 }
 
 class ScrapCozyLogListWrapper {
   final List<ScrapForList> cozyLogs;
   final int totalCount;
+  final bool hasNext;
 
   ScrapCozyLogListWrapper({
     required this.cozyLogs,
     required this.totalCount,
+    required this.hasNext,
   });
 }
 
@@ -209,10 +220,12 @@ class CozyLogWriter {
 class CozyLogSearchResponse {
   final List<CozyLogSearchResult> results;
   final int totalElements;
+  final bool hasNext;
 
   CozyLogSearchResponse({
     required this.results,
     required this.totalElements,
+    required this.hasNext,
   });
 }
 
@@ -221,7 +234,6 @@ class CozyLogSearchResult {
   final String title;
   final String summary;
   final DateTime date;
-  // final CozyLogModeType mode;
   final int commentCount;
   final int scrapCount;
   final String imageUrl;
@@ -232,7 +244,6 @@ class CozyLogSearchResult {
     required this.title,
     required this.summary,
     required this.date,
-    // required this.mode,
     required this.commentCount,
     required this.scrapCount,
     required this.imageUrl,
@@ -240,18 +251,11 @@ class CozyLogSearchResult {
   });
 
   factory CozyLogSearchResult.fromJson(Map<String, dynamic> json) {
-    //  late CozyLogModeType mode;
-    // if (json['mode'] == 'PUBLIC') {
-    //   mode = CozyLogModeType.public;
-    // } else {
-    //   mode = CozyLogModeType.private;
-    // }
     return CozyLogSearchResult(
       id: json['id'],
       date: DateTime.parse(json['date']),
       title: json['title'],
       summary: json['summary'],
-      // mode: mode,
       commentCount: json['commentCount'],
       scrapCount: json['scrapCount'],
       imageCount: json['imageCount'],

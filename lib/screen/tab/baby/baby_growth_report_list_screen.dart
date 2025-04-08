@@ -43,15 +43,25 @@ class _BabyGrowthReportListScreenState
           .getBabyProfileGrowths(context, pageKey, 10);
 
       setState(() {
-        this.data = Future.value(data);
+        if (data?.nextExaminationDate != null) {
+          nextCheckUpDate = dateFormat.format(data!.nextExaminationDate!);
+        }
       });
-      final growths = data!.growths;
-      final isLastPage = growths.length < 10; // 10개 미만이면 마지막 페이지로 간주
 
+      final growths = data!.growths;
+
+      // 1) 만약 빈 리스트가 떨어진다면, 곧바로 마지막 페이지로 처리
+      if (growths.isEmpty) {
+        pagingController.appendLastPage([]);
+        return;
+      }
+
+      // 2) 받아온 데이터가 pageSize 미만인 경우 → 마지막 페이지
+      final isLastPage = growths.length < 10;
       if (isLastPage) {
         pagingController.appendLastPage(growths);
       } else {
-        final nextPageKey = data.lastId!; // 다음 페이지 키 설정
+        final nextPageKey = data.lastId!;
         pagingController.appendPage(growths, nextPageKey);
       }
     } catch (error) {
@@ -163,10 +173,6 @@ class _BabyGrowthReportListScreenState
                 future: data,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    if (snapshot.data.nextExaminationDate != null) {
-                      nextCheckUpDate =
-                          dateFormat.format(snapshot.data.nextExaminationDate);
-                    }
                     return isEditMode
                         ? BabyGrowthReportListModify(
                             babyProfileGrowths: snapshot.data!.growths,
@@ -493,9 +499,7 @@ class _BabyGrowthReportListScreenState
                                                             min(14.sp, 24)),
                                                   )
                                                 : Text(
-                                                    dateFormat.format(snapshot
-                                                        .data
-                                                        .nextExaminationDate),
+                                                    nextCheckUpDate,
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,

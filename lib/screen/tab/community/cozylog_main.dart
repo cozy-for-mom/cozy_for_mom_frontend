@@ -27,14 +27,14 @@ class CozylogMain extends StatefulWidget {
 }
 
 class _CozylogMainState extends State<CozylogMain> {
-  late Future<List<CozyLogForList>?> cozyLogs;
+  late Future<CozyLogListWrapper?> cozyLogWrapper;
   late UserApiService userViewModel;
   late Map<String, dynamic> pregnantInfo;
 
   @override
   void initState() {
     super.initState();
-    cozyLogs = CozyLogApiService().getCozyLogs(
+    cozyLogWrapper = CozyLogApiService().getCozyLogs(
       context,
       null,
       10,
@@ -42,7 +42,7 @@ class _CozylogMainState extends State<CozylogMain> {
   }
 
   void reloadCozyLogs() {
-    cozyLogs = CozyLogApiService().getCozyLogs(
+    cozyLogWrapper = CozyLogApiService().getCozyLogs(
       context,
       null,
       10,
@@ -109,7 +109,7 @@ class _CozylogMainState extends State<CozylogMain> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const MainScreen())); // TODO depth가 복잡해져서 커뮤니티에서는 뒤로가기하면 메인페이지로 가도록 픽스
+                                            const MainScreen()));
                               },
                             ),
                             SizedBox(
@@ -353,10 +353,7 @@ class _CozylogMainState extends State<CozylogMain> {
                     left: paddingValue,
                     child: Container(
                       width: screenWidth - 2 * paddingValue,
-                      // height: screenHeight * 0.375,
-                      height: screenHeight -
-                          434.h -
-                          min(93.w, 123),
+                      height: screenHeight - 434.h - min(93.w, 123),
                       padding: EdgeInsets.symmetric(
                         horizontal: 20.w,
                       ),
@@ -365,7 +362,7 @@ class _CozylogMainState extends State<CozylogMain> {
                         borderRadius: BorderRadius.circular(20.w),
                       ),
                       child: FutureBuilder(
-                        future: cozyLogs,
+                        future: cozyLogWrapper,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data == null) {
@@ -380,17 +377,18 @@ class _CozylogMainState extends State<CozylogMain> {
                                 physics: ClampingScrollPhysics(),
                                 child: Column(
                                   children: <Widget>[
-                                    ...snapshot.data!
+                                    ...snapshot.data!.cozyLogs
                                         .map((cozylog) => CozylogViewWidget(
                                               isLast: cozylog ==
-                                                  snapshot.data!
+                                                  snapshot.data!.cozyLogs
                                                       .last, // 마지막 아이템인지 판단
                                               cozylog: cozylog,
                                               isMyCozyLog: false,
                                               onUpdate: () {
                                                 setState(() {
-                                                  cozyLogs = CozyLogApiService()
-                                                      .getCozyLogs(
+                                                  cozyLogWrapper =
+                                                      CozyLogApiService()
+                                                          .getCozyLogs(
                                                     context,
                                                     null,
                                                     10,
@@ -426,7 +424,7 @@ class _CozylogMainState extends State<CozylogMain> {
 
                 if (res == true) {
                   setState(() {
-                    cozyLogs = CozyLogApiService().getCozyLogs(
+                    cozyLogWrapper = CozyLogApiService().getCozyLogs(
                       context,
                       null,
                       10,

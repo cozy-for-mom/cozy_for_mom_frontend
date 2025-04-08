@@ -83,7 +83,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
         sortType,
       );
       final cozyLogs = res!.results;
-      final isLastPage = cozyLogs.length < 15;
+      final isLastPage = !res.hasNext;
 
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
@@ -100,8 +100,8 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -111,7 +111,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
         child: Column(
           children: [
             SizedBox(
-              height: isTablet ? 0.w : 50.w,
+              height: isSmall ? paddingValue : 40.w,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,9 +204,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return SizedBox(
-                                          height: isTablet
-                                              ? 234.w - paddingValue
-                                              : 234.w,
+                                          height: 234.w,
                                           child: Column(
                                             children: [
                                               Container(
@@ -287,7 +285,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                                                                 0,
                                                                 15,
                                                                 CozyLogSearchSortType
-                                                                    .comment, // TODO API 다시 확인 요청
+                                                                    .comment,
                                                               );
                                                             });
 
@@ -359,7 +357,7 @@ class _CozyLogSearchResultPageState extends State<CozyLogSearchResultPage> {
                           Container(
                             width: screenWidth - 2 * paddingValue,
                             // height: totalHeight, // TODO 컨테이너도 같이 페이지에이션?되도록, 무한스크롤되도록 수정하기
-                            height: screenHeight * (0.73), // TODO 다른 기종 확인
+                            height: screenHeight * (0.73),
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.w),

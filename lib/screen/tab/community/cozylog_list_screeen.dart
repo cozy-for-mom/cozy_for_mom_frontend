@@ -19,7 +19,7 @@ class CozyLogListScreen extends StatefulWidget {
 
 class _CozyLogListScreenState extends State<CozyLogListScreen>
     with SingleTickerProviderStateMixin {
-  late Future<List<CozyLogForList>?> cozyLogListFuture;
+  late Future<CozyLogListWrapper?> cozyLogListFuture;
   TabController? tabController;
   PagingController<int, CozyLogForList> pagingController =
       PagingController(firstPageKey: 0);
@@ -42,8 +42,9 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
     try {
       cozyLogListFuture =
           CozyLogApiService().getCozyLogs(context, pageKey, 10, sortType: type);
-      final cozyLogs = await cozyLogListFuture;
-      final isLastPage = cozyLogs!.length < 10;
+      final cozyLogWrapper = await cozyLogListFuture;
+      final cozyLogs = cozyLogWrapper!.cozyLogs;
+      final isLastPage = !cozyLogWrapper.hasNext;
 
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
@@ -175,11 +176,11 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final totalHeight =
-                    boxHeight * snapshot.data!.length + paddingValue;
+                    boxHeight * snapshot.data!.cozyLogs.length + paddingValue;
                 return Column(
                   children: [
                     SizedBox(height: 22.w),
-                    snapshot.data!.isNotEmpty
+                    snapshot.data!.cozyLogs.isNotEmpty
                         ? Padding(
                             padding:
                                 EdgeInsets.symmetric(horizontal: paddingValue),
@@ -193,7 +194,6 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                                 color: contentBoxTwoColor,
                               ),
                               child: PagedListView<int, CozyLogForList>(
-                                // physics: const NeverScrollableScrollPhysics(),
                                 pagingController: pagingController,
                                 builderDelegate:
                                     PagedChildBuilderDelegate<CozyLogForList>(
@@ -226,7 +226,7 @@ class _CozyLogListScreenState extends State<CozyLogListScreen>
                                       image: const AssetImage(
                                           'assets/images/icons/cozylog_off.png'),
                                       width: min(45.31.w, 90.62),
-                                      height: min(40.77.w, 40.77*2)),
+                                      height: min(40.77.w, 40.77 * 2)),
                                   SizedBox(height: 12.w),
                                   Text('코지로그를 작성해 보세요!',
                                       style: TextStyle(

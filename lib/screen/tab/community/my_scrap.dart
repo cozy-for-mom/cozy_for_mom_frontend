@@ -37,7 +37,7 @@ class _MyScrapState extends State<MyScrap> {
       final cozyLogWrapper =
           await CozyLogApiService().getScrapCozyLogs(context, pageKey, 10);
       final cozyLogs = cozyLogWrapper!.cozyLogs;
-      final isLastPage = cozyLogs.length < 10;
+      final isLastPage = !cozyLogWrapper.hasNext;
 
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
@@ -142,7 +142,6 @@ class _MyScrapState extends State<MyScrap> {
                     boxHeight * snapshot.data!.cozyLogs.length + paddingValue;
                 return widget.isEditMode
                     ? ScrapListModify(
-                        // TODO 왜 바로 ScrapListModify 안가고 MyScrap를 거쳐가는거지? 데이터 사용하려고?!
                         cozyLogs: snapshot.data!.cozyLogs,
                         totalCount: snapshot.data!.totalCount,
                       )

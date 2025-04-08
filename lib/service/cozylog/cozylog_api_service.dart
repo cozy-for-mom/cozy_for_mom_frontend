@@ -24,13 +24,14 @@ class CozyLogApiService extends ChangeNotifier {
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
-
       int totalCount = body['data']['totalCount'];
+      bool hasNext = body['data']['hasNext'];
       List<CozyLogForList> cozyLogs =
-          (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
+          (body['data']['data'] as List<dynamic>).map((cozyLog) {
         return CozyLogForList.fromJson(cozyLog);
       }).toList();
-      return MyCozyLogListWrapper(cozyLogs: cozyLogs, totalCount: totalCount);
+      return MyCozyLogListWrapper(
+          cozyLogs: cozyLogs, totalCount: totalCount, hasNext: hasNext);
     } else {
       if (context.mounted) {
         handleHttpResponse(res.statusCode, context, message);
@@ -79,12 +80,13 @@ class CozyLogApiService extends ChangeNotifier {
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
       int totalCount = body['data']['totalCount'];
+      bool hasNext = body['data']['hasNext'];
       List<ScrapForList> cozyLogs =
-          (body['data']['cozyLogs'] as List<dynamic>).map((cozyLog) {
+          (body['data']['data'] as List<dynamic>).map((cozyLog) {
         return ScrapForList.fromJson(cozyLog);
       }).toList();
       return ScrapCozyLogListWrapper(
-          cozyLogs: cozyLogs, totalCount: totalCount);
+          cozyLogs: cozyLogs, totalCount: totalCount, hasNext: hasNext);
     } else {
       if (context.mounted) {
         handleHttpResponse(res.statusCode, context, message);
@@ -117,7 +119,7 @@ class CozyLogApiService extends ChangeNotifier {
     }
   }
 
-  Future<List<CozyLogForList>?> getCozyLogs(
+  Future<CozyLogListWrapper?> getCozyLogs(
     BuildContext context,
     int? lastId,
     int size, {
@@ -138,11 +140,13 @@ class CozyLogApiService extends ChangeNotifier {
 
     if (res.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(utf8.decode(res.bodyBytes));
-      List<dynamic> data = body['data']['cozyLogs'];
+      List<dynamic> data = body['data']['data'];
+      bool hasNext = body['data']['hasNext'];
+
       List<CozyLogForList> cozyLogs = data.map((cozyLog) {
         return CozyLogForList.fromJson(cozyLog);
       }).toList();
-      return cozyLogs;
+      return CozyLogListWrapper(cozyLogs: cozyLogs, hasNext: hasNext);
     } else {
       if (context.mounted) {
         handleHttpResponse(res.statusCode, context, message);
@@ -187,10 +191,9 @@ class CozyLogApiService extends ChangeNotifier {
         return CozyLogSearchResult.fromJson(cozyLog);
       }).toList();
       int totalCount = body['data']['totalCount'];
+      bool hasNext = body['data']['hasNext'];
       return CozyLogSearchResponse(
-        results: cozyLogs,
-        totalElements: totalCount,
-      );
+          results: cozyLogs, totalElements: totalCount, hasNext: hasNext);
     } else {
       if (context.mounted) {
         handleHttpResponse(res.statusCode, context, message);

@@ -39,7 +39,7 @@ class _MyCozylogState extends State<MyCozylog> {
         this.cozyLogWrapper = Future.value(cozyLogWrapper);
       });
       final cozyLogs = cozyLogWrapper!.cozyLogs;
-      final isLastPage = cozyLogs.length < 10; // 10개 미만이면 마지막 페이지로 간주
+      final isLastPage = !cozyLogWrapper.hasNext;
       if (isLastPage) {
         pagingController.appendLastPage(cozyLogs);
       } else {
@@ -257,7 +257,7 @@ class _MyCozylogState extends State<MyCozylog> {
                                             image: const AssetImage(
                                                 'assets/images/icons/cozylog_off.png'),
                                             width: min(45.31.w, 90.62),
-                                            height: min(40.77.w, 40.77*2)),
+                                            height: min(40.77.w, 40.77 * 2)),
                                         SizedBox(height: 12.w),
                                         Text('코지로그를 작성해 보세요!',
                                             style: TextStyle(
