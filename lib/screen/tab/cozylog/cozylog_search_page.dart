@@ -71,13 +71,13 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
-    final paddingValue = isTablet ? 30.w : 20.w;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmall = screenHeight < 670;
+    final paddingValue = 20.w;
 
     return GestureDetector(
       onTap: () {
-        // 키보드가 활성화 상태인지 체크하고 키보드를 내립니다.
+        // 키보드가 활성화 상태인지 체크하고 키보드를 내린다.
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
@@ -90,7 +90,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
           child: Column(
             children: [
               SizedBox(
-                height: isTablet ? 0.w : 50.w,
+                height: isSmall ? paddingValue : 40.w,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +135,7 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
                                   fontWeight: FontWeight.w400,
                                   fontSize: min(14.sp, 24),
                                 ),
-                                hintText: "검색어를 입력해주세요",
+                                hintText: "검색어를 2자 이상 입력해주세요",
                               ),
                               maxLines: 1,
                               style: TextStyle(
@@ -356,4 +356,3 @@ class _CozyLogSearchPageState extends State<CozyLogSearchPage>
     );
   }
 }
-
